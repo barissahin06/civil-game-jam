@@ -1,0 +1,22 @@
+
+[
+  {
+    "name": "1999 Marmara Depremi",
+    "time": "1999-08-17",
+    "disaster_type": "earthquake",
+    "description": "Marmara Bölgesi'nde büyük deprem.",
+    "casualties": 17480,
+    "duration": 45, 
+    "regions": ["Marmara"],
+    "is_active":"false"
+  },
+
+  {
+    "name": "2023 Kahramanmaraş Depremi",
+    "time": "2023-02-06",
+    "disaster_type": "earthquake",
+    "description": "Türkiye'nin güneydoğusunda büyük depremler.",
+    "casualties": 53000,
+    "duration": 65
+  }
+]
