@@ -1,0 +1,19 @@
+{
+  "name": "civil-game-jam",
+  "private": true,
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "format:gd": "uv run --project tools gdformat our-game art/preview",
+    "format:gd:check": "uv run --project tools gdformat --check our-game art/preview",
+    "complexity": "uv run --project tools gdradon cc our-game/core our-game/shared our-game/tests art/preview",
+    "check:data": "uv run --project tools python tools/checks/check_data.py",
+    "setup:godot": "uv run --project tools python tools/checks/install_gdunit.py",
+    "test:unit": "uv run --project tools python tools/checks/verify.py --unit-only",
+    "test:tools": "uv run --project tools python -m unittest discover -s tools/checks -p test_*.py",
+    "verify": "uv run --project tools python tools/checks/verify.py"
+  },
+  "devDependencies": {
+    "prettier": "3.9.9"
+  }
+}

@@ -1,0 +1,427 @@
+{
+  "scope": "mcp-runtime-only",
+  "source_repository": "barissahin06/godot-aseprite-toolkit",
+  "source_commit": "c56c113295a9bba6e3719448e5144f52a722ead2",
+  "files": [
+    {
+      "path": "aseprite-mcp/aseprite_mcp/__init__.py",
+      "sha256": "f3f3c554e30bf4e0baf43f978bcba4e2005d47d00cc419e2d9f22e9ae99a062d",
+      "bytes": 796
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/__main__.py",
+      "sha256": "14bfa3a081634d45289b101350683bcc81ec88c0a0e6f324b3456ee3dfc8e91e",
+      "bytes": 122
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/core/__init__.py",
+      "sha256": "c14fed4c90f464ba9325a082c7a8879454a1b3bd1a715028ae3b59739f5384e3",
+      "bytes": 78
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/core/colors.py",
+      "sha256": "c6840e6e40dbfb720a5a29bd551fee0f1b5467f19d3635da415f81a4caa9f13d",
+      "bytes": 874
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/core/commands.py",
+      "sha256": "f27ef38e8fc000c61fc19f5a2ba5bcca29047f30e6293cf99b5327fee58005b0",
+      "bytes": 4887
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/core/fonts.py",
+      "sha256": "4068a5f697e9a430261ca21e6361a04f6521104884e034a0f50282738a424c58",
+      "bytes": 15936
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/core/lua.py",
+      "sha256": "968426ca5bfb0d0f80cd796052aec2a07fe5c78a41460340b3ce5d3edebbde3d",
+      "bytes": 4579
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/core/native.py",
+      "sha256": "db49191d9cf83da62d245ae7f391967e8f8905bfbbdfdeebefcf3a456b122c0f",
+      "bytes": 2000
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/core/runtime.py",
+      "sha256": "982d947288c30b9674d551263914bff574c4a44e0e6022a5c3d9b35bf1f65931",
+      "bytes": 7796
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/server.py",
+      "sha256": "98fa1ceb11755f67680e143f6e45111d87f2a945fb1c135612cfb36d86bd6fed",
+      "bytes": 652
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/__init__.py",
+      "sha256": "4f88fdbcf692c784e97acfa3fe6fc48e6ec64b857b58e450d9a8cbf610c90ffd",
+      "bytes": 435
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/analysis.py",
+      "sha256": "bbf12c233dc73d9f489ba5fd6ee63268b584fb6e2945016fdaca5830ea2f23d1",
+      "bytes": 10278
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/animation.py",
+      "sha256": "d5521ee6ea84d56822703ac35d07b35a31bf0a3be582ee26c65ea2854f326f49",
+      "bytes": 48474
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/canvas.py",
+      "sha256": "4f3d1c75e1fbacd22f4bf65e4a398556a44e774447a85f6284cb1492e9a8ea70",
+      "bytes": 8061
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/drawing.py",
+      "sha256": "ad8153086ce7979d40ad89e23b611c1e19d733a4e558a4d39657426968934945",
+      "bytes": 37750
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/export.py",
+      "sha256": "5dd1d773cb96c1a1a05a499a0e10fd0a3956cf59474d33438c33ce06ceec328b",
+      "bytes": 14344
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/fx.py",
+      "sha256": "ca32807ca988170f709b8e795671321d7bc4af856113fe552797afc4c0db14c9",
+      "bytes": 15651
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/guide.py",
+      "sha256": "e513aecb0f0f6e5a5f47f4b1f2265d3c4f85a324551ea544af20dff52c7e4601",
+      "bytes": 3317
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/layers.py",
+      "sha256": "0a6c7ebf3ec4f538649c4c23ceee8739128ca6db6d2e670bf742ffddc61b4ab1",
+      "bytes": 9664
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/native_fx.py",
+      "sha256": "748fdae4226ae5a22f6207bb9bd5b210b91d884a82db93d933ff4285e0772ba7",
+      "bytes": 10287
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/palette.py",
+      "sha256": "661d69f88988438ee85bbf1ae0b398713e5d7b2241e45d349c0abba0972eec56",
+      "bytes": 16475
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/pixel_read.py",
+      "sha256": "232686a8f7ba780af07c6e509da41bf9c0d03801bb4d73cf40a1092f5e4f4d34",
+      "bytes": 9942
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/preview.py",
+      "sha256": "0a23331083db604f1f412751dc21c69400702ebf50d91087ec7397769dcd6b34",
+      "bytes": 2584
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/quality.py",
+      "sha256": "cbfc8fa01920085bc9226c7ea4d1fc2597032291c6b6033508a08cca2a2f7c20",
+      "bytes": 33342
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/scene.py",
+      "sha256": "ee3b266c17da88c8350e67bdcd6b63cadbca1dc6b6385e962fb2487db0c3e1ba",
+      "bytes": 4090
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/script.py",
+      "sha256": "233d639d150cc77d99054fefed5be1ee1e3eb700c540af3175ffd016ee358716",
+      "bytes": 1588
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/selection.py",
+      "sha256": "e3a84f544c86b4f28b21c04af6001e72a472757a57bcaab1c8a98ee1b189dac7",
+      "bytes": 11225
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/slices.py",
+      "sha256": "2850ef675a7e5a27783a27332d565b33ae578259e46945a98c6b97465a88b8e4",
+      "bytes": 6682
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/text.py",
+      "sha256": "51aec9b9cbfb96da07d997e8c60cf65ba9b7f64ab98fb8a8e1bd1777552d8161",
+      "bytes": 10358
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/tilemap.py",
+      "sha256": "a687fb625c57a23ffb1ad06971845ae80839cfba2ad650eb5726add7814b1925",
+      "bytes": 12122
+    },
+    {
+      "path": "aseprite-mcp/aseprite_mcp/tools/transform.py",
+      "sha256": "7aa2bd5affd4b0dd262febc52198517d6f33cc309e19c1107a5d6106e9414097",
+      "bytes": 7279
+    },
+    {
+      "path": "aseprite-mcp/LICENSE",
+      "sha256": "3e79238e7c405bcdf55f5f4b1bc8998e68cd4612fcfabf45a7b85e856e5b9ab8",
+      "bytes": 1071
+    },
+    {
+      "path": "aseprite-mcp/MANIFEST.in",
+      "sha256": "d6d9f316a229042f3cd5558b637a2359919ff501398278dc777925e4ab1cc744",
+      "bytes": 63
+    },
+    {
+      "path": "aseprite-mcp/pyproject.toml",
+      "sha256": "e80d4443d346b456ff4dbb0c2c6b6b06d49a8100bd0dcfb40c6e6a6361645427",
+      "bytes": 544
+    },
+    {
+      "path": "aseprite-mcp/README.md",
+      "sha256": "9b75fff60dc4856516fbcd0632793035ec9a73e03991dcfda3a07e60da42b9d1",
+      "bytes": 14819
+    },
+    {
+      "path": "aseprite-mcp/tests/conftest.py",
+      "sha256": "38f1901b1caea2f9bc505e05add72728067b07e3b921f92ca1b3c8c46b824851",
+      "bytes": 1620
+    },
+    {
+      "path": "aseprite-mcp/tests/test_analysis.py",
+      "sha256": "b52489f3d5815ee36c1485a12e4bef2ac6d2c5c6eb9b5e1e348bc68db236cc54",
+      "bytes": 1258
+    },
+    {
+      "path": "aseprite-mcp/tests/test_animation.py",
+      "sha256": "7d333b749809adaa046f652fccac8be369530572cc7f50f79fe6f285bc113c03",
+      "bytes": 961
+    },
+    {
+      "path": "aseprite-mcp/tests/test_composite_read.py",
+      "sha256": "ccb637afea6dc6b18c161f71a67b7e9dd38d89b5fc0c6b1298e57f7b8e96e8aa",
+      "bytes": 1336
+    },
+    {
+      "path": "aseprite-mcp/tests/test_create_into_group.py",
+      "sha256": "99de74643b3ec674a53744a0d0d5f0a2a0110e59d0068437a8ed56e4adb2a9ab",
+      "bytes": 2873
+    },
+    {
+      "path": "aseprite-mcp/tests/test_drawing.py",
+      "sha256": "1f44f33fd2964cea3d66e72f58e118f00bc57e403cd5a508b6b1fc9fa7264490",
+      "bytes": 530
+    },
+    {
+      "path": "aseprite-mcp/tests/test_drawing_fixes.py",
+      "sha256": "a4c35def44171419eb0763fa1a906851d33f07e8e3b034fb47e3b42c72f50287",
+      "bytes": 2529
+    },
+    {
+      "path": "aseprite-mcp/tests/test_error_propagation.py",
+      "sha256": "ee03931ad10fdaf5b524f7e30a763c84ccd6c3d1b1eb4523e457b0b8ef3c331d",
+      "bytes": 3565
+    },
+    {
+      "path": "aseprite-mcp/tests/test_export.py",
+      "sha256": "9de60d63b87be05c096ed6479ed6eb37c3eb4131ca8b1256c4a575101e1993af",
+      "bytes": 1484
+    },
+    {
+      "path": "aseprite-mcp/tests/test_fx.py",
+      "sha256": "9df85634924167660f5804add6f01dfa421f1879194155d0ab934a773790f6ac",
+      "bytes": 950
+    },
+    {
+      "path": "aseprite-mcp/tests/test_group_layers.py",
+      "sha256": "e9e6fbcd04896e52ccdf610f37ec61a43e46615a8e5612fd9ac47fed2f309f96",
+      "bytes": 5062
+    },
+    {
+      "path": "aseprite-mcp/tests/test_layers.py",
+      "sha256": "9fbe0089467bc79b40b03d233fb82d232084135a1d919a26b3949fdc4ca9b078",
+      "bytes": 1137
+    },
+    {
+      "path": "aseprite-mcp/tests/test_native_fx.py",
+      "sha256": "c3f1f5e77c7084d3856b26b1328f50d7e2ec21a0823187ccc4e593ecef93c459",
+      "bytes": 2374
+    },
+    {
+      "path": "aseprite-mcp/tests/test_palette.py",
+      "sha256": "4f866d22f5a284da6479cdc910f4e4ad79fcc50731c3e7bd0c5b3f04228fb8a5",
+      "bytes": 1084
+    },
+    {
+      "path": "aseprite-mcp/tests/test_script.py",
+      "sha256": "32761c8d017d61f98873e60772d0a8b951433a32654b35ab4d8e9e03b18a458c",
+      "bytes": 455
+    },
+    {
+      "path": "aseprite-mcp/tests/test_selection.py",
+      "sha256": "ac7eeb6e1205346a17e9431f63b64d96ae9c217d7e700dc425769d77da8211ef",
+      "bytes": 567
+    },
+    {
+      "path": "aseprite-mcp/tests/test_slices.py",
+      "sha256": "a1c7697aeb0fa303208d9f2759e5774d2470eb161f61f7a669cc572831b1e2a3",
+      "bytes": 941
+    },
+    {
+      "path": "aseprite-mcp/tests/test_slices_pipe.py",
+      "sha256": "50e5487facabc04e259532d53f17b98a8b7de2ed1cce3bbdd377f9b681795c8f",
+      "bytes": 721
+    },
+    {
+      "path": "aseprite-mcp/tests/test_sprite_info_groups.py",
+      "sha256": "ee9fe5e966fe976ffb5131aa5553b6f49ca4ab0a069ba753e879ce79000f8947",
+      "bytes": 732
+    },
+    {
+      "path": "aseprite-mcp/tests/test_text.py",
+      "sha256": "d7bef5dbe3a7e612b2aa22a944d3c3ef854d1bb4201798619a0048142cca38ea",
+      "bytes": 7813
+    },
+    {
+      "path": "aseprite-mcp/tests/test_tilemap.py",
+      "sha256": "4ca7e2161c13a720873c57b3274677383a86d616b7c8229d522e51d4e3a45451",
+      "bytes": 1377
+    },
+    {
+      "path": "aseprite-mcp/uv.lock",
+      "sha256": "8ebdd9af92097db9e1eea14d60915894a33331346d63253f0459546ccd042663",
+      "bytes": 149887
+    },
+    {
+      "path": "pixelspark-art-mcp/LICENSE",
+      "sha256": "330b80cd1b37760065f3705c0642425d1ad9dc101ea04b529adcb97f3f589e18",
+      "bytes": 1071
+    },
+    {
+      "path": "pixelspark-art-mcp/MANIFEST.in",
+      "sha256": "4ff4f153ae7f3c7bee04da61f4992ec3dd4224a247171d29b7ba2f3157199649",
+      "bytes": 111
+    },
+    {
+      "path": "pixelspark-art-mcp/pixelspark_art_mcp/__init__.py",
+      "sha256": "ed05b0c2b2ac1db3b5fe46e4fb9f36ad2644a7cfa7cd4d13ceed6a4522407d17",
+      "bytes": 60
+    },
+    {
+      "path": "pixelspark-art-mcp/pixelspark_art_mcp/__main__.py",
+      "sha256": "d7385a2a7bcce8152ebcbb87d94748b8a6b6f291c308ccbec4b6cf085fd15d09",
+      "bytes": 10204
+    },
+    {
+      "path": "pixelspark-art-mcp/pixelspark_art_mcp/aseprite.py",
+      "sha256": "7ed9b26fc251d7f691cd25057238d5a8c669b7cc4274e8576b5683b28da2b8da",
+      "bytes": 11561
+    },
+    {
+      "path": "pixelspark-art-mcp/pixelspark_art_mcp/assets.py",
+      "sha256": "f67df24c5f0fe69ba36ca0edfe3350f0b2388b1ca9aedfd4763549f84f10b576",
+      "bytes": 14428
+    },
+    {
+      "path": "pixelspark-art-mcp/pixelspark_art_mcp/capture.gd",
+      "sha256": "8c9a947ee4b2031e87bfcc073e17ad89ff3e7349a76f9e5b85b4314ac7b5a7e6",
+      "bytes": 1981
+    },
+    {
+      "path": "pixelspark-art-mcp/pixelspark_art_mcp/core.py",
+      "sha256": "a07a5a3272bfe1038dfefe5b258b1abd33f804fdcacf88a1decd0ec282bbcb42",
+      "bytes": 12594
+    },
+    {
+      "path": "pixelspark-art-mcp/pixelspark_art_mcp/edit_motion.gd",
+      "sha256": "bbc9059da06ce8209b343546e8c98fe01555b772c3c6d263000c91c9fa8496fa",
+      "bytes": 3713
+    },
+    {
+      "path": "pixelspark-art-mcp/pixelspark_art_mcp/editing.py",
+      "sha256": "e75cbf14a5584dce2145860b2448386d6cfdb4efbc1074bc21a31ea65dda5d8f",
+      "bytes": 4568
+    },
+    {
+      "path": "pixelspark-art-mcp/pixelspark_art_mcp/frame_animation.gd",
+      "sha256": "0893adad4143a649e70f9140373c496de8dc386ba0bf062a98d5d9e4c100a3ce",
+      "bytes": 1412
+    },
+    {
+      "path": "pixelspark-art-mcp/pixelspark_art_mcp/inspect.gd",
+      "sha256": "499c1f94a6c62a8cb1ac2ea89cfd426d43b82ec4ed18838816c657867aee1d0f",
+      "bytes": 2335
+    },
+    {
+      "path": "pixelspark-art-mcp/pixelspark_art_mcp/review.gd",
+      "sha256": "fede3c7f75c4e21827ea89fc65b70fdd0268644d6d9b6518f865619c9c6b5963",
+      "bytes": 4174
+    },
+    {
+      "path": "pixelspark-art-mcp/pixelspark_art_mcp/review.py",
+      "sha256": "9cba09903acef6901adcdfcad6a3ba29101df7611239405a2c7094b3b45612d4",
+      "bytes": 11209
+    },
+    {
+      "path": "pixelspark-art-mcp/pixelspark_art_mcp/studio.py",
+      "sha256": "bf1d48d222c22611ea5728b0f58ea3654234baba39df0c2f43ae871f809dec80",
+      "bytes": 280
+    },
+    {
+      "path": "pixelspark-art-mcp/pyproject.toml",
+      "sha256": "06f5787d1094c6dd5ca9cf6d679e4dc20fb153213938f1af70cfe9e949392ac3",
+      "bytes": 630
+    },
+    {
+      "path": "pixelspark-art-mcp/README.md",
+      "sha256": "32a148f6f12c5009863d4f8097b87ed7a5cd6e7f64190fb3c2ebe7695692ba69",
+      "bytes": 6243
+    },
+    {
+      "path": "pixelspark-art-mcp/tests/frame_playback.gd",
+      "sha256": "d4f7be32bd25a683613067c43928bc5c70ed2956a717ded6657f3ead3ece5f83",
+      "bytes": 950
+    },
+    {
+      "path": "pixelspark-art-mcp/tests/integration_native.py",
+      "sha256": "fe05ee3c12a735de41dcee131466c5ca9c4529f8a874fa3195f2c7b38be094ae",
+      "bytes": 9276
+    },
+    {
+      "path": "pixelspark-art-mcp/tests/review_playback.gd",
+      "sha256": "7d2c6a5769ee4136fbc79df4206105e75959c1eac65dcda43f08f37463e2f4b9",
+      "bytes": 1790
+    },
+    {
+      "path": "pixelspark-art-mcp/tests/test_core.py",
+      "sha256": "1ca34421cd35453824c123e9442d158d5a4ae859c82c46d270e52f34f2b70663",
+      "bytes": 1948
+    },
+    {
+      "path": "pixelspark-art-mcp/tests/test_frame_animation.py",
+      "sha256": "11deef4d29809b7ff753e86d7c9e51eac75f03c87555d500f02821d144b50154",
+      "bytes": 2024
+    },
+    {
+      "path": "pixelspark-art-mcp/tests/test_review.py",
+      "sha256": "d8a6ec8e4300140e0710d9b8c350d8e86dd1d523fdd68db95b2ee043d8f9c646",
+      "bytes": 5010
+    },
+    {
+      "path": "pixelspark-art-mcp/tests/test_studio.py",
+      "sha256": "be9ca8d9f3e626a7c03fc41762397bfa16e2dee517299efe8b569385639cf628",
+      "bytes": 3905
+    },
+    {
+      "path": "pixelspark-art-mcp/tests/test_workflows.py",
+      "sha256": "f3d1964b8afadffa763449527742210e5052ab8eeee5f6fb0929069081cd3f64",
+      "bytes": 3196
+    },
+    {
+      "path": "pixelspark-art-mcp/uv.lock",
+      "sha256": "813d0a0538a9732573c360eba88e91f65d330b1854ccdec5a887919dea00d2b6",
+      "bytes": 119257
+    },
+    {
+      "path": "toolkit.py",
+      "sha256": "5134c8fefde109705ffa576e1d027548718f5fb45f305d27d7f7cc67f50d7e20",
+      "bytes": 17739
+    }
+  ]
+}
