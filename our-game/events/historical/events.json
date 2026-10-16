@@ -7,6 +7,7 @@
     "casualties": 6,
     "duration": 15,
     "regions": ["Akdeniz"],
+    "city": ["Hatay"],
     "is_active": false
   },
   {
@@ -17,6 +18,7 @@
     "casualties": 50,
     "duration": 30,
     "regions": ["İç Anadolu"],
+    "city": ["Çankırı"],
     "is_active": false
   },
   {
@@ -27,6 +29,7 @@
     "casualties": 41,
     "duration": 15,
     "regions": ["Doğu Anadolu"],
+    "city": ["Erzurum"],
     "is_active": false
   },
   {
@@ -37,6 +40,7 @@
     "casualties": 10,
     "duration": 15,
     "regions": ["Akdeniz"],
+    "city": ["Adana"],
     "is_active": false
   },
   {
@@ -47,6 +51,7 @@
     "casualties": 265,
     "duration": 40,
     "regions": ["Marmara"],
+    "city": ["Çanakkale", "Balıkesir"],
     "is_active": false
   },
   {
@@ -57,6 +62,7 @@
     "casualties": 2,
     "duration": 20,
     "regions": ["Karadeniz", "İç Anadolu"],
+    "city": ["Karabük", "Kastamonu", "Çankırı"],
     "is_active": false
   },
   {
@@ -67,6 +73,7 @@
     "casualties": 23,
     "duration": 30,
     "regions": ["Ege"],
+    "city": ["Aydın"],
     "is_active": false
   },
   {
@@ -77,6 +84,7 @@
     "casualties": 1,
     "duration": 20,
     "regions": ["İç Anadolu"],
+    "city": ["Eskişehir"],
     "is_active": false
   },
   {
@@ -87,6 +95,7 @@
     "casualties": 19,
     "duration": 40,
     "regions": ["Ege"],
+    "city": ["Muğla"],
     "is_active": false
   },
   {
@@ -97,6 +106,7 @@
     "casualties": 52,
     "duration": 40,
     "regions": ["Karadeniz"],
+    "city": ["Bolu"],
     "is_active": false
   },
   {
@@ -107,6 +117,7 @@
     "casualties": 1,
     "duration": 20,
     "regions": ["Marmara"],
+    "city": ["Yalova", "İstanbul"],
     "is_active": false
   },
   {
@@ -117,6 +128,7 @@
     "casualties": 8,
     "duration": 20,
     "regions": ["Doğu Anadolu", "Güneydoğu Anadolu"],
+    "city": ["Malatya", "Adıyaman"],
     "is_active": false
   },
   {
@@ -127,6 +139,7 @@
     "casualties": 23,
     "duration": 40,
     "regions": ["Marmara"],
+    "city": ["Balıkesir"],
     "is_active": false
   },
   {
@@ -137,6 +150,7 @@
     "casualties": 14,
     "duration": 15,
     "regions": ["Ege"],
+    "city": ["Denizli"],
     "is_active": false
   },
   {
@@ -147,6 +161,7 @@
     "casualties": 14,
     "duration": 15,
     "regions": ["Doğu Anadolu"],
+    "city": ["Muş", "Erzurum"],
     "is_active": false
   },
   {
@@ -157,6 +172,7 @@
     "casualties": 2394,
     "duration": 30,
     "regions": ["Doğu Anadolu"],
+    "city": ["Muş"],
     "is_active": false
   },
   {
@@ -167,6 +183,7 @@
     "casualties": 89,
     "duration": 40,
     "regions": ["Karadeniz", "Marmara"],
+    "city": ["Bolu", "Sakarya"],
     "is_active": false
   },
   {
@@ -177,6 +194,7 @@
     "casualties": 29,
     "duration": 30,
     "regions": ["Karadeniz"],
+    "city": ["Bartın"],
     "is_active": false
   },
   {
@@ -187,6 +205,7 @@
     "casualties": 53,
     "duration": 30,
     "regions": ["Ege"],
+    "city": ["Manisa"],
     "is_active": false
   },
   {
@@ -197,6 +216,7 @@
     "casualties": 1086,
     "duration": 40,
     "regions": ["Ege"],
+    "city": ["Kütahya"],
     "is_active": false
   },
   {
@@ -207,6 +227,7 @@
     "casualties": 57,
     "duration": 15,
     "regions": ["Akdeniz"],
+    "city": ["Burdur"],
     "is_active": false
   },
   {
@@ -217,6 +238,7 @@
     "casualties": 878,
     "duration": 30,
     "regions": ["Doğu Anadolu"],
+    "city": ["Bingöl"],
     "is_active": false
   },
   {
@@ -227,6 +249,7 @@
     "casualties": 2385,
     "duration": 30,
     "regions": ["Güneydoğu Anadolu"],
+    "city": ["Diyarbakır"],
     "is_active": false
   },
   {
@@ -237,6 +260,7 @@
     "casualties": 3840,
     "duration": 50,
     "regions": ["Doğu Anadolu"],
+    "city": ["Van"],
     "is_active": false
   },
   {
@@ -247,6 +271,7 @@
     "casualties": 5,
     "duration": 20,
     "regions": ["Marmara"],
+    "city": ["Çanakkale"],
     "is_active": false
   },
   {
@@ -257,6 +282,7 @@
     "casualties": 1155,
     "duration": 30,
     "regions": ["Doğu Anadolu"],
+    "city": ["Erzurum", "Kars"],
     "is_active": false
   },
   {
@@ -267,6 +293,7 @@
     "casualties": 3,
     "duration": 20,
     "regions": ["Doğu Anadolu"],
+    "city": ["Erzurum"],
     "is_active": false
   },
   {
@@ -277,6 +304,7 @@
     "casualties": 10,
     "duration": 15,
     "regions": ["Doğu Anadolu"],
+    "city": ["Malatya"],
     "is_active": false
   },
   {
@@ -287,6 +315,7 @@
     "casualties": 66,
     "duration": 300,
     "regions": ["Karadeniz"],
+    "city": ["Trabzon"],
     "is_active": false
   },
   {
@@ -297,6 +326,7 @@
     "casualties": 57,
     "duration": 172800,
     "regions": ["Karadeniz"],
+    "city": ["Trabzon"],
     "is_active": false
   },
   {
@@ -307,6 +337,7 @@
     "casualties": 91,
     "duration": 60,
     "regions": ["Güneydoğu Anadolu"],
+    "city": ["Şırnak"],
     "is_active": false
   },
   {
@@ -317,6 +348,7 @@
     "casualties": 32,
     "duration": 60,
     "regions": ["Güneydoğu Anadolu"],
+    "city": ["Siirt"],
     "is_active": false
   },
   {
@@ -327,6 +359,7 @@
     "casualties": 653,
     "duration": 30,
     "regions": ["Doğu Anadolu"],
+    "city": ["Erzincan"],
     "is_active": false
   },
   {
@@ -337,6 +370,7 @@
     "casualties": 74,
     "duration": 21600,
     "regions": ["Akdeniz"],
+    "city": ["Isparta"],
     "is_active": false
   },
   {
@@ -347,6 +381,7 @@
     "casualties": 90,
     "duration": 20,
     "regions": ["Ege"],
+    "city": ["Afyonkarahisar"],
     "is_active": false
   },
   {
@@ -357,6 +392,7 @@
     "casualties": 1,
     "duration": 15,
     "regions": ["Karadeniz"],
+    "city": ["Çorum"],
     "is_active": false
   },
   {
@@ -367,6 +403,7 @@
     "casualties": 1,
     "duration": 15,
     "regions": ["Akdeniz"],
+    "city": ["Hatay"],
     "is_active": false
   },
   {
@@ -377,6 +414,7 @@
     "casualties": 146,
     "duration": 20,
     "regions": ["Akdeniz"],
+    "city": ["Adana"],
     "is_active": false
   },
   {
@@ -387,6 +425,7 @@
     "casualties": 50,
     "duration": 86400,
     "regions": ["Karadeniz"],
+    "city": ["Trabzon"],
     "is_active": false
   },
   {
@@ -397,6 +436,7 @@
     "casualties": 17480,
     "duration": 45,
     "regions": ["Marmara"],
+    "city": ["Kocaeli", "Sakarya", "Yalova", "İstanbul", "Bolu", "Bursa", "Eskişehir"],
     "is_active": false
   },
   {
@@ -407,6 +447,7 @@
     "casualties": 894,
     "duration": 40,
     "regions": ["Karadeniz"],
+    "city": ["Düzce", "Bolu"],
     "is_active": false
   },
   {
@@ -417,6 +458,7 @@
     "casualties": 3,
     "duration": 20,
     "regions": ["İç Anadolu"],
+    "city": ["Çankırı"],
     "is_active": false
   },
   {
@@ -427,6 +469,7 @@
     "casualties": 6,
     "duration": 15,
     "regions": ["Ege"],
+    "city": ["Afyonkarahisar"],
     "is_active": false
   },
   {
@@ -437,6 +480,7 @@
     "casualties": 44,
     "duration": 30,
     "regions": ["Ege"],
+    "city": ["Afyonkarahisar"],
     "is_active": false
   },
   {
@@ -447,6 +491,7 @@
     "casualties": 1,
     "duration": 20,
     "regions": ["Doğu Anadolu"],
+    "city": ["Tunceli"],
     "is_active": false
   },
   {
@@ -457,6 +502,7 @@
     "casualties": 177,
     "duration": 20,
     "regions": ["Doğu Anadolu"],
+    "city": ["Bingöl"],
     "is_active": false
   },
   {
@@ -467,6 +513,7 @@
     "casualties": 9,
     "duration": 10,
     "regions": ["Doğu Anadolu"],
+    "city": ["Erzurum"],
     "is_active": false
   },
   {
@@ -477,6 +524,7 @@
     "casualties": 18,
     "duration": 10,
     "regions": ["Doğu Anadolu"],
+    "city": ["Ağrı"],
     "is_active": false
   },
   {
@@ -487,6 +535,7 @@
     "casualties": 2,
     "duration": 15,
     "regions": ["Doğu Anadolu"],
+    "city": ["Hakkari"],
     "is_active": false
   },
   {
@@ -497,6 +546,7 @@
     "casualties": 2,
     "duration": 15,
     "regions": ["Ege"],
+    "city": ["İzmir"],
     "is_active": false
   },
   {
@@ -507,6 +557,7 @@
     "casualties": 31,
     "duration": 172800,
     "regions": ["Marmara"],
+    "city": ["İstanbul", "Tekirdağ"],
     "is_active": false
   },
   {
@@ -517,6 +568,7 @@
     "casualties": 41,
     "duration": 20,
     "regions": ["Doğu Anadolu"],
+    "city": ["Elazığ"],
     "is_active": false
   },
   {
@@ -527,6 +579,7 @@
     "casualties": 15,
     "duration": 86400,
     "regions": ["Karadeniz"],
+    "city": ["Rize"],
     "is_active": false
   },
   {
@@ -537,6 +590,7 @@
     "casualties": 2,
     "duration": 15,
     "regions": ["Ege"],
+    "city": ["Kütahya"],
     "is_active": false
   },
   {
@@ -547,6 +601,7 @@
     "casualties": 604,
     "duration": 40,
     "regions": ["Doğu Anadolu"],
+    "city": ["Van"],
     "is_active": false
   },
   {
@@ -557,6 +612,7 @@
     "casualties": 40,
     "duration": 15,
     "regions": ["Doğu Anadolu"],
+    "city": ["Van"],
     "is_active": false
   },
   {
@@ -567,6 +623,7 @@
     "casualties": 1,
     "duration": 20,
     "regions": ["Ege"],
+    "city": ["Muğla"],
     "is_active": false
   },
   {
@@ -577,6 +634,7 @@
     "casualties": 11,
     "duration": 86400,
     "regions": ["Karadeniz"],
+    "city": ["Samsun"],
     "is_active": false
   },
   {
@@ -587,6 +645,7 @@
     "casualties": 8,
     "duration": 86400,
     "regions": ["Karadeniz"],
+    "city": ["Artvin"],
     "is_active": false
   },
   {
@@ -597,6 +656,7 @@
     "casualties": 7,
     "duration": 172800,
     "regions": ["Karadeniz"],
+    "city": ["Düzce"],
     "is_active": false
   },
   {
@@ -607,6 +667,7 @@
     "casualties": 1,
     "duration": 15,
     "regions": ["Marmara"],
+    "city": ["İstanbul"],
     "is_active": false
   },
   {
@@ -617,6 +678,7 @@
     "casualties": 41,
     "duration": 30,
     "regions": ["Doğu Anadolu"],
+    "city": ["Elazığ", "Malatya"],
     "is_active": false
   },
   {
@@ -627,6 +689,7 @@
     "casualties": 41,
     "duration": 60,
     "regions": ["Doğu Anadolu"],
+    "city": ["Van"],
     "is_active": false
   },
   {
@@ -637,6 +700,7 @@
     "casualties": 10,
     "duration": 15,
     "regions": ["Doğu Anadolu"],
+    "city": ["Van"],
     "is_active": false
   },
   {
@@ -647,6 +711,7 @@
     "casualties": 1,
     "duration": 15,
     "regions": ["Doğu Anadolu"],
+    "city": ["Bingöl"],
     "is_active": false
   },
   {
@@ -657,6 +722,7 @@
     "casualties": 11,
     "duration": 86400,
     "regions": ["Karadeniz"],
+    "city": ["Giresun"],
     "is_active": false
   },
   {
@@ -667,6 +733,7 @@
     "casualties": 117,
     "duration": 30,
     "regions": ["Ege"],
+    "city": ["İzmir"],
     "is_active": false
   },
   {
@@ -677,6 +744,7 @@
     "casualties": 9,
     "duration": 1209600,
     "regions": ["Akdeniz", "Ege"],
+    "city": ["Antalya", "Muğla", "Adana", "Osmaniye", "Mersin", "Aydın"],
     "is_active": false
   },
   {
@@ -687,6 +755,7 @@
     "casualties": 82,
     "duration": 172800,
     "regions": ["Karadeniz"],
+    "city": ["Kastamonu", "Sinop", "Bartın"],
     "is_active": false
   },
   {
@@ -697,6 +766,7 @@
     "casualties": 2,
     "duration": 15,
     "regions": ["Karadeniz"],
+    "city": ["Düzce"],
     "is_active": false
   },
   {
@@ -707,6 +777,19 @@
     "casualties": 53000,
     "duration": 65,
     "regions": ["Güneydoğu Anadolu", "Akdeniz", "Doğu Anadolu"],
+    "city": [
+      "Kahramanmaraş",
+      "Hatay",
+      "Gaziantep",
+      "Malatya",
+      "Adıyaman",
+      "Osmaniye",
+      "Diyarbakır",
+      "Şanlıurfa",
+      "Adana",
+      "Kilis",
+      "Elazığ"
+    ],
     "is_active": false
   },
   {
@@ -717,6 +800,7 @@
     "casualties": 6,
     "duration": 20,
     "regions": ["Akdeniz"],
+    "city": ["Hatay"],
     "is_active": false
   },
   {
@@ -727,6 +811,7 @@
     "casualties": 2,
     "duration": 15,
     "regions": ["Doğu Anadolu"],
+    "city": ["Malatya"],
     "is_active": false
   },
   {
@@ -737,6 +822,7 @@
     "casualties": 21,
     "duration": 86400,
     "regions": ["Güneydoğu Anadolu"],
+    "city": ["Şanlıurfa", "Adıyaman"],
     "is_active": false
   },
   {
@@ -747,6 +833,7 @@
     "casualties": 8,
     "duration": 172800,
     "regions": ["Marmara"],
+    "city": ["İstanbul", "Kırklareli"],
     "is_active": false
   },
   {
@@ -757,6 +844,7 @@
     "casualties": 1,
     "duration": 20,
     "regions": ["Marmara"],
+    "city": ["İstanbul"],
     "is_active": false
   },
   {
@@ -767,6 +855,7 @@
     "casualties": 1,
     "duration": 15,
     "regions": ["Ege"],
+    "city": ["Muğla"],
     "is_active": false
   },
   {
@@ -777,6 +866,7 @@
     "casualties": 10,
     "duration": 259200,
     "regions": ["İç Anadolu"],
+    "city": ["Eskişehir"],
     "is_active": false
   },
   {
@@ -787,6 +877,7 @@
     "casualties": 1,
     "duration": 20,
     "regions": ["Marmara"],
+    "city": ["Balıkesir"],
     "is_active": false
   },
   {
@@ -797,9 +888,9 @@
     "casualties": 4,
     "duration": 86400,
     "regions": ["Ege"],
+    "city": ["Muğla", "İzmir"],
     "is_active": false
   },
-
   {
     "name": "1955 Ankara Sel Felaketi",
     "time": "1955-09-11",
@@ -808,6 +899,7 @@
     "casualties": 150,
     "duration": 21600,
     "regions": ["İç Anadolu"],
+    "city": ["Ankara"],
     "is_active": false
   },
   {
@@ -818,6 +910,7 @@
     "casualties": 20,
     "duration": 14400,
     "regions": ["İç Anadolu"],
+    "city": ["Ankara"],
     "is_active": false
   },
   {
@@ -828,6 +921,7 @@
     "casualties": 25,
     "duration": 25,
     "regions": ["Ege"],
+    "city": ["Manisa"],
     "is_active": false
   },
   {
@@ -838,6 +932,7 @@
     "casualties": 30,
     "duration": 15,
     "regions": ["Doğu Anadolu"],
+    "city": ["Elazığ"],
     "is_active": false
   },
   {
@@ -848,6 +943,7 @@
     "casualties": 8,
     "duration": 259200,
     "regions": ["Akdeniz"],
+    "city": ["Hatay"],
     "is_active": false
   },
   {
@@ -858,6 +954,7 @@
     "casualties": 35,
     "duration": 172800,
     "regions": ["Karadeniz"],
+    "city": ["Bartın"],
     "is_active": false
   },
   {
@@ -868,6 +965,7 @@
     "casualties": 45,
     "duration": 60,
     "regions": ["Doğu Anadolu"],
+    "city": ["Hakkari"],
     "is_active": false
   },
   {
@@ -878,6 +976,7 @@
     "casualties": 59,
     "duration": 60,
     "regions": ["Karadeniz"],
+    "city": ["Bayburt"],
     "is_active": false
   },
   {
@@ -888,6 +987,7 @@
     "casualties": 44,
     "duration": 172800,
     "regions": ["Güneydoğu Anadolu"],
+    "city": ["Diyarbakır", "Batman", "Şırnak"],
     "is_active": false
   },
   {
@@ -898,6 +998,7 @@
     "casualties": 0,
     "duration": 15,
     "regions": ["İç Anadolu"],
+    "city": ["Ankara"],
     "is_active": false
   },
   {
@@ -908,6 +1009,7 @@
     "casualties": 2,
     "duration": 518400,
     "regions": ["Akdeniz"],
+    "city": ["Antalya"],
     "is_active": false
   },
   {
@@ -918,6 +1020,7 @@
     "casualties": 10,
     "duration": 60,
     "regions": ["Karadeniz"],
+    "city": ["Gümüşhane"],
     "is_active": false
   },
   {
@@ -928,6 +1031,7 @@
     "casualties": 0,
     "duration": 20,
     "regions": ["Ege"],
+    "city": ["Denizli"],
     "is_active": false
   },
   {
@@ -938,6 +1042,7 @@
     "casualties": 0,
     "duration": 172800,
     "regions": ["Akdeniz"],
+    "city": ["Hatay"],
     "is_active": false
   },
   {
@@ -948,6 +1053,7 @@
     "casualties": 16,
     "duration": 172800,
     "regions": ["Karadeniz"],
+    "city": ["Sinop"],
     "is_active": false
   },
   {
@@ -958,6 +1064,7 @@
     "casualties": 4,
     "duration": 172800,
     "regions": ["Karadeniz"],
+    "city": ["Kastamonu", "Bartın", "Sinop", "Zonguldak"],
     "is_active": false
   },
   {
@@ -968,6 +1075,7 @@
     "casualties": 9,
     "duration": 120,
     "regions": ["Doğu Anadolu"],
+    "city": ["Erzincan"],
     "is_active": false
   },
   {
@@ -978,6 +1086,7 @@
     "casualties": 0,
     "duration": 345600,
     "regions": ["Ege"],
+    "city": ["İzmir"],
     "is_active": false
   },
   {
@@ -988,7 +1097,7 @@
     "casualties": 0,
     "duration": 20,
     "regions": ["Doğu Anadolu"],
+    "city": ["Malatya"],
     "is_active": false
   }
 ]
-
