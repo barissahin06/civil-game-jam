@@ -798,5 +798,197 @@
     "duration": 86400,
     "regions": ["Ege"],
     "is_active": false
+  },
+
+  {
+    "name": "1955 Ankara Sel Felaketi",
+    "time": "1955-09-11",
+    "disaster_type": "flood",
+    "description": "Hatip Çayı'nın taşması sonucu Bentderesi ve çevresindeki yerleşimlerde yıkıcı su baskını.",
+    "casualties": 150,
+    "duration": 21600,
+    "regions": ["İç Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1965 Ankara Bentderesi Taşkını",
+    "time": "1965-06-25",
+    "disaster_type": "flood",
+    "description": "Şiddetli sağanak yağış sonrası Bentderesi taştı; çok sayıda gecekondu sular altında kaldı.",
+    "casualties": 20,
+    "duration": 14400,
+    "regions": ["İç Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1970 Demirci Depremleri",
+    "time": "1970-03-24",
+    "disaster_type": "earthquake",
+    "description": "Manisa Demirci ve Gördes çevresinde 5.9 büyüklüğünde deprem silsilesi.",
+    "casualties": 25,
+    "duration": 25,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "1977 Palu Depremi",
+    "time": "1977-03-26",
+    "disaster_type": "earthquake",
+    "description": "Elazığ Palu merkezli 5.1 büyüklüğünde deprem; kırsal binalarda çökme.",
+    "casualties": 30,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1982 Hatay Amik Ovası Taşkını",
+    "time": "1982-04-12",
+    "disaster_type": "flood",
+    "description": "Asi Nehri ve Afrin Çayı'nın taşması sonucu binlerce hektar tarım arazisi ve köy su altında kaldı.",
+    "casualties": 8,
+    "duration": 259200,
+    "regions": ["Akdeniz"],
+    "is_active": false
+  },
+  {
+    "name": "1991 Bartın ve Karadeniz Seli",
+    "time": "1991-05-27",
+    "disaster_type": "flood",
+    "description": "Bartın Çayı'nın taşması sonucu Bartın kent merkezi tamamen su altında kaldı.",
+    "casualties": 35,
+    "duration": 172800,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "1992 Çukurca-Yüksekova Çığları",
+    "time": "1992-02-05",
+    "disaster_type": "avalanche",
+    "description": "Hakkari Çukurca ve Yüksekova'da yerleşim yerlerine ve askeri üslere çığ düştü.",
+    "casualties": 45,
+    "duration": 60,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1993 Bayburt Üzengili Çığ Faciası",
+    "time": "1993-01-18",
+    "disaster_type": "avalanche",
+    "description": "Bayburt merkez Üzengili köyünün üzerine düşen çığ sonucu çok sayıda ev yıkıldı.",
+    "casualties": 59,
+    "duration": 60,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2006 Güneydoğu Anadolu Seli",
+    "time": "2006-10-31",
+    "disaster_type": "flood",
+    "description": "Diyarbakır, Batman ve Şırnak genelinde şiddetli yağışlar sonucu meydana gelen dere taşkınları.",
+    "casualties": 44,
+    "duration": 172800,
+    "regions": ["Güneydoğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2007 Bala Depremi",
+    "time": "2007-12-20",
+    "disaster_type": "earthquake",
+    "description": "Ankara Bala'da 5.6 büyüklüğünde deprem; çevre köylerde yapısal hasarlar oluştu.",
+    "casualties": 0,
+    "duration": 15,
+    "regions": ["İç Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2008 Taşağıl-Manavgat Orman Yangını",
+    "time": "2008-07-31",
+    "disaster_type": "wildfire",
+    "description": "Antalya Manavgat Taşağıl'da yaklaşık 16.000 hektar orman alanının kül olduğu büyük yangın.",
+    "casualties": 2,
+    "duration": 518400,
+    "regions": ["Akdeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2009 Zigana Dağı Çığ Faciası",
+    "time": "2009-01-25",
+    "disaster_type": "avalanche",
+    "description": "Gümüşhane Zigana Dağı'nda yürüyüş yapan dağcı grubunun üzerine çığ düştü.",
+    "casualties": 10,
+    "duration": 60,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2019 Bozkurt Depremi",
+    "time": "2019-08-08",
+    "disaster_type": "earthquake",
+    "description": "Denizli Bozkurt merkezli 6.0 büyüklüğünde deprem.",
+    "casualties": 0,
+    "duration": 20,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "2020 Hatay Orman Yangınları",
+    "time": "2020-10-09",
+    "disaster_type": "wildfire",
+    "description": "Belen, Arsuz ve İskenderun ilçelerinde yerleşim yerlerine sıçrayan büyük yangınlar.",
+    "casualties": 0,
+    "duration": 172800,
+    "regions": ["Akdeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2021 Ayancık ve Türkeli Seli",
+    "time": "2021-08-11",
+    "disaster_type": "flood",
+    "description": "Sinop Ayancık ve Türkeli'de derelerin taşması sonucu köprüler yıkıldı, ağır tahribat oluştu.",
+    "casualties": 16,
+    "duration": 172800,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2022 Batı Karadeniz Seli",
+    "time": "2022-06-27",
+    "disaster_type": "flood",
+    "description": "Kastamonu, Bartın, Sinop ve Zonguldak'ta tekrarlayan şiddetli taşkın ve heyelanlar.",
+    "casualties": 4,
+    "duration": 172800,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2024 İliç Toprak Kayması",
+    "time": "2024-02-13",
+    "disaster_type": "landslide",
+    "description": "Erzincan İliç'te maden sahasında liç yığınının kayması sonucu toprak kayması.",
+    "casualties": 9,
+    "duration": 120,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2024 İzmir Orman Yangını",
+    "time": "2024-08-15",
+    "disaster_type": "wildfire",
+    "description": "İzmir Karşıyaka Yamanlar Dağı'nda başlayan ve yerleşim alanları ile sanayi sitelerine sıçrayan orman yangını.",
+    "casualties": 0,
+    "duration": 345600,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "2024 Kale Depremi",
+    "time": "2024-10-16",
+    "disaster_type": "earthquake",
+    "description": "Malatya Kale merkezli 5.9 büyüklüğünde deprem; çevre illerde hasara ve paniğe yol açtı.",
+    "casualties": 0,
+    "duration": 20,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
   }
 ]
+
