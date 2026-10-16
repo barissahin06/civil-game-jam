@@ -1,0 +1,57 @@
+name: Verify game and tooling
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install locked tooling
+        run: |
+          python -m pip install uv==0.12.10
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          uv sync --project tools --frozen
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm ci --ignore-scripts
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm run setup:godot
+      - name: Prettier formatting
+        run: npm run format:check
+      - name: GDScript formatting
+        run: npm run format:gd:check
+      - name: Gameplay JSON schemas
+        run: npm run check:data
+      - name: Diagnostic complexity report
+        continue-on-error: true
+        run: |
+          New-Item -ItemType Directory -Force -Path generated/reports | Out-Null
+          npm run complexity *> generated/reports/complexity.txt
+      - name: Tool boundary tests
+        run: npm run test:tools
+      - name: Install Godot 4.6.3
+        run: |
+          $version = '4.6.3-stable'
+          $release = "https://github.com/godotengine/godot-builds/releases/download/$version"
+          $godotDir = Join-Path $env:RUNNER_TEMP 'godot'
+          Invoke-WebRequest "$release/Godot_v${version}_win64.exe.zip" -OutFile "$env:RUNNER_TEMP/godot.zip"
+          Expand-Archive -LiteralPath "$env:RUNNER_TEMP/godot.zip" -DestinationPath $godotDir
+          "GODOT_PATH=$godotDir/Godot_v${version}_win64.exe" >> $env:GITHUB_ENV
+      - name: Godot import, unit tests and startup
+        run: npm run verify
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: verification-reports
+          path: generated/reports

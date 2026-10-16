@@ -1,0 +1,16 @@
+generated/
+.local/
+.art-history/
+.codex/config.toml*
+**/.venv/
+**/.godot/
+**/node_modules/
+our-game/addons/
+our-game/reports/
+our-game/assets/
+# Keep managed toolkit files identical to their upstream hashes.
+tools/mcp/aseprite-mcp/
+tools/mcp/pixelspark-art-mcp/
+tools/mcp/mcp-update.json
+# Authored catalogs can be hashed by the art pipeline.
+art/**/*.json

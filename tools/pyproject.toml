@@ -1,0 +1,15 @@
+[project]
+name = "civil-game-jam-tools"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["pillow==12.3.0"]
+
+[dependency-groups]
+dev = ["gdtoolkit==4.5.0", "check-jsonschema==0.38.2"]
+
+[tool.civil-game-jam.gdunit4]
+version = "6.2.2"
+sha256 = "ddb44730ffb9cd77fd70d283753450759b00c5016143d7572bf63625f64d5433"
+
+[tool.uv]
+package = false

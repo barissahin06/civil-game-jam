@@ -1,0 +1,4 @@
+excluded_directories: [.git, .godot, .venv, node_modules, gdUnit4]
+line_length: 100
+safety_checks: true
+use_spaces: null
