@@ -1,22 +1,802 @@
-
 [
+  {
+    "name": "1951 İskenderun Depremi",
+    "time": "1951-04-08",
+    "disaster_type": "earthquake",
+    "description": "İskenderun Körfezi'nde 5.8 büyüklüğünde deprem.",
+    "casualties": 6,
+    "duration": 15,
+    "regions": ["Akdeniz"],
+    "is_active": false
+  },
+  {
+    "name": "1951 Kurşunlu Depremi",
+    "time": "1951-08-13",
+    "disaster_type": "earthquake",
+    "description": "Çankırı Kurşunlu'da 6.9 büyüklüğünde deprem.",
+    "casualties": 50,
+    "duration": 30,
+    "regions": ["İç Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1952 Hasankale Depremi",
+    "time": "1952-01-03",
+    "disaster_type": "earthquake",
+    "description": "Erzurum Pasinler (Hasankale) depremi.",
+    "casualties": 41,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1952 İmamoğlu Depremi",
+    "time": "1952-10-22",
+    "disaster_type": "earthquake",
+    "description": "Adana İmamoğlu'nda 5.6 büyüklüğünde deprem.",
+    "casualties": 10,
+    "duration": 15,
+    "regions": ["Akdeniz"],
+    "is_active": false
+  },
+  {
+    "name": "1953 Yenice-Gönen Depremi",
+    "time": "1953-03-18",
+    "disaster_type": "earthquake",
+    "description": "Çanakkale Yenice ve Balıkesir Gönen'de 7.2 büyüklüğünde deprem.",
+    "casualties": 265,
+    "duration": 40,
+    "regions": ["Marmara"],
+    "is_active": false
+  },
+  {
+    "name": "1953 Kurşunlu-Karabük Depremi",
+    "time": "1953-09-07",
+    "disaster_type": "earthquake",
+    "description": "Karabük-Kastamonu-Çankırı sınırında 6.0 büyüklüğünde deprem.",
+    "casualties": 2,
+    "duration": 20,
+    "regions": ["Karadeniz", "İç Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1955 Söke-Balat Depremi",
+    "time": "1955-07-16",
+    "disaster_type": "earthquake",
+    "description": "Aydın Söke'de 6.8 büyüklüğünde deprem.",
+    "casualties": 23,
+    "duration": 30,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "1956 Eskişehir Depremi",
+    "time": "1956-02-20",
+    "disaster_type": "earthquake",
+    "description": "Eskişehir'de 6.4 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 20,
+    "regions": ["İç Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1957 Fethiye Depremi",
+    "time": "1957-04-24",
+    "disaster_type": "earthquake",
+    "description": "Muğla Fethiye açıklarında 7.1 büyüklüğünde deprem.",
+    "casualties": 19,
+    "duration": 40,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "1957 Abant Depremi",
+    "time": "1957-05-26",
+    "disaster_type": "earthquake",
+    "description": "Bolu Abant'ta 7.1 büyüklüğünde deprem.",
+    "casualties": 52,
+    "duration": 40,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "1963 Çınarcık Depremi",
+    "time": "1963-09-18",
+    "disaster_type": "earthquake",
+    "description": "Marmara Denizi'nde 6.3 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 20,
+    "regions": ["Marmara"],
+    "is_active": false
+  },
+  {
+    "name": "1964 Malatya Depremi",
+    "time": "1964-06-14",
+    "disaster_type": "earthquake",
+    "description": "Malatya-Adıyaman sınırında 6.0 büyüklüğünde deprem.",
+    "casualties": 8,
+    "duration": 20,
+    "regions": ["Doğu Anadolu", "Güneydoğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1964 Manyas Depremi",
+    "time": "1964-10-06",
+    "disaster_type": "earthquake",
+    "description": "Balıkesir Manyas'ta 7.0 büyüklüğünde deprem.",
+    "casualties": 23,
+    "duration": 40,
+    "regions": ["Marmara"],
+    "is_active": false
+  },
+  {
+    "name": "1965 Honaz Depremi",
+    "time": "1965-06-13",
+    "disaster_type": "earthquake",
+    "description": "Denizli Honaz'da 5.7 büyüklüğünde deprem.",
+    "casualties": 14,
+    "duration": 15,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "1966 Varto-Hınıs Depremi",
+    "time": "1966-03-07",
+    "disaster_type": "earthquake",
+    "description": "Muş-Erzurum sınırında 5.6 büyüklüğünde deprem.",
+    "casualties": 14,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1966 Varto Depremi",
+    "time": "1966-08-19",
+    "disaster_type": "earthquake",
+    "description": "Muş Varto'da 6.9 büyüklüğünde yıkıcı deprem.",
+    "casualties": 2394,
+    "duration": 30,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1967 Mudurnu Depremi",
+    "time": "1967-07-22",
+    "disaster_type": "earthquake",
+    "description": "Mudurnu Vadisi'nde 7.2 büyüklüğünde deprem.",
+    "casualties": 89,
+    "duration": 40,
+    "regions": ["Karadeniz", "Marmara"],
+    "is_active": false
+  },
+  {
+    "name": "1968 Bartın Depremi",
+    "time": "1968-09-03",
+    "disaster_type": "earthquake",
+    "description": "Bartın Amasra açıklarında 6.5 büyüklüğünde deprem.",
+    "casualties": 29,
+    "duration": 30,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "1969 Alaşehir Depremi",
+    "time": "1969-03-28",
+    "disaster_type": "earthquake",
+    "description": "Manisa Alaşehir'de 6.5 büyüklüğünde deprem.",
+    "casualties": 53,
+    "duration": 30,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "1970 Gediz Depremi",
+    "time": "1970-03-28",
+    "disaster_type": "earthquake",
+    "description": "Kütahya Gediz'de 7.2 büyüklüğünde yıkıcı deprem.",
+    "casualties": 1086,
+    "duration": 40,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "1971 Burdur Depremi",
+    "time": "1971-05-12",
+    "disaster_type": "earthquake",
+    "description": "Burdur Yeşilova'da 5.9 büyüklüğünde deprem.",
+    "casualties": 57,
+    "duration": 15,
+    "regions": ["Akdeniz"],
+    "is_active": false
+  },
+  {
+    "name": "1971 Bingöl Depremi",
+    "time": "1971-05-22",
+    "disaster_type": "earthquake",
+    "description": "Bingöl'de 6.8 büyüklüğünde yıkıcı deprem.",
+    "casualties": 878,
+    "duration": 30,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1975 Lice Depremi",
+    "time": "1975-09-06",
+    "disaster_type": "earthquake",
+    "description": "Diyarbakır Lice'de 6.6 büyüklüğünde yıkıcı deprem.",
+    "casualties": 2385,
+    "duration": 30,
+    "regions": ["Güneydoğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1976 Çaldıran Depremi",
+    "time": "1976-11-24",
+    "disaster_type": "earthquake",
+    "description": "Van Çaldıran-Muradiye'de 7.5 büyüklüğünde yıkıcı deprem.",
+    "casualties": 3840,
+    "duration": 50,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1983 Biga Depremi",
+    "time": "1983-07-05",
+    "disaster_type": "earthquake",
+    "description": "Çanakkale Biga'da 6.1 büyüklüğünde deprem.",
+    "casualties": 5,
+    "duration": 20,
+    "regions": ["Marmara"],
+    "is_active": false
+  },
+  {
+    "name": "1983 Horasan-Narman Depremi",
+    "time": "1983-10-30",
+    "disaster_type": "earthquake",
+    "description": "Erzurum Horasan ve Narman'da 6.9 büyüklüğünde yıkıcı deprem.",
+    "casualties": 1155,
+    "duration": 30,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1984 Şenkaya Depremi",
+    "time": "1984-09-18",
+    "disaster_type": "earthquake",
+    "description": "Erzurum Şenkaya'da 6.4 büyüklüğünde deprem.",
+    "casualties": 3,
+    "duration": 20,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1986 Doğanşehir Depremi",
+    "time": "1986-05-05",
+    "disaster_type": "earthquake",
+    "description": "Malatya Doğanşehir'de 5.9 büyüklüğünde deprem.",
+    "casualties": 10,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1988 Çatak Heyelanı",
+    "time": "1988-06-23",
+    "disaster_type": "landslide",
+    "description": "Trabzon Maçka Çatak'ta yağış sonrası kaya-toprak kayması.",
+    "casualties": 66,
+    "duration": 300,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "1990 Trabzon Seli",
+    "time": "1990-06-20",
+    "disaster_type": "flood",
+    "description": "Trabzon Değirmendere, Akçaabat ve Söğütlü'de sel.",
+    "casualties": 57,
+    "duration": 172800,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "1992 Görmeç Çığ Faciası",
+    "time": "1992-02-01",
+    "disaster_type": "avalanche",
+    "description": "Şırnak Görmeç'te jandarma karakolu ve köye çığ düştü.",
+    "casualties": 91,
+    "duration": 60,
+    "regions": ["Güneydoğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1992 Tünekpınar Çığ Faciası",
+    "time": "1992-02-01",
+    "disaster_type": "avalanche",
+    "description": "Siirt Eruh Tünekpınar'da askeri birliğe çığ düştü.",
+    "casualties": 32,
+    "duration": 60,
+    "regions": ["Güneydoğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1992 Erzincan Depremi",
+    "time": "1992-03-13",
+    "disaster_type": "earthquake",
+    "description": "Erzincan'da 6.8 büyüklüğünde yıkıcı deprem.",
+    "casualties": 653,
+    "duration": 30,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "1995 Senirkent Sel Felaketi",
+    "time": "1995-07-13",
+    "disaster_type": "flood",
+    "description": "Isparta Senirkent'te sağanak sonrası çamur ve moloz akışı.",
+    "casualties": 74,
+    "duration": 21600,
+    "regions": ["Akdeniz"],
+    "is_active": false
+  },
+  {
+    "name": "1995 Dinar Depremi",
+    "time": "1995-10-01",
+    "disaster_type": "earthquake",
+    "description": "Afyonkarahisar Dinar'da 6.1 büyüklüğünde deprem.",
+    "casualties": 90,
+    "duration": 20,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "1996 Mecitözü Depremi",
+    "time": "1996-08-14",
+    "disaster_type": "earthquake",
+    "description": "Çorum Mecitözü'nde 5.6 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 15,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "1997 Samandağ Depremi",
+    "time": "1997-01-22",
+    "disaster_type": "earthquake",
+    "description": "Hatay Samandağ'da 5.5 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 15,
+    "regions": ["Akdeniz"],
+    "is_active": false
+  },
+  {
+    "name": "1998 Adana-Ceyhan Depremi",
+    "time": "1998-06-27",
+    "disaster_type": "earthquake",
+    "description": "Adana Ceyhan'da 6.2 büyüklüğünde deprem.",
+    "casualties": 146,
+    "duration": 20,
+    "regions": ["Akdeniz"],
+    "is_active": false
+  },
+  {
+    "name": "1998 Beşköy Seli",
+    "time": "1998-08-07",
+    "disaster_type": "flood",
+    "description": "Trabzon Sürmene Beşköy'de sel ve heyelan.",
+    "casualties": 50,
+    "duration": 86400,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
   {
     "name": "1999 Marmara Depremi",
     "time": "1999-08-17",
     "disaster_type": "earthquake",
     "description": "Marmara Bölgesi'nde büyük deprem.",
     "casualties": 17480,
-    "duration": 45, 
+    "duration": 45,
     "regions": ["Marmara"],
-    "is_active":"false"
+    "is_active": false
   },
-
+  {
+    "name": "1999 Düzce Depremi",
+    "time": "1999-11-12",
+    "disaster_type": "earthquake",
+    "description": "Düzce'de 7.2 büyüklüğünde yıkıcı deprem.",
+    "casualties": 894,
+    "duration": 40,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2000 Orta Depremi",
+    "time": "2000-06-06",
+    "disaster_type": "earthquake",
+    "description": "Çankırı Orta'da 6.0 büyüklüğünde deprem.",
+    "casualties": 3,
+    "duration": 20,
+    "regions": ["İç Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2000 Sultandağı Depremi",
+    "time": "2000-12-15",
+    "disaster_type": "earthquake",
+    "description": "Afyonkarahisar Sultandağı'nda 5.8 büyüklüğünde deprem.",
+    "casualties": 6,
+    "duration": 15,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "2002 Çay-Sultandağı Depremi",
+    "time": "2002-02-03",
+    "disaster_type": "earthquake",
+    "description": "Afyonkarahisar Çay ve Sultandağı'nda 6.5 büyüklüğünde deprem.",
+    "casualties": 44,
+    "duration": 30,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "2003 Pülümür Depremi",
+    "time": "2003-01-27",
+    "disaster_type": "earthquake",
+    "description": "Tunceli Pülümür'de 6.1 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 20,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2003 Bingöl Depremi",
+    "time": "2003-05-01",
+    "disaster_type": "earthquake",
+    "description": "Bingöl'de 6.4 büyüklüğünde deprem; yatılı okul çöktü.",
+    "casualties": 177,
+    "duration": 20,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2004 Aşkale Depremi",
+    "time": "2004-03-25",
+    "disaster_type": "earthquake",
+    "description": "Erzurum Aşkale'de 5.3 büyüklüğünde deprem.",
+    "casualties": 9,
+    "duration": 10,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2004 Doğubayazıt Depremi",
+    "time": "2004-07-02",
+    "disaster_type": "earthquake",
+    "description": "Ağrı Doğubayazıt'ta 5.2 büyüklüğünde deprem.",
+    "casualties": 18,
+    "duration": 10,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2005 Hakkari Depremi",
+    "time": "2005-01-25",
+    "disaster_type": "earthquake",
+    "description": "Hakkari'de 5.5 büyüklüğünde deprem.",
+    "casualties": 2,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2005 Seferihisar Depremi",
+    "time": "2005-10-17",
+    "disaster_type": "earthquake",
+    "description": "İzmir Sığacık Körfezi'nde 5.9 büyüklüğünde deprem.",
+    "casualties": 2,
+    "duration": 15,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "2009 İstanbul Seli",
+    "time": "2009-09-09",
+    "disaster_type": "flood",
+    "description": "İstanbul İkitelli ve Tekirdağ'da şiddetli yağış sonrası sel.",
+    "casualties": 31,
+    "duration": 172800,
+    "regions": ["Marmara"],
+    "is_active": false
+  },
+  {
+    "name": "2010 Karakoçan Depremi",
+    "time": "2010-03-08",
+    "disaster_type": "earthquake",
+    "description": "Elazığ Karakoçan'da 6.1 büyüklüğünde deprem.",
+    "casualties": 41,
+    "duration": 20,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2010 Gündoğdu Seli",
+    "time": "2010-08-26",
+    "disaster_type": "flood",
+    "description": "Rize Gündoğdu'da sel ve heyelan.",
+    "casualties": 15,
+    "duration": 86400,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2011 Simav Depremi",
+    "time": "2011-05-19",
+    "disaster_type": "earthquake",
+    "description": "Kütahya Simav'da 5.9 büyüklüğünde deprem.",
+    "casualties": 2,
+    "duration": 15,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "2011 Van Depremi",
+    "time": "2011-10-23",
+    "disaster_type": "earthquake",
+    "description": "Van Erciş ve merkezde 7.2 büyüklüğünde yıkıcı deprem.",
+    "casualties": 604,
+    "duration": 40,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2011 Van Edremit Depremi",
+    "time": "2011-11-09",
+    "disaster_type": "earthquake",
+    "description": "Van Edremit'te 5.6 büyüklüğünde deprem; hasarlı oteller çöktü.",
+    "casualties": 40,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2012 Fethiye Depremi",
+    "time": "2012-06-10",
+    "disaster_type": "earthquake",
+    "description": "Muğla Fethiye açıklarında 6.0 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 20,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "2012 Samsun Seli",
+    "time": "2012-07-04",
+    "disaster_type": "flood",
+    "description": "Samsun'da şiddetli yağış sonrası sel.",
+    "casualties": 11,
+    "duration": 86400,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2015 Hopa Seli",
+    "time": "2015-08-24",
+    "disaster_type": "flood",
+    "description": "Artvin Hopa'da sel ve heyelan.",
+    "casualties": 8,
+    "duration": 86400,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2019 Akçakoca Seli",
+    "time": "2019-07-17",
+    "disaster_type": "flood",
+    "description": "Düzce Akçakoca ve Cumayeri'nde sel.",
+    "casualties": 7,
+    "duration": 172800,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2019 Silivri Depremi",
+    "time": "2019-09-26",
+    "disaster_type": "earthquake",
+    "description": "İstanbul Silivri açıklarında 5.7 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 15,
+    "regions": ["Marmara"],
+    "is_active": false
+  },
+  {
+    "name": "2020 Elazığ Depremi",
+    "time": "2020-01-24",
+    "disaster_type": "earthquake",
+    "description": "Elazığ Sivrice'de 6.8 büyüklüğünde deprem.",
+    "casualties": 41,
+    "duration": 30,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2020 Van Bahçesaray Çığları",
+    "time": "2020-02-04",
+    "disaster_type": "avalanche",
+    "description": "Van Bahçesaray yolunda art arda iki çığ; kurtarma ekibi de çığ altında kaldı.",
+    "casualties": 41,
+    "duration": 60,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2020 İran-Türkiye Sınır Depremi",
+    "time": "2020-02-23",
+    "disaster_type": "earthquake",
+    "description": "İran sınırında 5.9 büyüklüğünde deprem; Van'da can kaybı.",
+    "casualties": 10,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2020 Karlıova Depremi",
+    "time": "2020-06-14",
+    "disaster_type": "earthquake",
+    "description": "Bingöl Karlıova'da 5.9 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2020 Dereli Seli",
+    "time": "2020-08-22",
+    "disaster_type": "flood",
+    "description": "Giresun Dereli'de sel.",
+    "casualties": 11,
+    "duration": 86400,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2020 İzmir Depremi",
+    "time": "2020-10-30",
+    "disaster_type": "earthquake",
+    "description": "Ege Denizi'nde 6.6 büyüklüğünde deprem; İzmir'de binalar çöktü.",
+    "casualties": 117,
+    "duration": 30,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "2021 Orman Yangınları",
+    "time": "2021-07-28",
+    "disaster_type": "wildfire",
+    "description": "Antalya Manavgat ve Muğla Marmaris başta olmak üzere geniş çaplı orman yangınları.",
+    "casualties": 9,
+    "duration": 1209600,
+    "regions": ["Akdeniz", "Ege"],
+    "is_active": false
+  },
+  {
+    "name": "2021 Batı Karadeniz Seli",
+    "time": "2021-08-11",
+    "disaster_type": "flood",
+    "description": "Kastamonu Bozkurt, Sinop ve Bartın'da sel.",
+    "casualties": 82,
+    "duration": 172800,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2022 Düzce Depremi",
+    "time": "2022-11-23",
+    "disaster_type": "earthquake",
+    "description": "Düzce Gölyaka'da 5.9 büyüklüğünde deprem.",
+    "casualties": 2,
+    "duration": 15,
+    "regions": ["Karadeniz"],
+    "is_active": false
+  },
   {
     "name": "2023 Kahramanmaraş Depremi",
     "time": "2023-02-06",
     "disaster_type": "earthquake",
     "description": "Türkiye'nin güneydoğusunda büyük depremler.",
     "casualties": 53000,
-    "duration": 65
+    "duration": 65,
+    "regions": ["Güneydoğu Anadolu", "Akdeniz", "Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2023 Hatay Depremi",
+    "time": "2023-02-20",
+    "disaster_type": "earthquake",
+    "description": "Hatay Defne'de 6.4 büyüklüğünde artçı deprem.",
+    "casualties": 6,
+    "duration": 20,
+    "regions": ["Akdeniz"],
+    "is_active": false
+  },
+  {
+    "name": "2023 Yeşilyurt Depremi",
+    "time": "2023-02-27",
+    "disaster_type": "earthquake",
+    "description": "Malatya Yeşilyurt'ta 5.6 büyüklüğünde deprem.",
+    "casualties": 2,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2023 Şanlıurfa-Adıyaman Seli",
+    "time": "2023-03-15",
+    "disaster_type": "flood",
+    "description": "Deprem bölgesindeki Şanlıurfa ve Adıyaman'da sel.",
+    "casualties": 21,
+    "duration": 86400,
+    "regions": ["Güneydoğu Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2023 İstanbul-Kırklareli Seli",
+    "time": "2023-09-05",
+    "disaster_type": "flood",
+    "description": "İstanbul ve Kırklareli İğneada'da sel.",
+    "casualties": 8,
+    "duration": 172800,
+    "regions": ["Marmara"],
+    "is_active": false
+  },
+  {
+    "name": "2025 Silivri Depremi",
+    "time": "2025-04-23",
+    "disaster_type": "earthquake",
+    "description": "İstanbul Silivri açıklarında 6.2 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 20,
+    "regions": ["Marmara"],
+    "is_active": false
+  },
+  {
+    "name": "2025 Marmaris Depremi",
+    "time": "2025-06-03",
+    "disaster_type": "earthquake",
+    "description": "Muğla Marmaris açıklarında 5.8 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 15,
+    "regions": ["Ege"],
+    "is_active": false
+  },
+  {
+    "name": "2025 Eskişehir Orman Yangını",
+    "time": "2025-07-23",
+    "disaster_type": "wildfire",
+    "description": "Eskişehir'de orman yangını; müdahale eden işçi ve gönüllüler hayatını kaybetti.",
+    "casualties": 10,
+    "duration": 259200,
+    "regions": ["İç Anadolu"],
+    "is_active": false
+  },
+  {
+    "name": "2025 Sındırgı Depremi",
+    "time": "2025-08-10",
+    "disaster_type": "earthquake",
+    "description": "Balıkesir Sındırgı'da 6.1 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 20,
+    "regions": ["Marmara"],
+    "is_active": false
+  },
+  {
+    "name": "2026 Muğla-İzmir Seli",
+    "time": "2026-02-06",
+    "disaster_type": "flood",
+    "description": "Muğla Marmaris ile İzmir Torbalı ve Menderes'te sel.",
+    "casualties": 4,
+    "duration": 86400,
+    "regions": ["Ege"],
+    "is_active": false
   }
 ]
