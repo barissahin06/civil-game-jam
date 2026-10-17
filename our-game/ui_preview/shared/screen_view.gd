@@ -15,9 +15,10 @@ func render(content: Control, _screen: String) -> void:
 	_content = content
 
 
-func _title(title: String, subtitle: String) -> void:
+func _title(title: String, subtitle: String = "") -> void:
 	UI.text(_content, title, Rect2(0, 0, 1350, 48), 36)
-	UI.text(_content, subtitle, Rect2(0, 58, 1350, 30), 18, UI.MUTED)
+	if not subtitle.is_empty():
+		UI.text(_content, subtitle, Rect2(0, 58, 1350, 30), 18, UI.MUTED)
 
 
 func _paragraph(text: String, box: Rect2, color: Color) -> void:

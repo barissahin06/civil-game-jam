@@ -15,8 +15,8 @@ func _newspaper() -> void:
 	var entry: Dictionary = {}
 	if not sim.news_queue.is_empty() and sim.news_queue.front().kind == "newspaper":
 		entry = sim.event_for(sim.news_queue.front().id)
-	elif sim._event_index > 0:
-		entry = sim.historical.events[sim._event_index - 1]
+	else:
+		entry = sim.latest_event()
 	_title("YURTTAN HABERLER", "TARİHSEL AFET ARŞİVİ")
 	if entry.is_empty():
 		_paragraph("KAMPANYADA HENÜZ AFET HABERİ YOK.", Rect2(0, 144, 1300, 80), UI.MUTED)
@@ -56,7 +56,7 @@ func _report() -> void:
 	if not sim.news_queue.is_empty() and sim.news_queue.front().kind == "report":
 		id = sim.news_queue.front().id
 	var report := sim.report_for(id)
-	_title("KRİZ SONRASI RAPOR", "OYUN MODELİ SONUCU / İNSAN SAYILARI SİMÜLASYON TAHMİNİDİR")
+	_title("KRİZ SONRASI RAPOR", "SAYILAR SİMÜLASYON TAHMİNİDİR")
 	if report.is_empty():
 		_paragraph("HENÜZ TAMAMLANMIŞ MÜDAHALE YOK.", Rect2(0, 144, 1300, 80), UI.MUTED)
 		return
@@ -83,13 +83,6 @@ func _report() -> void:
 		UI.MUTED
 	)
 	_comparison(report)
-	UI.text(
-		_content,
-		"BAŞLANGIÇ ALTYAPISI VE TAMAMLANAN TEDBİRLER BİRLİKTE HESAPLANIR.",
-		Rect2(0, 450, 1344, 24),
-		18,
-		UI.MUTED
-	)
 	UI.text(
 		_content,
 		(
@@ -155,5 +148,3 @@ func _repair(area_id: int) -> void:
 		_shell.sim.acknowledge()
 	if _shell.sim.news_queue.is_empty():
 		_shell.show_project("repair", area_id)
-	else:
-		_shell._mark_dirty()

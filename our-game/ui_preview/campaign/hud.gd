@@ -22,8 +22,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	UI.panel(self, Rect2(12, 12, 1896, 92))
 	UI.icon(self, 11, Vector2(32, 40), UI.GOLD)
-	UI.text(self, "REVERT IT", Rect2(82, 30, 300, 28))
-	UI.text(self, "TÜRKİYE / TARİHSEL", Rect2(82, 62, 300, 24), 18, UI.MUTED)
+	UI.text(self, "REVERT IT", Rect2(82, 44, 300, 28))
 	UI.icon(self, 0, Vector2(406, 28), UI.GOLD)
 	UI.text(self, "BÜTÇE", Rect2(450, 24, 190, 24), 18, UI.MUTED)
 	_budget = UI.text(self, "", Rect2(450, 44, 196, 42), 36, UI.GOLD)
@@ -60,7 +59,6 @@ func _ready() -> void:
 	)
 	UI.button(self, "GAZETE", Rect2(1128, 116, 140, 42), screen_requested.emit.bind("newspaper"))
 	UI.button(self, "RAPOR", Rect2(1280, 116, 130, 42), screen_requested.emit.bind("report"))
-	UI.text(self, "7 BÖLGE / 21 YÖNETİM MERKEZİ", Rect2(1432, 122, 460, 28), 18, UI.MUTED)
 	refresh()
 
 

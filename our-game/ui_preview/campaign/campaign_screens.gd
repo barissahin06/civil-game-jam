@@ -41,12 +41,10 @@ func _menu() -> void:
 	UI.button(_content, "AYARLAR", Rect2(0, 398, 500, 52), _shell.show_screen.bind("settings"))
 	UI.button(_content, "KISA REHBER", Rect2(0, 468, 500, 52), _open_tutorial)
 	UI.button(_content, "ÇIKIŞ", Rect2(0, 538, 500, 52), _shell.get_tree().quit)
-	UI.text(_content, "TARİHSEL DEMO / 1950-2026", Rect2(0, 650, 520, 28), 18, UI.MUTED)
-	UI.text(_content, "1 OTOMATİK + 3 MANUEL KAYIT", Rect2(0, 682, 520, 28), 18, UI.MUTED)
 
 
 func _settings() -> void:
-	_title("AYARLAR", "GÖRÜNTÜ / AFET GERİ BİLDİRİMİ")
+	_title("AYARLAR")
 	var fullscreen := DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
 	UI.button(
 		_content,
@@ -65,7 +63,7 @@ func _settings() -> void:
 
 
 func _pause() -> void:
-	_title("OYUN DURAKLATILDI", "KAMPANYAYA DEVAM ET VEYA ANA MENÜYE DÖN")
+	_title("OYUN DURAKLATILDI")
 	UI.button(_content, "DEVAM ET", Rect2(0, 140, 560, 60), _shell.close_screen)
 	UI.button(_content, "KAYDET", Rect2(0, 230, 560, 60), _shell.save_slots.open.bind("save"))
 	UI.button(_content, "YÜKLE", Rect2(0, 320, 560, 60), _shell.save_slots.open.bind("load"))
@@ -103,7 +101,7 @@ func _newgame() -> void:
 		_content, "SANDBOX / KİLİTLİ", Rect2(694, 120, 650, 188), Callable()
 	)
 	sandbox.disabled = true
-	sandbox.tooltip_text = "Demo sürümünde yalnız Tarihsel mod açık"
+	sandbox.tooltip_text = "Henüz kullanılamıyor."
 	UI.text(_content, "BAŞLANGIÇ YILI", Rect2(0, 366, 600, 30), 18, UI.MUTED)
 	var previous: Button = UI.button(_content, "-", Rect2(0, 420, 60, 52), _change_year.bind(-1))
 	previous.disabled = start_year == 1950
@@ -186,8 +184,8 @@ func _tutorial() -> void:
 	]
 	var descriptions := [
 		"HARİTADAKİ İL SINIRINA TIKLA. SOLDA NÜFUS, GELİR, ALTYAPI VE HAZIRLIĞI İNCELE.",
-		"ŞEHİR PANELİNDE YATIRIM SEKMEYE GEÇ. BEDELİ, AYLIK TAKSİTİ VE TAMAMLANMA SÜRESİNİ KARŞILAŞTIR.",
-		"TEKNİK ARAŞTIRMALAR VE BİLİNÇ GELİŞTİRMELERİ İKİ ORTAK SLOT KULLANIR. ÖNKOŞULLARI VE DÖNEM KİLİTLERİNİ İNCELE.",
+		"ŞEHİR PANELİNDE YATIRIM SEKMESİNE GEÇ. BEDELİ, AYLIK TAKSİTİ VE TAMAMLANMA SÜRESİNİ KARŞILAŞTIR.",
+		"TEKNİK ARAŞTIRMALAR VE BİLİNÇ GELİŞTİRMELERİ ORTAK ARAŞTIRMA KAPASİTESİNİ KULLANIR. ÖNKOŞULLARI VE AÇILIŞ YILLARINI İNCELE.",
 		"KRİZDE KAYNAK MERKEZİ SEÇ. EKİBİ HEDEF KARTA SÜRÜKLE VEYA SEVK ET DÜĞMESİNİ KULLAN. VARIŞ GÜNÜNE DİKKAT ET."
 	]
 	UI.text(_content, titles[tutorial_step], Rect2(0, 144, 1300, 54), 36, UI.GOLD)

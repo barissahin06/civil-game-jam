@@ -69,6 +69,10 @@ pixel art splash kullanır. Türkiye panosu, telsiz, şehir ışıkları ve masa
 Aseprite katmanlarıdır. Başlık ve düğmeler canlı UI'dır. Devam Et otomatik kaydı açar;
 Yeni Oyun, Yükle, Ayarlar, Kısa Rehber ve Çıkış ayrı aksiyonlardır.
 
+Menü ve oyun ekranında demo etiketi, sabit bölge/merkez sayacı ve kayıt yuvası sayısı
+gibi açıklama bantları gösterilmez. Metinler güncel durumu ve oyuncunun kararını destekler;
+öğretici açıklamalar rehberde, simülasyon tahmini ve kayıt uyarıları ilgili ekranlarda kalır.
+
 Bir otomatik ve üç manuel kayıt yuvası vardır. Manuel kayıt oyun içi menüden yapılır;
 yükleme hem ana menüden hem oyun içinden yapılabilir. Yuva; oyun tarihi, başlangıç yılı
 ve son yazılma zamanını gösterir. Boş/bozuk kayıtlar yüklemeye kapalıdır. Manuel kaydın
@@ -322,7 +326,7 @@ araştırma ve tedbir etkileri. Sınır tipleri ve kimlik ilişkileri doğrulan�
 ### P2 — kriz döngüsü ve tamamlanabilir demo
 
 Sevkiyat/görev/dönüş, paralel afetler, güven, onarım, gazete kararları, sonuç karşılaştırması,
-rehber, tek otomatik kayıt ve 2026 bitişi entegre edilir. Gerçek mekanik çalışması bu aşamalardadır.
+rehber, bir otomatik / üç manuel kayıt ve 2026 bitişi entegre edilir. Gerçek mekanik çalışması bu aşamalardadır.
 Sağlık ve iş makinesi gibi ayrı birimler, ayrı malzeme türleri ve oynanabilir Sandbox MVP dışındadır.
 
 17 Ekim 2026 entegrasyonu: P1/P2 çekirdek döngüsü canlı UI'ya bağlandı. 21 merkez bütün 81 ili
@@ -386,6 +390,19 @@ sürdü. Bu kontrol haber okumayı ve yenilgi dengesini dışarıda tutar; insan
 ayrıca denetlenir. Haber bandı son mesajlarla tamamlanma/varış haberlerini dönüşümlü gösterir.
 
 ### Doğrulama hedefleri
+
+MVP'de kalan kabul işleri:
+
+- İlk kez oynayan bir kişiyle 1950 başlangıcında ilk beş dakikayı ölçmek: şehir seçimi,
+  ilk yatırım ve araştırma, ilk gazete ve bilinçli sevkiyat. Otomatik test bu insan ölçümü değildir.
+- 1950 ve 1990 başlangıçlarını gerçek kararlarla sona kadar oynayıp güven baskısını,
+  uzun vadeli para birikimini ve 30–45 dakika hedefini değerlendirmek; maliyetleri bu veriye göre ayarlamak.
+- Ayrı tarihsel karar olayı JSON'ları geldiğinde seçenek/etki doğrulaması, model komutu,
+  gazete aksiyonları ve kayıt devamlılığını eklemek. Mevcut 99 afet haberi seçenekli karar sistemi değildir.
+- Taşınabilir Windows paketini geliştirme araçları kurulu olmayan ikinci bir cihazda açıp
+  tam ekran, kayıt/yükleme ve ilk kriz akışını kontrol etmek.
+
+Sandbox, ayrı sahra hastanesi/iş makinesi birimleri ve ayrı malzeme türleri MVP dışındadır.
 
 - 1920×1080 gerçek renderer görüntüsünde okunaklı pixel art; taşma ve üst üste etiket yok.
 - Gerçek il şekline tıklama, solda alan paneli, zoom/pan, dört katman ve sekmelerin görsel kontrolü.

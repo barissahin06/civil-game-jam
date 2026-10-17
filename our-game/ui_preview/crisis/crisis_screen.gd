@@ -23,10 +23,7 @@ func selected() -> Dictionary:
 func _crisis() -> void:
 	var sim: Simulation = _shell.sim
 	var target := selected()
-	_title(
-		"KRİZ VE LOJİSTİK",
-		"%d AKTİF KRİZ / KAYNAKLARI ORTAK TAKVİMDE PAYLAŞTIR" % sim.crises.active.size()
-	)
+	_title("KRİZ VE LOJİSTİK", "%d AKTİF KRİZ" % sim.crises.active.size())
 	if target.is_empty():
 		_paragraph(
 			"ŞU ANDA AKTİF AFET YOK. EKİP VE YARDIM STOKLARINI ŞEHİR PANELİNDEN HAZIRLAYABİLİRSİN.",
@@ -198,7 +195,7 @@ func _drop(at: Vector2, data: Variant) -> void:
 
 func _fund() -> void:
 	var target := selected()
-	_title("ACİL BÜTÇE DESTEĞİ", "EKİP VE YARDIMIN VERİMİNİ ARTIRIR / FİZİKSEL KAYNAK GEREKLİDİR")
+	_title("ACİL BÜTÇE DESTEĞİ")
 	if target.is_empty():
 		return
 	_metric(

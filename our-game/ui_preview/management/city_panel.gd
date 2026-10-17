@@ -128,7 +128,7 @@ func _summary(area: ServiceArea) -> void:
 	UI.text(_city_body, "HAZIR", Rect2(200, 474, 144, 22), 18, UI.MUTED)
 	UI.text(
 		_city_body,
-		"YEREL PROJE SLOTU  %d/1" % sim.projects.active_count("local", area.id),
+		"AKTİF PROJE: %d/1" % sim.projects.active_count("local", area.id),
 		Rect2(0, 546, 360, 26),
 		18,
 		UI.MUTED
@@ -147,7 +147,7 @@ func _investments(area: ServiceArea) -> void:
 	UI.text(_city_body, "YEREL YATIRIMLAR", Rect2(0, 0, 360, 28), 18, UI.GOLD)
 	UI.text(
 		_city_body,
-		"SLOT %d/1 / ALAN GENELİNDE" % sim.projects.active_count("local", area.id),
+		"AKTİF PROJE: %d/1" % sim.projects.active_count("local", area.id),
 		Rect2(0, 40, 360, 26),
 		18,
 		UI.MUTED
@@ -237,7 +237,6 @@ func _logistics(area: ServiceArea) -> void:
 		_city_body, "KRİZ MERKEZİ", Rect2(0, 384, 360, 48), screen_requested.emit.bind("crisis")
 	)
 	UI.text(_city_body, "HEDEF ALANA BIRAKARAK SEVK ET", Rect2(0, 466, 360, 28), 18, UI.MUTED)
-	UI.text(_city_body, "GİDİŞ / GÖREV / DÖNÜŞ", Rect2(0, 518, 360, 28), 18, UI.MUTED)
 	UI.text(_city_body, "YAKIN 1 / ORTA 2 / UZAK 3 GÜN", Rect2(0, 562, 360, 50), 18, UI.MUTED)
 
 

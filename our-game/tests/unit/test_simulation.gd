@@ -34,6 +34,20 @@ func test_paused_speed_first_event_and_monthly_settlement() -> void:
 	assert_str(CalendarClock.day_to_iso(sim.clock.day)).is_equal("1951-04-08")
 
 
+func test_newspaper_archive_reveals_started_events_and_survives_restore() -> void:
+	var sim := _fixture()
+	assert_dict(sim.latest_event()).is_empty()
+	sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
+	var first: Dictionary = sim.latest_event()
+	assert_str(first.date).is_equal("1951-04-08")
+	assert_str(first.id).is_equal(sim.news_queue.front().id)
+	sim.acknowledge()
+	assert_dict(sim.latest_event()).is_equal(first)
+	var restored := SaveStore.new().restore(JSON.parse_string(JSON.stringify(sim.to_dict())))
+	assert_object(restored).is_not_null()
+	assert_dict(restored.latest_event()).is_equal(first)
+
+
 func test_reservation_arrival_return_and_double_dispatch_rejection() -> void:
 	var sim := _fixture()
 	var target := _first_crisis(sim)

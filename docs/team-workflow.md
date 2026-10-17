@@ -26,7 +26,11 @@ ekranın kullandığı native düğme, panel, metin ve atlas yardımcılarının
   `render(content, screen)` yalnız verilen içerik alanını doldurur. Yenilemeden önce bu alanı ana dosya temizler.
 - Modal ekranların ana dosyadan istediği işlemler: `show_screen`, `close_screen`,
   `refresh_screen`, `show_project`, `select_area`, `start_campaign`, `continue_campaign`,
-  `acknowledge_news`, `command_result`. Ortak sayı/para biçimi `fmt_count` / `fmt_money` kullanılır.
+  `acknowledge_news`, `command_result`. Kayıt ekranı `save_campaign_slot` / `load_campaign_slot`
+  komutlarını kullanır; dosya yolları ve doğrulama `SaveStore` sahibindedir.
+  Ortak sayı/para biçimi `fmt_count` / `fmt_money` kullanılır.
+- Gazete arşivi `Simulation.latest_event()` ve `event_for(id)` üzerinden okunur;
+  UI özel olay sayacına erişmez. Model değişimleri `changed` sinyaliyle sunuma aktarılır.
 - Araştırma sekmesi, proje takip durumu, kampanya yılı ve sevk formu kendi modülünde tutulur.
   Bir ekran diğerinin özel alanını okumaz. Önizleme sürücüleri kabul kontrolü için bu alanları inceleyebilir.
 - Renk, bitmap font ve native atlas değişiklikleri `shared/ui_kit.gd` üzerinden yapılır.
@@ -67,7 +71,7 @@ godot --path our-game --script ../art/preview/p0/capture_preview.gd
 Godot PATH'te değilse [geliştirme rehberindeki](development.md) `GODOT_PATH` ayarını kullanın;
 doğrudan `godot` çağrılarında da aynı motoru çalıştırın. Grafik yakalama headless çalıştırılmaz.
 UI kontrolü `tests/integration/gameplay_ui.gd` ile gerçek tıklama ve native GUI drag/drop kullanır;
-27 ekran yakalaması `generated/gameplay-ui/` altında 1920×1080
+36 ekran yakalaması `generated/gameplay-ui/` altında 1920×1080
 metin sınırlarını ve F11 geçişini denetler. Görselleri ayrıca gerçek boyutta inceleyin.
 Gameplay JSON'u değişirse şeması ve `npm run check:data` da değişikliğin parçasıdır.
 

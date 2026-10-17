@@ -22,9 +22,7 @@ func open(requested_mode: String) -> void:
 func render(content: Control, screen: String) -> void:
 	super.render(content, screen)
 	mode = screen
-	_title(
-		"OYUNU KAYDET" if mode == "save" else "KAYIT YÜKLE", "BİR OTOMATİK KAYIT / ÜÇ MANUEL KAYIT"
-	)
+	_title("OYUNU KAYDET" if mode == "save" else "KAYIT YÜKLE")
 	for summary: Dictionary in _shell.saves.slot_summaries():
 		_slot_row(summary)
 	if pending_slot >= 0:

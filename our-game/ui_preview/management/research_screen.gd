@@ -19,10 +19,7 @@ func _research() -> void:
 	var sim: Simulation = _shell.sim
 	_title(
 		"ULUSAL ARAŞTIRMA",
-		(
-			"ORTAK KAPASİTE: %d/%d  •  TEKNİK VE BİLİNÇ AYNI SLOTLARI PAYLAŞIR"
-			% [sim.projects.active_count("research"), capacity]
-		)
+		"ARAŞTIRMA KAPASİTESİ: %d/%d" % [sim.projects.active_count("research"), capacity]
 	)
 	for index: int in range(4):
 		UI.button(
@@ -80,13 +77,6 @@ func _research() -> void:
 			Rect2(x + 14, y + 126, 390, 30),
 			_shell.show_project.bind(definition.id, 0)
 		)
-	UI.text(
-		_content,
-		"BAĞLANTILAR ÖNKOŞULDUR / KORUMA TAMAMLANINCA BAŞLAR",
-		Rect2(0, 640, 1350, 28),
-		18,
-		UI.MUTED
-	)
 
 
 func _state(definition: MeasureDefinition) -> String:
