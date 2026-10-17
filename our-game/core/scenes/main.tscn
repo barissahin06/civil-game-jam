@@ -1,6 +1,14 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="PackedScene" path="res://ui_preview/scenes/main_preview.tscn" id="1_preview"]
+[ext_resource type="Texture2D" path="res://assets/branding/pixel_spark.png" id="2_logo"]
+[ext_resource type="FontFile" path="res://ui_preview/assets/afet_pixel.fnt" id="3_font"]
+[ext_resource type="Script" path="res://core/scripts/opening.gd" id="4_opening"]
+[ext_resource type="Texture2D" path="res://assets/branding/godot_splash.png" id="5_godot"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pixel_spark"]
+atlas = ExtResource("2_logo")
+region = Rect2(541, 226, 203, 263)
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -9,6 +17,120 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("4_opening")
 
 [node name="MainPreview" parent="." instance=ExtResource("1_preview")]
 layout_mode = 1
+
+[node name="Intro" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Message" type="Label" parent="Intro"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 120.0
+offset_top = 140.0
+offset_right = -120.0
+offset_bottom = -180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 32
+text = "Ekim 2026 itibarıyla kayıtlara göre,
+1950 yılından bu yana Türkiye genelinde
+yaklaşık 170 büyük doğal afet yaşandı.
+
+Bu afetlerden yaklaşık 26 milyon kişi etkilendi.
+89 bin insan hayatını kaybetti.
+
+Doğal afetler hayatımızın bir parçası haline geldi.
+
+Peki, öncesinde önlemler alınsaydı ne olurdu?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Source" type="Label" parent="Intro"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_top = -160.0
+offset_right = -100.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 18
+text = "Kaynak: EM-DAT / 14 Ekim 2026 güncellemeli veriler. Rakamlar yuvarlanmıştır.
+Etkilenme toplamında aynı kişi farklı afetlerde tekrar sayılabilir."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Splash" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Logo" type="TextureRect" parent="Splash"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -152.25
+offset_top = -217.25
+offset_right = 152.25
+offset_bottom = 177.25
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_pixel_spark")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GodotSplash" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Logo" type="TextureRect" parent="GodotSplash"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_godot")
+expand_mode = 1
+stretch_mode = 5

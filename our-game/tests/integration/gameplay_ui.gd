@@ -33,6 +33,7 @@ func _run() -> void:
 	_shell = _main.get_node("MainPreview")
 	_shell.auto_save_enabled = false
 	_shell.saves.slot_directory = TEST_SAVE_DIR
+	await _main.get_node("Intro").tree_exited
 	_clear_test_slots()
 	assert(
 		DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(TEST_SAVE_DIR)) == OK
