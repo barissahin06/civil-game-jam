@@ -8,6 +8,7 @@
     "duration": 15,
     "regions": ["Akdeniz"],
     "city": ["Hatay"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -19,6 +20,7 @@
     "duration": 30,
     "regions": ["İç Anadolu"],
     "city": ["Çankırı"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -30,6 +32,7 @@
     "duration": 15,
     "regions": ["Doğu Anadolu"],
     "city": ["Erzurum"],
+    "image": "res://assets/events/1952-hasankale-depremi.jpg",
     "is_active": false
   },
   {
@@ -41,6 +44,7 @@
     "duration": 15,
     "regions": ["Akdeniz"],
     "city": ["Adana"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -52,6 +56,7 @@
     "duration": 40,
     "regions": ["Marmara"],
     "city": ["Çanakkale", "Balıkesir"],
+    "image": "res://assets/events/1953-yenice-gonen-depremi.jpg",
     "is_active": false
   },
   {
@@ -63,6 +68,7 @@
     "duration": 20,
     "regions": ["Karadeniz", "İç Anadolu"],
     "city": ["Karabük", "Kastamonu", "Çankırı"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -74,6 +80,7 @@
     "duration": 30,
     "regions": ["Ege"],
     "city": ["Aydın"],
+    "image": "res://assets/events/1955-soke-balat-depremi.jpg",
     "is_active": false
   },
   {
@@ -85,6 +92,7 @@
     "duration": 20,
     "regions": ["İç Anadolu"],
     "city": ["Eskişehir"],
+    "image": "res://assets/events/1956-eskisehir-depremi.jpg",
     "is_active": false
   },
   {
@@ -96,6 +104,7 @@
     "duration": 40,
     "regions": ["Ege"],
     "city": ["Muğla"],
+    "image": "res://assets/events/1957-fethiye-depremi.jpg",
     "is_active": false
   },
   {
@@ -107,6 +116,7 @@
     "duration": 40,
     "regions": ["Karadeniz"],
     "city": ["Bolu"],
+    "image": "res://assets/events/1957-abant-depremi.jpg",
     "is_active": false
   },
   {
@@ -118,6 +128,7 @@
     "duration": 20,
     "regions": ["Marmara"],
     "city": ["Yalova", "İstanbul"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -129,6 +140,7 @@
     "duration": 20,
     "regions": ["Doğu Anadolu", "Güneydoğu Anadolu"],
     "city": ["Malatya", "Adıyaman"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -140,6 +152,7 @@
     "duration": 40,
     "regions": ["Marmara"],
     "city": ["Balıkesir"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -151,6 +164,7 @@
     "duration": 15,
     "regions": ["Ege"],
     "city": ["Denizli"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -162,6 +176,7 @@
     "duration": 15,
     "regions": ["Doğu Anadolu"],
     "city": ["Muş", "Erzurum"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -173,6 +188,7 @@
     "duration": 30,
     "regions": ["Doğu Anadolu"],
     "city": ["Muş"],
+    "image": "res://assets/events/1966-varto-depremi.jpg",
     "is_active": false
   },
   {
@@ -184,6 +200,7 @@
     "duration": 40,
     "regions": ["Karadeniz", "Marmara"],
     "city": ["Bolu", "Sakarya"],
+    "image": "res://assets/events/1967-mudurnu-depremi.jpg",
     "is_active": false
   },
   {
@@ -195,6 +212,7 @@
     "duration": 30,
     "regions": ["Karadeniz"],
     "city": ["Bartın"],
+    "image": "res://assets/events/1968-bartin-depremi.jpg",
     "is_active": false
   },
   {
@@ -206,6 +224,7 @@
     "duration": 30,
     "regions": ["Ege"],
     "city": ["Manisa"],
+    "image": "res://assets/events/1969-alasehir-depremi.jpg",
     "is_active": false
   },
   {
@@ -217,6 +236,7 @@
     "duration": 40,
     "regions": ["Ege"],
     "city": ["Kütahya"],
+    "image": "res://assets/events/1970-gediz-depremi.jpg",
     "is_active": false
   },
   {
@@ -228,6 +248,7 @@
     "duration": 15,
     "regions": ["Akdeniz"],
     "city": ["Burdur"],
+    "image": "res://assets/events/1971-burdur-depremi.jpg",
     "is_active": false
   },
   {
@@ -239,6 +260,7 @@
     "duration": 30,
     "regions": ["Doğu Anadolu"],
     "city": ["Bingöl"],
+    "image": "res://assets/events/1971-bingol-depremi.jpg",
     "is_active": false
   },
   {
@@ -250,6 +272,7 @@
     "duration": 30,
     "regions": ["Güneydoğu Anadolu"],
     "city": ["Diyarbakır"],
+    "image": "res://assets/events/1975-lice-depremi.jpg",
     "is_active": false
   },
   {
@@ -261,6 +284,7 @@
     "duration": 50,
     "regions": ["Doğu Anadolu"],
     "city": ["Van"],
+    "image": "res://assets/events/1976-caldiran-depremi.jpg",
     "is_active": false
   },
   {
@@ -272,6 +296,7 @@
     "duration": 20,
     "regions": ["Marmara"],
     "city": ["Çanakkale"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -283,6 +308,7 @@
     "duration": 30,
     "regions": ["Doğu Anadolu"],
     "city": ["Erzurum", "Kars"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -294,6 +320,7 @@
     "duration": 20,
     "regions": ["Doğu Anadolu"],
     "city": ["Erzurum"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -305,6 +332,7 @@
     "duration": 15,
     "regions": ["Doğu Anadolu"],
     "city": ["Malatya"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -316,6 +344,7 @@
     "duration": 300,
     "regions": ["Karadeniz"],
     "city": ["Trabzon"],
+    "image": "res://assets/events/1988-catak-heyelani.jpg",
     "is_active": false
   },
   {
@@ -327,6 +356,7 @@
     "duration": 172800,
     "regions": ["Karadeniz"],
     "city": ["Trabzon"],
+    "image": "res://assets/events/1990-trabzon-seli.jpg",
     "is_active": false
   },
   {
@@ -338,6 +368,7 @@
     "duration": 60,
     "regions": ["Güneydoğu Anadolu"],
     "city": ["Şırnak"],
+    "image": "res://assets/events/1992-gormec-cig-faciasi.jpg",
     "is_active": false
   },
   {
@@ -349,6 +380,7 @@
     "duration": 60,
     "regions": ["Güneydoğu Anadolu"],
     "city": ["Siirt"],
+    "image": "res://assets/events/1992-tunekpinar-cig-faciasi.jpg",
     "is_active": false
   },
   {
@@ -360,6 +392,7 @@
     "duration": 30,
     "regions": ["Doğu Anadolu"],
     "city": ["Erzincan"],
+    "image": "res://assets/events/1992-erzincan-depremi.jpg",
     "is_active": false
   },
   {
@@ -371,6 +404,7 @@
     "duration": 21600,
     "regions": ["Akdeniz"],
     "city": ["Isparta"],
+    "image": "res://assets/events/1995-senirkent-sel-felaketi.jpg",
     "is_active": false
   },
   {
@@ -382,6 +416,7 @@
     "duration": 20,
     "regions": ["Ege"],
     "city": ["Afyonkarahisar"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -393,6 +428,7 @@
     "duration": 15,
     "regions": ["Karadeniz"],
     "city": ["Çorum"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -404,6 +440,7 @@
     "duration": 15,
     "regions": ["Akdeniz"],
     "city": ["Hatay"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -415,6 +452,7 @@
     "duration": 20,
     "regions": ["Akdeniz"],
     "city": ["Adana"],
+    "image": "res://assets/events/1998-adana-ceyhan-depremi.jpg",
     "is_active": false
   },
   {
@@ -426,6 +464,7 @@
     "duration": 86400,
     "regions": ["Karadeniz"],
     "city": ["Trabzon"],
+    "image": "res://assets/events/1998-beskoy-seli.jpg",
     "is_active": false
   },
   {
@@ -437,6 +476,7 @@
     "duration": 45,
     "regions": ["Marmara"],
     "city": ["Kocaeli", "Sakarya", "Yalova", "İstanbul", "Bolu", "Bursa", "Eskişehir"],
+    "image": "res://assets/events/1999-marmara-depremi.jpg",
     "is_active": false
   },
   {
@@ -448,6 +488,7 @@
     "duration": 40,
     "regions": ["Karadeniz"],
     "city": ["Düzce", "Bolu"],
+    "image": "res://assets/events/1999-duzce-depremi.jpg",
     "is_active": false
   },
   {
@@ -459,6 +500,7 @@
     "duration": 20,
     "regions": ["İç Anadolu"],
     "city": ["Çankırı"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -470,6 +512,7 @@
     "duration": 15,
     "regions": ["Ege"],
     "city": ["Afyonkarahisar"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -481,6 +524,7 @@
     "duration": 30,
     "regions": ["Ege"],
     "city": ["Afyonkarahisar"],
+    "image": "res://assets/events/2002-cay-sultandagi-depremi.jpg",
     "is_active": false
   },
   {
@@ -492,6 +536,7 @@
     "duration": 20,
     "regions": ["Doğu Anadolu"],
     "city": ["Tunceli"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -503,6 +548,7 @@
     "duration": 20,
     "regions": ["Doğu Anadolu"],
     "city": ["Bingöl"],
+    "image": "res://assets/events/2003-bingol-depremi.jpg",
     "is_active": false
   },
   {
@@ -514,6 +560,7 @@
     "duration": 10,
     "regions": ["Doğu Anadolu"],
     "city": ["Erzurum"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -525,6 +572,7 @@
     "duration": 10,
     "regions": ["Doğu Anadolu"],
     "city": ["Ağrı"],
+    "image": "res://assets/events/2004-dogubayazit-depremi.jpg",
     "is_active": false
   },
   {
@@ -536,6 +584,7 @@
     "duration": 15,
     "regions": ["Doğu Anadolu"],
     "city": ["Hakkari"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -547,6 +596,7 @@
     "duration": 15,
     "regions": ["Ege"],
     "city": ["İzmir"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -558,6 +608,7 @@
     "duration": 172800,
     "regions": ["Marmara"],
     "city": ["İstanbul", "Tekirdağ"],
+    "image": "res://assets/events/2009-istanbul-seli.jpg",
     "is_active": false
   },
   {
@@ -569,6 +620,7 @@
     "duration": 20,
     "regions": ["Doğu Anadolu"],
     "city": ["Elazığ"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -580,6 +632,7 @@
     "duration": 86400,
     "regions": ["Karadeniz"],
     "city": ["Rize"],
+    "image": "res://assets/events/2010-gundogdu-seli.jpg",
     "is_active": false
   },
   {
@@ -591,6 +644,7 @@
     "duration": 15,
     "regions": ["Ege"],
     "city": ["Kütahya"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -602,6 +656,7 @@
     "duration": 40,
     "regions": ["Doğu Anadolu"],
     "city": ["Van"],
+    "image": "res://assets/events/2011-van-depremi.jpg",
     "is_active": false
   },
   {
@@ -613,6 +668,7 @@
     "duration": 15,
     "regions": ["Doğu Anadolu"],
     "city": ["Van"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -624,6 +680,7 @@
     "duration": 20,
     "regions": ["Ege"],
     "city": ["Muğla"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -635,6 +692,7 @@
     "duration": 86400,
     "regions": ["Karadeniz"],
     "city": ["Samsun"],
+    "image": "res://assets/events/2012-samsun-seli.jpg",
     "is_active": false
   },
   {
@@ -646,6 +704,7 @@
     "duration": 86400,
     "regions": ["Karadeniz"],
     "city": ["Artvin"],
+    "image": "res://assets/events/2015-hopa-seli.jpg",
     "is_active": false
   },
   {
@@ -657,6 +716,7 @@
     "duration": 172800,
     "regions": ["Karadeniz"],
     "city": ["Düzce"],
+    "image": "res://assets/events/2019-akcakoca-seli.jpg",
     "is_active": false
   },
   {
@@ -668,6 +728,7 @@
     "duration": 15,
     "regions": ["Marmara"],
     "city": ["İstanbul"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -679,6 +740,7 @@
     "duration": 30,
     "regions": ["Doğu Anadolu"],
     "city": ["Elazığ", "Malatya"],
+    "image": "res://assets/events/2020-elazig-depremi.jpg",
     "is_active": false
   },
   {
@@ -690,6 +752,7 @@
     "duration": 60,
     "regions": ["Doğu Anadolu"],
     "city": ["Van"],
+    "image": "res://assets/events/2020-van-bahcesaray-ciglari.jpg",
     "is_active": false
   },
   {
@@ -701,6 +764,7 @@
     "duration": 15,
     "regions": ["Doğu Anadolu"],
     "city": ["Van"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -712,6 +776,7 @@
     "duration": 15,
     "regions": ["Doğu Anadolu"],
     "city": ["Bingöl"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -723,6 +788,7 @@
     "duration": 86400,
     "regions": ["Karadeniz"],
     "city": ["Giresun"],
+    "image": "res://assets/events/2020-dereli-seli.jpg",
     "is_active": false
   },
   {
@@ -734,6 +800,7 @@
     "duration": 30,
     "regions": ["Ege"],
     "city": ["İzmir"],
+    "image": "res://assets/events/2020-izmir-depremi.jpg",
     "is_active": false
   },
   {
@@ -745,6 +812,7 @@
     "duration": 1209600,
     "regions": ["Akdeniz", "Ege"],
     "city": ["Antalya", "Muğla", "Adana", "Osmaniye", "Mersin", "Aydın"],
+    "image": "res://assets/events/2021-orman-yanginlari.jpg",
     "is_active": false
   },
   {
@@ -756,6 +824,7 @@
     "duration": 172800,
     "regions": ["Karadeniz"],
     "city": ["Kastamonu", "Sinop", "Bartın"],
+    "image": "res://assets/events/2021-bati-karadeniz-seli.jpg",
     "is_active": false
   },
   {
@@ -767,6 +836,7 @@
     "duration": 15,
     "regions": ["Karadeniz"],
     "city": ["Düzce"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -790,6 +860,7 @@
       "Kilis",
       "Elazığ"
     ],
+    "image": "res://assets/events/2023-kahramanmaras-depremi.jpg",
     "is_active": false
   },
   {
@@ -801,6 +872,7 @@
     "duration": 20,
     "regions": ["Akdeniz"],
     "city": ["Hatay"],
+    "image": "res://assets/events/2023-hatay-depremi.jpg",
     "is_active": false
   },
   {
@@ -812,6 +884,7 @@
     "duration": 15,
     "regions": ["Doğu Anadolu"],
     "city": ["Malatya"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -823,6 +896,7 @@
     "duration": 86400,
     "regions": ["Güneydoğu Anadolu"],
     "city": ["Şanlıurfa", "Adıyaman"],
+    "image": "res://assets/events/2023-sanliurfa-adiyaman-seli.jpg",
     "is_active": false
   },
   {
@@ -834,6 +908,7 @@
     "duration": 172800,
     "regions": ["Marmara"],
     "city": ["İstanbul", "Kırklareli"],
+    "image": "res://assets/events/2023-istanbul-kirklareli-seli.jpg",
     "is_active": false
   },
   {
@@ -845,6 +920,7 @@
     "duration": 20,
     "regions": ["Marmara"],
     "city": ["İstanbul"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -856,6 +932,7 @@
     "duration": 15,
     "regions": ["Ege"],
     "city": ["Muğla"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -867,6 +944,7 @@
     "duration": 259200,
     "regions": ["İç Anadolu"],
     "city": ["Eskişehir"],
+    "image": "res://assets/events/2025-eskisehir-orman-yangini.jpg",
     "is_active": false
   },
   {
@@ -878,6 +956,7 @@
     "duration": 20,
     "regions": ["Marmara"],
     "city": ["Balıkesir"],
+    "image": "res://assets/events/2025-sindirgi-depremi.jpg",
     "is_active": false
   },
   {
@@ -889,6 +968,7 @@
     "duration": 86400,
     "regions": ["Ege"],
     "city": ["Muğla", "İzmir"],
+    "image": "res://assets/events/_fallback_flood.jpg",
     "is_active": false
   },
   {
@@ -900,6 +980,7 @@
     "duration": 21600,
     "regions": ["İç Anadolu"],
     "city": ["Ankara"],
+    "image": "res://assets/events/1955-ankara-sel-felaketi.jpg",
     "is_active": false
   },
   {
@@ -911,6 +992,7 @@
     "duration": 14400,
     "regions": ["İç Anadolu"],
     "city": ["Ankara"],
+    "image": "res://assets/events/1965-ankara-bentderesi-taskini.jpg",
     "is_active": false
   },
   {
@@ -922,6 +1004,7 @@
     "duration": 25,
     "regions": ["Ege"],
     "city": ["Manisa"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
   {
@@ -933,6 +1016,7 @@
     "duration": 15,
     "regions": ["Doğu Anadolu"],
     "city": ["Elazığ"],
+    "image": "res://assets/events/1977-palu-depremi.jpg",
     "is_active": false
   },
   {
@@ -944,6 +1028,7 @@
     "duration": 259200,
     "regions": ["Akdeniz"],
     "city": ["Hatay"],
+    "image": "res://assets/events/1982-hatay-amik-ovasi-taskini.jpg",
     "is_active": false
   },
   {
@@ -955,6 +1040,7 @@
     "duration": 172800,
     "regions": ["Karadeniz"],
     "city": ["Bartın"],
+    "image": "res://assets/events/_fallback_flood.jpg",
     "is_active": false
   },
   {
@@ -966,6 +1052,7 @@
     "duration": 60,
     "regions": ["Doğu Anadolu"],
     "city": ["Hakkari"],
+    "image": "res://assets/events/1992-cukurca-yuksekova-ciglari.jpg",
     "is_active": false
   },
   {
@@ -977,6 +1064,7 @@
     "duration": 60,
     "regions": ["Karadeniz"],
     "city": ["Bayburt"],
+    "image": "res://assets/events/1993-bayburt-uzengili-cig-faciasi.jpg",
     "is_active": false
   },
   {
@@ -988,6 +1076,7 @@
     "duration": 172800,
     "regions": ["Güneydoğu Anadolu"],
     "city": ["Diyarbakır", "Batman", "Şırnak"],
+    "image": "res://assets/events/2006-guneydogu-anadolu-seli.jpg",
     "is_active": false
   },
   {
@@ -999,6 +1088,7 @@
     "duration": 15,
     "regions": ["İç Anadolu"],
     "city": ["Ankara"],
+    "image": "res://assets/events/2007-bala-depremi.jpg",
     "is_active": false
   },
   {
@@ -1010,6 +1100,7 @@
     "duration": 518400,
     "regions": ["Akdeniz"],
     "city": ["Antalya"],
+    "image": "res://assets/events/2008-tasagil-manavgat-orman-yangini.jpg",
     "is_active": false
   },
   {
@@ -1021,6 +1112,7 @@
     "duration": 60,
     "regions": ["Karadeniz"],
     "city": ["Gümüşhane"],
+    "image": "res://assets/events/_fallback_avalanche.jpg",
     "is_active": false
   },
   {
@@ -1032,6 +1124,7 @@
     "duration": 20,
     "regions": ["Ege"],
     "city": ["Denizli"],
+    "image": "res://assets/events/2019-bozkurt-depremi.jpg",
     "is_active": false
   },
   {
@@ -1043,6 +1136,7 @@
     "duration": 172800,
     "regions": ["Akdeniz"],
     "city": ["Hatay"],
+    "image": "res://assets/events/2020-hatay-orman-yanginlari.jpg",
     "is_active": false
   },
   {
@@ -1054,6 +1148,7 @@
     "duration": 172800,
     "regions": ["Karadeniz"],
     "city": ["Sinop"],
+    "image": "res://assets/events/2021-ayancik-ve-turkeli-seli.jpg",
     "is_active": false
   },
   {
@@ -1065,6 +1160,7 @@
     "duration": 172800,
     "regions": ["Karadeniz"],
     "city": ["Kastamonu", "Bartın", "Sinop", "Zonguldak"],
+    "image": "res://assets/events/2022-bati-karadeniz-seli.jpg",
     "is_active": false
   },
   {
@@ -1076,6 +1172,7 @@
     "duration": 120,
     "regions": ["Doğu Anadolu"],
     "city": ["Erzincan"],
+    "image": "res://assets/events/2024-ilic-toprak-kaymasi.jpg",
     "is_active": false
   },
   {
@@ -1087,6 +1184,7 @@
     "duration": 345600,
     "regions": ["Ege"],
     "city": ["İzmir"],
+    "image": "res://assets/events/2024-izmir-orman-yangini.jpg",
     "is_active": false
   },
   {
@@ -1098,6 +1196,7 @@
     "duration": 20,
     "regions": ["Doğu Anadolu"],
     "city": ["Malatya"],
+    "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   }
 ]
