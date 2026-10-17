@@ -25,6 +25,8 @@ func test_linked_research_groups_and_cross_benefits() -> void:
 	for definition: MeasureDefinition in definitions.values():
 		if definition.is_research():
 			counts[definition.tab] += 1
+			assert_str(definition.story_headline).is_not_empty()
+			assert_str(definition.story_text).is_not_empty()
 		for requirement: String in definition.prerequisites:
 			assert_bool(definitions.has(requirement)).is_true()
 	for index: int in range(3):
@@ -64,4 +66,20 @@ func test_invalid_model_data_is_rejected() -> void:
 	var definitions := catalog.load_definitions()
 	var bad_effects: Dictionary = {"id": "bad"}
 	assert_object(MeasureDefinition.from_dict(bad_effects)).is_null()
+	var bad_story: Dictionary = {
+		"id": "bad_story",
+		"title": "Bad",
+		"kind": "research",
+		"tab": 0,
+		"year": 1950,
+		"prerequisites": [],
+		"cost_budget": 0,
+		"cost_awareness": 0,
+		"months": 1,
+		"upkeep": 0,
+		"effects": {},
+		"repeatable": false,
+		"story": {"headline": ""},
+	}
+	assert_object(MeasureDefinition.from_dict(bad_story)).is_null()
 	assert_int(definitions.size()).is_greater(20)

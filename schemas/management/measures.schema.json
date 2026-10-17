@@ -96,6 +96,21 @@
           },
           "repeatable": {
             "type": "boolean"
+          },
+          "story": {
+            "type": "object",
+            "required": ["headline", "text"],
+            "additionalProperties": false,
+            "properties": {
+              "headline": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
           }
         },
         "additionalProperties": false

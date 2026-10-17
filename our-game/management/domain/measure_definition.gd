@@ -15,6 +15,8 @@ var months: int
 var upkeep: int
 var effects: Dictionary = {}
 var repeatable: bool
+var story_headline := ""
+var story_text := ""
 
 
 func is_research() -> bool:
@@ -58,6 +60,13 @@ static func from_dict(data: Variant) -> MeasureDefinition:
 			return null
 		if float(data.effects[key]) < 0.0:
 			return null
+	var story: Variant = data.get("story", {})
+	if not story is Dictionary:
+		return null
+	if not story.is_empty():
+		for key: String in ["headline", "text"]:
+			if not story.get(key) is String or String(story[key]).is_empty():
+				return null
 	var definition := MeasureDefinition.new()
 	for key: String in [
 		"id",
@@ -74,4 +83,6 @@ static func from_dict(data: Variant) -> MeasureDefinition:
 		definition.set(key, data[key])
 	definition.prerequisites = requirements
 	definition.effects = data.effects.duplicate(true)
+	definition.story_headline = story.get("headline", "")
+	definition.story_text = story.get("text", "")
 	return definition

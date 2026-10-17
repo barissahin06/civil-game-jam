@@ -224,7 +224,11 @@
       "effects": {
         "protection_earthquake": 3
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Ayakta Tutan Hesaptır",
+        "text": "Okullarda deprem dersi başladı; mühendisler yıkılan evlerden ders çıkarıyor. Yeni binalar artık hesapla yükseliyor."
+      }
     },
     {
       "id": "research_ground",
@@ -241,7 +245,11 @@
         "protection_earthquake": 4,
         "protection_flood": 2
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Önce Toprağa Bak",
+        "text": "Şehirlerin zemin haritası çıkarıldı. Dolgu ve dere yataklarına artık bina yapılmıyor."
+      }
     },
     {
       "id": "research_automation",
@@ -257,7 +265,11 @@
       "effects": {
         "resilience": 3
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Şehir Kendini Koruyor",
+        "text": "Su, gaz ve elektrik hatları sarsıntıda kendiliğinden kapanıyor. Hasar artık daha çabuk onarılıyor."
+      }
     },
     {
       "id": "research_isolation",
@@ -274,7 +286,11 @@
         "protection_earthquake": 8,
         "protection_fire": 2
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Deprem Gelir, Hastane Çalışır",
+        "text": "Hastane ve okullar sarsıntıyı emen temellere oturtuldu. Depremde içerideki hayat durmuyor."
+      }
     },
     {
       "id": "research_meteorology",
@@ -291,7 +307,11 @@
         "protection_flood": 3,
         "protection_avalanche": 2
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Gökyüzü Artık Kayıtta",
+        "text": "Yüzlerce gözlemci her sabah yağışı merkeze bildiriyor. Sel ve çığ öncesinden tahmin edilebiliyor."
+      }
     },
     {
       "id": "research_radar",
@@ -308,7 +328,11 @@
         "protection_flood": 4,
         "evacuation": 0.02
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Fırtınayı Gelmeden Gör",
+        "text": "Radar, büyüyen fırtınayı saatler önce yakalıyor. Köyler sel gelmeden boşaltılıyor."
+      }
     },
     {
       "id": "research_satellite",
@@ -324,7 +348,11 @@
       "effects": {
         "rescue_efficiency": 0.05
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Hat Kopmuyor",
+        "text": "Yollar ve teller yıkılsa da afet bölgesiyle bağlantı sürüyor. Kurtarma ekipleri nereye gideceğini ilk saatte biliyor."
+      }
     },
     {
       "id": "research_sensor",
@@ -341,7 +369,11 @@
         "protection_landslide": 6,
         "protection_fire": 5
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Dağın Nabzı Ölçülüyor",
+        "text": "Yamaç ve ormanlardaki sensörler kaymayı ve yangını anında bildiriyor. Ekipler felaket büyümeden yetişiyor."
+      }
     },
     {
       "id": "research_coordination",
@@ -357,7 +389,11 @@
       "effects": {
         "rescue_efficiency": 0.05
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Tek Ses, Tek Plan",
+        "text": "Jandarma, itfaiye ve Kızılay enkaz başında ortak kurallarla çalışıyor. Kurtarma artık daha hızlı."
+      }
     },
     {
       "id": "research_depots",
@@ -373,7 +409,11 @@
       "effects": {
         "logistics_efficiency": 0.08
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Yardım Hazırda Bekliyor",
+        "text": "Her bölgeye çadır ve battaniye deposu kuruldu. Yardım günler değil, saatler içinde ulaşıyor."
+      }
     },
     {
       "id": "research_capacity",
@@ -389,7 +429,11 @@
       "effects": {
         "research_capacity": 1
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Afetin Okulu Açıldı",
+        "text": "Bilim insanları tek çatı altında toplandı. Aynı anda daha fazla araştırma yürütülebiliyor."
+      }
     },
     {
       "id": "research_response",
@@ -406,7 +450,11 @@
         "rescue_efficiency": 0.1,
         "repair_efficiency": 0.1
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Tek Masa, Tek Harita",
+        "text": "Kurtarma, sağlık ve onarım ekipleri aynı kriz masasında. Müdahale ve onarım birlikte hızlanıyor."
+      }
     },
     {
       "id": "community_preparedness",
@@ -423,7 +471,11 @@
         "evacuation": 0.04,
         "trust_decay_reduction": 0.1
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Çanta Kapının Yanında",
+        "text": "Evlerde afet çantaları hazırlandı. Halk paniğe kapılmıyor, devlete güveni artıyor."
+      }
     },
     {
       "id": "household_planning",
@@ -439,7 +491,11 @@
       "effects": {
         "evacuation": 0.04
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Buluşma Yeri Belli",
+        "text": "Okullarda verilen ödevle aileler afet planı yaptı. Herkes nereye gideceğini biliyor."
+      }
     },
     {
       "id": "evacuation_drills",
@@ -456,7 +512,11 @@
         "evacuation": 0.05,
         "rescue_efficiency": 0.03
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Siren Çaldı, Kimse Koşmadı",
+        "text": "Düzenli tatbikatlarla tahliye süresi yarıya indi. Mahalleler afete hazır."
+      }
     },
     {
       "id": "volunteer_network",
@@ -472,7 +532,11 @@
       "effects": {
         "rescue_efficiency": 0.08
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Komşu Komşuya Yetişiyor",
+        "text": "Mahallelerde gönüllü listeleri oluşturuldu. İlk yardım, ekipler gelmeden başlıyor."
+      }
     },
     {
       "id": "public_communication",
@@ -488,7 +552,11 @@
       "effects": {
         "trust_decay_reduction": 0.25
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "Söylenti Değil, Bilgi",
+        "text": "Afetten sonra resmî bülten saat başı ve açıkça okunuyor. Halkın devlete güveni kolay sarsılmıyor."
+      }
     },
     {
       "id": "community_coordination",
@@ -505,7 +573,11 @@
         "logistics_efficiency": 0.08,
         "trust_decay_reduction": 0.15
       },
-      "repeatable": false
+      "repeatable": false,
+      "story": {
+        "headline": "İyilik Bütün Ülkeyi Dolaşır",
+        "text": "Kardeş iller birbirine yardım taşıyor. Afet bir bölgeyi vurur ama bütün ülke ayağa kalkar."
+      }
     }
   ]
 }
