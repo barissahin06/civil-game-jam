@@ -74,9 +74,8 @@ func _ready() -> void:
 	_gameplay.add_child(hud)
 	_gameplay.add_child(city_panel)
 	UI.panel(_gameplay, Rect2(16, 1030, 1888, 42))
-	_status = UI.text(_gameplay, "", Rect2(32, 1040, 1440, 26), 18, UI.MUTED)
+	_status = UI.text(_gameplay, "", Rect2(32, 1040, 1856, 26), 18, UI.MUTED)
 	_status.mouse_filter = Control.MOUSE_FILTER_PASS
-	UI.text(_gameplay, "TARİHSEL DEMO", Rect2(1582, 1040, 300, 26), 18, UI.GOLD)
 	_guide_plate = UI.panel(_gameplay, Rect2(432, 174, 1010, 36))
 	_guide = UI.text(_gameplay, "", Rect2(446, 178, 982, 28), 18, UI.GOLD)
 	if not _testing():

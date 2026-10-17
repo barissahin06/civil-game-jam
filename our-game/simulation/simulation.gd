@@ -244,6 +244,10 @@ func event_for(id: String) -> Dictionary:
 	return {}
 
 
+func latest_event() -> Dictionary:
+	return historical.events[_event_index - 1] if _event_index > 0 else {}
+
+
 func report_for(id: String = "") -> Dictionary:
 	for report: Dictionary in crises.reports:
 		if report.id == id:

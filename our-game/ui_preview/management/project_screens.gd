@@ -92,7 +92,7 @@ func _project() -> void:
 		UI.TEAL if available.ok else RED
 	)
 	UI.panel(_content, Rect2(932, 268, 412, 250))
-	UI.text(_content, "AKTİF SLOT", Rect2(952, 286, 370, 30), 18, UI.MUTED)
+	UI.text(_content, "PROJE KAPASİTESİ", Rect2(952, 286, 370, 30), 18, UI.MUTED)
 	var count := sim.projects.active_count(
 		(
 			"research"
@@ -176,13 +176,7 @@ func _toggle_priority() -> void:
 
 func _national() -> void:
 	var sim: Simulation = _shell.sim
-	_title(
-		"ULUSAL TEDBİRLER",
-		(
-			"UYGULAMA KAPASİTESİ: %d/1  •  TAMAMLANINCA 21 ALANA TABAN KORUMA"
-			% sim.projects.active_count("national")
-		)
-	)
+	_title("ULUSAL TEDBİRLER", "AKTİF PROJE: %d/1" % sim.projects.active_count("national"))
 	var index := 0
 	for definition: MeasureDefinition in sim.projects.definitions.values():
 		if definition.kind != "national":
@@ -215,13 +209,6 @@ func _national() -> void:
 			_content, "İNCELE", Rect2(x + 18, 460, 382, 36), show_project.bind(definition.id, 0)
 		)
 		index += 1
-	UI.text(
-		_content,
-		"ULUSAL UYGULAMA SLOTU ARAŞTIRMA KAPASİTESİNDEN AYRIDIR",
-		Rect2(0, 558, 1330, 32),
-		18,
-		UI.MUTED
-	)
 	UI.button(
 		_content,
 		"ARAŞTIRMA AĞACINI AÇ",
@@ -239,7 +226,7 @@ func _projects() -> void:
 	_title(
 		"PROJE TAKİBİ",
 		(
-			"AYLIK BAKIM %s / VERİM %d%% / ÖNCELİK, ARDINDAN BAŞLAMA SIRASI"
+			"AYLIK BAKIM %s / VERİM %d%%"
 			% [
 				_shell.fmt_money(sim.projects.calculate_upkeep()),
 				roundi(sim.treasury.maintenance_ratio * 100)
@@ -279,9 +266,7 @@ func _projects() -> void:
 			UI.TEAL
 		)
 		var caption: String = {
-			"active": "DEVAM EDİYOR",
-			"waiting": "BÜTÇE BEKLİYOR",
-			"paused": "DURAKLATILDI / SLOT SERBEST"
+			"active": "DEVAM EDİYOR", "waiting": "BÜTÇE BEKLİYOR", "paused": "DURAKLATILDI"
 		}[project.status]
 		UI.text(
 			_content,
