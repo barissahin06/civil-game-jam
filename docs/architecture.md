@@ -81,3 +81,11 @@ Aktif kataloglar `regions/data/service_areas.json`, `management/data/measures.js
 `events/data/historical/events.json` dosyalarıdır. `events/historical/events.json` özgün arşivdir;
 runtime okumaz. Tarih/ad/açıklama/kayıp referansı korunur, eski belirsiz `duration` yerine
 oyun gününü açıkça belirten `response_window_days` kullanılır. Ayrı karar olayları eklenmedi.
+
+`events/data/historical/aftermath.json`, olayları `event_id` üzerinden kaynaklı afet sonrası
+kararlarla ilişkilendirir; temel afet alanlarını tekrarlamaz. Ortak araştırma notu bir kez tutulur,
+yalnız özel notu veya eylemi olan olaylar `entries` içine yazılır.
+`management/data/preventive_actions.json`, `id`, `title`, `description` alanlarıyla içerik önerilerini
+tutar. İki katalog da `check:data` kapsamındadır; tarihsel kararlar ve öneriler runtime tedbiri
+veya seçenekli olay değildir. Maliyet ve etki sahibi `management/data/measures.json` olarak kalır.
+Bu ek içerikler simülasyonun katalog fingerprint'ine dahil edilmez.

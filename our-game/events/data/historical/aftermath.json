@@ -1,0 +1,330 @@
+{
+  "format_version": 1,
+  "note": "Kaynak taraması 17 Ekim 2026 itibarıyladır. Kaynaklı karar ve önlemler tarihsel içeriktir; oyun etkisi veya oyuncuya sunulan seçenek değildir. Kayıt bulunmaması tarihte hiç önlem alınmadığının kanıtı değildir.",
+  "default_research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi.",
+  "entries": [
+    {
+      "event_id": "historical-002",
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Dengi ve Ağılözü köylerinin başka yerleşim alanlarına taşınması kararlaştırıldı.",
+          "sources": ["https://www.researchgate.net/publication/398788084_1951_Kursunlu_Depremi"]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-016",
+      "actions": [
+        {
+          "type": "decision",
+          "description": "1968'de 1051 sayılı Kanun çıkarıldı; tehlikeli alanlarda yapılaşma ve ikamet yasağı ile riskli binaların boşaltılması düzenlendi.",
+          "sources": [
+            "https://acikerisim.tbmm.gov.tr/server/api/core/bitstreams/b6715e02-81ad-4d16-bfd6-c608d6c985ce/content",
+            "https://www5.tbmm.gov.tr/tutanaklar/KANUNLAR_KARARLAR/kanuntbmmc051/kanuntbmmc051/kanuntbmmc05101051.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-020",
+      "actions": [
+        {
+          "type": "decision",
+          "description": "5 Ağustos 1970 tarihli 7/1164 sayılı Bakanlar Kurulu kararıyla Gediz'in yeni yerleşim alanına taşınması kararlaştırıldı.",
+          "sources": ["https://eskigediz.bel.tr/tr/sayfa/eskigediz-tarihi-37"]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-028",
+      "actions": [],
+      "research_note": "Bulunan kaynaklar 5-6 Haziran 1986 depremlerine ait; 5 Mayıs 1986 kaydıyla eşleşme doğrulanamadı.",
+      "research_sources": ["https://egazete.cumhuriyet.com.tr/en/catalog/192/1987/1/31/11"]
+    },
+    {
+      "event_id": "historical-029",
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Heyelandan etkilenen 34 konutun başka bir alana taşınması kararlaştırıldı.",
+          "sources": ["https://egazetetest.cumhuriyet.com.tr/en/catalog/192/1988/11/17/7"]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-034",
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Doğru ve Suyolu dereleri için tersip bentleri, ıslah sekileri ve çevirme yapıları içeren taşkın koruma projesi onaylandı.",
+          "sources": ["https://eski.imo.org.tr/resimler/ekutuphane/pdf/3935.pdf"]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-040",
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Yapı güvenliğinin denetlenmesi için 2001'de 4708 sayılı Yapı Denetimi Hakkında Kanun çıkarıldı.",
+          "sources": [
+            "https://canakkale.csb.gov.tr/haberler/deprem-oldurmez-depreme-karsi-dayaniksiz-binalar-oldurur-246484"
+          ]
+        },
+        {
+          "type": "organization",
+          "description": "Afetlerde tıbbi kurtarmayı yürütmek üzere Ulusal Medikal Kurtarma Ekipleri (UMKE) oluşturuldu.",
+          "sources": [
+            "https://www.saglik.gov.tr/TR-1267/mustesar-eyup-gumus-umke-tatbikatina-katildi.html",
+            "https://daricafarabieah.saglik.gov.tr/TR-119284/umke-nedir.html"
+          ]
+        },
+        {
+          "type": "organization",
+          "description": "2009'da 5902 sayılı Kanun ile AFAD kuruldu; afet yönetimindeki üç genel müdürlüğün görevleri tek çatı altında toplandı.",
+          "sources": ["https://www.afad.gov.tr/afad-hakkinda"]
+        }
+      ],
+      "research_note": "Bu yapılanmalar 1999 depremlerinden sonraki reform sürecine aittir."
+    },
+    {
+      "event_id": "historical-041",
+      "actions": [
+        {
+          "type": "decision",
+          "description": "2000'de yapı denetimi için 595 sayılı KHK çıkarıldı; iptalinin ardından 2001'de 4708 sayılı Kanun yürürlüğe girdi.",
+          "sources": [
+            "https://mugla.imo.org.tr/TR%2C63203/deprem-ve-yapi-denetimi-calistayi-milasta-gerceklestirildi.html"
+          ]
+        }
+      ],
+      "research_note": "Düzenleme, 17 Ağustos ve 12 Kasım 1999 depremlerinin ortak sonucudur."
+    },
+    {
+      "event_id": "historical-050",
+      "actions": [],
+      "research_note": "Bulunan düzenlemeler 2003 Seferihisar-Urla depremlerine ait; 2005 kaydıyla eşleşme doğrulanamadı.",
+      "research_sources": [
+        "https://cdn.tbmm.gov.tr/KKBSPublicFile/D22/Y5/T2/DosyaKomisyonRaporunuVerdi/b80f89fb-c40c-4c55-bc74-eca686c46895.htm"
+      ]
+    },
+    {
+      "event_id": "historical-051",
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Ayamama Deresi yatağındaki kaçak yapıların uydu görüntüleriyle tespitine başlandı.",
+          "sources": [
+            "https://v3.arkitera.com/h45943-ayamama-deresinde-sel-sonrasi-kacak-tespit-calismalari-basladi.html"
+          ]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-058",
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Yılanlıdere yatağındaki konutların kaldırılması kararlaştırıldı ve yıkıma başlandı.",
+          "sources": ["https://mobile.aa.com.tr/tr/turkiye/dere-yataginda-yikimlar-basladi/356373"]
+        },
+        {
+          "type": "measure",
+          "description": "Yılanlıdere'nin yukarı havzasında taşkın kontrolü için dere ıslahı yapıldı.",
+          "sources": ["https://bolge07.dsi.gov.tr/Sayfa/Detay/1052"]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-061",
+      "actions": [
+        {
+          "type": "decision",
+          "description": "İleri inceleme gereken okulların öğrencilerinin 9 Ekim 2019'dan itibaren başka binalarda eğitime devam etmesi kararlaştırıldı.",
+          "sources": ["https://istanbul.meb.gov.tr/www/duyuru/icerik/2769"]
+        },
+        {
+          "type": "measure",
+          "description": "Okul Tabanlı Afet Eğitimi Programı'nı geliştirmek için deprem sırasında kaydedilen okul görüntülerinin incelenmesine başlandı.",
+          "sources": [
+            "https://www.meb.gov.tr/deprem-goruntuleri-afet-egitiminde-kullanacak/haber/19423/tr"
+          ]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-063",
+      "actions": [],
+      "research_note": "Olay sonrasındaki kalıcı önlemler kaynakla doğrulanamadı."
+    },
+    {
+      "event_id": "historical-066",
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Dere yataklarındaki yapıların kaldırılması ve bazı köprülerin kemer köprü olarak yeniden yapılması açıklandı.",
+          "sources": [
+            "https://www.iletisim.gov.tr/Turkce/yerel_basin/detay/cumhurbaskani-erdogan-sel-felaketinin-yasandigi-giresunun-dereli-ilcesindeki-incelemelerinin-ardindan-vatandaslara-hitap-etti"
+          ]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-067",
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Yapı envanteri, zemin etütleri ve kara-deniz depremsellik araştırmaları hızlandırıldı.",
+          "sources": [
+            "https://www.izmir.bel.tr/tr/Haberler/izmir-korfezi-nin-30-farkli-noktasindan-karot-ornegi-alindi/48926/156"
+          ]
+        },
+        {
+          "type": "organization",
+          "description": "Afet risklerini azaltma çalışmalarını kurumlar ve uzmanlarla koordine etmek için İzmir Afet Platformu oluşturuldu.",
+          "sources": ["https://www.izmir.bel.tr/tr/SeffafIzmir/ProjeDetay/2680"]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-069",
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Ezine Çayı'nda kalıcı dere ıslahı, taşkın duvarı ve köprü projeleri ihale edilerek inşaata başlandı.",
+          "sources": ["https://www.dsi.gov.tr/Haber/Detay/4084"]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-071",
+      "actions": [
+        {
+          "type": "organization",
+          "description": "Kentsel dönüşümü hızlandırmak için 2023'te Çevre, Şehircilik ve İklim Değişikliği Bakanlığına bağlı Kentsel Dönüşüm Başkanlığı kuruldu.",
+          "sources": [
+            "https://webdosya.csb.gov.tr/db/strateji/icerikler/csidb-2023-yili-idare-faaliyet-raporu-20240430140139.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-073",
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Artçı depremler sürerken hasarlı binalara girilmemesi uyarısı yinelendi.",
+          "sources": ["https://apnews.com/article/59f11ac237f5697eeef38fe828655015"]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-074",
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Karakoyun, Cavsak ve Sırrın dereleri için taşkın koruma projeleri hazırlandı; 2023 sonunda yapım sözleşmelerinin imzalandığı açıklandı.",
+          "sources": [
+            "https://www.sanliurfaolay.com/haber/24816274/sanliurfada-sel-onlemleri-icin-projeler-imzalandi"
+          ]
+        }
+      ],
+      "research_note": "Kararlar Şanlıurfa'ya aittir; Adıyaman için doğrulanmış uygun bir karar eklenmedi."
+    },
+    {
+      "event_id": "historical-076",
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Eğitime dönüşte öğrencilere afet farkındalık dersi verildi.",
+          "sources": [
+            "https://istanbul.meb.gov.tr/www/istanbul039da-egitim-afet-farkindalik-dersi-ile-basladi/icerik/5775"
+          ]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-081",
+      "actions": [],
+      "research_note": "Kaynaklar 11 Eylül 1957 selini anlatıyor; kayıttaki 1955 tarihiyle eşleşme doğrulanamadı.",
+      "research_sources": [
+        "https://www.scribd.com/document/841210445/ANKARA-DA-GUNUMUZE-ULA%25C5%259EAMAYAN-TURK-DEVR%25C4%25B0-YAPILARI"
+      ]
+    },
+    {
+      "event_id": "historical-082",
+      "actions": [],
+      "research_note": "25 Haziran 1965 olayıyla ilişkilendirilen uygun bir karar doğrulanamadı."
+    },
+    {
+      "event_id": "historical-083",
+      "actions": [],
+      "research_note": "24 Mart 1970 kaydıyla ilişkilendirilen uygun bir karar doğrulanamadı."
+    },
+    {
+      "event_id": "historical-085",
+      "actions": [],
+      "research_note": "12 Nisan 1982 taşkınıyla ilişkilendirilen uygun bir karar doğrulanamadı."
+    },
+    {
+      "event_id": "historical-086",
+      "actions": [],
+      "research_note": "27 Mayıs 1991 kaydıyla ilişkilendirilen uygun bir karar doğrulanamadı."
+    },
+    {
+      "event_id": "historical-088",
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Çığdan etkilenen köy sakinlerinin yerleşimi için Bayburt merkezinde yeni alan seçildi.",
+          "sources": ["https://www5.tbmm.gov.tr/tutanaklar/TUTANAK/TBMM/d19/c039/tbmm19039002.pdf"]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-089",
+      "actions": [],
+      "research_note": "2006/27 sayılı dere genelgesi selden önce yayımlandığı için afet sonrasında alınan karar olarak eklenmedi.",
+      "research_sources": [
+        "https://cdniys.tarimorman.gov.tr/api/File/GetGaleriFile/425/DosyaGaleri/594/dsi2025faaliyetraporu.pdf"
+      ]
+    },
+    {
+      "event_id": "historical-091",
+      "actions": [
+        {
+          "type": "measure",
+          "description": "YARDOP tamimiyle yangına dirençli ormanlar, yangın durdurma zonları ve orman-yerleşim ayırma tesisleri oluşturulması düzenlendi.",
+          "sources": [
+            "https://www.ogm.gov.tr/batiakdeniz/kurulusumuz-sitesi/SonuclandirilanArastirmaProjeleri/Akdeniz%20Ormanlar%C4%B1ndaki%20Baz%C4%B1%20Bitki%20T%C3%BCrlerinin%20Yan%C4%B1c%C4%B1l%C4%B1k%20S%C4%B1n%C4%B1flar%C4%B1n%C4%B1n%20Belirlenmesi.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-094",
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Yangına ilk müdahale için köy muhtarlarına traktöre monteli yedi su tankeri tahsis edildi.",
+          "sources": [
+            "https://www.ogm.gov.tr/tr/haberler/yanan-ormanlar-kullerinden-doguyor1",
+            "https://www.ogm.gov.tr/hatayobm/haberler/orman-yanginlariyla-mucadele-%EF%BC%82basin-bilgilendirme-toplantisi%EF%BC%82-gerceklestirildi"
+          ]
+        }
+      ]
+    },
+    {
+      "event_id": "historical-097",
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Maden işletmesinin çevre izin ve lisans belgesi iptal edildi.",
+          "sources": ["https://www.tbmm.gov.tr/Tutanaklar/TutanakGoster/3248"]
+        }
+      ],
+      "research_note": "Bu olay maden sahasındaki liç yığını kaymasıdır."
+    }
+  ]
+}
