@@ -1,81 +1,77 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Tarihsel afet kayıtları",
-  "type": "array",
-  "minItems": 1,
-  "items": {
-    "type": "object",
-    "additionalProperties": false,
-    "required": [
-      "name",
-      "time",
-      "disaster_type",
-      "description",
-      "casualties",
-      "duration",
-      "regions",
-      "city",
-      "is_active"
-    ],
-    "properties": {
-      "name": { "$ref": "#/$defs/nonEmptyString" },
-      "time": { "type": "string", "format": "date" },
-      "disaster_type": {
-        "enum": ["earthquake", "landslide", "flood", "avalanche", "wildfire"]
-      },
-      "description": { "$ref": "#/$defs/nonEmptyString" },
-      "casualties": { "type": "integer", "minimum": 0 },
-      "duration": { "type": "integer", "minimum": 1 },
-      "regions": { "$ref": "#/$defs/stringList" },
-      "city": { "$ref": "#/$defs/stringList" },
-      "is_active": { "type": "boolean" },
-      "aftermath": {
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format_version", "note", "events"],
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "note": {
+      "type": "string"
+    },
+    "events": {
+      "type": "array",
+      "minItems": 99,
+      "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["actions"],
+        "required": [
+          "id",
+          "name",
+          "date",
+          "kind",
+          "description",
+          "province_ids",
+          "severity",
+          "response_window_days",
+          "reference_casualties"
+        ],
         "properties": {
-          "actions": {
+          "id": {
+            "type": "string",
+            "pattern": "^historical-[0-9]{3}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "kind": {
+            "enum": ["earthquake", "flood", "fire", "avalanche", "landslide"]
+          },
+          "description": {
+            "type": "string"
+          },
+          "province_ids": {
             "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
             "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": ["type", "description", "sources"],
-              "properties": {
-                "type": { "enum": ["decision", "measure", "organization"] },
-                "description": { "$ref": "#/$defs/nonEmptyString" },
-                "sources": { "$ref": "#/$defs/sources" }
-              }
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 81
             }
           },
-          "research_note": { "$ref": "#/$defs/nonEmptyString" },
-          "research_sources": { "$ref": "#/$defs/sources" }
-        },
-        "allOf": [
-          {
-            "if": { "properties": { "actions": { "maxItems": 0 } } },
-            "then": { "required": ["research_note"] }
+          "severity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9
           },
-          {
-            "if": { "required": ["research_sources"] },
-            "then": { "required": ["research_note"] }
+          "response_window_days": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30
+          },
+          "reference_casualties": {
+            "type": "integer",
+            "minimum": 0
           }
-        ]
+        }
       }
-    }
-  },
-  "$defs": {
-    "nonEmptyString": { "type": "string", "minLength": 1, "pattern": "\\S" },
-    "stringList": {
-      "type": "array",
-      "minItems": 1,
-      "uniqueItems": true,
-      "items": { "$ref": "#/$defs/nonEmptyString" }
-    },
-    "sources": {
-      "type": "array",
-      "minItems": 1,
-      "uniqueItems": true,
-      "items": { "type": "string", "format": "uri", "pattern": "^https://\\S+$" }
     }
   }
 }

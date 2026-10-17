@@ -1,7 +1,17 @@
-# Civil Game Jam
+# Revert it
 
 Godot 4.6.3 oyun projesi. Godot Project Manager'a `our-game/project.godot` dosyasını ekleyin.
-Başlangıç sahnesi yalnız bir başlık gösterir; oyun mekanikleri henüz eklenmedi.
+F5, splash art içeren ayrı ana menüyü açar. Yeni Oyun'dan 1950–1990 başlangıç yılı seçin.
+1920×1080 tarihsel afet stratejisinde şehir panelinden yatırım,
+üst menüden araştırma ve ulusal tedbir başlatın; DEVAM ile takvimi ilerletin.
+Afet haberi oyunu durdurur. Ekip/yardımı haritaya sürükleyerek veya kriz formundan sevk edin.
+F11 tam ekranı; boşluk duraklatmayı değiştirir. 1×/2×/4× hız kullanılabilir.
+Harita, HUD ve panellerin arkasında ekranı kaplar; yakın çevre ülkeleri soluk sınır ve adlarıyla gösterir.
+1950–1990 arasında başlayıp 2026 sonuna ulaşın. Bütçe, tek ulusal güven, bilinç puanı,
+aylık taksit/bakım, araştırmalar, paralel krizler, gidiş/görev/dönüş ve onarım birbirine bağlıdır.
+Bir otomatik ve üç manuel kayıt yuvası vardır. Ana menüden yükleyin veya oyun içi menüden
+kaydedin/yükleyin. Üzerine yazma ve oyun içi yükleme onay ister. Sandbox kilitlidir.
+Maliyetler ve sonuç hesabı ilk oyun dengesi değerleridir; tarihsel istatistik iddiası taşımaz.
 
 ## Başlangıç
 
@@ -28,6 +38,9 @@ Makineye özel `.codex/config.toml` Git dışındadır. Kurulum genel Codex ayar
 
 - [Çalışma kuralları](AGENTS.md)
 - [Klasörler ve mimari](docs/architecture.md)
+- [Üç kişilik paralel çalışma](docs/team-workflow.md)
+- [Oyun kararları ve uygulama sırası](docs/game-design.md)
+- [P0 native kaynaklar ve önizleme](art/production/ui/p0/README.md)
 - [Kod ve veri standardı](docs/code-style.md)
 - [Geliştirme ve doğrulama](docs/development.md)
 - [Bağımlılık sahipliği](docs/dependencies.md)
