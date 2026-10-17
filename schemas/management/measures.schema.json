@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["format_version", "note", "measures"],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "measures": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "kind",
+          "tab",
+          "year",
+          "prerequisites",
+          "cost_budget",
+          "cost_awareness",
+          "months",
+          "upkeep",
+          "effects",
+          "repeatable"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]+$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "policy",
+              "local",
+              "research",
+              "awareness",
+              "national",
+              "repair",
+              "team",
+              "stock"
+            ]
+          },
+          "tab": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 1950,
+            "maximum": 2026
+          },
+          "prerequisites": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "cost_budget": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "cost_awareness": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "months": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 120
+          },
+          "upkeep": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "effects": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "repeatable": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
