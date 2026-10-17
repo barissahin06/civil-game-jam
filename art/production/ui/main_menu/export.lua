@@ -1,6 +1,6 @@
-local root=assert(REVERT_ROOT or app.params["repo"],"Pass repo")
+local root=assert(REWRITE_ROOT or app.params["repo"],"Pass repo")
 local sprite=assert(app.open(root.."/art/production/ui/main_menu/night_operations.aseprite"))
 assert(sprite.width==1920 and sprite.height==1080 and #sprite.frames==1 and #sprite.layers==11)
 sprite:saveCopyAs(root.."/our-game/ui_preview/assets/main_menu_splash.png")
 sprite:close()
-print("REVERT_SPLASH_EXPORT_PASS 1920x1080 native_source_preserved")
+print("REWRITE_SPLASH_EXPORT_PASS 1920x1080 native_source_preserved")

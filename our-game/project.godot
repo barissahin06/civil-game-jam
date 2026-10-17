@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Revert it"
+config/name="Rewrite it"
 run/main_scene="res://core/scenes/main.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Godot/app_userdata/Civil Game Jam"
@@ -28,7 +28,7 @@ window/stretch/mode="canvas_items"
 
 [dotnet]
 
-project/assembly_name="RevertIt"
+project/assembly_name="RewriteIt"
 
 [rendering]
 

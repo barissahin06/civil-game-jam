@@ -38,8 +38,8 @@ Mono sürümü kullanılmaz. Gerekirse `GODOT_PATH` tanımlayın veya
 İlk çalıştırmada resmi export şablon arşivi (yaklaşık 1,2 GB) indirilip SHA-256 ile doğrulanır;
 yalnız Windows x64 şablonları `generated/tools/` altına çıkarılır. Sonraki çalıştırmalar önbelleği kullanır.
 
-Çıktı `generated/builds/RevertIt-Windows-x64.zip` dosyasıdır.
-ZIP'i tamamen çıkartıp `RevertIt.exe` dosyasını çalıştırın; PCK aynı klasörde kalmalıdır.
+Çıktı `generated/builds/RewriteIt-Windows-x64.zip` dosyasıdır.
+ZIP'i tamamen çıkartıp `RewriteIt.exe` dosyasını çalıştırın; PCK aynı klasörde kalmalıdır.
 Paket, aktif gameplay JSON'larını ve `licenses/` altındaki motor lisans bildirimlerini içerir;
 testler, addonlar ve özgün tarihsel arşiv dışarıda tutulur.
 Import/export logları `generated/reports/checks/windows-*.log`, dosya hash'leri
@@ -50,7 +50,7 @@ kontrol etmek için:
 
 ```powershell
 $smokeScript = (Resolve-Path 'our-game/tests/integration/package_smoke.gd').Path
-& $env:GODOT_PATH --headless --main-pack '<çıkartılan klasör>/RevertIt.pck' --script $smokeScript
+& $env:GODOT_PATH --headless --main-pack '<çıkartılan klasör>/RewriteIt.pck' --script $smokeScript
 ```
 
 Başarı işareti `PACKAGED_GAMEPLAY_PASS` olmalıdır; hata logu, eksik işaret veya zaman aşımı başarısızlıktır.

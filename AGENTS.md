@@ -1,4 +1,4 @@
-# Civil Game Jam çalışma kuralları
+# Rewrite it çalışma kuralları
 
 - Oyun kökü `our-game/`; Godot 4.6.3 kullanılır. Başlamadan `git status --short` ve aktif branch'i kontrol et; bağımsız değişiklikleri koru.
 - Önce [mimari](docs/architecture.md), [kod/veri standardı](docs/code-style.md) ve [geliştirme komutlarını](docs/development.md) oku. Paket sürümleri için [bağımlılık rehberini](docs/dependencies.md) kullan.

@@ -11,7 +11,7 @@ func _run() -> void:
 	root.size = Vector2i(1920, 1080)
 	root.content_scale_size = root.size
 	if not _require(
-		ProjectSettings.get_setting("application/config/name") == "Revert it", "game brand"
+		ProjectSettings.get_setting("application/config/name") == "Rewrite it", "game brand"
 	):
 		return
 	if not _require(OS.get_user_data_dir().get_file() == "Civil Game Jam", "legacy save directory"):

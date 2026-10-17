@@ -1,4 +1,4 @@
-# Revert it
+# Rewrite it
 
 Godot 4.6.3 oyun projesi. Godot Project Manager'a `our-game/project.godot` dosyasını ekleyin.
 F5, splash art içeren ayrı ana menüyü açar. Yeni Oyun'dan 1950–1990 başlangıç yılı seçin.

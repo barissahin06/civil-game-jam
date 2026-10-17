@@ -22,7 +22,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	UI.panel(self, Rect2(12, 12, 1896, 92))
 	UI.icon(self, 11, Vector2(32, 40), UI.GOLD)
-	UI.text(self, "REVERT IT", Rect2(82, 44, 300, 28))
+	UI.text(self, "REWRITE IT", Rect2(82, 44, 300, 28))
 	UI.icon(self, 0, Vector2(406, 28), UI.GOLD)
 	UI.text(self, "BÜTÇE", Rect2(450, 24, 190, 24), 18, UI.MUTED)
 	_budget = UI.text(self, "", Rect2(450, 44, 196, 42), 36, UI.GOLD)

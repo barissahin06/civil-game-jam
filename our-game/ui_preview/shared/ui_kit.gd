@@ -11,6 +11,47 @@ const GOLD := Color("d3b782")
 const TEAL := Color("7eaea0")
 
 
+static func install_cursors() -> void:
+	if DisplayServer.get_name() == "headless":
+		return
+	Input.set_custom_mouse_cursor(
+		preload("res://ui_preview/assets/cursor_arrow.png"), Input.CURSOR_ARROW, Vector2(3, 3)
+	)
+	Input.set_custom_mouse_cursor(
+		preload("res://ui_preview/assets/cursor_pointing.png"),
+		Input.CURSOR_POINTING_HAND,
+		Vector2(12, 3)
+	)
+	Input.set_custom_mouse_cursor(
+		preload("res://ui_preview/assets/cursor_move.png"), Input.CURSOR_MOVE, Vector2(15, 15)
+	)
+	Input.set_custom_mouse_cursor(
+		preload("res://ui_preview/assets/cursor_move.png"), Input.CURSOR_DRAG, Vector2(15, 15)
+	)
+	Input.set_custom_mouse_cursor(
+		preload("res://ui_preview/assets/cursor_can_drop.png"),
+		Input.CURSOR_CAN_DROP,
+		Vector2(15, 15)
+	)
+	Input.set_custom_mouse_cursor(
+		preload("res://ui_preview/assets/cursor_forbidden.png"),
+		Input.CURSOR_FORBIDDEN,
+		Vector2(15, 15)
+	)
+
+
+static func reset_cursors() -> void:
+	for shape in [
+		Input.CURSOR_ARROW,
+		Input.CURSOR_POINTING_HAND,
+		Input.CURSOR_MOVE,
+		Input.CURSOR_DRAG,
+		Input.CURSOR_CAN_DROP,
+		Input.CURSOR_FORBIDDEN
+	]:
+		Input.set_custom_mouse_cursor(null, shape)
+
+
 static func atlas(texture: Texture2D, region: Rect2) -> AtlasTexture:
 	var result := AtlasTexture.new()
 	result.atlas = texture

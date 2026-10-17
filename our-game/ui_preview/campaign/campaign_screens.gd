@@ -27,7 +27,7 @@ func render(content: Control, screen: String) -> void:
 
 
 func _menu() -> void:
-	UI.text(_content, "REVERT IT", Rect2(0, 0, 520, 90), 72, UI.INK)
+	UI.text(_content, "REWRITE IT", Rect2(0, 0, 520, 90), 72, UI.INK)
 	UI.text(_content, "TARİHSEL AFET STRATEJİSİ", Rect2(0, 104, 520, 28), 18, UI.GOLD)
 	_line(Rect2(0, 146, 500, 2), UI.GOLD)
 	var automatic: Dictionary = _shell.saves.slot_summaries()[0]
