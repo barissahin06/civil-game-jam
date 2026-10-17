@@ -3,11 +3,13 @@
 `core/scenes/main.tscn` önce 1,5 saniyelik Godot logosunu, ardından 3,5 saniyelik
 Pixel Spark logosunu gösterir. Motorun sabit açılış resmi yerine siyah yükleme zemini
 kullanılır; Godot logosunu da sahne gösterdiği için sönme efekti uygulanabilir.
-Ardından siyah fonda beyaz yazılı afet hafızası ekranı 15 saniye gösterilir ve ana menü açılır.
-Her üç ekran yalnız uygulama başlangıcında gösterilir.
+Ardından siyah fonda beyaz yazılı afet hafızası ekranı 15 saniye, sonrasında **Rewrite it**
+başlık logosu 3,5 saniye gösterilir ve ana menü açılır.
+Her dört ekran yalnız uygulama başlangıcında gösterilir.
 `core/scripts/opening.gd` geçişleri yönetir. Logo ve yazılar ilk yarım saniyede belirir;
 her ekranın son yarım saniyesinde sönme olur. Bu efektler toplam sürelere dahildir.
-Metin ekranı sönerken ana menü görünür. Ayrı bir ekran başlığı gösterilmez.
+Metin ekranı siyah zemine söner; ardından başlık logosu belirir. Başlık ekranı sönerken
+ana menü görünür. Metin ekranında ayrı bir başlık gösterilmez.
 Godot görseli [Godot 4.6.3 kaynak deposundan](https://github.com/godotengine/godot/blob/4.6.3-stable/main/splash.png)
 alınmıştır; `assets/branding/godot_splash.png` dosyasıdır. Godot MIT lisansı ve logo
 [CC BY 4.0](https://godotengine.org/press/) koşulları geçerlidir.
@@ -58,3 +60,8 @@ Sahnedeki AtlasTexture, görselin görünür `Rect2(541, 226, 203, 263)` bölges
 siyah kenar boşlukları hizalamaya katılmaz. Logo 1920×1080 mantıksal viewport'ta
 304,5×394,5 boyutuyla, önceki ölçeği korunarak yatayda ortalanır ve merkezden 20 piksel
 yukarı yerleştirilir.
+
+Rewrite it başlığının düzenlenebilir kaynağı
+`art/production/ui/title_logo/rewrite_it.aseprite` dosyasıdır. Aynı klasördeki `export.lua`,
+`assets/branding/rewrite_it.png` runtime çıktısını üretir. Logo 1152×432 native boyutuyla,
+nearest filtreyle 1920×1080 viewport'un merkezinde siyah fonda gösterilir.

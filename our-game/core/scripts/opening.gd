@@ -2,6 +2,7 @@ extends Control
 
 const LOGO_SECONDS: float = 3.5
 const INTRO_SECONDS: float = 15.0
+const TITLE_SECONDS: float = 3.5
 const FADE_SECONDS: float = 0.5
 const GODOT_SECONDS: float = 1.5
 
@@ -14,6 +15,9 @@ func _ready() -> void:
 	var intro: ColorRect = $Intro
 	var message: Label = $Intro/Message
 	var source: Label = $Intro/Source
+	var title_splash: ColorRect = $TitleSplash
+	var title_logo: TextureRect = $TitleSplash/Logo
+	title_logo.modulate.a = 0.0
 	logo.modulate.a = 0.0
 	message.modulate.a = 0.0
 	source.modulate.a = 0.0
@@ -37,3 +41,9 @@ func _ready() -> void:
 	intro_tween.tween_property(intro, "modulate:a", 0.0, FADE_SECONDS)
 	await intro_tween.finished
 	intro.queue_free()
+	var title_tween := create_tween()
+	title_tween.tween_property(title_logo, "modulate:a", 1.0, FADE_SECONDS)
+	title_tween.tween_interval(TITLE_SECONDS - 2.0 * FADE_SECONDS)
+	title_tween.tween_property(title_splash, "modulate:a", 0.0, FADE_SECONDS)
+	await title_tween.finished
+	title_splash.queue_free()

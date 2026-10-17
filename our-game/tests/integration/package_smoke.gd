@@ -37,7 +37,7 @@ func _run() -> void:
 	await process_frame
 	await process_frame
 	var shell: Node = main.get_node("MainPreview")
-	await main.get_node("Intro").tree_exited
+	await main.get_node("TitleSplash").tree_exited
 	var isolated_store: RefCounted = shell.get("saves")
 	isolated_store.set("slot_directory", "user://test-revert-package-empty-slots")
 	var sim: Variant = shell.get("sim")

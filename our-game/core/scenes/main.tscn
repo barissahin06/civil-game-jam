@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="PackedScene" path="res://ui_preview/scenes/main_preview.tscn" id="1_preview"]
 [ext_resource type="Texture2D" path="res://assets/branding/pixel_spark.png" id="2_logo"]
 [ext_resource type="FontFile" path="res://ui_preview/assets/afet_pixel.fnt" id="3_font"]
 [ext_resource type="Script" path="res://core/scripts/opening.gd" id="4_opening"]
 [ext_resource type="Texture2D" path="res://assets/branding/godot_splash.png" id="5_godot"]
+[ext_resource type="Texture2D" path="res://assets/branding/rewrite_it.png" id="6_title"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pixel_spark"]
 atlas = ExtResource("2_logo")
@@ -21,6 +22,34 @@ script = ExtResource("4_opening")
 
 [node name="MainPreview" parent="." instance=ExtResource("1_preview")]
 layout_mode = 1
+
+[node name="TitleSplash" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Logo" type="TextureRect" parent="TitleSplash"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -216.0
+offset_right = 576.0
+offset_bottom = 216.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_title")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Intro" type="ColorRect" parent="."]
 layout_mode = 1
