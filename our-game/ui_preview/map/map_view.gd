@@ -1,6 +1,8 @@
 extends Control
 
 signal area_selected(area_id: int)
+signal tools_toggled(expanded: bool)
+signal crisis_shake_changed(offset: Vector2)
 
 const UI := preload("res://ui_preview/shared/ui_kit.gd")
 const MAPS: Array[Texture2D] = [
@@ -10,9 +12,26 @@ const MAPS: Array[Texture2D] = [
 	preload("res://ui_preview/assets/map-damage.png"),
 ]
 const HITMASK := preload("res://ui_preview/assets/map-hitmask.png")
+const TERRAIN := preload("res://ui_preview/assets/map-terrain.png")
 const NATIVE_SIZE := Vector2i(3072, 1728)
 const DEFAULT_ORIGIN := Vector2(-624, -300)
 const FEEDBACK_SECONDS := 0.30
+const CRISIS_COLOR := Color("b55655")
+const DATA_LOW := Color("385c78")
+const DATA_MIDDLE := Color("7eaea0")
+const DATA_HIGH := Color("d3b782")
+# Interior colors of the seven regions in the native map-general export.
+const REGION_COLORS := {
+	"Marmara": Color("648b9e"),
+	"Ege": Color("6d9a89"),
+	"Akdeniz": Color("a47f6e"),
+	"İç Anadolu": Color("a59b7c"),
+	"Karadeniz": Color("67968e"),
+	"Doğu Anadolu": Color("8b86a3"),
+	"Güneydoğu Anadolu": Color("aa9569"),
+}
+# Dense neighboring labels need separate badge positions at the native camera scale.
+const PREPARATION_OFFSETS := {31: Vector2(-20, -44), 35: Vector2(60, -26)}
 const SHAKE_OFFSETS: Array[Vector2] = [
 	Vector2(-3, 2),
 	Vector2(3, -2),
@@ -24,15 +43,35 @@ const SHAKE_OFFSETS: Array[Vector2] = [
 ]
 
 var selected_overlay: int = 0
+var tools_expanded: bool = false
+var _toolbar: Panel
+var _tools_drawer: Control
+var _legend_panel: Panel
+var _tools_toggle: Button
 var _map_clip: Control
 var _map_legend: Label
+var _legend_description: Label
+var _legend_values: Array[Label] = []
+var _legend_swatches: Array[ColorRect] = []
+var _region_labels: Array[Label] = []
+var _region_swatches: Array[ColorRect] = []
+var _legend_readout: Label
+var _region_note: Label
+var _crisis_key: Label
+var _crisis_swatch: ColorRect
+var _overlay_data: Dictionary = {}
+var _hovered_area: int = 0
 var _map_image: TextureRect
+var _terrain: TextureRect
 var _selection: TextureRect
 var _hit_image: Image
 var _drag_start: Vector2
 var _map_origin: Vector2
 var _dragging: bool = false
 var _zoom: int = 1
+var _zoom_in: Button
+var _zoom_out: Button
+var _zoom_label: Label
 var _layer_buttons: Array[Button] = []
 var _shell: Control
 var _heatmap: TextureRect
@@ -41,6 +80,11 @@ var _palette: ImageTexture
 var _crisis_flash: TextureRect
 var _feedback_elapsed: float = FEEDBACK_SECONDS
 var _shake_enabled: bool = true
+var _bound_sim: Simulation
+var _marker_nodes: Dictionary = {}
+var _shipment_nodes: Dictionary = {}
+var _previous_damage: Dictionary = {}
+var _recovery_notices: Dictionary = {}
 
 
 func setup(shell: Control) -> void:
@@ -64,6 +108,7 @@ func _ready() -> void:
 	_map_clip.clip_contents = true
 	_map_clip.mouse_default_cursor_shape = Control.CURSOR_MOVE
 	_map_clip.gui_input.connect(_on_map_input)
+	_map_clip.mouse_exited.connect(_clear_readout)
 	_map_clip.set_drag_forwarding(Callable(), _can_map_drop, _map_drop)
 	add_child(_map_clip)
 	_map_image = TextureRect.new()
@@ -75,11 +120,29 @@ func _ready() -> void:
 	_heatmap.texture = HITMASK
 	_heatmap.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var shader := Shader.new()
-	shader.code = "shader_type canvas_item; uniform sampler2D palette: filter_nearest; void fragment(){ float id = floor(texture(TEXTURE, UV).r * 255.0 + 0.5); COLOR = texture(palette, vec2((id + 0.5) / 82.0, 0.5)); }"
+	shader.code = """
+shader_type canvas_item;
+uniform sampler2D palette: filter_nearest;
+void fragment() {
+	float id = floor(texture(TEXTURE, UV).r * 255.0 + 0.5);
+	vec4 tint = texture(palette, vec2((id + 0.5) / 82.0, 0.5));
+	vec2 pixel = TEXTURE_PIXEL_SIZE;
+	bool edge = texture(TEXTURE, UV + vec2(pixel.x, 0.0)).r != texture(TEXTURE, UV).r
+		|| texture(TEXTURE, UV + vec2(0.0, pixel.y)).r != texture(TEXTURE, UV).r;
+	COLOR = vec4(edge ? tint.rgb * 0.65 : tint.rgb, tint.a);
+}
+"""
 	var material := ShaderMaterial.new()
 	material.shader = shader
 	_heatmap.material = material
 	_map_image.add_child(_heatmap)
+	_terrain = TextureRect.new()
+	_terrain.name = "TerrainDetails"
+	_terrain.texture = TERRAIN
+	assert(_terrain.texture.get_size() == Vector2(NATIVE_SIZE))
+	_terrain.size = Vector2(NATIVE_SIZE)
+	_terrain.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_map_image.add_child(_terrain)
 	_selection = TextureRect.new()
 	_selection.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_map_image.add_child(_selection)
@@ -97,26 +160,83 @@ func _ready() -> void:
 	_crisis_flash.modulate = Color(0.95, 0.12, 0.08, 0.0)
 	_crisis_flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_crisis_flash)
-	reset_map()
-	UI.panel(self, Rect2(1638, 930, 254, 34))
-	_map_legend = UI.text(self, "BÖLGE RENKLERİ", Rect2(1650, 934, 230, 26), 18, UI.MUTED)
-	UI.panel(self, Rect2(440, 966, 246, 48))
-	UI.panel(self, Rect2(1068, 966, 824, 48))
-	UI.button(self, "SIFIRLA", Rect2(452, 974, 124, 32), reset_map)
-	UI.button(self, "+", Rect2(584, 974, 42, 32), _zoom_map.bind(1, Vector2(960, 540)))
-	UI.button(self, "-", Rect2(634, 974, 42, 32), _zoom_map.bind(-1, Vector2(960, 540)))
-	for index in range(4):
-		var title: String = ["GENEL", "HAZIRLIK", "LOJİSTİK", "HASAR/ONARIM"][index]
-		_layer_buttons.append(
-			UI.button(
-				self,
-				title,
-				Rect2(1080 + index * 200, 974, 190, 32),
-				select_overlay.bind(index),
-				index == 0
-			)
+	_toolbar = UI.panel(self, Rect2(16, 1030, 400, 42))
+	_toolbar.name = "MapToolbar"
+	_tools_toggle = UI.button(_toolbar, "", Rect2(8, 4, 144, 34), _toggle_tools)
+	_tools_toggle.name = "MapToolsToggle"
+	_tools_toggle.toggle_mode = true
+	UI.button(_toolbar, "SIFIRLA", Rect2(158, 4, 96, 34), reset_map)
+	_zoom_out = UI.button(
+		_toolbar, "-", Rect2(260, 4, 34, 34), _zoom_map.bind(-1, Vector2(960, 540))
+	)
+	_zoom_label = UI.text(_toolbar, "", Rect2(300, 4, 44, 34))
+	_zoom_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_zoom_label.tooltip_text = "Harita yakınlığı: 1× - 3×"
+	_zoom_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	_zoom_in = UI.button(_toolbar, "+", Rect2(350, 4, 34, 34), _zoom_map.bind(1, Vector2(960, 540)))
+	_tools_drawer = Control.new()
+	_tools_drawer.position = Vector2(416, 0)
+	_tools_drawer.size = Vector2(838, 42)
+	_tools_drawer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_toolbar.add_child(_tools_drawer)
+	_legend_panel = UI.panel(_toolbar, Rect2(416, -122, 838, 112))
+	_map_legend = UI.text(_legend_panel, "", Rect2(12, 8, 454, 22), 18, UI.GOLD)
+	_legend_description = UI.text(_legend_panel, "", Rect2(12, 34, 454, 22), 18, UI.MUTED)
+	_region_note = UI.text(_legend_panel, "21 MERKEZ", Rect2(264, 34, 190, 22), 18, UI.MUTED)
+	_crisis_swatch = _swatch(_legend_panel, Rect2(462, 10, 18, 18), CRISIS_COLOR)
+	_crisis_key = UI.text(
+		_legend_panel, "! KIRMIZI / AKTİF KRİZ", Rect2(482, 8, 344, 22), 18, UI.INK
+	)
+	for index: int in range(3):
+		_legend_swatches.append(
+			_swatch(_legend_panel, Rect2(12 + index * 268, 62, 18, 18), _data_color(index / 2.0))
 		)
-	refresh()
+		_legend_values.append(UI.text(_legend_panel, "", Rect2(38 + index * 268, 60, 240, 22)))
+	var region_names := REGION_COLORS.keys()
+	for index: int in range(region_names.size()):
+		var column := (index - 1) % 3 if index > 0 else 0
+		var row := 60 + int((index - 1) / 3) * 24 if index > 0 else 34
+		var x := 12 + column * 268
+		var region: String = region_names[index]
+		_region_swatches.append(
+			_swatch(_legend_panel, Rect2(x, row + 2, 18, 18), REGION_COLORS[region])
+		)
+		_region_labels.append(
+			UI.text(_legend_panel, region.to_upper(), Rect2(x + 26, row, 240, 22))
+		)
+	_legend_readout = UI.text(_legend_panel, "", Rect2(12, 84, 814, 22), 18, UI.INK)
+	for index in range(4):
+		var title: String = ["BÖLGELER", "HAZIRLIK", "YARDIM STOĞU", "HASAR"][index]
+		var button := UI.button(
+			_tools_drawer, title, Rect2(12 + index * 206, 4, 196, 34), select_overlay.bind(index)
+		)
+		button.toggle_mode = true
+		button.add_theme_color_override("font_pressed_color", UI.GOLD)
+		_layer_buttons.append(button)
+	reset_map()
+	select_overlay(selected_overlay)
+
+
+func _toggle_tools() -> void:
+	tools_expanded = not tools_expanded
+	_sync_tools()
+	tools_toggled.emit(tools_expanded)
+
+
+func _sync_tools() -> void:
+	_toolbar.size.x = 1254 if tools_expanded else 400
+	_tools_drawer.visible = tools_expanded
+	_legend_panel.visible = tools_expanded
+	_tools_toggle.set_pressed_no_signal(tools_expanded)
+	_tools_toggle.text = (
+		["BÖLGELER", "HAZIRLIK", "STOK", "HASAR"][selected_overlay]
+		+ (" -" if tools_expanded else " +")
+	)
+	_tools_toggle.tooltip_text = (
+		("Harita görünümlerini kapat. " if tools_expanded else "Harita görünümlerini sağa aç. ")
+		+ "Seçili: "
+		+ ["Bölgeler", "Hazırlık", "Yardım Stoğu", "Hasar"][selected_overlay]
+	)
 
 
 func play_crisis_feedback() -> void:
@@ -124,13 +244,18 @@ func play_crisis_feedback() -> void:
 	_update_crisis_feedback()
 
 
+func reset_crisis_feedback() -> void:
+	_feedback_elapsed = FEEDBACK_SECONDS
+	_update_crisis_feedback()
+
+
 func set_shake_enabled(enabled: bool) -> void:
 	_shake_enabled = enabled
-	if is_instance_valid(_map_clip) and not enabled:
-		_map_clip.position = Vector2.ZERO
+	_update_crisis_feedback()
 
 
 func _process(delta: float) -> void:
+	_update_shipments(delta)
 	if _feedback_elapsed < FEEDBACK_SECONDS:
 		_feedback_elapsed = minf(FEEDBACK_SECONDS, _feedback_elapsed + maxf(0.0, delta))
 		_update_crisis_feedback()
@@ -141,94 +266,325 @@ func _update_crisis_feedback() -> void:
 		return
 	var intensity := 1.0 - _feedback_elapsed / FEEDBACK_SECONDS
 	_crisis_flash.modulate.a = intensity * 0.18
-	# Only the map viewport moves; persistent camera coordinates and fixed controls stay put.
+	# Map and HUD share the feedback offset without moving persistent camera coordinates.
 	var index := mini(SHAKE_OFFSETS.size() - 1, int(_feedback_elapsed / 0.04))
 	_map_clip.position = (
 		SHAKE_OFFSETS[index] if _shake_enabled and intensity > 0.0 else Vector2.ZERO
 	)
+	crisis_shake_changed.emit(_map_clip.position)
 
 
 func select_overlay(index: int) -> void:
-	selected_overlay = index
-	_map_legend.text = ["BÖLGE RENKLERİ", "HAZIRLIK DÜZEYİ", "YARDIM STOĞU", "HASAR DÜZEYİ"][index]
+	selected_overlay = clampi(index, 0, 3)
+	_sync_tools()
 	_map_image.texture = MAPS[0]
+	_terrain.visible = selected_overlay == 0
 	for button_index in range(_layer_buttons.size()):
-		_layer_buttons[button_index].add_theme_stylebox_override(
-			"normal", UI.style(Rect2(112 if button_index == index else 0, 56, 48, 32))
-		)
+		var button := _layer_buttons[button_index]
+		button.set_pressed_no_signal(button_index == selected_overlay)
+		var ink := UI.GOLD if button_index == selected_overlay else UI.INK
+		button.add_theme_color_override("font_color", ink)
+		button.add_theme_color_override("font_hover_color", ink)
 	refresh()
 
 
 func refresh() -> void:
 	if not is_instance_valid(_markers) or _shell == null:
 		return
-	UI.clear(_markers)
 	var sim: Simulation = _shell.sim
+	_overlay_data = sim.map_overlay(selected_overlay)
+	_update_legend()
+	if _bound_sim != sim:
+		UI.clear(_markers)
+		_marker_nodes.clear()
+		_shipment_nodes.clear()
+		_previous_damage.clear()
+		_recovery_notices.clear()
+		_bound_sim = sim
 	var palette := Image.create(82, 1, false, Image.FORMAT_RGBA8)
 	palette.fill(Color.TRANSPARENT)
 	for area: ServiceArea in sim.areas.values():
-		var value := 0.0
-		match selected_overlay:
-			1:
-				for kind: String in ["earthquake", "flood", "fire", "avalanche", "landslide"]:
-					value += sim.projects.preparedness(area.id, kind) / 500.0
-			2:
-				value = clampf(area.stock / 160.0, 0.0, 1.0)
-			3:
-				value = 1.0 - area.damage / 100.0
 		if selected_overlay > 0:
-			var tint := Color("ac6158").lerp(UI.TEAL, value)
-			tint.a = 0.68
-			palette.set_pixel(area.id, 0, tint)
+			palette.set_pixel(area.id, 0, _data_color(float(_overlay_data.areas[area.id].ratio)))
+		if (
+			not is_zero_approx(float(_previous_damage.get(area.id, area.damage)))
+			and is_zero_approx(area.damage)
+		):
+			var notice := UI.text(
+				_markers,
+				"ONARILDI",
+				Rect2(_native_point(area) + Vector2(-48, -70), Vector2(144, 26)),
+				18,
+				UI.TEAL
+			)
+			_recovery_notices[area.id] = {"node": notice, "time": 3.0}
+		_previous_damage[area.id] = area.damage
+	var wanted: Array[String] = []
 	for target: Dictionary in sim.crises.active:
 		var area: ServiceArea = sim.areas[int(target.area_id)]
-		palette.set_pixel(area.id, 0, Color(0.85, 0.22, 0.15, 0.7))
-		var marker: Button = UI.button(
-			_markers,
-			"!",
-			Rect2(_native_point(area) + Vector2(-14, -44), Vector2(28, 34)),
-			_open_crisis.bind(target.id)
-		)
-		marker.tooltip_text = area.name + ": " + target.name
-		marker.set_drag_forwarding(
-			Callable(), _can_marker_drop.bind(target.id), _marker_drop.bind(target.id)
-		)
-	for id: int in sim.bubbles:
-		var bubble: Button = UI.button(
-			_markers,
-			"+5",
-			Rect2(_native_point(sim.areas[id]) + Vector2(18, -42), Vector2(54, 34)),
-			sim.collect_bubble.bind(id)
-		)
-		bubble.tooltip_text = "Bilinç puanı topla"
-	for shipment: Dictionary in sim.logistics.shipments:
-		if shipment.state in ["outbound", "returning"]:
-			var a: Vector2 = _native_point(sim.areas[int(shipment.source)])
-			var b: Vector2 = _native_point(sim.areas[int(shipment.target)])
-			if shipment.state == "returning":
-				var swap := a
-				a = b
-				b = swap
-			var line := Line2D.new()
-			line.add_point(a)
-			line.add_point(b)
-			line.width = 2.0
-			line.default_color = UI.GOLD
-			_markers.add_child(line)
-			var progress := (
-				1.0
-				- clampf(
-					float(int(shipment.arrival) - sim.clock.day) / maxi(1, int(shipment.days)),
-					0.0,
-					1.0
-				)
+		palette.set_pixel(area.id, 0, CRISIS_COLOR)
+		var key: String = "crisis:" + target.id
+		wanted.append(key)
+		if not _marker_nodes.has(key):
+			var marker := UI.button(
+				_markers,
+				"!",
+				Rect2(_native_point(area) + Vector2(-14, -44), Vector2(28, 34)),
+				_open_crisis.bind(target.id)
 			)
-			UI.icon(_markers, 3, a.lerp(b, progress), UI.GOLD)
+			marker.tooltip_text = area.name + ": " + target.name
+			marker.set_drag_forwarding(
+				Callable(), _can_marker_drop.bind(target.id), _marker_drop.bind(target.id)
+			)
+			_marker_nodes[key] = marker
+		var feedback := sim.crisis_feedback(target.id)
+		_marker_nodes[key].tooltip_text = (
+			"%s: %s\nSahada %d ekip / %d yardım\nYolda %d ekip / %d yardım"
+			% [
+				area.name,
+				target.name,
+				feedback.teams.field,
+				feedback.stock.field,
+				feedback.teams.on_time,
+				feedback.stock.on_time
+			]
+		)
+		_marker_nodes[key].modulate = UI.TEAL if int(target.teams) > 0 else Color.WHITE
+		_marker_nodes[key].add_theme_color_override("font_color", UI.GOLD)
+	var planning: bool = (
+		is_instance_valid(_shell.preparation_panel) and _shell.preparation_panel.visible
+	)
+	_map_clip.mouse_default_cursor_shape = (
+		Control.CURSOR_POINTING_HAND if planning else Control.CURSOR_MOVE
+	)
+	if planning:
+		for area: Dictionary in sim.preparation_plan().areas:
+			var key := "plan:%d" % int(area.area_id)
+			wanted.append(key)
+			if not _marker_nodes.has(key):
+				_marker_nodes[key] = UI.button(
+					_markers,
+					"+",
+					Rect2(
+						(
+							_native_point(sim.areas[int(area.area_id)])
+							+ Vector2(PREPARATION_OFFSETS.get(int(area.area_id), Vector2(26, -54)))
+						),
+						Vector2(42, 34)
+					),
+					area_selected.emit.bind(int(area.area_id))
+				)
+			var marker: Button = _marker_nodes[key]
+			marker.text = str(area.planned_count) if int(area.planned_count) > 0 else "+"
+			marker.modulate = (
+				UI.GOLD if int(area.queued_count) > 0 else UI.MUTED if area.busy else UI.TEAL
+			)
+			marker.tooltip_text = (
+				"%s\nStok: %d ekip / %d yardım\nSırada: %d ekip / %d yardım emri\nSayı: aktif + sıradaki hazırlık işleri.\nSeçili eylemi eklemek için tıkla."
+				% [area.name, area.teams, area.stock, area.queued_teams, area.queued_stock]
+			)
+	for id: int in [] if planning else sim.bubbles:
+		var key := "bubble:%d" % id
+		wanted.append(key)
+		if not _marker_nodes.has(key):
+			var bubble := UI.button(
+				_markers,
+				"+5",
+				Rect2(_native_point(sim.areas[id]) + Vector2(18, -42), Vector2(54, 34)),
+				sim.collect_bubble.bind(id)
+			)
+			bubble.tooltip_text = "Bilinç puanı topla"
+			_marker_nodes[key] = bubble
+	for key: String in _marker_nodes.keys():
+		if not key in wanted:
+			_markers.remove_child(_marker_nodes[key])
+			_marker_nodes[key].queue_free()
+			_marker_nodes.erase(key)
+	_sync_shipments()
 	if _palette == null:
 		_palette = ImageTexture.create_from_image(palette)
 	else:
 		_palette.update(palette)
 	(_heatmap.material as ShaderMaterial).set_shader_parameter("palette", _palette)
+	_update_readout()
+
+
+static func _data_color(ratio: float) -> Color:
+	return (
+		DATA_LOW.lerp(DATA_MIDDLE, ratio * 2.0)
+		if ratio <= 0.5
+		else DATA_MIDDLE.lerp(DATA_HIGH, (ratio - 0.5) * 2.0)
+	)
+
+
+func _swatch(parent: Control, box: Rect2, color: Color) -> ColorRect:
+	var result := ColorRect.new()
+	result.position = box.position
+	result.size = box.size
+	result.color = color
+	result.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(result)
+	return result
+
+
+func _update_legend() -> void:
+	var maximum: int = int(_overlay_data.maximum)
+	_map_legend.text = [
+		"BÖLGELER / RİSK GÖSTERMEZ",
+		"ORTALAMA AFET HAZIRLIĞI",
+		"MERKEZDEKİ YARDIM STOĞU",
+		"ALTYAPIDAKİ HASAR"
+	][selected_overlay]
+	_legend_description.text = [
+		"",
+		"5 AFETİN ORT. / 0-100 PUAN",
+		"%d+ RENK TAVANI / KAPASİTE DEĞİL" % maximum,
+		"0-100 YÜZDE / YÜKSEK = DAHA HASARLI"
+	][selected_overlay]
+	var captions: Array = [
+		[],
+		["0 / DÜŞÜK", "50 / ORTA", "100 / YÜKSEK"],
+		["0 / BOŞ", "%d YARDIM" % (maximum / 2), "%d+ YARDIM" % maximum],
+		["0% / HASAR YOK", "50% HASAR", "100% / AĞIR HASAR"]
+	]
+	for index: int in range(3):
+		_legend_values[index].visible = selected_overlay > 0
+		_legend_swatches[index].visible = selected_overlay > 0
+		if selected_overlay > 0:
+			_legend_values[index].text = captions[selected_overlay][index]
+	for index: int in range(_region_labels.size()):
+		_region_labels[index].visible = selected_overlay == 0
+		_region_swatches[index].visible = selected_overlay == 0
+	_legend_description.visible = selected_overlay > 0
+	_region_note.visible = selected_overlay == 0
+	_legend_readout.visible = selected_overlay > 0
+
+
+func _clear_readout() -> void:
+	_hovered_area = 0
+	_update_readout()
+
+
+func _update_readout() -> void:
+	if not is_instance_valid(_legend_readout):
+		return
+	_legend_readout.text = "MERKEZİN ÜZERİNE GEL: GERÇEK DEĞERİ GÖR"
+	if selected_overlay == 0 or not _overlay_data.get("areas", {}).has(_hovered_area):
+		return
+	var area: Dictionary = _overlay_data.areas[_hovered_area]
+	var value := (
+		str(int(area.value))
+		if selected_overlay == 2
+		else ("%.1f/100" % area.value).replace(".", ",")
+	)
+	_legend_readout.text = (
+		"%s / %s: %s"
+		% [
+			String(area.name).to_upper(),
+			["", "HAZIRLIK", "YARDIM", "HASAR"][selected_overlay],
+			value
+		]
+	)
+
+
+func _sync_shipments() -> void:
+	var wanted: Array[int] = []
+	for shipment: Dictionary in _shell.sim.logistics.shipments:
+		if not shipment.state in ["outbound", "returning", "deployed"]:
+			continue
+		var id: int = shipment.id
+		wanted.append(id)
+		var a: Vector2 = _native_point(_shell.sim.areas[int(shipment.source)])
+		var b: Vector2 = _native_point(_shell.sim.areas[int(shipment.target)])
+		if shipment.state == "returning":
+			var swap := a
+			a = b
+			b = swap
+		if not _shipment_nodes.has(id):
+			var group := Control.new()
+			group.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			_markers.add_child(group)
+			var line := Line2D.new()
+			line.width = 2.0
+			group.add_child(line)
+			var icon := TextureRect.new()
+			icon.texture = UI.atlas(UI.ICONS, Rect2(96, 0, 32, 32))
+			icon.mouse_filter = Control.MOUSE_FILTER_PASS
+			group.add_child(icon)
+			var label := UI.text(group, "", Rect2(a + Vector2(-36, 28), Vector2(196, 26)), 18)
+			label.hide()
+			icon.mouse_entered.connect(label.show)
+			icon.mouse_exited.connect(label.hide)
+			_shipment_nodes[id] = {
+				"group": group, "line": line, "icon": icon, "label": label, "target": a
+			}
+			icon.position = a
+		var view: Dictionary = _shipment_nodes[id]
+		view.shipment = shipment
+		view.origin = a
+		view.destination = b
+		view.line.points = PackedVector2Array([a, b])
+		view.line.visible = shipment.state != "deployed"
+		view.icon.visible = shipment.state != "deployed"
+		if shipment.state == "deployed":
+			view.label.hide()
+		var tint := UI.TEAL if shipment.state in ["returning", "deployed"] else UI.GOLD
+		view.line.default_color = tint
+		view.icon.modulate = tint
+		var progress: float = _shell.sim.shipment_progress(shipment)
+		view.target = b if shipment.state == "deployed" else a.lerp(b, progress)
+		# A loaded/paused view must already show the actual day, not the departure point.
+		if _shell.sim.paused or shipment.state == "deployed":
+			view.icon.position = view.target
+			view.label.position = view.target + Vector2(-36, 28)
+		view.label.text = (
+			"%s %d %s"
+			% [
+				(
+					"GÖREVDE"
+					if shipment.state == "deployed"
+					else "DÖNÜŞ" if shipment.state == "returning" else "YOLDA"
+				),
+				shipment.amount,
+				"EKİP" if shipment.kind == "team" else "YARDIM"
+			]
+		)
+		view.label.modulate = tint
+		view.icon.tooltip_text = (
+			"%s > %s\n%s"
+			% [
+				_shell.sim.areas[int(shipment.source)].name,
+				_shell.sim.areas[int(shipment.target)].name,
+				view.label.text
+			]
+		)
+	for id: int in _shipment_nodes.keys():
+		if not id in wanted:
+			_markers.remove_child(_shipment_nodes[id].group)
+			_shipment_nodes[id].group.queue_free()
+			_shipment_nodes.erase(id)
+
+
+func _update_shipments(delta: float) -> void:
+	if _shell == null or _bound_sim != _shell.sim:
+		return
+	if not _shell.sim.paused:
+		for view: Dictionary in _shipment_nodes.values():
+			if view.shipment.state != "deployed":
+				view.target = view.origin.lerp(
+					view.destination, _shell.sim.shipment_progress(view.shipment)
+				)
+			view.icon.position = view.icon.position.lerp(
+				view.target, minf(1.0, delta * 12.0 * _shell.sim.speed)
+			)
+			view.label.position = view.icon.position + Vector2(-36, 28)
+	for id: int in _recovery_notices.keys():
+		var notice: Dictionary = _recovery_notices[id]
+		notice.time -= delta
+		if float(notice.time) <= 0.0:
+			_markers.remove_child(notice.node)
+			notice.node.queue_free()
+			_recovery_notices.erase(id)
 
 
 func _native_point(area: ServiceArea) -> Vector2:
@@ -239,9 +595,7 @@ func _native_point(area: ServiceArea) -> Vector2:
 
 
 func _open_crisis(id: String) -> void:
-	for index in range(_shell.sim.crises.active.size()):
-		if _shell.sim.crises.active[index].id == id:
-			_shell.crisis.crisis_index = index
+	_shell.crisis.select_crisis(id)
 	_shell.show_screen("crisis")
 
 
@@ -286,6 +640,7 @@ func reset_map() -> void:
 	_map_image.scale = Vector2.ONE
 	_map_image.position = DEFAULT_ORIGIN
 	_constrain_map()
+	_update_zoom_controls()
 
 
 func _zoom_map(direction: int, focus: Vector2) -> void:
@@ -297,6 +652,13 @@ func _zoom_map(direction: int, focus: Vector2) -> void:
 	_map_image.scale = Vector2.ONE * _zoom
 	_map_image.position = (focus - source_point * _zoom).round()
 	_constrain_map()
+	_update_zoom_controls()
+
+
+func _update_zoom_controls() -> void:
+	_zoom_label.text = "%d×" % _zoom
+	_zoom_out.disabled = _zoom == 1
+	_zoom_in.disabled = _zoom == 3
 
 
 func _constrain_map() -> void:
@@ -328,3 +690,11 @@ func _on_map_input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion and _dragging:
 		_map_image.position = (_map_origin + event.position - _drag_start).round()
 		_constrain_map()
+	if event is InputEventMouseMotion or event is InputEventMouseButton:
+		var native: Vector2 = ((event.position - _map_image.position) / float(_zoom)).floor()
+		_hovered_area = (
+			roundi(_hit_image.get_pixelv(Vector2i(native)).r * 255.0)
+			if Rect2(Vector2.ZERO, Vector2(NATIVE_SIZE)).has_point(native)
+			else 0
+		)
+		_update_readout()

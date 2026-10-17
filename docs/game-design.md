@@ -78,7 +78,14 @@ yükleme hem ana menüden hem oyun içinden yapılabilir. Yuva; oyun tarihi, ba�
 ve son yazılma zamanını gösterir. Boş/bozuk kayıtlar yüklemeye kapalıdır. Manuel kaydın
 üzerine yazma ve oyun içinden kayıt yükleme onay ister. Yeni kampanya otomatik kaydı
 değiştirir; üç manuel yuvaya dokunmaz. Sürüm 1 içerik doğrulaması ve güvenli dosya
-yenilemesi korunur. Ayarlar tam ekran ve harita sarsıntısını yönetir.
+yenilemesi korunur. Oyun ilk açılışta tam ekran başlar. Ayarlardan Tam Ekran,
+Kenarlıksız veya Pencere seçilir; sonraki açılış son tercihi kullanır. F11 pencere ile
+seçili tam ekran türü arasında geçer. Pencere modunun başlangıç ölçüsü 1600×900,
+mantıksal UI ölçüsü 1920×1080'dir. Harita sarsıntısı ayrı ayardır.
+Esc oyun içinde menüyü açar; tekrar Esc veya Devam Et önceki ekrana döndürür.
+Takvim menü öncesi çalışıyorsa devam eder, zaten duraklatılmışsa durur.
+Ayarlar/kayıt/yükleme/menüden açılan rehber ekranında Esc önce duraklatma menüsüne döner.
+Okunmamış gazete ve raporlar bu geçişte korunur; ana menüde Esc oyunu kapatmaz.
 
 ## Kaynaklar ve ekonomi
 
@@ -109,6 +116,19 @@ eşit öncelikte eski başlayan önce ödenir. Ödenemeyen taksit o ay ilerleme 
 - Manuel duraklatma ilerlemeyi korur ve aktif slotu başka işe açar.
   Yeniden başlatırken kapasite tekrar kontrol edilir. İptalde ödenen taksitler iade edilmez.
 - Tamamlama, ödeme ve etki uygulama aynı proje için yalnız bir kez gerçekleşir.
+
+Üst menüde **Hazırlık Planla**, solda haritayı açık bırakan emir panelini açar.
+Oyuncu **Ekip Kur** veya **Yardım Hazırla** seçtikten sonra yönetim merkezlerine tıklar;
+her tıklama bir iş ekler, seçili eylem değişmez. Aynı merkeze tekrar tıklanabilir.
+Şehirdeki yerel slot boşsa iş hemen başlar, doluysa şehir bazında eklenme sırasını bekler.
+Farklı merkezler mevcut ortak hazineyle paralel çalışır. Ekip/yardım maliyeti, süre,
+çıktı miktarı ve bakım dengesi değişmez. Sıradaki işler henüz ödeme yapmaz.
+Bir iş aylık turda tamamlandığında sıradaki iş aktifleşir; aynı ay ikinci kez ödeme/ilerleme olmaz.
+Panel stokları, çalışan işi, bekleyen ekip/yardım emir sayılarını ve ulusal proje taksitini gösterir.
+Merkez satırındaki **−** son bekleyen emri ücretsiz kaldırır; başlamış işler Projeler'den yönetilir.
+Duraklatılmış aynı tür iş sıra başını engelliyorsa açıklama gösterilir; devam veya iptal gerekir.
+**Esc** emir verme modundan çıkıp duraklatma menüsünü açar; paneldeki **×** veya başka ekran açmak da emir verme modundan çıkarır.
+Harita taşıma/yakınlaştırma sırasında emir eklenmez. Normal şehir paneli ve sevkiyat akışı korunur.
 
 Araştırma ekranı bağlantılı ağaçtır. Sekmeler:
 
@@ -219,6 +239,25 @@ Bu değerler tarihsel gerçeğe ilişkin kesin bir alternatif tarih iddiası de�
 
 ## İlk denge tablosu
 
+### Kriz etkisi ve kolay sevk pilotu
+
+Harita görünür kalırken sağ panelde sahadaki, zamanında yoldaki ve eksik destek
+ayrılır. Kaynak merkez listesi varış süresi, sabit hızlı sevk bedeli ve merkez ID'siyle
+sıralanır; elle seçilen kaynak korunur. Bir ekip ve on yardım düğmeleri görünen kaynak,
+hedef ve bedelle doğrudan sevk eder. Eksik Kadar Seç yalnız miktarı doldurur; zamanında
+yoldaki desteği çıkarır, seçilen kaynak kapasitesi ve bütçeyle sınırlanır.
+Birden fazla kriz varsa şehirden geçişte hedef ayrıca seçilir. Düğmelerin devre dışı
+kalma nedeni tooltip'te bulunur; normal form ve sürükle-bırak devam eder.
+
+Rapor önce hazırlık faydasını, müdahale desteğini ve kalan hasarı açıklar.
+Tek bir sevkiyata ayrı kurtarma katkısı atamaz; karşılaştırmalar simülasyon tahminidir.
+Onarım tamamlanması bölge adıyla haber ve haritada geçici vurgu üretir.
+İzole 1951 İskenderun pilotunda A harita/panel, B ek temsili saha sahnesidir.
+Sahne bekleme, çalışma, yardım ve toparlanmayı model durumuna göre gösterir.
+Normal kampanyada A kullanılır; B'nin genişletilmesi insan görsel/oynanış incelemesine bağlıdır.
+Kabul: oyuncu yardımsız sevk yapabilmeli, bir kararının etkisini ve sonraki denemede
+değiştireceği yaklaşımı anlatabilmelidir. Otomatik test bu insan kabulünün yerine geçmez.
+
 Onaylanan başlangıç profili 1950 için ₺20 milyon hazine, bakım sonrası/proje öncesi aylık +₺5 milyon
 ve örnek ucuz yerel proje için toplam ₺6 milyon/6 aydır. Diğer satırlar ilk prototip adaylarıdır.
 
@@ -294,7 +333,7 @@ dosyalarıyla açılır; bu sınıfların tamamı P0 için peşinen iskelet olar
 
 17 Ekim 2026: ana harita/panel dengesi ve yazı ölçeği kullanıcı tarafından onaylandı.
 P0 incelemesinde ekranlar uygun bulundu. Şehir paneli başlangıçta kapalı olur;
-21 yönetim merkezinden biri seçilince açılır, × veya Esc ile kapatılır.
+21 yönetim merkezinden biri seçilince açılır, × ile kapatılır. Esc duraklatma menüsünü açar.
 Haritadaki diğer 60 ilin sınırları soluk çizilir; bu iller seçilemez.
 Son görsel kararla harita çerçevesi kaldırılır. HUD, haber bandı, şehir paneli ve harita kontrolleri
 3072×1728 native bölgesel tuvalin üzerinde yer alır; viewport 1920×1080 kalır.

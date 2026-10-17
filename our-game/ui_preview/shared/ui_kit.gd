@@ -1,6 +1,8 @@
 extends RefCounted
 ## Native P0 widgets shared by the feature views.
 
+enum ButtonTone { NEUTRAL, CONFIRM, CAUTION, DANGER }
+
 const FONT := preload("res://ui_preview/assets/afet_pixel.fnt")
 const CONTROLS := preload("res://ui_preview/assets/controls.png")
 const ICONS := preload("res://ui_preview/assets/icons.png")
@@ -97,7 +99,12 @@ static func text(
 
 
 static func button(
-	parent: Control, title: String, box: Rect2, action: Callable, active: bool = false
+	parent: Control,
+	title: String,
+	box: Rect2,
+	action: Callable,
+	active: bool = false,
+	tone: ButtonTone = ButtonTone.NEUTRAL
 ) -> Button:
 	var result := Button.new()
 	result.set_meta("p0_text_size", box.size)
@@ -110,9 +117,19 @@ static func button(
 	result.add_theme_stylebox_override("normal", style(Rect2(112 if active else 0, 56, 48, 32)))
 	result.add_theme_stylebox_override("hover", style(Rect2(56, 56, 48, 32)))
 	result.add_theme_stylebox_override("pressed", style(Rect2(112, 56, 48, 32)))
+	result.add_theme_stylebox_override("hover_pressed", style(Rect2(112, 56, 48, 32)))
 	result.add_theme_stylebox_override("disabled", style(Rect2(168, 56, 48, 32)))
 	result.add_theme_color_override("font_disabled_color", MUTED)
-	result.add_theme_stylebox_override("focus", style(Rect2(56, 56, 48, 32)))
+	var focus := style(Rect2(56, 56, 48, 32))
+	focus.draw_center = false
+	result.add_theme_stylebox_override("focus", focus)
+	if tone != ButtonTone.NEUTRAL:
+		var x: int = {ButtonTone.CONFIRM: 168, ButtonTone.CAUTION: 56, ButtonTone.DANGER: 112}[tone]
+		for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
+			var surface := style(Rect2(x, 96, 48, 24))
+			var brightness: float = 1.18 if state == "hover" else 1.0 if state == "normal" else 0.82
+			surface.modulate_color = Color(brightness, brightness, brightness)
+			result.add_theme_stylebox_override(state, surface)
 	result.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	if action.is_valid():
 		result.pressed.connect(action)
@@ -122,13 +139,14 @@ static func button(
 
 static func icon(
 	parent: Control, index: int, position: Vector2, tint: Color = INK, texture: Texture2D = ICONS
-) -> void:
+) -> TextureRect:
 	var result := TextureRect.new()
 	result.texture = atlas(texture, Rect2(index * 32, 0, 32, 32))
 	result.position = position
 	result.modulate = tint
 	result.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	parent.add_child(result)
+	return result
 
 
 static func bar(

@@ -32,7 +32,12 @@ func _menu() -> void:
 	_line(Rect2(0, 146, 500, 2), UI.GOLD)
 	var automatic: Dictionary = _shell.saves.slot_summaries()[0]
 	var resume: Button = UI.button(
-		_content, "KAYITTAN DEVAM ET", Rect2(0, 188, 500, 52), _shell.continue_campaign
+		_content,
+		"KAYITTAN DEVAM ET",
+		Rect2(0, 188, 500, 52),
+		_shell.continue_campaign,
+		false,
+		UI.ButtonTone.CONFIRM
 	)
 	resume.disabled = not bool(automatic.valid)
 	resume.tooltip_text = "Son otomatik kayıt" if automatic.valid else "Geçerli otomatik kayıt yok."
@@ -40,19 +45,32 @@ func _menu() -> void:
 	UI.button(_content, "YÜKLE", Rect2(0, 328, 500, 52), _shell.save_slots.open.bind("load"))
 	UI.button(_content, "AYARLAR", Rect2(0, 398, 500, 52), _shell.show_screen.bind("settings"))
 	UI.button(_content, "KISA REHBER", Rect2(0, 468, 500, 52), _open_tutorial)
-	UI.button(_content, "ÇIKIŞ", Rect2(0, 538, 500, 52), _shell.get_tree().quit)
+	UI.button(
+		_content,
+		"ÇIKIŞ",
+		Rect2(0, 538, 500, 52),
+		_shell.get_tree().quit,
+		false,
+		UI.ButtonTone.DANGER
+	)
 
 
 func _settings() -> void:
 	_title("AYARLAR")
-	var fullscreen := DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
-	UI.button(
-		_content,
-		"TAM EKRAN: " + ("AÇIK" if fullscreen else "KAPALI"),
-		Rect2(0, 148, 650, 60),
-		_shell.toggle_fullscreen
+	UI.text(_content, "GÖRÜNTÜ MODU", Rect2(0, 116, 960, 28), 18, UI.MUTED)
+	var ids: Array[String] = ["fullscreen", "borderless", "windowed"]
+	var titles: Array[String] = ["TAM EKRAN", "KENARLIKSIZ", "PENCERE"]
+	for index in range(ids.size()):
+		UI.button(
+			_content,
+			titles[index],
+			Rect2(index * 304, 160, 288, 52),
+			_shell.set_display_mode.bind(ids[index]),
+			_shell.display.current_mode() == ids[index]
+		)
+	UI.text(
+		_content, "F11: PENCERE / SEÇTİĞİN TAM EKRAN MODU", Rect2(0, 232, 1100, 28), 18, UI.MUTED
 	)
-	UI.text(_content, "F11 KISAYOLUYLA TAM EKRANI DEĞİŞTİR", Rect2(0, 222, 960, 28), 18, UI.MUTED)
 	_shake_setting(Rect2(0, 300, 650, 60))
 	_paragraph(
 		"Sarsıntı kapalıyken kırmızı afet vurgusu görünmeye devam eder.",
@@ -64,23 +82,37 @@ func _settings() -> void:
 
 func _pause() -> void:
 	_title("OYUN DURAKLATILDI")
-	UI.button(_content, "DEVAM ET", Rect2(0, 140, 560, 60), _shell.close_screen)
+	UI.button(
+		_content,
+		"DEVAM ET",
+		Rect2(0, 140, 560, 60),
+		_shell.close_screen,
+		false,
+		UI.ButtonTone.CONFIRM
+	)
 	UI.button(_content, "KAYDET", Rect2(0, 230, 560, 60), _shell.save_slots.open.bind("save"))
 	UI.button(_content, "YÜKLE", Rect2(0, 320, 560, 60), _shell.save_slots.open.bind("load"))
 	UI.button(_content, "AYARLAR", Rect2(0, 410, 560, 60), _shell.show_screen.bind("settings"))
 	UI.button(_content, "KISA REHBER", Rect2(0, 500, 560, 60), _open_tutorial)
-	UI.button(_content, "ANA MENÜYE DÖN", Rect2(0, 590, 560, 60), _shell.return_to_main_menu)
+	UI.button(
+		_content,
+		"ANA MENÜYE DÖN",
+		Rect2(0, 590, 560, 60),
+		_shell.return_to_main_menu,
+		false,
+		UI.ButtonTone.CAUTION
+	)
 
 
 func _shake_setting(rect: Rect2) -> void:
 	var shake: Button = UI.button(
 		_content,
-		"HARİTA SARSINTISI: " + ("AÇIK" if _shell.map_shake_enabled else "KAPALI"),
+		"AFET SARSINTISI: " + ("AÇIK" if _shell.map_shake_enabled else "KAPALI"),
 		rect,
 		_shell.toggle_map_shake,
 		_shell.map_shake_enabled
 	)
-	shake.tooltip_text = "Yalnız harita sarsılır. Kapatıldığında kısa kırmızı afet uyarısı korunur."
+	shake.tooltip_text = "Yeni afet başladığında harita ve HUD kısa süre sarsılır. Kapatıldığında kırmızı afet bölgesi ve kısa kırmızı uyarı korunur."
 
 
 func _open_tutorial() -> void:
@@ -114,7 +146,9 @@ func _newgame() -> void:
 		_content,
 		"ONAYLA: YENİ KAMPANYA" if replace_confirmed else "KAMPANYAYI AÇ",
 		Rect2(850, 600, 494, 52),
-		_start_campaign
+		_start_campaign,
+		false,
+		UI.ButtonTone.DANGER if replace_confirmed else UI.ButtonTone.CONFIRM
 	)
 	if replace_confirmed:
 		UI.text(
@@ -197,7 +231,13 @@ func _tutorial() -> void:
 		_content,
 		finish_label if tutorial_step == 3 else "İLERİ",
 		Rect2(912, 600, 432, 54),
-		_next_tutorial
+		_next_tutorial,
+		false,
+		(
+			UI.ButtonTone.CONFIRM
+			if tutorial_step == 3 and not _shell.in_frontend
+			else UI.ButtonTone.NEUTRAL
+		)
 	)
 
 

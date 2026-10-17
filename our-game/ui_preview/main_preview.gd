@@ -3,14 +3,19 @@ extends Control
 const UI := preload("res://ui_preview/shared/ui_kit.gd")
 const MAP_VIEW := preload("res://ui_preview/map/map_view.gd")
 const CITY_PANEL := preload("res://ui_preview/management/city_panel.gd")
+const PREPARATION_PANEL := preload("res://ui_preview/management/preparation_panel.gd")
 const HUD := preload("res://ui_preview/campaign/hud.gd")
+const UNITS_PANEL := preload("res://ui_preview/logistics/units_panel.gd")
 const MENU_SPLASH := preload("res://ui_preview/assets/main_menu_splash.png")
 var sim: Simulation
 var saves := SaveStore.new()
 var map_view: MAP_VIEW
 var city_panel: CITY_PANEL
+var preparation_panel: PREPARATION_PANEL
 var hud: HUD
+var units_panel: UNITS_PANEL
 var campaign := preload("res://ui_preview/campaign/campaign_screens.gd").new()
+var display := preload("res://ui_preview/campaign/display_settings.gd").new()
 var save_slots := preload("res://ui_preview/campaign/save_screens.gd").new()
 var research := preload("res://ui_preview/management/research_screen.gd").new()
 var projects := preload("res://ui_preview/management/project_screens.gd").new()
@@ -25,6 +30,7 @@ var _gameplay: Control
 var _modal: Control
 var _screen_content: Control
 var _status: Label
+var _status_panel: Panel
 var _guide: Label
 var _guide_plate: Panel
 var _dirty: bool = true
@@ -35,6 +41,9 @@ var _ticker_cursor: int = 0
 var _ticker_elapsed: float = 0.0
 var _last_ticker_message: String = ""
 var _feedback_event_ids: Array[String] = []
+var _pause_return_screen: String = ""
+var _pause_active: bool = false
+var _pause_was_running: bool = false
 
 
 func _ready() -> void:
@@ -59,6 +68,8 @@ func _ready() -> void:
 	map_view.setup(self)
 	city_panel = CITY_PANEL.new()
 	city_panel.setup(self)
+	preparation_panel = PREPARATION_PANEL.new()
+	preparation_panel.setup(self)
 	hud = HUD.new()
 	hud.setup(self)
 	hud.screen_requested.connect(show_screen)
@@ -66,17 +77,23 @@ func _ready() -> void:
 	city_panel.screen_requested.connect(show_screen)
 	city_panel.project_requested.connect(show_project)
 	city_panel.close_requested.connect(close_city_panel)
+	city_panel.dispatch_requested.connect(show_dispatch)
 	_gameplay = Control.new()
 	_gameplay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_gameplay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_gameplay)
 	_gameplay.add_child(map_view)
-	map_view.set_shake_enabled(map_shake_enabled)
 	_gameplay.add_child(hud)
+	map_view.crisis_shake_changed.connect(hud.set_position)
+	map_view.set_shake_enabled(map_shake_enabled)
 	_gameplay.add_child(city_panel)
-	UI.panel(_gameplay, Rect2(16, 1030, 1888, 42))
-	_status = UI.text(_gameplay, "", Rect2(32, 1040, 1856, 26), 18, UI.MUTED)
+	_gameplay.add_child(preparation_panel)
+	_status_panel = UI.panel(_gameplay, Rect2(432, 1030, 1472, 42))
+	_status = UI.text(_gameplay, "", Rect2(448, 1040, 1440, 26), 18, UI.MUTED)
 	_status.mouse_filter = Control.MOUSE_FILTER_PASS
+	_status.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_status.ellipsis_char = "."
+	map_view.tools_toggled.connect(_on_map_tools_toggled)
 	_guide_plate = UI.panel(_gameplay, Rect2(432, 174, 1010, 36))
 	_guide = UI.text(_gameplay, "", Rect2(446, 178, 982, 28), 18, UI.GOLD)
 	if not _testing():
@@ -100,6 +117,8 @@ func return_to_main_menu() -> void:
 
 
 func _bind_simulation(resuming: bool = false) -> void:
+	if is_instance_valid(map_view):
+		map_view.reset_crisis_feedback()
 	sim.changed.connect(_mark_dirty)
 	sim.notification_requested.connect(_mark_dirty)
 	sim.notification_requested.connect(_play_new_crisis_feedback)
@@ -121,6 +140,8 @@ func _play_new_crisis_feedback() -> void:
 func _load_visual_preferences() -> void:
 	if _testing():
 		return
+	display.load_preferences()
+	display.apply()
 	var preferences := ConfigFile.new()
 	if preferences.load("user://preferences.cfg") == OK:
 		var enabled: Variant = preferences.get_value("visual", "map_shake", true)
@@ -174,6 +195,7 @@ func _refresh_views() -> void:
 	_play_new_crisis_feedback()
 	hud.refresh()
 	city_panel.refresh()
+	preparation_panel.refresh()
 	map_view.refresh()
 	if not sim.ticker.is_empty():
 		if sim.ticker.back() != _last_ticker_message:
@@ -195,7 +217,9 @@ func _refresh_views() -> void:
 				break
 	_guide_plate.visible = not _guide.text.is_empty()
 	_guide.visible = _guide_plate.visible
-	if not sim.news_queue.is_empty():
+	if _pause_active:
+		refresh_screen()
+	elif not sim.news_queue.is_empty():
 		var route: String = sim.news_queue.front().kind
 		if open_screen != route:
 			show_screen(route)
@@ -209,7 +233,11 @@ func _refresh_views() -> void:
 
 
 func select_area(id: int) -> void:
-	if in_frontend:
+	if in_frontend or not sim.areas.has(id):
+		return
+	if preparation_panel.visible:
+		if open_screen.is_empty() and sim.news_queue.is_empty() and sim.outcome.is_empty():
+			preparation_panel.order(id)
 		return
 	if city_panel.select_area(id):
 		selected_area_id = id
@@ -228,6 +256,17 @@ func show_project(id: String, area_id: int = 0) -> void:
 	projects.show_project(id, area_id)
 
 
+func show_dispatch(source: int) -> void:
+	crisis.open_from_source(source)
+	show_screen("crisis")
+
+
+func show_unit_center(area_id: int) -> void:
+	close_screen()
+	select_area(area_id)
+	city_panel.select_tab(2)
+
+
 func start_campaign(year: int) -> void:
 	var replacement := Simulation.new()
 	if not replacement.setup(year):
@@ -239,6 +278,9 @@ func start_campaign(year: int) -> void:
 	_presented_outcome = ""
 	_bind_simulation()
 	auto_save_enabled = not _testing()
+	_pause_return_screen = ""
+	_pause_active = false
+	preparation_panel.close()
 	close_city_panel()
 	_remove_modal()
 	_mark_dirty()
@@ -275,6 +317,9 @@ func load_campaign_slot(slot: int) -> Dictionary:
 	_presented_outcome = ""
 	_bind_simulation(true)
 	auto_save_enabled = not _testing()
+	_pause_return_screen = ""
+	_pause_active = false
+	preparation_panel.close()
 	close_city_panel()
 	_remove_modal()
 	_mark_dirty()
@@ -300,8 +345,15 @@ func command_result(result: Dictionary) -> void:
 func refresh_screen() -> void:
 	if not is_instance_valid(_screen_content):
 		return
-	UI.clear(_screen_content)
+	if not open_screen in ["crisis", "units"]:
+		UI.clear(_screen_content)
 	match open_screen:
+		"units":
+			if not is_instance_valid(units_panel):
+				units_panel = UNITS_PANEL.new()
+				units_panel.setup(self)
+				_screen_content.add_child(units_panel)
+			units_panel.refresh()
 		"save", "load":
 			save_slots.render(_screen_content, open_screen)
 		"research":
@@ -322,12 +374,29 @@ func show_screen(screen: String) -> void:
 		or (in_frontend and screen not in ["menu", "newgame", "load", "settings", "tutorial"])
 	):
 		return
+	if screen == "pause" and not _pause_active:
+		_pause_return_screen = open_screen
+		_pause_was_running = not sim.paused
+		_pause_active = true
+	if screen == "preparation":
+		if not sim.news_queue.is_empty() or not sim.outcome.is_empty():
+			return
+		_remove_modal()
+		close_city_panel()
+		if preparation_panel.visible:
+			preparation_panel.close()
+		else:
+			preparation_panel.open()
+		return
+	preparation_panel.close()
 	_remove_modal()
 	sim.set_paused(true)
 	open_screen = screen
 	_modal = Control.new()
 	_modal.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_modal.mouse_filter = Control.MOUSE_FILTER_STOP
+	_modal.mouse_filter = (
+		Control.MOUSE_FILTER_IGNORE if screen in ["crisis", "units"] else Control.MOUSE_FILTER_STOP
+	)
 	add_child(_modal)
 	if in_frontend:
 		var background := TextureRect.new()
@@ -337,18 +406,49 @@ func show_screen(screen: String) -> void:
 		_modal.add_child(background)
 		if screen != "menu":
 			UI.panel(_modal, Rect2(248, 156, 1424, 824), true)
+	elif screen in ["crisis", "units"]:
+		UI.panel(_modal, Rect2(1284, 174, 620, 846), true)
+		UI.button(_modal, "KAPAT", Rect2(1792, 198, 92, 34), close_screen)
+	elif screen == "newspaper":
+		var shade := ColorRect.new()
+		shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		shade.color = Color(0.035, 0.06, 0.085, 0.65)
+		shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_modal.add_child(shade)
 	else:
 		UI.panel(_modal, Rect2(432, 174, 1472, 846), true)
 		var close: Button = UI.button(_modal, "KAPAT", Rect2(1738, 216, 116, 38), close_screen)
-		close.disabled = not sim.news_queue.is_empty() or not sim.outcome.is_empty()
+		close.disabled = (
+			not _pause_active and (not sim.news_queue.is_empty() or not sim.outcome.is_empty())
+		)
 	_screen_content = Control.new()
 	_screen_content.position = (
-		Vector2(116, 164)
-		if in_frontend and screen == "menu"
-		else Vector2(288, 220) if in_frontend else Vector2(474, 270)
+		Vector2(1304, 198)
+		if screen in ["crisis", "units"]
+		else (
+			Vector2(116, 164)
+			if in_frontend and screen == "menu"
+			else Vector2(288, 220) if in_frontend else Vector2(474, 270)
+		)
 	)
-	_screen_content.size = Vector2(1376, 690)
+	_screen_content.size = (
+		Vector2(580, 810) if screen in ["crisis", "units"] else Vector2(1376, 690)
+	)
+	if screen == "newspaper":
+		_screen_content.size = news_reports.NEWSPAPER_SIZE
+		_screen_content.position = (size - _screen_content.size) / 2.0
+	_screen_content.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_modal.add_child(_screen_content)
+	if screen == "newspaper":
+		var close := UI.button(
+			_modal,
+			"KAPAT",
+			Rect2(_screen_content.position + Vector2(1308, 24), Vector2(92, 32)),
+			close_screen
+		)
+		close.disabled = (
+			not _pause_active and (not sim.news_queue.is_empty() or not sim.outcome.is_empty())
+		)
 	refresh_screen()
 
 
@@ -357,6 +457,7 @@ func _remove_modal() -> void:
 		remove_child(_modal)
 		_modal.queue_free()
 	_modal = null
+	units_panel = null
 	open_screen = ""
 
 
@@ -365,8 +466,22 @@ func close_screen() -> void:
 		if open_screen != "menu":
 			show_screen("menu")
 		return
-	if open_screen in ["save", "load", "settings"]:
+	if open_screen in ["save", "load", "settings"] or (open_screen == "tutorial" and _pause_active):
 		show_screen("pause")
+		return
+	if open_screen == "pause":
+		var previous := _pause_return_screen
+		_pause_return_screen = ""
+		_pause_active = false
+		_remove_modal()
+		if not sim.news_queue.is_empty():
+			show_screen(sim.news_queue.front().kind)
+		elif not sim.outcome.is_empty():
+			show_screen(sim.outcome)
+		elif not previous.is_empty():
+			show_screen(previous)
+		if sim.news_queue.is_empty() and sim.outcome.is_empty():
+			sim.set_paused(not _pause_was_running)
 		return
 	if sim.news_queue.is_empty() and sim.outcome.is_empty():
 		_remove_modal()
@@ -383,9 +498,18 @@ func acknowledge_news() -> void:
 	_mark_dirty()
 
 
+func _on_map_tools_toggled(expanded: bool) -> void:
+	var left: float = 1284.0 if expanded else 432.0
+	_status_panel.position.x = left
+	_status_panel.size.x = 1904.0 - left
+	_status.position.x = left + 16.0
+	_status.size.x = _status_panel.size.x - 32.0
+
+
 func preview_notice(message: String) -> void:
 	if is_instance_valid(_status):
 		_status.text = message
+		_status.tooltip_text = message
 		sim.log_message(message)
 
 
@@ -394,7 +518,7 @@ func _display_ticker() -> void:
 		return
 	_ticker_cursor = clampi(_ticker_cursor, 0, sim.ticker.size() - 1)
 	var message := sim.ticker[_ticker_cursor]
-	_status.text = message if message.length() <= 119 else message.left(116) + "..."
+	_status.text = message
 	_status.tooltip_text = message
 
 
@@ -436,23 +560,34 @@ func _notification(what: int) -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_ESCAPE:
-			if not open_screen.is_empty():
+			if (
+				in_frontend
+				or open_screen in ["pause", "settings", "save", "load"]
+				or (open_screen == "tutorial" and _pause_active)
+			):
 				close_screen()
 			else:
-				close_city_panel()
-		elif event.keycode == KEY_SPACE and open_screen.is_empty():
+				show_screen("pause")
+			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_SPACE and open_screen in ["", "crisis"]:
 			sim.set_paused(not sim.paused)
 		elif event.keycode == KEY_F11:
 			toggle_fullscreen()
+			get_viewport().set_input_as_handled()
 
 
 func toggle_fullscreen() -> void:
-	DisplayServer.window_set_mode(
-		(
-			DisplayServer.WINDOW_MODE_WINDOWED
-			if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
-			else DisplayServer.WINDOW_MODE_FULLSCREEN
-		)
-	)
+	display.toggle_fullscreen()
+	_save_display_preferences()
+
+
+func set_display_mode(mode: String) -> void:
+	if display.select_mode(mode):
+		_save_display_preferences()
+
+
+func _save_display_preferences() -> void:
+	if not _testing() and not display.save_preferences():
+		preview_notice("Görüntü tercihi kaydedilemedi; bu oturumda uygulanıyor.")
 	if open_screen == "settings":
 		refresh_screen()

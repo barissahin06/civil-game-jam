@@ -3,6 +3,7 @@ extends Control
 signal screen_requested(screen: String)
 signal project_requested(definition_id: String, area_id: int)
 signal close_requested
+signal dispatch_requested(source: int)
 
 const UI := preload("res://ui_preview/shared/ui_kit.gd")
 
@@ -236,7 +237,13 @@ func _logistics(area: ServiceArea) -> void:
 	UI.button(
 		_city_body, "KRİZ MERKEZİ", Rect2(0, 384, 360, 48), screen_requested.emit.bind("crisis")
 	)
-	UI.text(_city_body, "HEDEF ALANA BIRAKARAK SEVK ET", Rect2(0, 466, 360, 28), 18, UI.MUTED)
+	UI.button(
+		_city_body,
+		"BU MERKEZDEN GÖNDER",
+		Rect2(0, 444, 360, 42),
+		dispatch_requested.emit.bind(area.id)
+	)
+	UI.text(_city_body, "HEDEF ALANA BIRAKARAK SEVK ET", Rect2(0, 502, 360, 28), 18, UI.MUTED)
 	UI.text(_city_body, "YAKIN 1 / ORTA 2 / UZAK 3 GÜN", Rect2(0, 562, 360, 50), 18, UI.MUTED)
 
 

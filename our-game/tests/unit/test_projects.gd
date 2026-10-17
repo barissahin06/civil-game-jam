@@ -182,3 +182,174 @@ func test_repair_fund_discount_is_capped_saved_and_consumed_once() -> void:
 	var invalid := restored.to_dict()
 	invalid.repair_support[34] = -1
 	assert_bool(restored.restore(invalid)).is_false()
+
+
+func test_effect_preview_is_read_only_and_matches_local_completion() -> void:
+	var system := _fixture()
+	system.treasury.maintenance_ratio = 0.5
+	system.areas[34].damage = 35.0
+	system.areas[34].completed_measures.append("assembly_areas")
+	system.repair_support[34] = 1000000
+	system.start("strengthening", 6, 1950)
+	var before := _preview_state(system)
+	var area_before: ServiceArea = system.areas[34]
+	var preview := system.effect_preview("river_zoning", 34)
+	assert_str(_preview_state(system)).is_equal(before)
+	assert_bool(system.areas[34] == area_before).is_true()
+	assert_bool(preview.global).is_false()
+	assert_float(preview.maintenance_ratio).is_equal(0.5)
+	assert_int(preview.rows.size()).is_equal(3)
+	var flood := _effect_row(preview, "protection_flood")
+	assert_float(flood.before).is_equal(system.preparedness(34, "flood"))
+	assert_bool(is_equal_approx(flood.delta, 18.6)).is_true()
+	assert_str(flood.unit).is_equal("points")
+	assert_bool(flood.bounded and flood.higher_is_better).is_true()
+	assert_bool(system.start("river_zoning", 34, 1950).ok).is_true()
+	for month: int in range(6):
+		system.tick_month(1950)
+	assert_float(flood.after).is_equal(system.preparedness(34, "flood"))
+	assert_float(_effect_row(preview, "resilience").after).is_equal(system.infrastructure(34))
+	assert_str(system.projects[0].status).is_equal("active")
+	for row: Dictionary in system.effect_preview("river_zoning", 34).rows:
+		assert_float(row.delta).is_equal(0.0)
+
+
+func test_global_effect_preview_averages_actual_centers_and_maintenance() -> void:
+	var system := _fixture()
+	system.treasury.maintenance_ratio = 0.5
+	for area: ServiceArea in system.areas.values():
+		area.resilience = 100.0
+	system.areas[34].completed_measures.append("strengthening")
+	var definition := system.definition_for("research_structural")
+	definition.effects.protection_earthquake = 80.0
+	definition.months = 1
+	var preview := system.effect_preview(definition.id)
+	assert_bool(preview.global).is_true()
+	var row := _effect_row(preview, "protection_earthquake")
+	assert_float(row.before).is_equal(_mean_preparedness(system, "earthquake"))
+	assert_bool(system.start(definition.id, 0, 1950).ok).is_true()
+	system.tick_month(1950)
+	assert_float(row.after).is_equal(_mean_preparedness(system, "earthquake"))
+	assert_float(row.after).is_equal(100.0)
+	var radio := system.effect_preview("national_radio")
+	assert_float(_effect_row(radio, "rescue_efficiency").delta).is_equal(5.0)
+	assert_float(radio.maintenance_ratio).is_equal(0.5)
+
+
+func test_effect_preview_respects_consumer_caps_and_capacity() -> void:
+	var system := _fixture()
+	system.definition_for("research_response").effects.repair_efficiency = 0.4
+	system.definition_for("community_preparedness").effects.trust_decay_reduction = 1.0
+	var repair := _effect_row(system.effect_preview("research_response"), "repair_efficiency")
+	var trust_row := _effect_row(
+		system.effect_preview("community_preparedness"), "trust_decay_reduction"
+	)
+	assert_float(repair.after).is_equal(15.0)
+	assert_float(repair.maximum).is_equal(15.0)
+	assert_float(trust_row.after).is_equal(85.0)
+	assert_float(trust_row.maximum).is_equal(85.0)
+	assert_bool(repair.bounded and trust_row.bounded).is_true()
+	system.initialize_era(1990)
+	var capacity := _effect_row(system.effect_preview("research_capacity"), "research_capacity")
+	assert_float(capacity.before).is_equal(2.0)
+	assert_float(capacity.after).is_equal(3.0)
+	assert_bool(capacity.bounded).is_true()
+	system.definition_for("research_capacity").months = 1
+	assert_bool(system.start("research_capacity", 0, 1990).ok).is_true()
+	system.tick_month(1990)
+	assert_float(capacity.after).is_equal(float(system.research_capacity))
+	(
+		assert_float(
+			_effect_row(system.effect_preview("research_capacity"), "research_capacity").delta
+		)
+		. is_equal(0.0)
+	)
+
+
+func test_repair_preview_shows_beneficial_reduction_and_restored_income() -> void:
+	var system := _fixture()
+	system.areas[34].damage = 60.0
+	var before := _preview_state(system)
+	var preview := system.effect_preview("repair", 34)
+	assert_str(_preview_state(system)).is_equal(before)
+	var damage := _effect_row(preview, "damage")
+	var income := _effect_row(preview, "income")
+	assert_float(damage.before).is_equal(60.0)
+	assert_float(damage.after).is_equal(0.0)
+	assert_float(damage.delta).is_equal(-60.0)
+	assert_bool(damage.higher_is_better).is_false()
+	assert_float(income.before).is_equal(float(system.areas[34].income()))
+	assert_float(income.after).is_equal(float(system.areas[34].base_income))
+	assert_str(income.unit).is_equal("money")
+	assert_bool(system.start("repair", 34, 1950).ok).is_true()
+	for month: int in range(6):
+		system.tick_month(1950)
+	assert_float(damage.after).is_equal(system.areas[34].damage)
+	assert_float(income.after).is_equal(float(system.areas[34].income()))
+	assert_float(_effect_row(preview, "resilience").after).is_equal(system.infrastructure(34))
+
+
+func test_repeatable_effect_preview_uses_total_teams_and_uncapped_stock() -> void:
+	var system := _fixture()
+	system.areas[34].total_teams = 8
+	system.areas[34].teams = 2
+	system.areas[34].stock = 240
+	var team := _effect_row(system.effect_preview("rescue_team", 34), "teams")
+	var stock := _effect_row(system.effect_preview("aid_stock", 34), "stock")
+	assert_float(team.before).is_equal(8.0)
+	assert_float(team.after).is_equal(9.0)
+	assert_bool(team.bounded).is_false()
+	assert_bool(team.maximum >= team.after).is_true()
+	assert_float(stock.before).is_equal(240.0)
+	assert_float(stock.after).is_equal(280.0)
+	assert_bool(stock.bounded).is_false()
+	assert_float(stock.maximum).is_equal(280.0)
+	system.definition_for("aid_stock").months = 1
+	assert_bool(system.start("aid_stock", 34, 1950).ok).is_true()
+	system.tick_month(1950)
+	assert_float(stock.after).is_equal(float(system.areas[34].stock))
+	assert_float(_effect_row(system.effect_preview("aid_stock", 34), "stock").after).is_equal(320.0)
+	assert_int(system.effect_preview("missing", 34).rows.size()).is_equal(0)
+	assert_int(system.effect_preview("river_zoning", 999).rows.size()).is_equal(0)
+	assert_int(system.effect_preview("repair").rows.size()).is_equal(0)
+
+
+func _effect_row(preview: Dictionary, key: String) -> Dictionary:
+	for row: Dictionary in preview.rows:
+		if row.key == key:
+			return row
+	return {}
+
+
+func _mean_preparedness(system: ProjectSystem, kind: String) -> float:
+	var total := 0.0
+	for area_id: int in system.areas:
+		total += system.preparedness(area_id, kind)
+	return total / system.areas.size()
+
+
+func _preview_state(system: ProjectSystem) -> String:
+	var area_records: Array[Dictionary] = []
+	for area: ServiceArea in system.areas.values():
+		area_records.append(area.to_dict())
+	return (
+		JSON
+		. stringify(
+			{
+				"project_system": system.to_dict(),
+				"capacity": system.research_capacity,
+				"areas": area_records,
+				"treasury":
+				[
+					system.treasury.money,
+					system.treasury.awareness_points,
+					system.treasury.maintenance_ratio,
+					system.treasury.last_income,
+					system.treasury.last_upkeep,
+					system.treasury.last_net
+				],
+				"trust": system.trust.feedback(),
+				"trust_history": system.trust.history,
+			}
+		)
+	)

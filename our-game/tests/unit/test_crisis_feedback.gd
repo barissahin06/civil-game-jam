@@ -27,7 +27,7 @@ func _fixture() -> Node:
 	return main
 
 
-func test_shake_moves_only_map_and_restores_camera_exactly() -> void:
+func test_shake_moves_map_and_hud_and_restores_camera_exactly() -> void:
 	var main := _fixture()
 	var shell: SHELL = main.get_node("MainPreview")
 	shell.select_area(31)
@@ -44,13 +44,15 @@ func test_shake_moves_only_map_and_restores_camera_exactly() -> void:
 	assert_float(map._crisis_flash.modulate.a).is_greater(0.0)
 	assert_vector(map._map_image.position).is_equal(camera)
 	assert_vector(map._map_image.scale).is_equal(zoom)
-	assert_vector(shell.hud.global_position).is_equal(hud)
+	assert_vector(shell.hud.global_position).is_equal(hud + map._map_clip.position)
 	assert_vector(shell.city_panel.global_position).is_equal(panel)
 	assert_vector(map._layer_buttons[0].global_position).is_equal(layer)
 	map._process(0.5)
 	assert_vector(map._map_clip.position).is_equal(Vector2.ZERO)
 	assert_float(map._crisis_flash.modulate.a).is_equal(0.0)
 	assert_vector(map._map_image.position).is_equal(camera)
+	assert_vector(shell.hud.global_position).is_equal(hud)
+	assert_vector(map._map_image.scale).is_equal(zoom)
 	main.free()
 
 
@@ -59,10 +61,16 @@ func test_disabling_shake_preserves_red_flash_and_in_memory_preference() -> void
 	var shell: SHELL = main.get_node("MainPreview")
 	assert_bool(shell._testing()).is_true()
 	shell.map_view.play_crisis_feedback()
+	shell.map_view._process(0.04)
+	assert_bool(shell.hud.position != Vector2.ZERO).is_true()
 	shell.toggle_map_shake()
 	assert_bool(shell.map_shake_enabled).is_false()
+	assert_vector(shell.hud.position).is_equal(Vector2.ZERO)
+	assert_vector(shell.map_view._map_clip.position).is_equal(Vector2.ZERO)
+	assert_float(shell.map_view._crisis_flash.modulate.a).is_greater(0.0)
 	shell.map_view._process(0.1)
 	assert_vector(shell.map_view._map_clip.position).is_equal(Vector2.ZERO)
+	assert_vector(shell.hud.position).is_equal(Vector2.ZERO)
 	assert_float(shell.map_view._crisis_flash.modulate.a).is_greater(0.0)
 	shell.map_view._process(0.3)
 	assert_float(shell.map_view._crisis_flash.modulate.a).is_equal(0.0)
@@ -78,9 +86,13 @@ func test_historical_event_pauses_and_feedback_does_not_replay_on_refresh() -> v
 	assert_bool(shell.sim.paused).is_true()
 	assert_float(shell.map_view._feedback_elapsed).is_equal(0.0)
 	shell.map_view._process(0.08)
+	var offset := shell.map_view._map_clip.position
+	assert_bool(offset != Vector2.ZERO).is_true()
 	shell._refresh_views()
 	shell.sim.notification_requested.emit()
 	assert_float(shell.map_view._feedback_elapsed).is_equal(0.08)
+	assert_vector(shell.hud.position).is_equal(offset)
+	assert_vector(shell.map_view._map_clip.position).is_equal(offset)
 	assert_str(shell.open_screen).is_equal("newspaper")
 	main.free()
 
@@ -99,9 +111,12 @@ func test_multi_area_event_is_deduplicated_by_historical_event_id() -> void:
 	shell.sim.news_queue.append({"kind": "newspaper", "id": event.id})
 	shell.sim.notification_requested.emit()
 	shell.map_view._process(0.12)
+	var offset := shell.map_view._map_clip.position
 	for _target: Dictionary in shell.sim.crises.active:
 		shell.sim.notification_requested.emit()
 	assert_float(shell.map_view._feedback_elapsed).is_equal(0.12)
+	assert_vector(shell.hud.position).is_equal(offset)
+	assert_vector(shell.map_view._map_clip.position).is_equal(offset)
 	assert_int(shell._feedback_event_ids.count(event.id)).is_equal(1)
 	main.free()
 
@@ -112,11 +127,22 @@ func test_resuming_seeds_seen_events_without_replaying_existing_news() -> void:
 	var restored := Simulation.new()
 	assert_bool(restored.setup()).is_true()
 	restored.advance_to(CalendarClock.date_to_day("1951-04-08"))
+	shell.map_view.play_crisis_feedback()
+	shell.map_view._process(0.04)
+	assert_bool(shell.hud.position != Vector2.ZERO).is_true()
 	shell.sim = restored
 	shell._bind_simulation(true)
 	shell._refresh_views()
 	assert_float(shell.map_view._feedback_elapsed).is_equal(shell.map_view.FEEDBACK_SECONDS)
+	assert_vector(shell.map_view._map_clip.position).is_equal(Vector2.ZERO)
+	assert_vector(shell.hud.position).is_equal(Vector2.ZERO)
+	assert_float(shell.map_view._crisis_flash.modulate.a).is_equal(0.0)
+	shell.map_view.play_crisis_feedback()
+	shell.map_view._process(0.04)
 	shell.start_campaign(1950)
+	assert_vector(shell.hud.position).is_equal(Vector2.ZERO)
+	assert_vector(shell.map_view._map_clip.position).is_equal(Vector2.ZERO)
 	shell.sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
 	assert_float(shell.map_view._feedback_elapsed).is_equal(0.0)
+	assert_vector(shell.hud.position).is_equal(shell.map_view._map_clip.position)
 	main.free()

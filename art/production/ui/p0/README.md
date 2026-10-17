@@ -8,18 +8,24 @@ Bu bir UI prototipidir. Gerçek ekonomi, takvim, afet sonucu ve kayıt entegrasy
 Kod, üç kişinin paralel çalışabilmesi için özellik modüllerine ayrılmıştır;
 dosya paylaşımı ve modül sözleşmeleri [çalışma rehberindedir](../../../../docs/team-workflow.md).
 
-| Native kaynak                            | İçerik / runtime çıktısı                                                 |
-| ---------------------------------------- | ------------------------------------------------------------------------ |
-| `controls.aseprite`                      | 256×160 panel, düğme ve durum atlası → `controls.png`                    |
-| `icons.aseprite`                         | 12 adet 32×32 simge → `icons.png`                                        |
-| `signals.aseprite`                       | 16 adet 32×32 afet, durum ve navigasyon simgesi → `signals.png`          |
-| `paper.aseprite`                         | 64×64 native gazete kâğıdı çerçevesi → `paper.png`                       |
-| `afet_pixel.aseprite` + `afet_pixel.fnt` | 110 glif, Türkçe ve ₺; 18 px bitmap font → aynı adlı PNG/FNT             |
-| `map-general.aseprite`                   | 3072×1728 native bölgesel harita, il/ülke katmanları ve gizli ID katmanı |
-| `map-preparedness.aseprite`              | Hazırlık örnek katmanı → aynı adlı PNG                                   |
-| `map-logistics.aseprite`                 | Lojistik örnek katmanı → aynı adlı PNG                                   |
-| `map-damage.aseprite`                    | Hasar/toparlanma örnek katmanı → aynı adlı PNG                           |
-| `map-selection.aseprite`                 | 21 ayrı il seçim sınırı; her katman `SELECT / TR-XX`                     |
+| Native kaynak                            | İçerik / runtime çıktısı                                                            |
+| ---------------------------------------- | ----------------------------------------------------------------------------------- |
+| `controls.aseprite`                      | 256×160 panel, düğme ve durum atlası → `controls.png`                               |
+| `icons.aseprite`                         | 12 adet 32×32 simge → `icons.png`                                                   |
+| `signals.aseprite`                       | 16 adet 32×32 afet, durum ve navigasyon simgesi → `signals.png`                     |
+| `paper.aseprite`                         | 64×64 native gazete kâğıdı çerçevesi → `paper.png`                                  |
+| `afet_pixel.aseprite` + `afet_pixel.fnt` | 126 glif, Türkçe ve noktalama; 18 px bitmap font → aynı adlı PNG/FNT                |
+| `map-general.aseprite`                   | 3072×1728 bölgesel harita → `map-general.png`; üç arazi katmanı → `map-terrain.png` |
+| `map-preparedness.aseprite`              | Hazırlık örnek katmanı → aynı adlı PNG                                              |
+| `map-logistics.aseprite`                 | Lojistik örnek katmanı → aynı adlı PNG                                              |
+| `map-damage.aseprite`                    | Hasar/toparlanma örnek katmanı → aynı adlı PNG                                      |
+| `map-selection.aseprite`                 | 21 ayrı il seçim sınırı; her katman `SELECT / TR-XX`                                |
+
+`controls.aseprite` → `controls.png` atlasındaki mevcut 48×24 durum hücreleri düğme
+eylemlerinde de kullanılır: `(168,96)` yeşil onay/başlatma, `(112,96)` kırmızı iptal/riskli
+son onay, `(56,96)` altın bütçe/proje duraklatma. `UI.button()` bunları 6 px kenarlarla ölçekler;
+hover/basılı durumlarda aynı hücrenin parlaklığı değişir. Nötr ve devre dışı düğmeler
+48×32 hücreleri kullanmayı sürdürür. Native kaynak veya export değişmez.
 
 Mantıksal viewport 1920×1080'dir. Native harita tuvali 3072×1728'dir; kamera bu tuvalin
 bir bölümünü 1× piksel ölçeğinde gösterir, harita bir UI dikdörtgenine sığdırılmaz.
@@ -34,11 +40,30 @@ sınırlarını soluk çizgilerle gösterir. Bu katman seçili il renkleri, etik
 çizgisinden ayrıdır. `01a / Çevre ülkeler`, `01b / Ülke sınırları` ve `98 / Ülke adları`
 katmanları çevre coğrafyayı oluşturur; yabancı şehir, yönetim düğümü veya etkileşim içermez.
 HIT ve 21 seçim maskesi aynı yeni tuval/projeksiyonda birlikte üretilir; seçilebilir il kimlikleri korunur.
-Dört harita kaynağı 31'er katman ve tek frame içerir. `sprite.data` projeksiyonu, tuvali
+Genel harita 34, diğer üç harita 31'er katman ve tek frame içerir. `sprite.data` projeksiyonu, tuvali
 ve başlangıç kamera konumunu kaydeder; oyun kodu `map/map_view.gd` içinde bu kamera konumunu kullanır.
 Ekranlardaki miktarlar, maliyetler, dönem kilitleri ve sonuçlar authored UI örnekleridir.
 Bu değerler onaylanmış oyun dengesi veya hesaplanmış simülasyon sonucu değildir.
-Font büyük harf düzenidir; kullanılmayan bazı ASCII işaretleri soru işareti hücresi kullanır.
+Font büyük harf çizim düzenini korur; Türkçe alfabenin 29 harfinin büyük/küçük kod noktaları,
+`ÂÎÛâîû`, bütün yazdırılabilir ASCII işaretleri, `₺`, `×`, `•`, `‘’“”«»`, `–—…` ve bölünmez boşluk
+desteklenir. `i/İ` noktalı, `ı/I` noktasız çizilir. Kesme işaretleri soru işareti hücresini kullanmaz.
+`author_font.lua`, checkpoint alınmış native kopyada bu karakterleri tamamlar; diğer gliflere,
+384×88 tuvale, 12×22 hücrelere ve 12 px ilerlemeye dokunmaz.
+
+## Dekoratif arazi
+
+`map-general.aseprite` içindeki `70 / Arazi - Dağ sıraları`,
+`71 / Arazi - Orman ve bozkır` ve `72 / Arazi - Kıyı dokusu` katmanları
+dağ siluetlerini, ağaç/ot kümelerini ve kıyı dalgalarını ayrı tutar. Bu çizimler
+yaklaşık, dekoratif coğrafyadır; yeni arazi mekaniği veya veri katmanı değildir.
+Etiketler ve il sınırları açık bırakılır. Kaynağın önceki 31 katmanı korunur.
+
+`author_terrain.lua`, checkpoint alınmış bir native kopya üzerinde yalnız bu üç
+katmanı yeniden üretir. Aseprite önizlemesinde arazi haritayla birlikte görünür.
+Export sırasında bu katmanlar şeffaf `map-terrain.png` içinde birleştirilir;
+`map-general.png`, hitmask, etiketler ve seçim maskeleri değişmeden üretilir.
+Runtime araziyi 3072×1728 native ölçüde, yalnız **Bölgeler** görünümünde gösterir.
+Hazırlık, yardım stoğu ve hasar renkleriyle gösterilen sayısal görünümler araziyi gizler.
 
 ## Export ve inceleme
 
@@ -52,8 +77,8 @@ aseprite --batch --script-param "repo=$repoPath" --script art/production/ui/p0/e
 ```
 
 Aseprite MCP ile aynı işlem `P0_ROOT` repo kökü verilerek `export.lua` dosyasını çalıştırır.
-Script tek frame, 3072×1728 harita/seçim tuvali, ülke/pasif sınır katmanları,
-21 il ID'si ve 110 glif düzenini doğrular. Grid, katman adı veya il sınırı
+Script tek frame, 3072×1728 harita/seçim tuvali, üç arazi katmanı ve keskin alfa kenarları, ülke/pasif sınır katmanları,
+21 il ID'si ve 126 glif düzenini doğrular. Grid, katman adı veya il sınırı
 değişirse ona bağlı descriptor, seçim sınırı ve hitmask birlikte güncellenmelidir.
 Bitmap font sayfası değişince Godot'ta PNG ile birlikte `.fnt` kaynağını da yeniden içe aktar;
 yalnız PNG importu eski font önbelleğini koruyabilir.

@@ -6,6 +6,8 @@ signal changed
 signal notification_requested
 
 const END_DATE := "2026-12-31"
+# Map color saturation only; aid storage has no capacity limit.
+const MAP_STOCK_SCALE := 160.0
 var clock := CalendarClock.new()
 var treasury := Treasury.new()
 var trust := TrustState.new()
@@ -106,7 +108,7 @@ func advance_to(target: int) -> void:
 		clock.advance_days(1)
 		if clock.day_of_month == 1:
 			_month_boundary()
-		for notice: String in logistics.tick_day(clock.day, crises.active):
+		for notice: String in logistics.tick_day(clock.day, crises.active, crises):
 			log_message(notice)
 		for report: Dictionary in crises.tick_day(clock.day, logistics):
 			news_queue.append({"kind": "report", "id": report.id})
@@ -124,7 +126,16 @@ func _month_boundary() -> void:
 	var settlement := treasury.collect_and_maintain(areas, projects)
 	var awareness_was_complete := projects.awareness_complete()
 	for completion: Dictionary in projects.tick_month(clock.year, bool(settlement.can_pay_budget)):
-		log_message(str(completion.get("message", completion.get("title", "Proje tamamlandı"))))
+		if completion.get("definition_id") == "repair":
+			var area: ServiceArea = areas[int(completion.area_id)]
+			log_message(
+				(
+					"%s: onarım tamamlandı. Kalan altyapı hasarı %%%d."
+					% [area.name, roundi(area.damage)]
+				)
+			)
+		else:
+			log_message(str(completion.get("message", completion.get("title", "Proje tamamlandı"))))
 	if not awareness_was_complete and projects.awareness_complete():
 		log_message("Bilinç geliştirmeleri tamamlandı, yeni bilinç baloncukları üretilmeyecek.")
 	var population := 0
@@ -193,6 +204,79 @@ func start_project(id: String, area_id: int = 0) -> Dictionary:
 	return result
 
 
+func enqueue_preparation(id: String, area_id: int) -> Dictionary:
+	if not outcome.is_empty():
+		return {"ok": false, "message": "Kampanya tamamlandı"}
+	var result := projects.enqueue_preparation(id, area_id, clock.year)
+	if result.ok:
+		learn("investment")
+		log_message(result.message)
+		changed.emit()
+	return result
+
+
+func cancel_preparation(uid: int) -> Dictionary:
+	if not outcome.is_empty():
+		return {"ok": false, "message": "Kampanya tamamlandı"}
+	var project := projects.get_project(uid)
+	if (
+		project == null
+		or project.status != "queued"
+		or not project.definition_id in ProjectSystem.PREPARATION_IDS
+	):
+		return {"ok": false, "message": "Yalnız sırada bekleyen hazırlık geri alınabilir."}
+	var result := projects.cancel(uid)
+	if result.ok:
+		result.message = "Sıradaki hazırlık geri alındı; ödeme yapılmamıştı."
+		log_message(result.message)
+		changed.emit()
+	return result
+
+
+func preparation_plan() -> Dictionary:
+	return projects.preparation_plan(clock.year)
+
+
+func map_overlay(mode: int) -> Dictionary:
+	if mode < 0 or mode > 3:
+		return {}
+	var maximum := MAP_STOCK_SCALE if mode == 2 else 100.0
+	var overlay_areas: Dictionary = {}
+	for area: ServiceArea in areas.values():
+		var value := 0.0
+		match mode:
+			1:
+				for kind: String in ["earthquake", "flood", "fire", "avalanche", "landslide"]:
+					value += projects.preparedness(area.id, kind) / 5.0
+			2:
+				value = float(area.stock)
+			3:
+				value = area.damage
+		overlay_areas[area.id] = {
+			"name": area.name,
+			"region": area.region,
+			"value": value,
+			"ratio": clampf(value / maximum, 0.0, 1.0)
+		}
+	return {"mode": mode, "minimum": 0.0, "maximum": maximum, "areas": overlay_areas}
+
+
+func unit_overview() -> Dictionary:
+	var overview := logistics.unit_overview()
+	for center: Dictionary in overview.centers:
+		center.can_dispatch = false
+		if not outcome.is_empty():
+			center.dispatch_message = "Kampanya tamamlandı"
+		elif crises.active.is_empty():
+			center.dispatch_message = "Sevk için aktif kriz gerekiyor"
+		elif int(center.ready) == 0 and int(center.stock) == 0:
+			center.dispatch_message = "Merkezde hazır ekip veya yardım yok"
+		else:
+			center.can_dispatch = true
+			center.dispatch_message = "Bu merkez seçili olarak sevk formunu aç"
+	return overview
+
+
 func dispatch(source: int, crisis_id: String, kind: String, amount: int) -> Dictionary:
 	var crisis := crises.get_crisis(crisis_id)
 	if crisis.is_empty() or not outcome.is_empty():
@@ -201,11 +285,111 @@ func dispatch(source: int, crisis_id: String, kind: String, amount: int) -> Dict
 		source, int(crisis.area_id), crisis_id, kind, amount, clock.day
 	)
 	if result.ok:
-		logistics.tick_day(clock.day, crises.active)
 		learn("dispatch")
 		log_message(result.message)
+		for notice: String in logistics.tick_day(clock.day, crises.active, crises):
+			log_message(notice)
 		changed.emit()
 	return result
+
+
+func crisis_feedback(crisis_id: String) -> Dictionary:
+	return crises.feedback(crisis_id, logistics)
+
+
+func shipment_progress(shipment: Dictionary) -> float:
+	# Response days last one second: expose the existing clock fraction for presentation only.
+	var fraction := clampf(_accumulator, 0.0, 1.0) if not crises.active.is_empty() else 0.0
+	var remaining := float(int(shipment.arrival) - clock.day) - fraction
+	return 1.0 - clampf(remaining / maxi(1, int(shipment.days)), 0.0, 1.0)
+
+
+func dispatch_preview(source: int, crisis_id: String, kind: String, amount: int) -> Dictionary:
+	var result := {
+		"ok": false,
+		"message": "Aktif hedef kriz seçilmeli",
+		"source": source,
+		"source_name": areas[source].name if areas.has(source) else "",
+		"amount": amount,
+		"available": 0,
+		"days": 0,
+		"fee": 0,
+		"arrival": clock.day,
+		"late": false,
+		"missing": 0
+	}
+	var crisis := crises.get_crisis(crisis_id)
+	if crisis.is_empty() or not outcome.is_empty():
+		return result
+	result.merge(logistics.quote(source, int(crisis.area_id), kind, amount), true)
+	result.arrival = clock.day + int(result.days)
+	result.late = int(result.arrival) > int(crisis.start) + int(crisis.window)
+	if kind in ["team", "stock"]:
+		var key := "teams" if kind == "team" else "stock"
+		result.missing = int(crisis_feedback(crisis_id)[key].missing)
+	if result.ok and int(result.fee) > treasury.money:
+		result.ok = false
+		result.message = "Taşıma bütçesi yetersiz"
+	return result
+
+
+func missing_dispatch_amount(source: int, crisis_id: String, kind: String) -> int:
+	var preview := dispatch_preview(source, crisis_id, kind, 1)
+	if not preview.ok or preview.late:
+		return 0
+	var crisis := crises.get_crisis(crisis_id)
+	return logistics.affordable_amount(source, int(crisis.area_id), kind, int(preview.missing))
+
+
+func dispatch_options(crisis_id: String, kind: String) -> Array[Dictionary]:
+	var options: Array[Dictionary] = []
+	if crises.get_crisis(crisis_id).is_empty() or not kind in ["team", "stock"]:
+		return options
+	for source: int in areas:
+		var preview := dispatch_preview(source, crisis_id, kind, 1 if kind == "team" else 10)
+		var quick := quick_dispatch_preview(source, crisis_id, kind)
+		preview.merge(
+			{
+				"name": areas[source].name,
+				"limit": missing_dispatch_amount(source, crisis_id, kind),
+				"quick_ok": quick.ok,
+				"quick_message": quick.message
+			}
+		)
+		options.append(preview)
+	options.sort_custom(
+		func(a: Dictionary, b: Dictionary) -> bool:
+			if int(a.days) != int(b.days):
+				return int(a.days) < int(b.days)
+			if int(a.fee) != int(b.fee):
+				return int(a.fee) < int(b.fee)
+			return int(a.source) < int(b.source)
+	)
+	return options
+
+
+func quick_dispatch_preview(source: int, crisis_id: String, kind: String) -> Dictionary:
+	var preview := dispatch_preview(source, crisis_id, kind, 1 if kind == "team" else 10)
+	if not preview.ok:
+		return preview
+	if preview.late:
+		preview.ok = false
+		preview.message = "Müdahale süresinden sonra varır. Standart formu kullanabilirsin"
+	elif int(preview.missing) < int(preview.amount):
+		preview.ok = false
+		preview.message = (
+			"İhtiyaç sahada veya yolda karşılanıyor"
+			if int(preview.missing) == 0
+			else "Kalan ihtiyaç için Eksik kadar seç düğmesini kullan"
+		)
+	return preview
+
+
+func quick_dispatch(source: int, crisis_id: String, kind: String) -> Dictionary:
+	var preview := quick_dispatch_preview(source, crisis_id, kind)
+	if not preview.ok:
+		return preview
+	return dispatch(source, crisis_id, kind, int(preview.amount))
 
 
 func fund(crisis_id: String, amount: int) -> Dictionary:
@@ -253,6 +437,34 @@ func report_for(id: String = "") -> Dictionary:
 		if report.id == id:
 			return report
 	return crises.reports.back() if id.is_empty() and not crises.reports.is_empty() else {}
+
+
+func report_feedback(report: Dictionary) -> Dictionary:
+	if report.is_empty() or not areas.has(int(report.get("area_id", 0))):
+		return {}
+	var area: ServiceArea = areas[int(report.area_id)]
+	return {
+		"area_name": area.name,
+		"preparation_summary":
+		(
+			"Hazırlık tahmini: %d kişi korundu. %d kayıp ve ₺%d hasar önlendi."
+			% [report.protected, report.prevented_losses, report.prevented_damage]
+		),
+		"response_summary":
+		(
+			"Müdahale desteği %%%d. Tahmini %d kişi kurtarıldı. Güven %+.1f."
+			% [roundi(float(report.quality)), report.rescued, report.trust_delta]
+		),
+		"recovery_summary":
+		(
+			"Bölge altyapısı iyileşti. Kalan hasar yok."
+			if is_zero_approx(area.damage)
+			else (
+				"Kalan hasar %%%d. Rapor anındaki onarım tahmini ₺%d."
+				% [roundi(area.damage), report.repair_estimate]
+			)
+		)
+	}
 
 
 func scores() -> Dictionary:
