@@ -6,6 +6,8 @@ func render(content: Control, screen: String) -> void:
 	super.render(content, screen)
 	if screen == "newspaper":
 		_newspaper()
+	elif screen == "research_done":
+		_research_done()
 	else:
 		_report()
 
@@ -48,6 +50,43 @@ func _newspaper() -> void:
 			else _shell.show_screen.bind("crisis")
 		)
 	)
+
+
+func _research_done() -> void:
+	var sim: Simulation = _shell.sim
+	if sim.news_queue.is_empty() or sim.news_queue.front().kind != "research_done":
+		_shell.close_screen()
+		return
+	var definition := sim.projects.definition_for(sim.news_queue.front().id)
+	_title("ARAŞTIRMA TAMAMLANDI", definition.title.to_upper())
+	var paper := Panel.new()
+	paper.position = Vector2(0, 122)
+	paper.size = Vector2(1344, 426)
+	var style := StyleBoxTexture.new()
+	style.texture = preload("res://ui_preview/assets/paper.png")
+	style.texture_margin_left = 8
+	style.texture_margin_right = 8
+	style.texture_margin_top = 8
+	style.texture_margin_bottom = 8
+	paper.add_theme_stylebox_override("panel", style)
+	_content.add_child(paper)
+	UI.text(
+		_content,
+		CalendarClock.day_to_iso(sim.clock.day),
+		Rect2(30, 146, 1268, 32),
+		18,
+		Color("594d3c")
+	)
+	var headline: Label = UI.text(
+		_content,
+		definition.story_headline.to_upper(),
+		Rect2(30, 190, 1268, 90),
+		36,
+		Color("302c27")
+	)
+	headline.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_paragraph(definition.story_text, Rect2(30, 290, 1250, 240), Color("302c27"))
+	UI.button(_content, "TAMAM", Rect2(850, 600, 494, 52), _shell.acknowledge_news)
 
 
 func _report() -> void:

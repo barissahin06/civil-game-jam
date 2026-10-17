@@ -99,10 +99,14 @@
           },
           "story": {
             "type": "object",
-            "required": ["headline", "text"],
+            "required": ["headline", "preview", "text"],
             "additionalProperties": false,
             "properties": {
               "headline": {
+                "type": "string",
+                "minLength": 1
+              },
+              "preview": {
                 "type": "string",
                 "minLength": 1
               },

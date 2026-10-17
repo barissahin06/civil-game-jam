@@ -23,6 +23,14 @@ func test_paused_speed_first_event_and_monthly_settlement() -> void:
 	sim.set_speed(4)
 	sim.set_paused(false)
 	sim.update(300.0)
+	assert_str(CalendarClock.day_to_iso(sim.clock.day)).is_equal("1951-01-01")
+	assert_bool(sim.paused).is_true()
+	assert_dict(sim.news_queue.front()).is_equal(
+		{"kind": "research_done", "id": "research_structural"}
+	)
+	sim.acknowledge()
+	sim.set_paused(false)
+	sim.update(300.0)
 	assert_str(CalendarClock.day_to_iso(sim.clock.day)).is_equal("1951-04-08")
 	assert_bool(sim.paused).is_true()
 	assert_int(sim.crises.active.size()).is_equal(1)

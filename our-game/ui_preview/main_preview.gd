@@ -310,7 +310,7 @@ func refresh_screen() -> void:
 			projects.render(_screen_content, open_screen)
 		"crisis", "fund":
 			crisis.render(_screen_content, open_screen)
-		"newspaper", "report":
+		"newspaper", "report", "research_done":
 			news_reports.render(_screen_content, open_screen)
 		"menu", "newgame", "pause", "settings", "tutorial", "ending", "defeat":
 			campaign.render(_screen_content, open_screen)

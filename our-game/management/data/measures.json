@@ -227,7 +227,8 @@
       "repeatable": false,
       "story": {
         "headline": "Ayakta Tutan Hesaptır",
-        "text": "Okullarda deprem dersi başladı; mühendisler yıkılan evlerden ders çıkarıyor. Yeni binalar artık hesapla yükseliyor."
+        "preview": "Mühendislik okullarında deprem dersi açılacak, yeni binalar hesapla ve sağlam temelle yükselecek.",
+        "text": "Mühendislik okullarında ilk kez deprem dersi okutuldu. Öğrenciler köy köy dolaşıp yıkılan evlerin neden yıkıldığını, ayakta kalanların neden kaldığını defterlerine geçirdi. İlkokullarda öğretmenler tahtaya bir ev çizip çocuklara evin nasıl ayakta durduğunu anlattı. Mezuniyet töreninde yaşlı bir yapı ustası kürsüye çıkıp tek cümle söyledi: Binayı ayakta tutan taş değil, hesaptır. Yeni binalar artık depreme daha dayanıklı."
       }
     },
     {
@@ -248,7 +249,8 @@
       "repeatable": false,
       "story": {
         "headline": "Önce Toprağa Bak",
-        "text": "Şehirlerin zemin haritası çıkarıldı. Dolgu ve dere yataklarına artık bina yapılmıyor."
+        "preview": "Şehirlerin zemin haritası çıkarılacak, dere yatakları ve dolgu alanlar yapılaşmaya kapanacak.",
+        "text": "Sondaj ekipleri aylarca şehir kenarlarında çalıştı. Merakla yaklaşan bir çocuk jeoloğa neden yeri deldiklerini sorduğunda cevap kısa oldu: Bir ev, bastığı yer kadar sağlamdır. Belediye duvarına asılan haritada kaya zeminler yeşil, dere yatakları kırmızıydı. Kırmızı arsalara artık inşaat izni verilmiyor. Depremde ve selde zarar görecek ev sayısı azaldı."
       }
     },
     {
@@ -268,7 +270,8 @@
       "repeatable": false,
       "story": {
         "headline": "Şehir Kendini Koruyor",
-        "text": "Su, gaz ve elektrik hatları sarsıntıda kendiliğinden kapanıyor. Hasar artık daha çabuk onarılıyor."
+        "preview": "Su, gaz ve elektrik hatlarına otomatik vanalar takılacak, şebeke sarsıntıda kendini koruyacak.",
+        "text": "Şehrin su, gaz ve elektrik hatlarına otomatik vanalar ve uzaktan kumanda panoları yerleştirildi. Kontrol odasındaki gece nöbetçisi, deneme sarsıntısında panodaki ışıkların tek tek yeşilden kırmızıya döndüğünü, hatların kimse dokunmadan kapandığını izledi. Yanındaki teknisyen kahvesini bırakıp gülümsedi: Artık şehrin de refleksleri var. Altyapı afetlere karşı daha dirençli."
       }
     },
     {
@@ -289,7 +292,8 @@
       "repeatable": false,
       "story": {
         "headline": "Deprem Gelir, Hastane Çalışır",
-        "text": "Hastane ve okullar sarsıntıyı emen temellere oturtuldu. Depremde içerideki hayat durmuyor."
+        "preview": "Hastane ve okullar sarsıntıyı emen temellere oturtulacak, depremde içerideki hayat durmayacak.",
+        "text": "Yeni hastanenin temeline kauçuk ve çelik katmanlardan oluşan dev izolatörler yerleştirildi. Açılış töreninde başhekim sarsma masasındaki maketi gösterdi: zemin sağa sola savruluyor, maketin içindeki su bardağı yerinden bile oynamıyordu. Başhekimin sözü netti: Deprem olduğunda bu binada ameliyatlar sürecek. Okullar ve hastaneler artık bu standartla yapılıyor."
       }
     },
     {
@@ -310,7 +314,8 @@
       "repeatable": false,
       "story": {
         "headline": "Gökyüzü Artık Kayıtta",
-        "text": "Yüzlerce gözlemci her sabah yağışı merkeze bildiriyor. Sel ve çığ öncesinden tahmin edilebiliyor."
+        "preview": "Ülke çapında gözlem istasyonları kurulacak, sel ve çığ riski önceden takip edilebilecek.",
+        "text": "Köy öğretmenleri, fener bekçileri ve istasyon şefleri gönüllü gözlemci oldu. Her sabah yağmur ölçeklerini okuyup sonucu telgrafla merkeze bildiriyorlar. Yayladaki yaşlı çoban yağmuru yine bulutun kokusundan anlıyor ama artık kaç milimetre yağacağını da biliyor. Ülkenin ilk günlük yağış haritası duvara asıldı. Sel ve çığ artık habersiz gelmiyor."
       }
     },
     {
@@ -331,7 +336,8 @@
       "repeatable": false,
       "story": {
         "headline": "Fırtınayı Gelmeden Gör",
-        "text": "Radar, büyüyen fırtınayı saatler önce yakalıyor. Köyler sel gelmeden boşaltılıyor."
+        "preview": "Hava radarları kurulacak, büyüyen fırtınalar saatler önce görülüp halk uyarılabilecek.",
+        "text": "Tepenin üstüne beyaz bir kubbe kuruldu, içindeki ekranda yeşil lekeler kıpırdıyor. Bir gece operatör, dağların ardında hızla büyüyen bir fırtına hücresini fark edip dere kenarındaki köyün muhtarını telefonla uyardı. Sabaha karşı sel geldiğinde köy meydanı boştu, herkes tepedeki okuldaydı. Radar artık her gece nöbette."
       }
     },
     {
@@ -351,7 +357,8 @@
       "repeatable": false,
       "story": {
         "headline": "Hat Kopmuyor",
-        "text": "Yollar ve teller yıkılsa da afet bölgesiyle bağlantı sürüyor. Kurtarma ekipleri nereye gideceğini ilk saatte biliyor."
+        "preview": "Uydu bağlantısı kurulacak, yollar ve teller yıkılsa da afet bölgesiyle iletişim kopmayacak.",
+        "text": "Deprem bölgesinde telefon direkleri devrildi, yollar kapandı. Bir çadırın yanına kurulan küçük çanak anten ilk mesajı gönderdi: Buradayız. Yirmi yaralı, yol kapalı, su lazım. Kriz merkezinde haritaya ilk iğne batırıldı ve ekipler doğru köye yönlendirildi. En uzak dağ köyleri de artık kesintisiz bağlantıda."
       }
     },
     {
@@ -372,7 +379,8 @@
       "repeatable": false,
       "story": {
         "headline": "Dağın Nabzı Ölçülüyor",
-        "text": "Yamaç ve ormanlardaki sensörler kaymayı ve yangını anında bildiriyor. Ekipler felaket büyümeden yetişiyor."
+        "preview": "Yamaç ve ormanlara sensörler yerleştirilecek, heyelan ve yangın anında fark edilecek.",
+        "text": "Yamaçlara ve ormanlara binlerce küçük sensör yerleştirildi, nemi, eğimi ve sıcaklığı her dakika ölçüyorlar. Bir gece yarısı ormandaki bir sensör alarm verdi ve yangın ekibi alev büyümeden yirmi dakikada oradaydı. Ekibin mühendisi gülerek anlattı: Eskiden dağ susardı, şimdi her gün rapor veriyor."
       }
     },
     {
@@ -392,7 +400,8 @@
       "repeatable": false,
       "story": {
         "headline": "Tek Ses, Tek Plan",
-        "text": "Jandarma, itfaiye ve Kızılay enkaz başında ortak kurallarla çalışıyor. Kurtarma artık daha hızlı."
+        "preview": "Jandarma, itfaiye ve Kızılay ortak kurallarla çalışacak, enkaz başında karmaşa bitecek.",
+        "text": "Jandarma, itfaiye, Kızılay ve köylüler ilk ortak kurtarma talimatnamesinde buluştu. Enkaz başında artık kimin kazacağı, kimin taşıyacağı, kimin kayıt tutacağı belli. Eski bir itfaiye çavuşu farkı tek cümleyle özetledi: Önceden yüz kişi bağırırdı. Şimdi bir kişi konuşuyor, doksan dokuz kişi dinliyor. Kurtarma çalışmaları artık daha hızlı."
       }
     },
     {
@@ -412,7 +421,8 @@
       "repeatable": false,
       "story": {
         "headline": "Yardım Hazırda Bekliyor",
-        "text": "Her bölgeye çadır ve battaniye deposu kuruldu. Yardım günler değil, saatler içinde ulaşıyor."
+        "preview": "Her bölgeye yardım deposu kurulacak, çadır ve battaniye saatler içinde yola çıkabilecek.",
+        "text": "Her bölgeye çadır, battaniye ve sahra mutfağı depoları kuruldu. Depo memurları her ayın ilk pazartesi sayım yapıyor, un çuvallarının tarihlerine tek tek bakıyor. Felaket geldiğinde yardım kamyonları artık günler değil, saatler içinde yola çıkıyor. Bir depo memuru şöyle diyor: En iyi depo, kapısı hiç açılmayandır. Ama açılırsa hazırız."
       }
     },
     {
@@ -432,7 +442,8 @@
       "repeatable": false,
       "story": {
         "headline": "Afetin Okulu Açıldı",
-        "text": "Bilim insanları tek çatı altında toplandı. Aynı anda daha fazla araştırma yürütülebiliyor."
+        "preview": "Afet araştırmaları için ulusal bir kurum kurulacak, aynı anda daha fazla araştırma yürütülebilecek.",
+        "text": "Üniversitelerden ve bakanlıklardan bilim insanlarını tek çatı altında toplayan bir kurum kuruldu. Laboratuvarlarda sarsma masaları, sel kanalı maketleri ve çığ deneyleri var. Genç bir araştırmacı ilk raporunu sunarken salondaki valiler hızlı hızlı not aldı. Ülke artık aynı anda daha fazla soruya cevap arayabiliyor."
       }
     },
     {
@@ -453,7 +464,8 @@
       "repeatable": false,
       "story": {
         "headline": "Tek Masa, Tek Harita",
-        "text": "Kurtarma, sağlık ve onarım ekipleri aynı kriz masasında. Müdahale ve onarım birlikte hızlanıyor."
+        "preview": "Kurtarma, sağlık ve onarım ekipleri tek kriz masasında toplanacak, müdahale ve onarım hızlanacak.",
+        "text": "Kriz masasında arama kurtarma, sağlık, ulaşım ve onarım ekipleri ilk kez aynı haritaya bakıyor. Bir köprü çöktüğünde onarım ekibi, kurtarma araçları için alternatif yolu dakikalar içinde açtı. Toplantı salonunun duvarına şu söz asıldı: Afet bir kurumu değil, bütün ülkeyi sınar. Müdahale ve onarım artık birlikte yürüyor."
       }
     },
     {
@@ -474,7 +486,8 @@
       "repeatable": false,
       "story": {
         "headline": "Çanta Kapının Yanında",
-        "text": "Evlerde afet çantaları hazırlandı. Halk paniğe kapılmıyor, devlete güveni artıyor."
+        "preview": "Evlerde afet çantası hazırlanması teşvik edilecek, halk afete daha sakin karşılık verecek.",
+        "text": "Muhtarlar kapı kapı dolaşıp broşür dağıttı, evlerde düdük, el feneri, su ve ilaçtan oluşan çantalar hazırlandı. Yaşlı bir nine çantasına torununun fotoğrafını da koydu: Kaybolursak bununla bulurlar. Hazırlıklı halk paniğe kapılmıyor, devlete güveni kolay sarsılmıyor."
       }
     },
     {
@@ -494,7 +507,8 @@
       "repeatable": false,
       "story": {
         "headline": "Buluşma Yeri Belli",
-        "text": "Okullarda verilen ödevle aileler afet planı yaptı. Herkes nereye gideceğini biliyor."
+        "preview": "Okullarda aile afet planı ödevi verilecek, her aile buluşma yerini ve yapacaklarını bilecek.",
+        "text": "Öğretmenler öğrencilere ilginç bir ödev verdi: ailenizle bir afet planı yapın. Akşam yemeklerinde aileler toplanma yerini ve kimin kimi arayacağını konuştu. Küçük bir kız planı çizip buzdolabına astı: kırmızı ok kapıyı, yeşil yıldız parkı gösteriyor, köşede de Kediyi unutma! yazıyor. Artık herkes nereye gideceğini biliyor."
       }
     },
     {
@@ -515,7 +529,8 @@
       "repeatable": false,
       "story": {
         "headline": "Siren Çaldı, Kimse Koşmadı",
-        "text": "Düzenli tatbikatlarla tahliye süresi yarıya indi. Mahalleler afete hazır."
+        "preview": "Mahallelerde düzenli tatbikat yapılacak, tahliye daha hızlı ve düzenli olacak.",
+        "text": "Sabah saat onda siren çaldı. Okul, fırın ve cami avlusundaki herkes sakin adımlarla toplanma alanına yürüdü. İlk tatbikat on dört dakika sürmüştü, üçüncüsü altı dakika. Mahallenin fırıncısı gülerek ekledi: Bu sefer ekmekleri de yanımda getirdim. Mahalleler artık afete hazır."
       }
     },
     {
@@ -535,7 +550,8 @@
       "repeatable": false,
       "story": {
         "headline": "Komşu Komşuya Yetişiyor",
-        "text": "Mahallelerde gönüllü listeleri oluşturuldu. İlk yardım, ekipler gelmeden başlıyor."
+        "preview": "Mahallelerde gönüllü listeleri oluşturulacak, ilk yardım ekipler gelmeden başlayacak.",
+        "text": "Muhtarlıklarda gönüllü defterleri açıldı: kim ilk yardım biliyor, kimin kamyoneti var, kim kalabalığa yemek pişirebilir. Emekli bir hemşire her cumartesi gençlere sargı bezi bağlamayı öğretiyor. Bir sonraki felakette komşular, kurtarma ekipleri gelmeden birbirine yetişecek."
       }
     },
     {
@@ -555,7 +571,8 @@
       "repeatable": false,
       "story": {
         "headline": "Söylenti Değil, Bilgi",
-        "text": "Afetten sonra resmî bülten saat başı ve açıkça okunuyor. Halkın devlete güveni kolay sarsılmıyor."
+        "preview": "Afet sonrası resmi bültenler düzenli ve açık okunacak, söylentiler güveni sarsamayacak.",
+        "text": "Radyoda her afetten sonra saat başı resmi bülten okunuyor: rakamlar yuvarlanmıyor, eksikler saklanmıyor. Kahvehanelerde artık dedikodu yerine bülten dinleniyor. Sunucunun ilk yayındaki sözü akıllarda kaldı: Bildiğimizi söyleyeceğiz. Bilmediğimizi de söyleyeceğiz. Halkın devlete güveni kolay sarsılmıyor."
       }
     },
     {
@@ -576,7 +593,8 @@
       "repeatable": false,
       "story": {
         "headline": "İyilik Bütün Ülkeyi Dolaşır",
-        "text": "Kardeş iller birbirine yardım taşıyor. Afet bir bölgeyi vurur ama bütün ülke ayağa kalkar."
+        "preview": "İller arasında kardeşlik ağları kurulacak, afet olan bölgeye bütün ülkeden yardım akacak.",
+        "text": "İl ve ilçeler arasında kardeşlik ağları kuruldu. Doğu Karadeniz selle boğuşurken kardeş ilçeden yardım kamyonları yola çıktı, okul çocukları kolilerin içine mektup koydu. Bir mektupta şu yazıyordu: Afet bir bölgeyi vurur, iyilik bütün ülkeyi dolaşır."
       }
     }
   ]

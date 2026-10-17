@@ -26,6 +26,7 @@ func test_linked_research_groups_and_cross_benefits() -> void:
 		if definition.is_research():
 			counts[definition.tab] += 1
 			assert_str(definition.story_headline).is_not_empty()
+			assert_str(definition.story_preview).is_not_empty()
 			assert_str(definition.story_text).is_not_empty()
 		for requirement: String in definition.prerequisites:
 			assert_bool(definitions.has(requirement)).is_true()

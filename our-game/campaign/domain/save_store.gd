@@ -255,10 +255,16 @@ func restore(data: Variant) -> Simulation:
 	for item: Variant in data.news_queue:
 		if (
 			not item is Dictionary
-			or not item.get("kind") in ["newspaper", "report"]
+			or not item.get("kind") in ["newspaper", "report", "research_done"]
 			or not item.get("id") is String
 		):
 			return null
+		if item.kind == "research_done":
+			if not sim.projects.is_completed(item.id) or ("research_done:" + item.id) in queued:
+				return null
+			queued.append("research_done:" + item.id)
+			sim.news_queue.append(item.duplicate(true))
+			continue
 		if (
 			(item.kind == "newspaper" and sim.event_for(item.id).is_empty())
 			or (item.kind == "report" and sim.report_for(item.id).is_empty())

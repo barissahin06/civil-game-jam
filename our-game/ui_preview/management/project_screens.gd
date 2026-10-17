@@ -78,6 +78,10 @@ func _project() -> void:
 			UI.INK
 		)
 		row += 1
+	if not definition.story_preview.is_empty():
+		_paragraph(
+			definition.story_preview.to_upper(), Rect2(0, 318 + row * 30, 850, 150), UI.MUTED
+		)
 	if definition.kind == "repair":
 		_paragraph(
 			"HASAR VE GELİR KAYBI HER ÖDENEN AYDA AZALIR. BEDEL BAŞLANGIÇ HASARINDAN HESAPLANIR.",

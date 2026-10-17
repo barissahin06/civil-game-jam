@@ -137,6 +137,7 @@ func _run() -> void:
 	await _press_button("ARAŞTIRMA 0/2")
 	await _capture("research-protection")
 	await _press_button("İNCELE")
+	await _capture("research-project")
 	await _press_button("BAŞLAT")
 	assert(_shell.sim.projects.active_count("research") == 1)
 	assert(_shell._guide.text.begins_with("REHBER 4/4"))
@@ -153,6 +154,15 @@ func _run() -> void:
 	await _capture("national")
 	_shell.close_screen()
 	await _press_button("DEVAM")
+	_shell.sim.update(300.0)
+	await process_frame
+	await process_frame
+	assert(CalendarClock.day_to_iso(_shell.sim.clock.day) == "1951-01-01")
+	assert(_shell.open_screen == "research_done")
+	await _capture("research-done")
+	await _press_button("TAMAM")
+	assert(_shell.sim.news_queue.is_empty())
+	_shell.sim.set_paused(false)
 	_shell.sim.update(300.0)
 	await process_frame
 	await process_frame

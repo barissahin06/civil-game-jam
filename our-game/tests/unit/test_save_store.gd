@@ -162,6 +162,8 @@ func test_future_duplicate_news_bad_scalars_and_changed_catalog_are_rejected() -
 	bad = sim.to_dict().duplicate(true)
 	var id: String = sim.historical.events.front().id
 	bad.news_queue = [{"kind": "newspaper", "id": id}, {"kind": "newspaper", "id": id}]
+	assert_object(SaveStore.new().restore(bad)).is_null()
+	bad.news_queue = [{"kind": "research_done", "id": "research_structural"}]
 	assert_object(store.restore(bad)).is_null()
 	for key: String in ["money", "income", "awareness"]:
 		bad = sim.to_dict().duplicate(true)
@@ -322,3 +324,10 @@ func test_oversized_slot_is_visible_but_never_loadable() -> void:
 	var preserved := FileAccess.open(store.slot_path(3), FileAccess.READ)
 	assert_int(preserved.get_length()).is_equal(SaveStore.MAX_FILE_BYTES + 1)
 	preserved.close()
+
+
+func test_completed_research_story_in_news_queue_round_trips() -> void:
+	var sim := _fixture()
+	sim.projects.global_completed.append("research_structural")
+	sim.news_queue.append({"kind": "research_done", "id": "research_structural"})
+	_round_trip(sim)

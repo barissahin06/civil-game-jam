@@ -125,6 +125,9 @@ func _month_boundary() -> void:
 	var awareness_was_complete := projects.awareness_complete()
 	for completion: Dictionary in projects.tick_month(clock.year, bool(settlement.can_pay_budget)):
 		log_message(str(completion.get("message", completion.get("title", "Proje tamamlandı"))))
+		var definition := projects.definition_for(completion.definition_id)
+		if definition.is_research() and not definition.story_text.is_empty():
+			news_queue.append({"kind": "research_done", "id": definition.id})
 	if not awareness_was_complete and projects.awareness_complete():
 		log_message("Bilinç geliştirmeleri tamamlandı, yeni bilinç baloncukları üretilmeyecek.")
 	var population := 0
