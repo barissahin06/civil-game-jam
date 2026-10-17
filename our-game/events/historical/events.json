@@ -335,7 +335,7 @@
     "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
-  
+
   {
     "name": "1990 Trabzon Seli",
     "time": "1990-06-20",
@@ -1140,7 +1140,7 @@
     "image": "res://assets/events/2022-bati-karadeniz-seli.jpg",
     "is_active": false
   },
-  
+
   {
     "name": "2024 İzmir Orman Yangını",
     "time": "2024-08-15",
