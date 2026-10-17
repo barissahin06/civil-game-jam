@@ -1,0 +1,1672 @@
+[
+  {
+    "name": "1951 İskenderun Depremi",
+    "time": "1951-04-08",
+    "disaster_type": "earthquake",
+    "description": "İskenderun Körfezi'nde 5.8 büyüklüğünde deprem.",
+    "casualties": 6,
+    "duration": 15,
+    "regions": ["Akdeniz"],
+    "city": ["Hatay"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1951 Kurşunlu Depremi",
+    "time": "1951-08-13",
+    "disaster_type": "earthquake",
+    "description": "Çankırı Kurşunlu'da 6.9 büyüklüğünde deprem.",
+    "casualties": 50,
+    "duration": 30,
+    "regions": ["İç Anadolu"],
+    "city": ["Çankırı"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Dengi ve Ağılözü köylerinin başka yerleşim alanlarına taşınması kararlaştırıldı.",
+          "sources": ["https://www.researchgate.net/publication/398788084_1951_Kursunlu_Depremi"]
+        }
+      ]
+    }
+  },
+  {
+    "name": "1952 Hasankale Depremi",
+    "time": "1952-01-03",
+    "disaster_type": "earthquake",
+    "description": "Erzurum Pasinler (Hasankale) depremi.",
+    "casualties": 41,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Erzurum"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1952 İmamoğlu Depremi",
+    "time": "1952-10-22",
+    "disaster_type": "earthquake",
+    "description": "Adana İmamoğlu'nda 5.6 büyüklüğünde deprem.",
+    "casualties": 10,
+    "duration": 15,
+    "regions": ["Akdeniz"],
+    "city": ["Adana"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1953 Yenice-Gönen Depremi",
+    "time": "1953-03-18",
+    "disaster_type": "earthquake",
+    "description": "Çanakkale Yenice ve Balıkesir Gönen'de 7.2 büyüklüğünde deprem.",
+    "casualties": 265,
+    "duration": 40,
+    "regions": ["Marmara"],
+    "city": ["Çanakkale", "Balıkesir"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1953 Kurşunlu-Karabük Depremi",
+    "time": "1953-09-07",
+    "disaster_type": "earthquake",
+    "description": "Karabük-Kastamonu-Çankırı sınırında 6.0 büyüklüğünde deprem.",
+    "casualties": 2,
+    "duration": 20,
+    "regions": ["Karadeniz", "İç Anadolu"],
+    "city": ["Karabük", "Kastamonu", "Çankırı"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1955 Söke-Balat Depremi",
+    "time": "1955-07-16",
+    "disaster_type": "earthquake",
+    "description": "Aydın Söke'de 6.8 büyüklüğünde deprem.",
+    "casualties": 23,
+    "duration": 30,
+    "regions": ["Ege"],
+    "city": ["Aydın"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1956 Eskişehir Depremi",
+    "time": "1956-02-20",
+    "disaster_type": "earthquake",
+    "description": "Eskişehir'de 6.4 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 20,
+    "regions": ["İç Anadolu"],
+    "city": ["Eskişehir"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1957 Fethiye Depremi",
+    "time": "1957-04-24",
+    "disaster_type": "earthquake",
+    "description": "Muğla Fethiye açıklarında 7.1 büyüklüğünde deprem.",
+    "casualties": 19,
+    "duration": 40,
+    "regions": ["Ege"],
+    "city": ["Muğla"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1957 Abant Depremi",
+    "time": "1957-05-26",
+    "disaster_type": "earthquake",
+    "description": "Bolu Abant'ta 7.1 büyüklüğünde deprem.",
+    "casualties": 52,
+    "duration": 40,
+    "regions": ["Karadeniz"],
+    "city": ["Bolu"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1963 Çınarcık Depremi",
+    "time": "1963-09-18",
+    "disaster_type": "earthquake",
+    "description": "Marmara Denizi'nde 6.3 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 20,
+    "regions": ["Marmara"],
+    "city": ["Yalova", "İstanbul"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1964 Malatya Depremi",
+    "time": "1964-06-14",
+    "disaster_type": "earthquake",
+    "description": "Malatya-Adıyaman sınırında 6.0 büyüklüğünde deprem.",
+    "casualties": 8,
+    "duration": 20,
+    "regions": ["Doğu Anadolu", "Güneydoğu Anadolu"],
+    "city": ["Malatya", "Adıyaman"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1964 Manyas Depremi",
+    "time": "1964-10-06",
+    "disaster_type": "earthquake",
+    "description": "Balıkesir Manyas'ta 7.0 büyüklüğünde deprem.",
+    "casualties": 23,
+    "duration": 40,
+    "regions": ["Marmara"],
+    "city": ["Balıkesir"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1965 Honaz Depremi",
+    "time": "1965-06-13",
+    "disaster_type": "earthquake",
+    "description": "Denizli Honaz'da 5.7 büyüklüğünde deprem.",
+    "casualties": 14,
+    "duration": 15,
+    "regions": ["Ege"],
+    "city": ["Denizli"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1966 Varto-Hınıs Depremi",
+    "time": "1966-03-07",
+    "disaster_type": "earthquake",
+    "description": "Muş-Erzurum sınırında 5.6 büyüklüğünde deprem.",
+    "casualties": 14,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Muş", "Erzurum"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1966 Varto Depremi",
+    "time": "1966-08-19",
+    "disaster_type": "earthquake",
+    "description": "Muş Varto'da 6.9 büyüklüğünde yıkıcı deprem.",
+    "casualties": 2394,
+    "duration": 30,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Muş"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "decision",
+          "description": "1968'de 1051 sayılı Kanun çıkarıldı; tehlikeli alanlarda yapılaşma ve ikamet yasağı ile riskli binaların boşaltılması düzenlendi.",
+          "sources": [
+            "https://acikerisim.tbmm.gov.tr/server/api/core/bitstreams/b6715e02-81ad-4d16-bfd6-c608d6c985ce/content",
+            "https://www5.tbmm.gov.tr/tutanaklar/KANUNLAR_KARARLAR/kanuntbmmc051/kanuntbmmc051/kanuntbmmc05101051.pdf"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "1967 Mudurnu Depremi",
+    "time": "1967-07-22",
+    "disaster_type": "earthquake",
+    "description": "Mudurnu Vadisi'nde 7.2 büyüklüğünde deprem.",
+    "casualties": 89,
+    "duration": 40,
+    "regions": ["Karadeniz", "Marmara"],
+    "city": ["Bolu", "Sakarya"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1968 Bartın Depremi",
+    "time": "1968-09-03",
+    "disaster_type": "earthquake",
+    "description": "Bartın Amasra açıklarında 6.5 büyüklüğünde deprem.",
+    "casualties": 29,
+    "duration": 30,
+    "regions": ["Karadeniz"],
+    "city": ["Bartın"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1969 Alaşehir Depremi",
+    "time": "1969-03-28",
+    "disaster_type": "earthquake",
+    "description": "Manisa Alaşehir'de 6.5 büyüklüğünde deprem.",
+    "casualties": 53,
+    "duration": 30,
+    "regions": ["Ege"],
+    "city": ["Manisa"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1970 Gediz Depremi",
+    "time": "1970-03-28",
+    "disaster_type": "earthquake",
+    "description": "Kütahya Gediz'de 7.2 büyüklüğünde yıkıcı deprem.",
+    "casualties": 1086,
+    "duration": 40,
+    "regions": ["Ege"],
+    "city": ["Kütahya"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "decision",
+          "description": "5 Ağustos 1970 tarihli 7/1164 sayılı Bakanlar Kurulu kararıyla Gediz'in yeni yerleşim alanına taşınması kararlaştırıldı.",
+          "sources": ["https://eskigediz.bel.tr/tr/sayfa/eskigediz-tarihi-37"]
+        }
+      ]
+    }
+  },
+  {
+    "name": "1971 Burdur Depremi",
+    "time": "1971-05-12",
+    "disaster_type": "earthquake",
+    "description": "Burdur Yeşilova'da 5.9 büyüklüğünde deprem.",
+    "casualties": 57,
+    "duration": 15,
+    "regions": ["Akdeniz"],
+    "city": ["Burdur"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1971 Bingöl Depremi",
+    "time": "1971-05-22",
+    "disaster_type": "earthquake",
+    "description": "Bingöl'de 6.8 büyüklüğünde yıkıcı deprem.",
+    "casualties": 878,
+    "duration": 30,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Bingöl"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1975 Lice Depremi",
+    "time": "1975-09-06",
+    "disaster_type": "earthquake",
+    "description": "Diyarbakır Lice'de 6.6 büyüklüğünde yıkıcı deprem.",
+    "casualties": 2385,
+    "duration": 30,
+    "regions": ["Güneydoğu Anadolu"],
+    "city": ["Diyarbakır"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1976 Çaldıran Depremi",
+    "time": "1976-11-24",
+    "disaster_type": "earthquake",
+    "description": "Van Çaldıran-Muradiye'de 7.5 büyüklüğünde yıkıcı deprem.",
+    "casualties": 3840,
+    "duration": 50,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Van"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1983 Biga Depremi",
+    "time": "1983-07-05",
+    "disaster_type": "earthquake",
+    "description": "Çanakkale Biga'da 6.1 büyüklüğünde deprem.",
+    "casualties": 5,
+    "duration": 20,
+    "regions": ["Marmara"],
+    "city": ["Çanakkale"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1983 Horasan-Narman Depremi",
+    "time": "1983-10-30",
+    "disaster_type": "earthquake",
+    "description": "Erzurum Horasan ve Narman'da 6.9 büyüklüğünde yıkıcı deprem.",
+    "casualties": 1155,
+    "duration": 30,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Erzurum", "Kars"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1984 Şenkaya Depremi",
+    "time": "1984-09-18",
+    "disaster_type": "earthquake",
+    "description": "Erzurum Şenkaya'da 6.4 büyüklüğünde deprem.",
+    "casualties": 3,
+    "duration": 20,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Erzurum"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1986 Doğanşehir Depremi",
+    "time": "1986-05-05",
+    "disaster_type": "earthquake",
+    "description": "Malatya Doğanşehir'de 5.9 büyüklüğünde deprem.",
+    "casualties": 10,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Malatya"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bulunan kaynaklar 5-6 Haziran 1986 depremlerine ait; 5 Mayıs 1986 kaydıyla eşleşme doğrulanamadı.",
+      "research_sources": ["https://egazete.cumhuriyet.com.tr/en/catalog/192/1987/1/31/11"]
+    }
+  },
+  {
+    "name": "1988 Çatak Heyelanı",
+    "time": "1988-06-23",
+    "disaster_type": "landslide",
+    "description": "Trabzon Maçka Çatak'ta yağış sonrası kaya-toprak kayması.",
+    "casualties": 66,
+    "duration": 300,
+    "regions": ["Karadeniz"],
+    "city": ["Trabzon"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Heyelandan etkilenen 34 konutun başka bir alana taşınması kararlaştırıldı.",
+          "sources": ["https://egazetetest.cumhuriyet.com.tr/en/catalog/192/1988/11/17/7"]
+        }
+      ]
+    }
+  },
+  {
+    "name": "1990 Trabzon Seli",
+    "time": "1990-06-20",
+    "disaster_type": "flood",
+    "description": "Trabzon Değirmendere, Akçaabat ve Söğütlü'de sel.",
+    "casualties": 57,
+    "duration": 172800,
+    "regions": ["Karadeniz"],
+    "city": ["Trabzon"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1992 Görmeç Çığ Faciası",
+    "time": "1992-02-01",
+    "disaster_type": "avalanche",
+    "description": "Şırnak Görmeç'te jandarma karakolu ve köye çığ düştü.",
+    "casualties": 91,
+    "duration": 60,
+    "regions": ["Güneydoğu Anadolu"],
+    "city": ["Şırnak"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1992 Tünekpınar Çığ Faciası",
+    "time": "1992-02-01",
+    "disaster_type": "avalanche",
+    "description": "Siirt Eruh Tünekpınar'da askeri birliğe çığ düştü.",
+    "casualties": 32,
+    "duration": 60,
+    "regions": ["Güneydoğu Anadolu"],
+    "city": ["Siirt"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1992 Erzincan Depremi",
+    "time": "1992-03-13",
+    "disaster_type": "earthquake",
+    "description": "Erzincan'da 6.8 büyüklüğünde yıkıcı deprem.",
+    "casualties": 653,
+    "duration": 30,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Erzincan"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1995 Senirkent Sel Felaketi",
+    "time": "1995-07-13",
+    "disaster_type": "flood",
+    "description": "Isparta Senirkent'te sağanak sonrası çamur ve moloz akışı.",
+    "casualties": 74,
+    "duration": 21600,
+    "regions": ["Akdeniz"],
+    "city": ["Isparta"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Doğru ve Suyolu dereleri için tersip bentleri, ıslah sekileri ve çevirme yapıları içeren taşkın koruma projesi onaylandı.",
+          "sources": ["https://eski.imo.org.tr/resimler/ekutuphane/pdf/3935.pdf"]
+        }
+      ]
+    }
+  },
+  {
+    "name": "1995 Dinar Depremi",
+    "time": "1995-10-01",
+    "disaster_type": "earthquake",
+    "description": "Afyonkarahisar Dinar'da 6.1 büyüklüğünde deprem.",
+    "casualties": 90,
+    "duration": 20,
+    "regions": ["Ege"],
+    "city": ["Afyonkarahisar"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1996 Mecitözü Depremi",
+    "time": "1996-08-14",
+    "disaster_type": "earthquake",
+    "description": "Çorum Mecitözü'nde 5.6 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 15,
+    "regions": ["Karadeniz"],
+    "city": ["Çorum"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1997 Samandağ Depremi",
+    "time": "1997-01-22",
+    "disaster_type": "earthquake",
+    "description": "Hatay Samandağ'da 5.5 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 15,
+    "regions": ["Akdeniz"],
+    "city": ["Hatay"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1998 Adana-Ceyhan Depremi",
+    "time": "1998-06-27",
+    "disaster_type": "earthquake",
+    "description": "Adana Ceyhan'da 6.2 büyüklüğünde deprem.",
+    "casualties": 146,
+    "duration": 20,
+    "regions": ["Akdeniz"],
+    "city": ["Adana"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1998 Beşköy Seli",
+    "time": "1998-08-07",
+    "disaster_type": "flood",
+    "description": "Trabzon Sürmene Beşköy'de sel ve heyelan.",
+    "casualties": 50,
+    "duration": 86400,
+    "regions": ["Karadeniz"],
+    "city": ["Trabzon"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1999 Marmara Depremi",
+    "time": "1999-08-17",
+    "disaster_type": "earthquake",
+    "description": "Marmara Bölgesi'nde büyük deprem.",
+    "casualties": 17480,
+    "duration": 45,
+    "regions": ["Marmara"],
+    "city": ["Kocaeli", "Sakarya", "Yalova", "İstanbul", "Bolu", "Bursa", "Eskişehir"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Yapı güvenliğinin denetlenmesi için 2001'de 4708 sayılı Yapı Denetimi Hakkında Kanun çıkarıldı.",
+          "sources": [
+            "https://canakkale.csb.gov.tr/haberler/deprem-oldurmez-depreme-karsi-dayaniksiz-binalar-oldurur-246484"
+          ]
+        },
+        {
+          "type": "organization",
+          "description": "Afetlerde tıbbi kurtarmayı yürütmek üzere Ulusal Medikal Kurtarma Ekipleri (UMKE) oluşturuldu.",
+          "sources": [
+            "https://www.saglik.gov.tr/TR-1267/mustesar-eyup-gumus-umke-tatbikatina-katildi.html",
+            "https://daricafarabieah.saglik.gov.tr/TR-119284/umke-nedir.html"
+          ]
+        },
+        {
+          "type": "organization",
+          "description": "2009'da 5902 sayılı Kanun ile AFAD kuruldu; afet yönetimindeki üç genel müdürlüğün görevleri tek çatı altında toplandı.",
+          "sources": ["https://www.afad.gov.tr/afad-hakkinda"]
+        }
+      ],
+      "research_note": "Bu yapılanmalar 1999 depremlerinden sonraki reform sürecine aittir."
+    }
+  },
+  {
+    "name": "1999 Düzce Depremi",
+    "time": "1999-11-12",
+    "disaster_type": "earthquake",
+    "description": "Düzce'de 7.2 büyüklüğünde yıkıcı deprem.",
+    "casualties": 894,
+    "duration": 40,
+    "regions": ["Karadeniz"],
+    "city": ["Düzce", "Bolu"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "decision",
+          "description": "2000'de yapı denetimi için 595 sayılı KHK çıkarıldı; iptalinin ardından 2001'de 4708 sayılı Kanun yürürlüğe girdi.",
+          "sources": [
+            "https://mugla.imo.org.tr/TR%2C63203/deprem-ve-yapi-denetimi-calistayi-milasta-gerceklestirildi.html"
+          ]
+        }
+      ],
+      "research_note": "Düzenleme, 17 Ağustos ve 12 Kasım 1999 depremlerinin ortak sonucudur."
+    }
+  },
+  {
+    "name": "2000 Orta Depremi",
+    "time": "2000-06-06",
+    "disaster_type": "earthquake",
+    "description": "Çankırı Orta'da 6.0 büyüklüğünde deprem.",
+    "casualties": 3,
+    "duration": 20,
+    "regions": ["İç Anadolu"],
+    "city": ["Çankırı"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2000 Sultandağı Depremi",
+    "time": "2000-12-15",
+    "disaster_type": "earthquake",
+    "description": "Afyonkarahisar Sultandağı'nda 5.8 büyüklüğünde deprem.",
+    "casualties": 6,
+    "duration": 15,
+    "regions": ["Ege"],
+    "city": ["Afyonkarahisar"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2002 Çay-Sultandağı Depremi",
+    "time": "2002-02-03",
+    "disaster_type": "earthquake",
+    "description": "Afyonkarahisar Çay ve Sultandağı'nda 6.5 büyüklüğünde deprem.",
+    "casualties": 44,
+    "duration": 30,
+    "regions": ["Ege"],
+    "city": ["Afyonkarahisar"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2003 Pülümür Depremi",
+    "time": "2003-01-27",
+    "disaster_type": "earthquake",
+    "description": "Tunceli Pülümür'de 6.1 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 20,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Tunceli"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2003 Bingöl Depremi",
+    "time": "2003-05-01",
+    "disaster_type": "earthquake",
+    "description": "Bingöl'de 6.4 büyüklüğünde deprem; yatılı okul çöktü.",
+    "casualties": 177,
+    "duration": 20,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Bingöl"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2004 Aşkale Depremi",
+    "time": "2004-03-25",
+    "disaster_type": "earthquake",
+    "description": "Erzurum Aşkale'de 5.3 büyüklüğünde deprem.",
+    "casualties": 9,
+    "duration": 10,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Erzurum"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2004 Doğubayazıt Depremi",
+    "time": "2004-07-02",
+    "disaster_type": "earthquake",
+    "description": "Ağrı Doğubayazıt'ta 5.2 büyüklüğünde deprem.",
+    "casualties": 18,
+    "duration": 10,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Ağrı"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2005 Hakkari Depremi",
+    "time": "2005-01-25",
+    "disaster_type": "earthquake",
+    "description": "Hakkari'de 5.5 büyüklüğünde deprem.",
+    "casualties": 2,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Hakkari"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2005 Seferihisar Depremi",
+    "time": "2005-10-17",
+    "disaster_type": "earthquake",
+    "description": "İzmir Sığacık Körfezi'nde 5.9 büyüklüğünde deprem.",
+    "casualties": 2,
+    "duration": 15,
+    "regions": ["Ege"],
+    "city": ["İzmir"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bulunan düzenlemeler 2003 Seferihisar-Urla depremlerine ait; 2005 kaydıyla eşleşme doğrulanamadı.",
+      "research_sources": [
+        "https://cdn.tbmm.gov.tr/KKBSPublicFile/D22/Y5/T2/DosyaKomisyonRaporunuVerdi/b80f89fb-c40c-4c55-bc74-eca686c46895.htm"
+      ]
+    }
+  },
+  {
+    "name": "2009 İstanbul Seli",
+    "time": "2009-09-09",
+    "disaster_type": "flood",
+    "description": "İstanbul İkitelli ve Tekirdağ'da şiddetli yağış sonrası sel.",
+    "casualties": 31,
+    "duration": 172800,
+    "regions": ["Marmara"],
+    "city": ["İstanbul", "Tekirdağ"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Ayamama Deresi yatağındaki kaçak yapıların uydu görüntüleriyle tespitine başlandı.",
+          "sources": [
+            "https://v3.arkitera.com/h45943-ayamama-deresinde-sel-sonrasi-kacak-tespit-calismalari-basladi.html"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "2010 Karakoçan Depremi",
+    "time": "2010-03-08",
+    "disaster_type": "earthquake",
+    "description": "Elazığ Karakoçan'da 6.1 büyüklüğünde deprem.",
+    "casualties": 41,
+    "duration": 20,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Elazığ"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2010 Gündoğdu Seli",
+    "time": "2010-08-26",
+    "disaster_type": "flood",
+    "description": "Rize Gündoğdu'da sel ve heyelan.",
+    "casualties": 15,
+    "duration": 86400,
+    "regions": ["Karadeniz"],
+    "city": ["Rize"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2011 Simav Depremi",
+    "time": "2011-05-19",
+    "disaster_type": "earthquake",
+    "description": "Kütahya Simav'da 5.9 büyüklüğünde deprem.",
+    "casualties": 2,
+    "duration": 15,
+    "regions": ["Ege"],
+    "city": ["Kütahya"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2011 Van Depremi",
+    "time": "2011-10-23",
+    "disaster_type": "earthquake",
+    "description": "Van Erciş ve merkezde 7.2 büyüklüğünde yıkıcı deprem.",
+    "casualties": 604,
+    "duration": 40,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Van"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2011 Van Edremit Depremi",
+    "time": "2011-11-09",
+    "disaster_type": "earthquake",
+    "description": "Van Edremit'te 5.6 büyüklüğünde deprem; hasarlı oteller çöktü.",
+    "casualties": 40,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Van"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2012 Fethiye Depremi",
+    "time": "2012-06-10",
+    "disaster_type": "earthquake",
+    "description": "Muğla Fethiye açıklarında 6.0 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 20,
+    "regions": ["Ege"],
+    "city": ["Muğla"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2012 Samsun Seli",
+    "time": "2012-07-04",
+    "disaster_type": "flood",
+    "description": "Samsun'da şiddetli yağış sonrası sel.",
+    "casualties": 11,
+    "duration": 86400,
+    "regions": ["Karadeniz"],
+    "city": ["Samsun"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Yılanlıdere yatağındaki konutların kaldırılması kararlaştırıldı ve yıkıma başlandı.",
+          "sources": ["https://mobile.aa.com.tr/tr/turkiye/dere-yataginda-yikimlar-basladi/356373"]
+        },
+        {
+          "type": "measure",
+          "description": "Yılanlıdere'nin yukarı havzasında taşkın kontrolü için dere ıslahı yapıldı.",
+          "sources": ["https://bolge07.dsi.gov.tr/Sayfa/Detay/1052"]
+        }
+      ]
+    }
+  },
+  {
+    "name": "2015 Hopa Seli",
+    "time": "2015-08-24",
+    "disaster_type": "flood",
+    "description": "Artvin Hopa'da sel ve heyelan.",
+    "casualties": 8,
+    "duration": 86400,
+    "regions": ["Karadeniz"],
+    "city": ["Artvin"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2019 Akçakoca Seli",
+    "time": "2019-07-17",
+    "disaster_type": "flood",
+    "description": "Düzce Akçakoca ve Cumayeri'nde sel.",
+    "casualties": 7,
+    "duration": 172800,
+    "regions": ["Karadeniz"],
+    "city": ["Düzce"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2019 Silivri Depremi",
+    "time": "2019-09-26",
+    "disaster_type": "earthquake",
+    "description": "İstanbul Silivri açıklarında 5.7 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 15,
+    "regions": ["Marmara"],
+    "city": ["İstanbul"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "decision",
+          "description": "İleri inceleme gereken okulların öğrencilerinin 9 Ekim 2019'dan itibaren başka binalarda eğitime devam etmesi kararlaştırıldı.",
+          "sources": ["https://istanbul.meb.gov.tr/www/duyuru/icerik/2769"]
+        },
+        {
+          "type": "measure",
+          "description": "Okul Tabanlı Afet Eğitimi Programı'nı geliştirmek için deprem sırasında kaydedilen okul görüntülerinin incelenmesine başlandı.",
+          "sources": [
+            "https://www.meb.gov.tr/deprem-goruntuleri-afet-egitiminde-kullanacak/haber/19423/tr"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "2020 Elazığ Depremi",
+    "time": "2020-01-24",
+    "disaster_type": "earthquake",
+    "description": "Elazığ Sivrice'de 6.8 büyüklüğünde deprem.",
+    "casualties": 41,
+    "duration": 30,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Elazığ", "Malatya"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2020 Van Bahçesaray Çığları",
+    "time": "2020-02-04",
+    "disaster_type": "avalanche",
+    "description": "Van Bahçesaray yolunda art arda iki çığ; kurtarma ekibi de çığ altında kaldı.",
+    "casualties": 41,
+    "duration": 60,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Van"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Olay sonrasındaki kalıcı önlemler kaynakla doğrulanamadı."
+    }
+  },
+  {
+    "name": "2020 İran-Türkiye Sınır Depremi",
+    "time": "2020-02-23",
+    "disaster_type": "earthquake",
+    "description": "İran sınırında 5.9 büyüklüğünde deprem; Van'da can kaybı.",
+    "casualties": 10,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Van"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2020 Karlıova Depremi",
+    "time": "2020-06-14",
+    "disaster_type": "earthquake",
+    "description": "Bingöl Karlıova'da 5.9 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Bingöl"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2020 Dereli Seli",
+    "time": "2020-08-22",
+    "disaster_type": "flood",
+    "description": "Giresun Dereli'de sel.",
+    "casualties": 11,
+    "duration": 86400,
+    "regions": ["Karadeniz"],
+    "city": ["Giresun"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Dere yataklarındaki yapıların kaldırılması ve bazı köprülerin kemer köprü olarak yeniden yapılması açıklandı.",
+          "sources": [
+            "https://www.iletisim.gov.tr/Turkce/yerel_basin/detay/cumhurbaskani-erdogan-sel-felaketinin-yasandigi-giresunun-dereli-ilcesindeki-incelemelerinin-ardindan-vatandaslara-hitap-etti"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "2020 İzmir Depremi",
+    "time": "2020-10-30",
+    "disaster_type": "earthquake",
+    "description": "Ege Denizi'nde 6.6 büyüklüğünde deprem; İzmir'de binalar çöktü.",
+    "casualties": 117,
+    "duration": 30,
+    "regions": ["Ege"],
+    "city": ["İzmir"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Yapı envanteri, zemin etütleri ve kara-deniz depremsellik araştırmaları hızlandırıldı.",
+          "sources": [
+            "https://www.izmir.bel.tr/tr/Haberler/izmir-korfezi-nin-30-farkli-noktasindan-karot-ornegi-alindi/48926/156"
+          ]
+        },
+        {
+          "type": "organization",
+          "description": "Afet risklerini azaltma çalışmalarını kurumlar ve uzmanlarla koordine etmek için İzmir Afet Platformu oluşturuldu.",
+          "sources": ["https://www.izmir.bel.tr/tr/SeffafIzmir/ProjeDetay/2680"]
+        }
+      ]
+    }
+  },
+  {
+    "name": "2021 Orman Yangınları",
+    "time": "2021-07-28",
+    "disaster_type": "wildfire",
+    "description": "Antalya Manavgat ve Muğla Marmaris başta olmak üzere geniş çaplı orman yangınları.",
+    "casualties": 9,
+    "duration": 1209600,
+    "regions": ["Akdeniz", "Ege"],
+    "city": ["Antalya", "Muğla", "Adana", "Osmaniye", "Mersin", "Aydın"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2021 Batı Karadeniz Seli",
+    "time": "2021-08-11",
+    "disaster_type": "flood",
+    "description": "Kastamonu Bozkurt, Sinop ve Bartın'da sel.",
+    "casualties": 82,
+    "duration": 172800,
+    "regions": ["Karadeniz"],
+    "city": ["Kastamonu", "Sinop", "Bartın"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Ezine Çayı'nda kalıcı dere ıslahı, taşkın duvarı ve köprü projeleri ihale edilerek inşaata başlandı.",
+          "sources": ["https://www.dsi.gov.tr/Haber/Detay/4084"]
+        }
+      ]
+    }
+  },
+  {
+    "name": "2022 Düzce Depremi",
+    "time": "2022-11-23",
+    "disaster_type": "earthquake",
+    "description": "Düzce Gölyaka'da 5.9 büyüklüğünde deprem.",
+    "casualties": 2,
+    "duration": 15,
+    "regions": ["Karadeniz"],
+    "city": ["Düzce"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2023 Kahramanmaraş Depremi",
+    "time": "2023-02-06",
+    "disaster_type": "earthquake",
+    "description": "Türkiye'nin güneydoğusunda büyük depremler.",
+    "casualties": 53000,
+    "duration": 65,
+    "regions": ["Güneydoğu Anadolu", "Akdeniz", "Doğu Anadolu"],
+    "city": [
+      "Kahramanmaraş",
+      "Hatay",
+      "Gaziantep",
+      "Malatya",
+      "Adıyaman",
+      "Osmaniye",
+      "Diyarbakır",
+      "Şanlıurfa",
+      "Adana",
+      "Kilis",
+      "Elazığ"
+    ],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "organization",
+          "description": "Kentsel dönüşümü hızlandırmak için 2023'te Çevre, Şehircilik ve İklim Değişikliği Bakanlığına bağlı Kentsel Dönüşüm Başkanlığı kuruldu.",
+          "sources": [
+            "https://webdosya.csb.gov.tr/db/strateji/icerikler/csidb-2023-yili-idare-faaliyet-raporu-20240430140139.pdf"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "2023 Hatay Depremi",
+    "time": "2023-02-20",
+    "disaster_type": "earthquake",
+    "description": "Hatay Defne'de 6.4 büyüklüğünde artçı deprem.",
+    "casualties": 6,
+    "duration": 20,
+    "regions": ["Akdeniz"],
+    "city": ["Hatay"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2023 Yeşilyurt Depremi",
+    "time": "2023-02-27",
+    "disaster_type": "earthquake",
+    "description": "Malatya Yeşilyurt'ta 5.6 büyüklüğünde deprem.",
+    "casualties": 2,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Malatya"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Artçı depremler sürerken hasarlı binalara girilmemesi uyarısı yinelendi.",
+          "sources": ["https://apnews.com/article/59f11ac237f5697eeef38fe828655015"]
+        }
+      ]
+    }
+  },
+  {
+    "name": "2023 Şanlıurfa-Adıyaman Seli",
+    "time": "2023-03-15",
+    "disaster_type": "flood",
+    "description": "Deprem bölgesindeki Şanlıurfa ve Adıyaman'da sel.",
+    "casualties": 21,
+    "duration": 86400,
+    "regions": ["Güneydoğu Anadolu"],
+    "city": ["Şanlıurfa", "Adıyaman"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Karakoyun, Cavsak ve Sırrın dereleri için taşkın koruma projeleri hazırlandı; 2023 sonunda yapım sözleşmelerinin imzalandığı açıklandı.",
+          "sources": [
+            "https://www.sanliurfaolay.com/haber/24816274/sanliurfada-sel-onlemleri-icin-projeler-imzalandi"
+          ]
+        }
+      ],
+      "research_note": "Kararlar Şanlıurfa'ya aittir; Adıyaman için doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2023 İstanbul-Kırklareli Seli",
+    "time": "2023-09-05",
+    "disaster_type": "flood",
+    "description": "İstanbul ve Kırklareli İğneada'da sel.",
+    "casualties": 8,
+    "duration": 172800,
+    "regions": ["Marmara"],
+    "city": ["İstanbul", "Kırklareli"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2025 Silivri Depremi",
+    "time": "2025-04-23",
+    "disaster_type": "earthquake",
+    "description": "İstanbul Silivri açıklarında 6.2 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 20,
+    "regions": ["Marmara"],
+    "city": ["İstanbul"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Eğitime dönüşte öğrencilere afet farkındalık dersi verildi.",
+          "sources": [
+            "https://istanbul.meb.gov.tr/www/istanbul039da-egitim-afet-farkindalik-dersi-ile-basladi/icerik/5775"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "2025 Marmaris Depremi",
+    "time": "2025-06-03",
+    "disaster_type": "earthquake",
+    "description": "Muğla Marmaris açıklarında 5.8 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 15,
+    "regions": ["Ege"],
+    "city": ["Muğla"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2025 Eskişehir Orman Yangını",
+    "time": "2025-07-23",
+    "disaster_type": "wildfire",
+    "description": "Eskişehir'de orman yangını; müdahale eden işçi ve gönüllüler hayatını kaybetti.",
+    "casualties": 10,
+    "duration": 259200,
+    "regions": ["İç Anadolu"],
+    "city": ["Eskişehir"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2025 Sındırgı Depremi",
+    "time": "2025-08-10",
+    "disaster_type": "earthquake",
+    "description": "Balıkesir Sındırgı'da 6.1 büyüklüğünde deprem.",
+    "casualties": 1,
+    "duration": 20,
+    "regions": ["Marmara"],
+    "city": ["Balıkesir"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2026 Muğla-İzmir Seli",
+    "time": "2026-02-06",
+    "disaster_type": "flood",
+    "description": "Muğla Marmaris ile İzmir Torbalı ve Menderes'te sel.",
+    "casualties": 4,
+    "duration": 86400,
+    "regions": ["Ege"],
+    "city": ["Muğla", "İzmir"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1955 Ankara Sel Felaketi",
+    "time": "1955-09-11",
+    "disaster_type": "flood",
+    "description": "Hatip Çayı'nın taşması sonucu Bentderesi ve çevresindeki yerleşimlerde yıkıcı su baskını.",
+    "casualties": 150,
+    "duration": 21600,
+    "regions": ["İç Anadolu"],
+    "city": ["Ankara"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Kaynaklar 11 Eylül 1957 selini anlatıyor; kayıttaki 1955 tarihiyle eşleşme doğrulanamadı.",
+      "research_sources": [
+        "https://www.scribd.com/document/841210445/ANKARA-DA-GUNUMUZE-ULA%25C5%259EAMAYAN-TURK-DEVR%25C4%25B0-YAPILARI"
+      ]
+    }
+  },
+  {
+    "name": "1965 Ankara Bentderesi Taşkını",
+    "time": "1965-06-25",
+    "disaster_type": "flood",
+    "description": "Şiddetli sağanak yağış sonrası Bentderesi taştı; çok sayıda gecekondu sular altında kaldı.",
+    "casualties": 20,
+    "duration": 14400,
+    "regions": ["İç Anadolu"],
+    "city": ["Ankara"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "25 Haziran 1965 olayıyla ilişkilendirilen uygun bir karar doğrulanamadı."
+    }
+  },
+  {
+    "name": "1970 Demirci Depremleri",
+    "time": "1970-03-24",
+    "disaster_type": "earthquake",
+    "description": "Manisa Demirci ve Gördes çevresinde 5.9 büyüklüğünde deprem silsilesi.",
+    "casualties": 25,
+    "duration": 25,
+    "regions": ["Ege"],
+    "city": ["Manisa"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "24 Mart 1970 kaydıyla ilişkilendirilen uygun bir karar doğrulanamadı."
+    }
+  },
+  {
+    "name": "1977 Palu Depremi",
+    "time": "1977-03-26",
+    "disaster_type": "earthquake",
+    "description": "Elazığ Palu merkezli 5.1 büyüklüğünde deprem; kırsal binalarda çökme.",
+    "casualties": 30,
+    "duration": 15,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Elazığ"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1982 Hatay Amik Ovası Taşkını",
+    "time": "1982-04-12",
+    "disaster_type": "flood",
+    "description": "Asi Nehri ve Afrin Çayı'nın taşması sonucu binlerce hektar tarım arazisi ve köy su altında kaldı.",
+    "casualties": 8,
+    "duration": 259200,
+    "regions": ["Akdeniz"],
+    "city": ["Hatay"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "12 Nisan 1982 taşkınıyla ilişkilendirilen uygun bir karar doğrulanamadı."
+    }
+  },
+  {
+    "name": "1991 Bartın ve Karadeniz Seli",
+    "time": "1991-05-27",
+    "disaster_type": "flood",
+    "description": "Bartın Çayı'nın taşması sonucu Bartın kent merkezi tamamen su altında kaldı.",
+    "casualties": 35,
+    "duration": 172800,
+    "regions": ["Karadeniz"],
+    "city": ["Bartın"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "27 Mayıs 1991 kaydıyla ilişkilendirilen uygun bir karar doğrulanamadı."
+    }
+  },
+  {
+    "name": "1992 Çukurca-Yüksekova Çığları",
+    "time": "1992-02-05",
+    "disaster_type": "avalanche",
+    "description": "Hakkari Çukurca ve Yüksekova'da yerleşim yerlerine ve askeri üslere çığ düştü.",
+    "casualties": 45,
+    "duration": 60,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Hakkari"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "1993 Bayburt Üzengili Çığ Faciası",
+    "time": "1993-01-18",
+    "disaster_type": "avalanche",
+    "description": "Bayburt merkez Üzengili köyünün üzerine düşen çığ sonucu çok sayıda ev yıkıldı.",
+    "casualties": 59,
+    "duration": 60,
+    "regions": ["Karadeniz"],
+    "city": ["Bayburt"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Çığdan etkilenen köy sakinlerinin yerleşimi için Bayburt merkezinde yeni alan seçildi.",
+          "sources": ["https://www5.tbmm.gov.tr/tutanaklar/TUTANAK/TBMM/d19/c039/tbmm19039002.pdf"]
+        }
+      ]
+    }
+  },
+  {
+    "name": "2006 Güneydoğu Anadolu Seli",
+    "time": "2006-10-31",
+    "disaster_type": "flood",
+    "description": "Diyarbakır, Batman ve Şırnak genelinde şiddetli yağışlar sonucu meydana gelen dere taşkınları.",
+    "casualties": 44,
+    "duration": 172800,
+    "regions": ["Güneydoğu Anadolu"],
+    "city": ["Diyarbakır", "Batman", "Şırnak"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "2006/27 sayılı dere genelgesi selden önce yayımlandığı için afet sonrasında alınan karar olarak eklenmedi.",
+      "research_sources": [
+        "https://cdniys.tarimorman.gov.tr/api/File/GetGaleriFile/425/DosyaGaleri/594/dsi2025faaliyetraporu.pdf"
+      ]
+    }
+  },
+  {
+    "name": "2007 Bala Depremi",
+    "time": "2007-12-20",
+    "disaster_type": "earthquake",
+    "description": "Ankara Bala'da 5.6 büyüklüğünde deprem; çevre köylerde yapısal hasarlar oluştu.",
+    "casualties": 0,
+    "duration": 15,
+    "regions": ["İç Anadolu"],
+    "city": ["Ankara"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2008 Taşağıl-Manavgat Orman Yangını",
+    "time": "2008-07-31",
+    "disaster_type": "wildfire",
+    "description": "Antalya Manavgat Taşağıl'da yaklaşık 16.000 hektar orman alanının kül olduğu büyük yangın.",
+    "casualties": 2,
+    "duration": 518400,
+    "regions": ["Akdeniz"],
+    "city": ["Antalya"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "measure",
+          "description": "YARDOP tamimiyle yangına dirençli ormanlar, yangın durdurma zonları ve orman-yerleşim ayırma tesisleri oluşturulması düzenlendi.",
+          "sources": [
+            "https://www.ogm.gov.tr/batiakdeniz/kurulusumuz-sitesi/SonuclandirilanArastirmaProjeleri/Akdeniz%20Ormanlar%C4%B1ndaki%20Baz%C4%B1%20Bitki%20T%C3%BCrlerinin%20Yan%C4%B1c%C4%B1l%C4%B1k%20S%C4%B1n%C4%B1flar%C4%B1n%C4%B1n%20Belirlenmesi.pdf"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "2009 Zigana Dağı Çığ Faciası",
+    "time": "2009-01-25",
+    "disaster_type": "avalanche",
+    "description": "Gümüşhane Zigana Dağı'nda yürüyüş yapan dağcı grubunun üzerine çığ düştü.",
+    "casualties": 10,
+    "duration": 60,
+    "regions": ["Karadeniz"],
+    "city": ["Gümüşhane"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2019 Bozkurt Depremi",
+    "time": "2019-08-08",
+    "disaster_type": "earthquake",
+    "description": "Denizli Bozkurt merkezli 6.0 büyüklüğünde deprem.",
+    "casualties": 0,
+    "duration": 20,
+    "regions": ["Ege"],
+    "city": ["Denizli"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2020 Hatay Orman Yangınları",
+    "time": "2020-10-09",
+    "disaster_type": "wildfire",
+    "description": "Belen, Arsuz ve İskenderun ilçelerinde yerleşim yerlerine sıçrayan büyük yangınlar.",
+    "casualties": 0,
+    "duration": 172800,
+    "regions": ["Akdeniz"],
+    "city": ["Hatay"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "measure",
+          "description": "Yangına ilk müdahale için köy muhtarlarına traktöre monteli yedi su tankeri tahsis edildi.",
+          "sources": [
+            "https://www.ogm.gov.tr/tr/haberler/yanan-ormanlar-kullerinden-doguyor1",
+            "https://www.ogm.gov.tr/hatayobm/haberler/orman-yanginlariyla-mucadele-%EF%BC%82basin-bilgilendirme-toplantisi%EF%BC%82-gerceklestirildi"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "2021 Ayancık ve Türkeli Seli",
+    "time": "2021-08-11",
+    "disaster_type": "flood",
+    "description": "Sinop Ayancık ve Türkeli'de derelerin taşması sonucu köprüler yıkıldı, ağır tahribat oluştu.",
+    "casualties": 16,
+    "duration": 172800,
+    "regions": ["Karadeniz"],
+    "city": ["Sinop"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2022 Batı Karadeniz Seli",
+    "time": "2022-06-27",
+    "disaster_type": "flood",
+    "description": "Kastamonu, Bartın, Sinop ve Zonguldak'ta tekrarlayan şiddetli taşkın ve heyelanlar.",
+    "casualties": 4,
+    "duration": 172800,
+    "regions": ["Karadeniz"],
+    "city": ["Kastamonu", "Bartın", "Sinop", "Zonguldak"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2024 İliç Toprak Kayması",
+    "time": "2024-02-13",
+    "disaster_type": "landslide",
+    "description": "Erzincan İliç'te maden sahasında liç yığınının kayması sonucu toprak kayması.",
+    "casualties": 9,
+    "duration": 120,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Erzincan"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [
+        {
+          "type": "decision",
+          "description": "Maden işletmesinin çevre izin ve lisans belgesi iptal edildi.",
+          "sources": ["https://www.tbmm.gov.tr/Tutanaklar/TutanakGoster/3248"]
+        }
+      ],
+      "research_note": "Bu olay maden sahasındaki liç yığını kaymasıdır."
+    }
+  },
+  {
+    "name": "2024 İzmir Orman Yangını",
+    "time": "2024-08-15",
+    "disaster_type": "wildfire",
+    "description": "İzmir Karşıyaka Yamanlar Dağı'nda başlayan ve yerleşim alanları ile sanayi sitelerine sıçrayan orman yangını.",
+    "casualties": 0,
+    "duration": 345600,
+    "regions": ["Ege"],
+    "city": ["İzmir"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  },
+  {
+    "name": "2024 Kale Depremi",
+    "time": "2024-10-16",
+    "disaster_type": "earthquake",
+    "description": "Malatya Kale merkezli 5.9 büyüklüğünde deprem; çevre illerde hasara ve paniğe yol açtı.",
+    "casualties": 0,
+    "duration": 20,
+    "regions": ["Doğu Anadolu"],
+    "city": ["Malatya"],
+    "is_active": false,
+    "aftermath": {
+      "actions": [],
+      "research_note": "Bu kayıt için kaynakla doğrulanmış uygun bir karar eklenmedi."
+    }
+  }
+]
