@@ -4,7 +4,7 @@ local output = root .. "/generated/art/title_logo/rewrite_it.png"
 local runtime = root .. "/our-game/assets/branding/rewrite_it.png"
 local expected = {
   "01 / Letter shadow", "02 / Letter outline", "03 / Ivory letters",
-  "04 / Highlights and ink wear", "05 / Red italic it", "06 / Revision return line",
+  "04 / Highlights and ink wear", "05 / Violet italic it", "06 / Revision return line",
 }
 local sprite = assert(app.open(source), "Native title source is required")
 assert(sprite.width == 1152 and sprite.height == 432 and #sprite.frames == 1, "Canvas/frame contract")

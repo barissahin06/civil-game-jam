@@ -11,7 +11,7 @@ end
 local C = {
   ink = color("081b25"), shadow = color("153b47"), ivory = color("eadfbc"),
   light = color("fff0cf"), shade = color("b6a477"), wear = color("83978b"),
-  red = color("bc4b43"), redlight = color("e0745e"), redshade = color("84353a"),
+  violet = color("9257e3"), violetlight = color("b38aed"), violetshade = color("5d3e94"),
 }
 local function mask() return {} end
 local function pixel(m, x, y, value)
@@ -101,20 +101,20 @@ for _, p in ipairs({{27,23},{49,29},{28,84},{83,33},{102,81},{129,35},{154,82},{
 end
 finish(im, l)
 
-local red = mask()
+local violet = mask()
 -- Custom lowercase italic strokes: broad nib, open gap between i and t.
-polygon(red, {{317,105},{325,105},{320,121},{320,124},{325,123},{329,119},{332,122},{326,129},{319,132},{312,132},{309,129},{310,122}})
-polygon(red, {{321,94},{327,94},{329,97},{327,102},{320,102},{318,99}})
-polygon(red, {{339,99},{346,96},{342,108},{351,108},{349,114},{339,114},{335,125},{336,127},{342,125},{348,120},{351,123},{343,131},{337,134},{329,134},{326,131},{327,124},{330,114},{325,114},{327,108},{333,108}})
-im, l = layer("05 / Red italic it")
-expanded(im, red, C.shadow, 2, 2, 2)
-expanded(im, red, C.ink, 1)
-paint(im, red, C.red)
-for index, yes in pairs(red) do
+polygon(violet, {{317,105},{325,105},{320,121},{320,124},{325,123},{329,119},{332,122},{326,129},{319,132},{312,132},{309,129},{310,122}})
+polygon(violet, {{321,94},{327,94},{329,97},{327,102},{320,102},{318,99}})
+polygon(violet, {{339,99},{346,96},{342,108},{351,108},{349,114},{339,114},{335,125},{336,127},{342,125},{348,120},{351,123},{343,131},{337,134},{329,134},{326,131},{327,124},{330,114},{325,114},{327,108},{333,108}})
+im, l = layer("05 / Violet italic it")
+expanded(im, violet, C.shadow, 2, 2, 2)
+expanded(im, violet, C.ink, 1)
+paint(im, violet, C.violet)
+for index, yes in pairs(violet) do
   if yes then
     local x, y = index % LW, math.floor(index / LW)
-    if not inside(red, x, y - 1) then stamp(im, x, y, C.redlight)
-    elseif not inside(red, x, y + 1) then stamp(im, x, y, C.redshade) end
+    if not inside(violet, x, y - 1) then stamp(im, x, y, C.violetlight)
+    elseif not inside(violet, x, y + 1) then stamp(im, x, y, C.violetshade) end
   end
 end
 finish(im, l)
@@ -124,8 +124,8 @@ polygon(revision, {{299,112},{290,108},{278,106},{91,106},{91,101},{78,110},{91,
 im, l = layer("06 / Revision return line")
 expanded(im, revision, C.shadow, 1, 2, 2)
 expanded(im, revision, C.ink, 1)
-paint(im, revision, C.red)
-for x = 96, 275 do stamp(im, x, 106, C.redlight) end
+paint(im, revision, C.violet)
+for x = 96, 275 do stamp(im, x, 106, C.violetlight) end
 finish(im, l)
 
 assert(#sprite.layers == 6 and #sprite.frames == 1, "Native layer contract")

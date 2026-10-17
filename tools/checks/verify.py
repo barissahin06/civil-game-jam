@@ -32,6 +32,11 @@ def main() -> None:
         parser.error("Set GODOT_PATH or pass --godot")
     if args.ui_only:
         run(args.godot, "gameplay-ui", ["--headless", "--script", "res://tests/integration/gameplay_ui.gd"], "GAMEPLAY_UI_PASS")
+        run(args.godot, "newspaper-ui", ["--headless", "--script", "res://tests/integration/newspaper_ui.gd"], "NEWSPAPER_UI_PASS")
+        run(args.godot, "crisis-pilot", ["--headless", "--script", "res://tests/integration/crisis_pilot.gd"], "CRISIS_PILOT_PASS")
+        run(args.godot, "preparation-ui", ["--headless", "--script", "res://tests/integration/preparation_ui.gd"], "PREPARATION_UI_PASS")
+        run(args.godot, "units-ui", ["--headless", "--script", "res://tests/integration/units_ui.gd"], "UNITS_UI_PASS")
+        run(args.godot, "window-controls", ["--headless", "--script", "res://tests/integration/window_controls.gd"], "WINDOW_CONTROLS_PASS")
         return
     run(args.godot, "import", ["--headless", "--editor", "--import"])
     run(args.godot, "gdunit", [
@@ -42,6 +47,11 @@ def main() -> None:
     if not args.unit_only:
         run(args.godot, "startup", ["--headless", "--script", "res://tests/integration/startup.gd"], "STARTUP PASS")
         run(args.godot, "gameplay-ui", ["--headless", "--script", "res://tests/integration/gameplay_ui.gd"], "GAMEPLAY_UI_PASS")
+        run(args.godot, "newspaper-ui", ["--headless", "--script", "res://tests/integration/newspaper_ui.gd"], "NEWSPAPER_UI_PASS")
+        run(args.godot, "crisis-pilot", ["--headless", "--script", "res://tests/integration/crisis_pilot.gd"], "CRISIS_PILOT_PASS")
+        run(args.godot, "preparation-ui", ["--headless", "--script", "res://tests/integration/preparation_ui.gd"], "PREPARATION_UI_PASS")
+        run(args.godot, "units-ui", ["--headless", "--script", "res://tests/integration/units_ui.gd"], "UNITS_UI_PASS")
+        run(args.godot, "window-controls", ["--headless", "--script", "res://tests/integration/window_controls.gd"], "WINDOW_CONTROLS_PASS")
     print("Verification PASS", flush=True)
 
 

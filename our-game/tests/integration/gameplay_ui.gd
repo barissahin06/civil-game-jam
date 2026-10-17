@@ -2,6 +2,7 @@ extends SceneTree
 ## Real viewport input; persistence uses only the isolated test-slot directory.
 
 const SHELL := preload("res://ui_preview/main_preview.gd")
+const UI := preload("res://ui_preview/shared/ui_kit.gd")
 const TEST_SAVE_DIR := "user://test-revert-ui-slots"
 var capture_screens: bool = false
 var _shell: SHELL
@@ -21,6 +22,7 @@ class RejectingSave:
 
 func _initialize() -> void:
 	set_meta("simulation_test", true)
+	capture_screens = "--capture" in OS.get_cmdline_user_args()
 	call_deferred("_run")
 
 
@@ -34,6 +36,7 @@ func _run() -> void:
 	_shell.auto_save_enabled = false
 	_shell.saves.slot_directory = TEST_SAVE_DIR
 	await _main.get_node("TitleSplash").tree_exited
+	print("UI_CHECKPOINT: opening complete")
 	_clear_test_slots()
 	assert(
 		DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(TEST_SAVE_DIR)) == OK
@@ -41,11 +44,13 @@ func _run() -> void:
 	_shell.return_to_main_menu()
 	assert(_shell.open_screen == "menu" and _shell.in_frontend and not _shell.auto_save_enabled)
 	await _capture("main-menu")
+	_check_button_tone("ÇIKIŞ", UI.ButtonTone.DANGER)
+	_check_button_tone("YENİ OYUN", UI.ButtonTone.NEUTRAL)
 	await _press_button("AYARLAR")
 	await _capture("settings")
-	await _press_button("HARİTA SARSINTISI: AÇIK")
+	await _press_button("AFET SARSINTISI: AÇIK")
 	assert(not _shell.map_shake_enabled)
-	await _press_button("HARİTA SARSINTISI: KAPALI")
+	await _press_button("AFET SARSINTISI: KAPALI")
 	await _press_button("GERİ")
 	await _press_button("YÜKLE")
 	await _capture("load-empty")
@@ -59,6 +64,8 @@ func _run() -> void:
 	await _press_button("+")
 	assert(_shell.campaign.start_year == 1990)
 	await _capture("newgame-1990")
+	_check_button_tone("+", UI.ButtonTone.NEUTRAL)
+	_check_button_tone("-", UI.ButtonTone.NEUTRAL)
 	await _open_campaign_from_form(1990)
 	await _capture("intro-first-page")
 	await _press_button("REHBERİ ATLA")
@@ -130,6 +137,8 @@ func _run() -> void:
 	await _press_button("İNCELE")
 	assert(_shell.open_screen == "project")
 	await _capture("local-project")
+	await _check_project_effects()
+	_check_button_tone("BAŞLAT", UI.ButtonTone.CONFIRM)
 	await _press_button("BAŞLAT")
 	assert(_shell.sim.projects.active_count("local", 31) == 1)
 	assert(_shell._guide.text.begins_with("REHBER 3/4"))
@@ -163,6 +172,8 @@ func _run() -> void:
 	await _press_button("KRİZ MERKEZİNE GEÇ")
 	assert(_shell.open_screen == "crisis")
 	await _capture("crisis")
+	_check_button_tone("SEVK ET", UI.ButtonTone.CONFIRM)
+	_check_button_tone("ACİL BÜTÇE", UI.ButtonTone.CAUTION)
 	var target: Dictionary = _shell.sim.crises.active.front()
 	var source_id: int = _shell.sim.areas.keys()[_shell.crisis.source_index]
 	var quote := _shell.sim.logistics.quote(source_id, 31, "team", 1)
@@ -173,6 +184,7 @@ func _run() -> void:
 	assert(not _shell._guide_plate.visible and _shell.sim.tutorial_completed.size() == 4)
 	await _press_button("ACİL BÜTÇE")
 	await _capture("emergency-fund")
+	_check_button_tone("₺1,0 M AKTAR", UI.ButtonTone.CAUTION)
 	await _press_button("₺1,0 M AKTAR")
 	assert(int(target.funds) == 1000000)
 	await _press_button("KRİZE DÖN")
@@ -212,19 +224,9 @@ func _run() -> void:
 	assert(_shell.campaign.tutorial_step == 0)
 	await _capture("tutorial")
 	_shell.close_screen()
-	await _press_button("MENÜ")
+	assert(_shell.open_screen == "pause", "Help returns to its parent pause menu")
 	await _press_button("ANA MENÜYE DÖN")
 	await _capture("menu")
-	if capture_screens:
-		var key := InputEventKey.new()
-		key.pressed = true
-		key.keycode = KEY_F11
-		_shell._unhandled_key_input(key)
-		await process_frame
-		assert(DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN)
-		_shell._unhandled_key_input(key)
-		await process_frame
-		assert(DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_WINDOWED)
 	_main.queue_free()
 	await process_frame
 	_clear_test_slots()
@@ -249,6 +251,7 @@ func _clear_test_slots() -> void:
 func _check_save_load_flow() -> void:
 	await _press_button("KAYDET")
 	await _capture("save-empty")
+	_check_button_tone("MANUEL 1 KAYDET", UI.ButtonTone.CONFIRM)
 	assert(_find_button(_shell._modal, "OTOMATİK").disabled)
 	await _press_button("MANUEL 1 KAYDET")
 	assert(_shell.saves.slot_summaries()[1].game_date == "1990-01-01")
@@ -258,6 +261,8 @@ func _check_save_load_flow() -> void:
 	assert(_shell.saves.slot_summaries()[2].game_date == "1990-02-01")
 	await _press_button("MANUEL 1 KAYDET")
 	await _capture("save-confirm-overwrite")
+	_check_button_tone("ÜZERİNE YAZ", UI.ButtonTone.DANGER)
+	_check_button_tone("VAZGEÇ", UI.ButtonTone.NEUTRAL)
 	assert(_shell.save_slots.pending_slot == 1)
 	await _press_button("VAZGEÇ")
 	assert(_shell.saves.slot_summaries()[1].game_date == "1990-01-01")
@@ -271,6 +276,7 @@ func _check_save_load_flow() -> void:
 	assert(_find_button(_shell._modal, "MANUEL 3 YÜKLE").disabled)
 	await _press_button("MANUEL 1 YÜKLE")
 	await _capture("load-confirm")
+	_check_button_tone("ONAYLA: YÜKLE", UI.ButtonTone.DANGER)
 	assert(_shell.save_slots.pending_slot == 1 and _shell.sim.clock.month == 2)
 	await _press_button("VAZGEÇ")
 	assert(_shell.sim.clock.month == 2)
@@ -292,8 +298,11 @@ func _check_save_load_flow() -> void:
 
 
 func _open_campaign_from_form(year: int) -> void:
+	_check_button_tone("KAMPANYAYI AÇ", UI.ButtonTone.CONFIRM)
 	await _press_button("KAMPANYAYI AÇ")
 	if _shell.open_screen == "newgame":
+		_check_button_tone("ONAYLA: YENİ KAMPANYA", UI.ButtonTone.DANGER)
+		await _capture("newgame-confirm-replace")
 		await _press_button("ONAYLA: YENİ KAMPANYA")
 	assert(_shell.open_screen == "tutorial" and _shell.campaign.tutorial_step == 0)
 	assert(not _shell.in_frontend)
@@ -302,10 +311,190 @@ func _open_campaign_from_form(year: int) -> void:
 	assert(_shell.sim.tutorial_enabled and not _shell.auto_save_enabled)
 
 
+func _check_button_tone(title: String, tone: UI.ButtonTone) -> void:
+	var button: Button = _find_button(_shell._modal, title)
+	assert(button != null, "Missing action button: " + title)
+	var normal: StyleBoxTexture = button.get_theme_stylebox("normal")
+	var region: Rect2 = normal.texture.region
+	if tone == UI.ButtonTone.NEUTRAL:
+		assert(region == Rect2(0, 56, 48, 32), title + " must remain neutral")
+	else:
+		var x: int = {
+			UI.ButtonTone.CONFIRM: 168, UI.ButtonTone.CAUTION: 56, UI.ButtonTone.DANGER: 112
+		}[tone]
+		assert(region == Rect2(x, 96, 48, 24), "Wrong action color: " + title)
+		for state: String in ["hover", "pressed", "hover_pressed"]:
+			var surface: StyleBoxTexture = button.get_theme_stylebox(state)
+			assert(surface.texture.region == region, "Action loses its color: " + title)
+		var hover: StyleBoxTexture = button.get_theme_stylebox("hover")
+		var pressed: StyleBoxTexture = button.get_theme_stylebox("pressed")
+		assert(hover.modulate_color.r > normal.modulate_color.r)
+		assert(pressed.modulate_color.r < normal.modulate_color.r)
+	var disabled: StyleBoxTexture = button.get_theme_stylebox("disabled")
+	assert(disabled.texture.region == Rect2(168, 56, 48, 32))
+	var focus: StyleBoxTexture = button.get_theme_stylebox("focus")
+	assert(not focus.draw_center, "Focus must preserve the action color: " + title)
+
+
+func _check_project_effects() -> void:
+	var before := JSON.stringify(_shell.sim.to_dict())
+	var map_position: Vector2 = _shell.map_view._map_image.position
+	var preview := _shell.sim.projects.effect_preview("river_zoning", 31)
+	var scroll: ScrollContainer = _shell.projects._content.get_node("ProjectEffects")
+	assert(preview.rows.size() == 3)
+	_check_effect_rows(scroll, preview)
+	var track: Control = scroll.get_child(0).get_child(0).get_child(4)
+	var from := track.get_global_rect().get_center()
+	_mouse(from, true)
+	var motion := InputEventMouseMotion.new()
+	motion.position = from + Vector2(120, 0)
+	motion.global_position = motion.position
+	motion.relative = Vector2(120, 0)
+	motion.button_mask = MOUSE_BUTTON_MASK_LEFT
+	Input.parse_input_event(motion)
+	Input.flush_buffered_events()
+	await process_frame
+	assert(not root.gui_is_dragging(), "Effect bars are read-only comparisons")
+	_mouse(motion.position, false)
+	await process_frame
+	assert(_shell.map_view._map_image.position == map_position)
+	assert(JSON.stringify(_shell.sim.to_dict()) == before)
+	_shell.projects.show_project("assembly_areas", 31)
+	await process_frame
+	await process_frame
+	scroll = _shell.projects._content.get_node("ProjectEffects")
+	preview = _shell.sim.projects.effect_preview("assembly_areas", 31)
+	assert(preview.rows.size() == 6)
+	_check_effect_rows(scroll, preview)
+	for step: int in range(10):
+		await _effect_wheel(scroll.get_global_rect().get_center())
+	assert(scroll.scroll_vertical > 0, "Mouse wheel must expose effects below the first three")
+	var last: Control = scroll.get_child(0).get_child(5)
+	assert(scroll.get_global_rect().encloses(last.get_global_rect()))
+	await _capture("project-effects-scrolled")
+	_shell.projects.show_project("national_radio")
+	await process_frame
+	scroll = _shell.projects._content.get_node("ProjectEffects")
+	preview = _shell.sim.projects.effect_preview("national_radio")
+	_check_effect_rows(scroll, preview)
+	assert(preview.global and preview.rows[0].unit == "percent")
+	assert(String(scroll.get_child(0).get_child(0).get_child(1).text).contains("%"))
+	var has_global_note := false
+	for child: Node in _shell.projects._content.get_children():
+		if child is Label and child.text.begins_with("ULUSAL ORTALAMA"):
+			has_global_note = true
+	assert(has_global_note)
+	await _capture("project-effects-national")
+	_shell.projects.show_project("research_capacity")
+	await process_frame
+	scroll = _shell.projects._content.get_node("ProjectEffects")
+	_check_effect_rows(scroll, _shell.sim.projects.effect_preview("research_capacity"))
+	assert(scroll.get_child(0).get_child(0).get_child(1).text == "2 / 3 (+1)")
+	await _capture("project-effects-capacity")
+	var area: ServiceArea = _shell.sim.areas[31]
+	var damage := area.damage
+	var income := area.base_income
+	area.damage = 60.0
+	_shell.projects.show_project("repair", 31)
+	await process_frame
+	scroll = _shell.projects._content.get_node("ProjectEffects")
+	_check_effect_rows(scroll, _shell.sim.projects.effect_preview("repair", 31))
+	var damage_row: Control = scroll.get_child(0).get_node("damage")
+	assert(damage_row.get_child(1).text == "60 / 0 (-60)")
+	assert(damage_row.get_child(1).get_theme_color("font_color") == UI.TEAL)
+	await _capture("project-effects-repair")
+	area.base_income = 0
+	_shell.projects.show_project("repair", 31)
+	await process_frame
+	scroll = _shell.projects._content.get_node("ProjectEffects")
+	_check_effect_rows(scroll, _shell.sim.projects.effect_preview("repair", 31))
+	var income_track: Control = scroll.get_child(0).get_node("income").get_child(4)
+	assert(income_track.get_child(3).position.x == -1.0)
+	area.damage = damage
+	area.base_income = income
+	var host := Control.new()
+	root.add_child(host)
+	var view := preload("res://ui_preview/management/project_screens.gd").new()
+	view.setup(_shell)
+	view._content = host
+	var adverse := {
+		"global": false,
+		"maintenance_ratio": 1.0,
+		"rows":
+		[
+			{
+				"key": "resilience",
+				"before": 40.0,
+				"after": 20.0,
+				"delta": -20.0,
+				"minimum": 0.0,
+				"maximum": 100.0,
+				"unit": "points",
+				"bounded": true,
+				"higher_is_better": true
+			}
+		]
+	}
+	view._project_effects(adverse)
+	await process_frame
+	var adverse_scroll: ScrollContainer = host.get_node("ProjectEffects")
+	_check_effect_rows(adverse_scroll, adverse)
+	assert(adverse_scroll.get_child(0).get_child(0).get_child(1).text == "40 / 20 (-20)")
+	host.queue_free()
+	await process_frame
+	assert(
+		JSON.stringify(_shell.sim.to_dict()) == before, "Preview navigation must not alter gameplay"
+	)
+	_shell.projects.show_project("river_zoning", 31)
+	await _capture("project-effects-local")
+
+
+func _check_effect_rows(scroll: ScrollContainer, preview: Dictionary) -> void:
+	var rows: VBoxContainer = scroll.get_child(0)
+	assert(rows.get_child_count() == preview.rows.size())
+	for effect: Dictionary in preview.rows:
+		var row: Control = rows.get_node(String(effect.key))
+		var track: Control = row.get_child(4)
+		assert(track.mouse_filter == Control.MOUSE_FILTER_IGNORE)
+		var tint: Color = UI.MUTED
+		if not is_zero_approx(effect.delta):
+			tint = (
+				UI.TEAL
+				if (effect.delta > 0.0) == bool(effect.higher_is_better)
+				else Color("cf9584")
+			)
+		assert(row.get_child(1).get_theme_color("font_color") == tint)
+		var scale: float = maxf(1.0, effect.maximum - effect.minimum)
+		var current := clampf((effect.before - effect.minimum) / scale, 0.0, 1.0) * track.size.x
+		var future := clampf((effect.after - effect.minimum) / scale, 0.0, 1.0) * track.size.x
+		assert(is_equal_approx(track.get_child(4).position.x + 1.0, current))
+		assert(is_equal_approx(track.get_child(3).position.x + 1.0, future))
+		assert(track.get_child(4).modulate == UI.INK and track.get_child(3).modulate == tint)
+		assert(is_equal_approx(track.get_child(2).size.x, absf(future - current)))
+		for segment: TextureRect in track.get_children():
+			assert(is_finite(segment.position.x) and is_finite(segment.size.x))
+			assert(segment.mouse_filter == Control.MOUSE_FILTER_IGNORE)
+
+
+func _effect_wheel(point: Vector2) -> void:
+	root.warp_mouse(point)
+	for pressed: bool in [true, false]:
+		var event := InputEventMouseButton.new()
+		event.button_index = MOUSE_BUTTON_WHEEL_DOWN
+		event.position = point
+		event.global_position = point
+		event.pressed = pressed
+		Input.parse_input_event(event)
+		Input.flush_buffered_events()
+	await process_frame
+	await process_frame
+
+
 func _capture(label: String) -> void:
 	await process_frame
 	await process_frame
 	_check_text(_main)
+	print("UI_CHECKPOINT: ", label)
 	assert(_shell.hud.is_visible_in_tree() == (not _shell.in_frontend), "HUD visibility: " + label)
 	assert(
 		_shell.map_view.is_visible_in_tree() == (not _shell.in_frontend), "Map visibility: " + label
@@ -405,10 +594,17 @@ func _check_text(parent: Node) -> void:
 				parent.get_line_count() * parent.get_line_height() <= authored.y,
 				"Clipped paragraph: " + control.text
 			)
-		else:
+		elif not (
+			parent is Label and parent.text_overrun_behavior != TextServer.OVERRUN_NO_TRIMMING
+		):
 			assert(width <= available, "Clipped text: " + control.text)
-		# Map annotations are clipped by the camera; fixed UI must fit the viewport.
-		if not _shell.map_view._markers.is_ancestor_of(parent):
+		# Map annotations and scroll contents have explicit clipping parents.
+		var clipped := _shell.map_view._markers.is_ancestor_of(parent)
+		var ancestor := parent.get_parent()
+		while ancestor != null:
+			clipped = clipped or ancestor is ScrollContainer
+			ancestor = ancestor.get_parent()
+		if not clipped:
 			assert(
 				Rect2(0, 0, 1920, 1080).encloses(control.get_global_rect()),
 				"Text outside viewport: " + control.text

@@ -37,7 +37,9 @@ func render(content: Control, screen: String) -> void:
 			_content,
 			"ÜZERİNE YAZ" if mode == "save" else "ONAYLA: YÜKLE",
 			Rect2(1024, 624, 320, 48),
-			_execute.bind(pending_slot)
+			_execute.bind(pending_slot),
+			false,
+			UI.ButtonTone.DANGER
 		)
 	elif not notice.is_empty():
 		_paragraph(notice, Rect2(0, 548, 1344, 56), RED if _notice_error else UI.TEAL)
@@ -77,7 +79,19 @@ func _slot_row(summary: Dictionary) -> void:
 	if mode == "save":
 		title = "OTOMATİK" if slot == 0 else "MANUEL %d KAYDET" % slot
 	var action: Button = UI.button(
-		_content, title, Rect2(1032, y + 24, 294, 48), _request.bind(slot)
+		_content,
+		title,
+		Rect2(1032, y + 24, 294, 48),
+		_request.bind(slot),
+		false,
+		(
+			UI.ButtonTone.CAUTION
+			if (
+				(mode == "save" and bool(summary.exists))
+				or (mode == "load" and not _shell.in_frontend)
+			)
+			else UI.ButtonTone.CONFIRM
+		)
 	)
 	action.disabled = (mode == "save" and slot == 0) or (mode == "load" and not summary.valid)
 

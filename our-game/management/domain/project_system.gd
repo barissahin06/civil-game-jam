@@ -2,6 +2,8 @@ class_name ProjectSystem
 extends RefCounted
 
 const TEAM_UPKEEP := 40000
+const MAX_REPAIR_EFFICIENCY := 0.15
+const PREPARATION_IDS := ["rescue_team", "aid_stock"]
 
 var projects: Array[ActiveProject] = []
 var global_completed: Array[String] = []
@@ -98,7 +100,10 @@ func repair_cost(damage: float, discount: float = 0.0) -> int:
 
 func _repair_discount(area_id: int) -> float:
 	var support_discount := clampf(float(repair_support.get(area_id, 0)) / 25000000.0, 0.0, 0.2)
-	return support_discount + clampf(get_effect(area_id, "repair_efficiency"), 0.0, 0.15)
+	return (
+		support_discount
+		+ clampf(get_effect(area_id, "repair_efficiency"), 0.0, MAX_REPAIR_EFFICIENCY)
+	)
 
 
 func start(id: String, area_id: int, year: int) -> Dictionary:
@@ -109,19 +114,62 @@ func start(id: String, area_id: int, year: int) -> Dictionary:
 	var owner_id := area_id if definition.is_local() else 0
 	if not treasury.spend_awareness(definition.cost_awareness):
 		return _result(false, "Yeterli bilinç puanı yok.")
+	var project := _create_project(definition, owner_id)
+	return _result(true, "Proje başlatıldı: " + definition.title, project.uid)
+
+
+func enqueue_preparation(id: String, area_id: int, year: int) -> Dictionary:
+	if not id in PREPARATION_IDS:
+		return _result(false, "Yalnız ekip ve yardım stoğu sıraya eklenebilir.")
+	var available := _requirements(id, area_id, year)
+	if not available.ok:
+		return available
+	var definition := definition_for(id)
+	var project := _create_project(definition, area_id)
+	project.status = "queued"
+	_activate_preparation(area_id, year)
+	return _result(
+		true,
+		(
+			"%s: %s %s"
+			% [
+				areas[area_id].name,
+				definition.title,
+				"sıraya eklendi." if project.status == "queued" else "başlatıldı."
+			]
+		),
+		project.uid
+	)
+
+
+func _create_project(definition: MeasureDefinition, owner_id: int) -> ActiveProject:
 	var project := ActiveProject.new()
 	project.uid = _next_uid
 	project.sequence = _next_uid
 	_next_uid += 1
-	project.definition_id = id
+	project.definition_id = definition.id
 	project.area_id = owner_id
-	project.cost_budget = cost_for(id, owner_id)
+	project.cost_budget = cost_for(definition.id, owner_id)
 	if definition.kind == "repair":
 		project.repair_damage = areas[owner_id].damage
 		project.repair_support_used = clampi(int(repair_support.get(owner_id, 0)), 0, 5000000)
 		project.repair_discount = _repair_discount(owner_id)
 	projects.append(project)
-	return _result(true, "Proje başlatıldı: " + definition.title, project.uid)
+	return project
+
+
+func _activate_preparation(area_id: int, year: int = 0) -> void:
+	var next: ActiveProject
+	for project: ActiveProject in projects:
+		if project.area_id == area_id and project.status == "queued":
+			if next == null or project.sequence < next.sequence:
+				next = project
+	if next == null:
+		return
+	var definition := definition_for(next.definition_id)
+	var available := availability(definition.id, area_id, year if year > 0 else definition.year)
+	if available.ok:
+		next.status = "active"
 
 
 func monthly_cost_for(id: String, area_id: int = 0) -> int:
@@ -129,17 +177,124 @@ func monthly_cost_for(id: String, area_id: int = 0) -> int:
 	return 0 if definition == null else int(cost_for(id, area_id) / definition.months)
 
 
+func preparation_plan(year: int) -> Dictionary:
+	var actions: Array[Dictionary] = []
+	for id: String in PREPARATION_IDS:
+		var definition := definition_for(id)
+		var available := _requirements(id, int(areas.keys().front()), year)
+		(
+			actions
+			. append(
+				{
+					"id": id,
+					"title": definition.title,
+					"output_title":
+					(
+						"%d ekip" % int(definition.effects.teams)
+						if id == "rescue_team"
+						else "%d yardım" % int(definition.effects.stock)
+					),
+					"total_cost": definition.cost_budget,
+					"monthly_cost": monthly_cost_for(id),
+					"months": definition.months,
+					"upkeep": TEAM_UPKEEP if id == "rescue_team" else definition.upkeep,
+					"ok": available.ok,
+					"message": available.message,
+				}
+			)
+		)
+	var summary := {"queued_count": 0, "active_count": 0, "monthly_commitment": 0, "queued_cost": 0}
+	var by_area: Dictionary = {}
+	var area_ids: Array = areas.keys()
+	area_ids.sort()
+	for area_id: int in area_ids:
+		var area: ServiceArea = areas[area_id]
+		by_area[area_id] = {
+			"area_id": area.id,
+			"name": area.name,
+			"teams": area.teams,
+			"stock": area.stock,
+			"busy": false,
+			"active_title": "",
+			"active_progress": 0,
+			"active_months": 0,
+			"queued_teams": 0,
+			"queued_stock": 0,
+			"queued_count": 0,
+			"queued_blocked_reason": "",
+			"planned_count": 0,
+			"last_uid": 0,
+		}
+	var pending: Array[Dictionary] = []
+	var ordered := projects.duplicate()
+	ordered.sort_custom(
+		func(a: ActiveProject, b: ActiveProject) -> bool: return a.sequence < b.sequence
+	)
+	for project: ActiveProject in ordered:
+		var definition := definition_for(project.definition_id)
+		if project.occupies_slot():
+			summary.monthly_commitment += installment_for(project)
+			if definition.is_local():
+				var row: Dictionary = by_area[project.area_id]
+				row.busy = true
+				row.active_title = definition.title
+				row.active_progress = project.progress_months
+				row.active_months = definition.months
+		if (
+			not definition.id in PREPARATION_IDS
+			or not project.status in ["active", "waiting", "paused", "queued"]
+		):
+			continue
+		var row: Dictionary = by_area[project.area_id]
+		if project.status == "queued":
+			if int(row.queued_count) == 0:
+				var available := availability(definition.id, project.area_id, year)
+				row.queued_blocked_reason = (
+					"Sonraki aybaşında başlayacak." if available.ok else available.message
+				)
+				for other: ActiveProject in projects:
+					if (
+						other.area_id == project.area_id
+						and other.definition_id == definition.id
+						and other.status == "paused"
+					):
+						row.queued_blocked_reason = (
+							"Duraklatılan %s sürdürülene veya iptal edilene kadar bekliyor."
+							% definition.title
+						)
+			summary.queued_count += 1
+			summary.queued_cost += project.cost_budget
+			row.queued_count += 1
+			row["queued_teams" if definition.id == "rescue_team" else "queued_stock"] += 1
+			row.last_uid = project.uid
+		if project.occupies_slot():
+			summary.active_count += 1
+		if project.occupies_slot() or project.status == "queued":
+			row.planned_count += 1
+		(
+			pending
+			. append(
+				{
+					"uid": project.uid,
+					"area_id": project.area_id,
+					"area_name": row.name,
+					"title": definition.title,
+					"status": project.status,
+					"definition_id": definition.id,
+					"progress_months": project.progress_months,
+					"months": definition.months,
+					"monthly_cost": installment_for(project),
+				}
+			)
+		)
+	return {"actions": actions, "summary": summary, "areas": by_area.values(), "pending": pending}
+
+
 func availability(id: String, area_id: int, year: int) -> Dictionary:
+	var required := _requirements(id, area_id, year)
+	if not required.ok:
+		return required
 	var definition := definition_for(id)
-	if definition == null:
-		return _result(false, "Bilinmeyen tedbir.")
-	if definition.is_local() and not areas.has(area_id):
-		return _result(false, "Geçerli bir yönetim merkezi seçin.")
-	if year < definition.year:
-		return _result(false, "%d yılında açılacak." % definition.year)
-	for requirement: String in definition.prerequisites:
-		if not is_completed(requirement, area_id):
-			return _result(false, "Önkoşul: " + definition_for(requirement).title)
 	if not definition.repeatable and is_completed(id, area_id):
 		return _result(false, "Bu tedbir tamamlanmış.")
 	for project: ActiveProject in projects:
@@ -155,6 +310,20 @@ func availability(id: String, area_id: int, year: int) -> Dictionary:
 		return _result(false, "Aktif proje slotu dolu.")
 	if treasury.awareness_points < definition.cost_awareness:
 		return _result(false, "Yeterli bilinç puanı yok.")
+	return _result(true, "Başlatılabilir.")
+
+
+func _requirements(id: String, area_id: int, year: int) -> Dictionary:
+	var definition := definition_for(id)
+	if definition == null:
+		return _result(false, "Bilinmeyen tedbir.")
+	if definition.is_local() and not areas.has(area_id):
+		return _result(false, "Geçerli bir yönetim merkezi seçin.")
+	if year < definition.year:
+		return _result(false, "%d yılında açılacak." % definition.year)
+	for requirement: String in definition.prerequisites:
+		if not is_completed(requirement, area_id):
+			return _result(false, "Önkoşul: " + definition_for(requirement).title)
 	return _result(true, "Başlatılabilir.")
 
 
@@ -181,6 +350,8 @@ func cancel(uid: int) -> Dictionary:
 	if project == null or project.status in ["cancelled", "completed"]:
 		return _result(false, "Bu proje iptal edilemez.")
 	project.status = "cancelled"
+	if project.area_id != 0:
+		_activate_preparation(project.area_id)
 	return _result(true, "Proje iptal edildi; ödenen bedel iade edilmez.", uid)
 
 
@@ -200,7 +371,7 @@ func installment_for(project: ActiveProject) -> int:
 	)
 
 
-func tick_month(_year: int, can_pay_budget: bool = true) -> Array[Dictionary]:
+func tick_month(year: int, can_pay_budget: bool = true) -> Array[Dictionary]:
 	var ordered: Array[ActiveProject] = []
 	for project: ActiveProject in projects:
 		if project.occupies_slot():
@@ -232,6 +403,9 @@ func tick_month(_year: int, can_pay_budget: bool = true) -> Array[Dictionary]:
 					"title": definition.title
 				}
 			)
+	# Start the next order after billing so it first pays on the following month boundary.
+	for area_id: int in areas:
+		_activate_preparation(area_id, year)
 	return notices
 
 
@@ -294,6 +468,122 @@ func preparedness(area_id: int, disaster_kind: String) -> float:
 		0.0,
 		100.0
 	)
+
+
+func effect_preview(id: String, area_id: int = 0) -> Dictionary:
+	var definition := definition_for(id)
+	var rows: Array[Dictionary] = []
+	var global := definition != null and not definition.is_local()
+	var result := {"rows": rows, "global": global, "maintenance_ratio": treasury.maintenance_ratio}
+	if definition == null or (definition.is_local() and not areas.has(area_id)):
+		return result
+	var projected := _effect_projection(definition, area_id)
+	var keys: Array = definition.effects.keys()
+	if definition.kind == "repair":
+		keys = ["damage", "resilience", "income"]
+	for key: String in keys:
+		var before := _preview_value(key, area_id, global)
+		var after := projected._preview_value(key, area_id, global)
+		rows.append(_preview_row(key, before, after, area_id))
+	return result
+
+
+func _effect_projection(definition: MeasureDefinition, area_id: int) -> ProjectSystem:
+	var projected := ProjectSystem.new()
+	projected.definitions = definitions
+	projected.areas = areas.duplicate()
+	projected.treasury = treasury
+	projected.global_completed = global_completed.duplicate()
+	if definition.is_local():
+		var area := ServiceArea.from_dict(areas[area_id].to_dict())
+		projected.areas[area_id] = area
+		if definition.kind == "team":
+			area.teams += int(definition.effects.get("teams", 1))
+			area.total_teams += int(definition.effects.get("teams", 1))
+		elif definition.kind == "stock":
+			area.stock += int(definition.effects.get("stock", 40))
+		elif definition.kind == "repair":
+			area.damage = 0.0
+		elif not definition.id in area.completed_measures:
+			area.completed_measures.append(definition.id)
+	elif not definition.id in projected.global_completed:
+		projected.global_completed.append(definition.id)
+	projected._update_capacity()
+	return projected
+
+
+func _preview_value(key: String, area_id: int, global: bool) -> float:
+	if key == "research_capacity":
+		return float(research_capacity)
+	if not global:
+		return _preview_area_value(key, area_id)
+	var total := 0.0
+	for id: int in areas:
+		total += _preview_area_value(key, id)
+	return total / maxi(1, areas.size())
+
+
+func _preview_area_value(key: String, area_id: int) -> float:
+	if key.begins_with("protection_"):
+		return preparedness(area_id, key.trim_prefix("protection_"))
+	if key == "resilience":
+		return infrastructure(area_id)
+	if key == "teams":
+		return float(areas[area_id].total_teams)
+	if key == "stock":
+		return float(areas[area_id].stock)
+	if key == "damage":
+		return areas[area_id].damage
+	if key == "income":
+		return float(areas[area_id].income())
+	var effect := get_effect(area_id, key)
+	if key == "repair_efficiency":
+		effect = clampf(effect, 0.0, MAX_REPAIR_EFFICIENCY)
+	elif key == "trust_decay_reduction":
+		effect = clampf(effect, 0.0, TrustState.MAX_DECAY_REDUCTION)
+	return effect * 100.0
+
+
+func _preview_row(key: String, before: float, after: float, area_id: int) -> Dictionary:
+	var unit := "percent"
+	var maximum := 100.0
+	var bounded := false
+	if key.begins_with("protection_") or key in ["resilience", "damage"]:
+		unit = "points"
+		bounded = true
+	elif key in ["teams", "stock", "research_capacity"]:
+		unit = "count"
+		maximum = 5.0 if key == "teams" else 160.0
+		if key == "research_capacity":
+			maximum = 3.0
+			bounded = true
+	elif key == "income":
+		unit = "money"
+		maximum = float(areas[area_id].base_income)
+		bounded = true
+	elif key in ["repair_efficiency", "trust_decay_reduction"]:
+		maximum = (
+			(
+				MAX_REPAIR_EFFICIENCY
+				if key == "repair_efficiency"
+				else TrustState.MAX_DECAY_REDUCTION
+			)
+			* 100.0
+		)
+		bounded = true
+	if not bounded:
+		maximum = maxf(maximum, maxf(before, after))
+	return {
+		"key": key,
+		"before": before,
+		"after": after,
+		"delta": after - before,
+		"minimum": 0.0,
+		"maximum": maximum,
+		"unit": unit,
+		"higher_is_better": key != "damage",
+		"bounded": bounded,
+	}
 
 
 func calculate_upkeep() -> int:
@@ -369,6 +659,8 @@ func restore(data: Variant) -> bool:
 		if project == null or not definitions.has(project.definition_id) or project.uid in used_ids:
 			return false
 		var definition := definition_for(project.definition_id)
+		if project.status == "queued" and not definition.id in PREPARATION_IDS:
+			return false
 		if project.uid >= int(data.next_uid) or project.sequence in used_sequences:
 			return false
 		if definition.is_local() and not areas.has(project.area_id):

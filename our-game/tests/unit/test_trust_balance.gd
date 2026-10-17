@@ -50,3 +50,43 @@ func test_response_report_shows_actual_clamped_trust_change() -> void:
 	trust.value = 0.5
 	assert_float(trust.assess_response(0.0, 0.0, 0.0, 0.0, "Eksik müdahale")).is_equal(-0.5)
 	assert_float(trust.value).is_equal(0.0)
+
+
+func test_feedback_identifies_initial_bounds_without_an_invented_change() -> void:
+	var trust := TrustState.new()
+	var result := trust.feedback()
+	assert_float(result.value).is_equal(100.0)
+	assert_float(result.minimum).is_equal(0.0)
+	assert_float(result.maximum).is_equal(100.0)
+	assert_bool(result.has_change).is_false()
+	assert_float(result.latest_amount).is_equal(0.0)
+	assert_str(result.latest_reason).is_equal("Henüz değişim yok")
+
+
+func test_feedback_keeps_the_last_actual_change_at_both_bounds() -> void:
+	var trust := TrustState.new()
+	trust.value = 99.5
+	trust.change(2.0, "Hazırlık")
+	assert_float(trust.feedback().latest_amount).is_equal(0.5)
+	trust.change(1.0, "Üst sınırda")
+	assert_str(trust.feedback().latest_reason).is_equal("Hazırlık")
+	trust.change(-150.0, "Eksik müdahale")
+	assert_float(trust.feedback().value).is_equal(0.0)
+	assert_float(trust.feedback().latest_amount).is_equal(-100.0)
+	trust.change(-1.0, "Alt sınırda")
+	assert_str(trust.feedback().latest_reason).is_equal("Eksik müdahale")
+
+
+func test_feedback_preserves_small_changes_and_cannot_modify_trust() -> void:
+	var trust := TrustState.new()
+	trust.decay_month()
+	var result := trust.feedback()
+	assert_float(result.latest_amount).is_equal_approx(-0.015, 0.000001)
+	assert_bool(result.has_change).is_true()
+	assert_str(result.latest_reason).is_equal("Aylık güven aşınması")
+	result.value = 0.0
+	result.latest_amount = -90.0
+	result.latest_reason = "Değiştirilmiş"
+	assert_float(trust.value).is_equal_approx(99.985, 0.000001)
+	assert_float(trust.feedback().latest_amount).is_equal_approx(-0.015, 0.000001)
+	assert_str(trust.feedback().latest_reason).is_equal("Aylık güven aşınması")

@@ -1,5 +1,4 @@
 -- Export the editable P0 sources; never save changes back to a native source.
--- shortcut: P0 copy uses uppercase glyphs; extend unused ASCII marks before using them in new copy.
 local root=assert(P0_ROOT or app.params["repo"], "Pass the repository root as repo")
 local source=root .. "/art/production/ui/p0/"
 local output=root .. "/our-game/ui_preview/assets/"
@@ -31,6 +30,29 @@ for _,name in ipairs({"controls","afet_pixel","icons","paper","signals","map-gen
   local metadata=json.decode(borders.data)
   assert(metadata.visible_provinces==81 and metadata.passive_provinces==60 and metadata.selectable_provinces==21,
    "Province border contract changed")
+ end
+ if name=="map-general" then
+  local terrain=Image(sprite.width,sprite.height,ColorMode.RGB)
+  for _,wanted in ipairs({"70 / Arazi - Dağ sıraları","71 / Arazi - Orman ve bozkır","72 / Arazi - Kıyı dokusu"}) do
+   local found
+   for _,layer in ipairs(sprite.layers) do
+    if layer.name==wanted then found=layer;break end
+   end
+   assert(found and found.isVisible and found:cel(1),"Native terrain layer missing: " .. wanted)
+   local cel=found:cel(1)
+   terrain:drawImage(cel.image,cel.position)
+   found.isVisible=false
+  end
+  assert(#sprite.layers==34,"General map must retain its 31 original layers and three terrain layers")
+  local count=0
+  for pixel in terrain:pixels() do
+   local alpha=app.pixelColor.rgbaA(pixel())
+   assert(alpha==0 or alpha==255,"Terrain must retain hard pixel edges")
+   if alpha==255 then count=count+1 end
+  end
+  assert(count>10000,"Terrain export is unexpectedly sparse")
+  terrain:saveAs(output .. "map-terrain.png")
+  print("TERRAIN_EXPORT_PASS layers=3 pixels=" .. count .. " 3072x1728")
  end
  sprite:saveCopyAs(output .. name .. ".png")
  if name=="map-general" then
@@ -64,7 +86,7 @@ selection:close()
 
 local descriptor=assert(io.open(source .. "afet_pixel.fnt","rb"))
 local text=descriptor:read("*a");descriptor:close()
-assert(text:find("chars count=110",1,true),"Bitmap font grid changed; update its descriptor")
+assert(text:find("chars count=126",1,true),"Bitmap font grid changed; update its descriptor")
 local destination=assert(io.open(output .. "afet_pixel.fnt","wb"))
 destination:write(text);destination:close()
-print("P0_EXPORT_PASS native_sources=10 selectable_provinces=21 glyphs=110")
+print("P0_EXPORT_PASS native_sources=10 selectable_provinces=21 glyphs=126")

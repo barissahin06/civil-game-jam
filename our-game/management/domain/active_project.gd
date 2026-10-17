@@ -1,7 +1,7 @@
 class_name ActiveProject
 extends RefCounted
 
-const STATUSES := ["active", "waiting", "paused", "cancelled", "completed"]
+const STATUSES := ["active", "waiting", "paused", "queued", "cancelled", "completed"]
 
 var uid: int
 var definition_id: String
@@ -68,6 +68,8 @@ static func from_dict(data: Variant) -> ActiveProject:
 	):
 		return null
 	if float(data.repair_discount) < 0.0 or float(data.repair_discount) > 0.35:
+		return null
+	if data.status == "queued" and (int(data.progress_months) != 0 or int(data.paid) != 0):
 		return null
 	var project := ActiveProject.new()
 	for key: String in [

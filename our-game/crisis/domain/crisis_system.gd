@@ -59,6 +59,58 @@ func requirements(crisis: Dictionary) -> Dictionary:
 	return {"teams": maxi(1, int(crisis.severity)), "stock": int(crisis.severity) * 20}
 
 
+func response_support(crisis: Dictionary) -> Dictionary:
+	var need := requirements(crisis)
+	var coverage := (
+		minf(float(crisis.teams) / need.teams, 1.0) * 0.6
+		+ minf(float(crisis.stock) / need.stock, 1.0) * 0.4
+	)
+	var base_support := clampf(
+		coverage * _projects.treasury.maintenance_ratio * (1.0 + float(crisis.funds) / 20000000.0),
+		0.0,
+		0.95
+	)
+	return {
+		"base": base_support,
+		"support":
+		clampf(
+			base_support * (1.0 + _projects.get_effect(int(crisis.area_id), "rescue_efficiency")),
+			0.0,
+			0.95
+		)
+	}
+
+
+func feedback(id: String, logistics: LogisticsSystem) -> Dictionary:
+	var crisis := get_crisis(id)
+	if crisis.is_empty():
+		return {}
+	var need := requirements(crisis)
+	var result := {
+		"id": id,
+		"area_id": int(crisis.area_id),
+		"area_name": _areas[int(crisis.area_id)].name,
+		"preparation": float(crisis.protection),
+		"support": float(response_support(crisis).support) * 100.0,
+		"elapsed": int(crisis.elapsed),
+		"window": int(crisis.window),
+		"remaining": maxi(0, int(crisis.window) - int(crisis.elapsed)),
+		"status":
+		"aid" if int(crisis.stock) > 0 else ("rescue" if int(crisis.teams) > 0 else "waiting")
+	}
+	for kind: String in ["team", "stock"]:
+		var key := "teams" if kind == "team" else "stock"
+		var transit := logistics.en_route(id, kind, int(crisis.start) + int(crisis.window))
+		result[key] = {
+			"field": int(crisis[key]),
+			"on_time": int(transit.on_time),
+			"late": int(transit.late),
+			"need": int(need[key]),
+			"missing": maxi(0, int(need[key]) - int(crisis[key]) - int(transit.on_time))
+		}
+	return result
+
+
 func fund(id: String, amount: int, treasury: Treasury) -> Dictionary:
 	var crisis := get_crisis(id)
 	if crisis.is_empty() or amount <= 0 or amount + int(crisis.funds) > 5000000:
@@ -77,21 +129,9 @@ func tick_day(day: int, logistics: LogisticsSystem) -> Array[Dictionary]:
 		var model := _model(crisis.kind)
 		var area: ServiceArea = _areas[int(crisis.area_id)]
 		var need := requirements(crisis)
-		var coverage := (
-			minf(float(crisis.teams) / need.teams, 1.0) * 0.6
-			+ minf(float(crisis.stock) / need.stock, 1.0) * 0.4
-		)
-		var bonus := _projects.get_effect(area.id, "rescue_efficiency")
-		var base_support := clampf(
-			(
-				coverage
-				* _projects.treasury.maintenance_ratio
-				* (1.0 + float(crisis.funds) / 20000000.0)
-			),
-			0.0,
-			0.95
-		)
-		var support := clampf(base_support * (1.0 + bonus), 0.0, 0.95)
+		var response := response_support(crisis)
+		var base_support := float(response.base)
+		var support := float(response.support)
 		crisis.support_sum += support
 		crisis.baseline_support_sum += base_support
 		var actual := model.estimate(
