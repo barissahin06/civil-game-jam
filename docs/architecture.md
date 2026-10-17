@@ -44,7 +44,7 @@ manuel `user://manual_1_v1.json`–`manual_3_v1.json`; içerik sürümü 1.
 Geçersiz kayıt ve değişmiş içerik kataloğu reddedilir; mevcut dosya korunur.
 Slot özetleri aynı doğrulamadan geçer; bozuk ve boş kayıtlar yüklenemez.
 `slot_directory` I/O sınırıdır; testler yalnız kendilerine ait izole dizini kullanır.
-Oyunun adı Revert it'tir. Windows veri dizini eski `Godot/app_userdata/Civil Game Jam`
+Oyunun adı Rewrite it'tir. Windows veri dizini eski `Godot/app_userdata/Civil Game Jam`
 konumuna sabitlenmiştir; marka değişimi kayıtları taşımayı gerektirmez.
 
 ## Görünüm ve model sınırları
@@ -53,6 +53,9 @@ konumuna sabitlenmiştir; marka değişimi kayıtları taşımayı gerektirmez.
 `map/` harita inputunu; `campaign/` HUD, menü ve kampanya ekranlarını;
 `management/` şehir, proje ve araştırmayı; `crisis/` sevk, gazete ve raporları sahiplenir.
 `shared/` native UI bileşenleri ve ortak ekran çizimini içerir.
+`shared/ui_kit.gd`, açılışta native Aseprite imleçlerini donanım imleci olarak yükler;
+normal ok, düğme, harita taşıma ve sürükle-bırak durumları ortak paleti kullanır.
+Kaynak ve hotspot sözleşmesi [imleç rehberindedir](../art/production/ui/cursors/README.md).
 Her modül kendi görünüm durumunu tutar; diğer modülün özel alanına erişmez.
 Harita/HUD/şehir sinyalleri ana dosyada bağlanır; modal ekranlar ana dosyanın dar gezinme API'sini kullanır.
 Ana menü ve kampanya seçimi ayrı tam ekran akışıdır. `in_frontend` açıkken ortak oyun görünümü gizlenir;

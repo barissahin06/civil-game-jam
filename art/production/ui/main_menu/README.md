@@ -1,4 +1,4 @@
-# Revert it — ana menü splash art
+# Rewrite it — ana menü splash art
 
 `night_operations.aseprite`, 1920×1080 native tuval ve tek frame içerir.
 Gece koordinasyon odası; Türkiye panosu, şehir ışıkları, telsiz, konsollar ve masa lambası.

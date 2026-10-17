@@ -48,10 +48,10 @@ class WindowsBuildTests(unittest.TestCase):
             manifest = build_windows.package_release(exe, pack, output, notices)
             with zipfile.ZipFile(output) as archive:
                 self.assertEqual(set(archive.namelist()), {
-                    "RevertIt-Windows-x64/Game.exe",
-                    "RevertIt-Windows-x64/Game.pck",
-                    "RevertIt-Windows-x64/licenses/LICENSE.txt",
-                    "RevertIt-Windows-x64/licenses/COPYRIGHT.txt",
+                    "RewriteIt-Windows-x64/Game.exe",
+                    "RewriteIt-Windows-x64/Game.pck",
+                    "RewriteIt-Windows-x64/licenses/LICENSE.txt",
+                    "RewriteIt-Windows-x64/licenses/COPYRIGHT.txt",
                 })
                 self.assertEqual(archive.read(archive.namelist()[0]), exe.read_bytes())
             self.assertEqual(len(manifest["files"]), 5)

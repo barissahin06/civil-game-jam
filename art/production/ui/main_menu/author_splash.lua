@@ -1,5 +1,5 @@
 -- One-time native authoring. Edit the layered Aseprite source thereafter, then run export.lua.
-local root=assert(REVERT_ROOT or app.params["repo"], "Pass repo")
+local root=assert(REWRITE_ROOT or app.params["repo"], "Pass repo")
 local destination=root.."/art/production/ui/main_menu/night_operations.aseprite"
 assert(not app.fs.isFile(destination), "Source exists; checkpoint and edit it instead of regenerating")
 local W,H=1920,1080
@@ -232,8 +232,8 @@ for i=0,23 do
  rect(im,0,H-3-i*3,W,3,color("050d16",math.floor((24-i)*4)))
 end
 finish(im,l)
-s.data=json.encode({asset="Revert it / Night operations",native_width=W,native_height=H,frame_count=1,palette="teal, slate, muted brass",source="Aseprite native layers; existing Türkiye source sampled read-only",authoring="author_splash.lua",runtime="ui_preview/assets/main_menu_splash.png"})
+s.data=json.encode({asset="Rewrite it / Night operations",native_width=W,native_height=H,frame_count=1,palette="teal, slate, muted brass",source="Aseprite native layers; existing Türkiye source sampled read-only",authoring="author_splash.lua",runtime="ui_preview/assets/main_menu_splash.png"})
 assert(#s.layers==11 and #s.frames==1)
 s:saveAs(destination)
-print("REVERT_SPLASH_SOURCE_PASS layers="..#s.layers.." width="..s.width.." height="..s.height)
+print("REWRITE_SPLASH_SOURCE_PASS layers="..#s.layers.." width="..s.width.." height="..s.height)
 s:close()

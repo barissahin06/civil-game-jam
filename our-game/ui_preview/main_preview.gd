@@ -39,6 +39,7 @@ var _feedback_event_ids: Array[String] = []
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	UI.install_cursors()
 	theme = Theme.new()
 	theme.default_font = UI.FONT
 	theme.default_font_size = 18
@@ -81,6 +82,10 @@ func _ready() -> void:
 	if not _testing():
 		return_to_main_menu()
 	_refresh_views()
+
+
+func _exit_tree() -> void:
+	UI.reset_cursors()
 
 
 func return_to_main_menu() -> void:

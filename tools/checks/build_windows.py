@@ -141,9 +141,9 @@ def package_release(
         temporary, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6
     ) as archive:
         for path in (executable, pack):
-            archive.write(path, arcname="RevertIt-Windows-x64/" + path.name)
+            archive.write(path, arcname="RewriteIt-Windows-x64/" + path.name)
         for path in licenses:
-            archive.write(path, arcname="RevertIt-Windows-x64/licenses/" + path.name)
+            archive.write(path, arcname="RewriteIt-Windows-x64/licenses/" + path.name)
     with zipfile.ZipFile(temporary) as archive:
         if archive.testzip() is not None:
             raise ValueError("Portable ZIP integrity check failed")
@@ -185,7 +185,7 @@ def main() -> None:
     if not version.startswith(VERSION) or ".mono." in version:
         raise ValueError(f"Expected standard Godot {VERSION}; got {version}")
     BUILD_DIRECTORY.mkdir(parents=True, exist_ok=True)
-    executable = BUILD_DIRECTORY / "RevertIt.exe"
+    executable = BUILD_DIRECTORY / "RewriteIt.exe"
     pack = executable.with_suffix(".pck")
     # Stale derived outputs must never make a failed export look successful.
     for path in (executable, pack):
@@ -197,7 +197,7 @@ def main() -> None:
     )
     licenses = prepare_licenses(BUILD_DIRECTORY / "licenses")
     manifest = package_release(
-        executable, pack, BUILD_DIRECTORY.parent / "RevertIt-Windows-x64.zip", licenses
+        executable, pack, BUILD_DIRECTORY.parent / "RewriteIt-Windows-x64.zip", licenses
     )
     manifest["exported_engine_version"] = version
     manifest["runtime_smoke"] = "not_run_by_packager"

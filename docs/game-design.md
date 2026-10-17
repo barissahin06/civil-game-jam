@@ -1,4 +1,4 @@
-# Revert it — onaylanan oyun tasarımı
+# Rewrite it — onaylanan oyun tasarımı
 
 Karar tarihi: 17 Ekim 2026. Bu belge konuşmada seçilen davranışları toplar.
 Sayısal ilk denge değerleri aşağıda ayrıca işaretlidir; henüz oynanış testi sonucu değildir.
@@ -64,7 +64,7 @@ Aktif afetler seçili katmandan bağımsız simgelerle de görünür.
 
 ## Ana menü ve kayıt
 
-Oyun adı **Revert it**. Ana menü, gece afet koordinasyon odasını gösteren 1920×1080 native
+Oyun adı **Rewrite it**. Ana menü, gece afet koordinasyon odasını gösteren 1920×1080 native
 pixel art splash kullanır. Türkiye panosu, telsiz, şehir ışıkları ve masa konsolları ayrı
 Aseprite katmanlarıdır. Başlık ve düğmeler canlı UI'dır. Devam Et otomatik kaydı açar;
 Yeni Oyun, Yükle, Ayarlar, Kısa Rehber ve Çıkış ayrı aksiyonlardır.
