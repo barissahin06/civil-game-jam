@@ -26,9 +26,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot", default=os.getenv("GODOT_PATH") or shutil.which("godot"))
     parser.add_argument("--unit-only", action="store_true")
+    parser.add_argument("--ui-only", action="store_true")
     args = parser.parse_args()
     if not args.godot:
         parser.error("Set GODOT_PATH or pass --godot")
+    if args.ui_only:
+        run(args.godot, "gameplay-ui", ["--headless", "--script", "res://tests/integration/gameplay_ui.gd"], "GAMEPLAY_UI_PASS")
+        return
     run(args.godot, "import", ["--headless", "--editor", "--import"])
     run(args.godot, "gdunit", [
         "--headless", "--script", "res://addons/gdUnit4/bin/GdUnitCmdTool.gd",
@@ -37,6 +41,7 @@ def main() -> None:
     ], "Overall Summary")
     if not args.unit_only:
         run(args.godot, "startup", ["--headless", "--script", "res://tests/integration/startup.gd"], "STARTUP PASS")
+        run(args.godot, "gameplay-ui", ["--headless", "--script", "res://tests/integration/gameplay_ui.gd"], "GAMEPLAY_UI_PASS")
     print("Verification PASS", flush=True)
 
 

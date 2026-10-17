@@ -1,0 +1,511 @@
+{
+  "format_version": 1,
+  "note": "İlk oynanabilir prototip için denge adayları; bilimsel risk tahmini değildir.",
+  "measures": [
+    {
+      "id": "river_zoning",
+      "title": "Dere yatağı imar düzeni",
+      "kind": "policy",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "protection_flood": 18,
+        "protection_earthquake": 5,
+        "resilience": 2
+      },
+      "repeatable": false
+    },
+    {
+      "id": "strengthening",
+      "title": "Bina güçlendirme",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 80000,
+      "effects": {
+        "protection_earthquake": 22,
+        "protection_fire": 8,
+        "resilience": 8
+      },
+      "repeatable": false
+    },
+    {
+      "id": "firebreak",
+      "title": "Yangın şeridi ve su rezervi",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 30000,
+      "effects": {
+        "protection_fire": 20,
+        "protection_flood": 3,
+        "logistics_efficiency": 0.04
+      },
+      "repeatable": false
+    },
+    {
+      "id": "assembly_areas",
+      "title": "Toplanma alanları",
+      "kind": "policy",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 5,
+        "protection_flood": 5,
+        "protection_fire": 5,
+        "protection_avalanche": 5,
+        "protection_landslide": 5,
+        "evacuation": 0.05
+      },
+      "repeatable": false
+    },
+    {
+      "id": "gas_cutoff",
+      "title": "Otomatik gaz kesme",
+      "kind": "local",
+      "tab": 0,
+      "year": 1980,
+      "prerequisites": ["research_automation"],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 60000,
+      "effects": {
+        "protection_earthquake": 12,
+        "protection_fire": 18
+      },
+      "repeatable": false
+    },
+    {
+      "id": "slope_control",
+      "title": "Şev güvenliği ve heyelan taraması",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 20000,
+      "effects": {
+        "protection_landslide": 22,
+        "protection_avalanche": 15,
+        "resilience": 4
+      },
+      "repeatable": false
+    },
+    {
+      "id": "rescue_team",
+      "title": "Arama kurtarma ekibi kur",
+      "kind": "team",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 4000000,
+      "cost_awareness": 0,
+      "months": 4,
+      "upkeep": 40000,
+      "effects": {
+        "teams": 1
+      },
+      "repeatable": true
+    },
+    {
+      "id": "aid_stock",
+      "title": "Yardım stoğu hazırla",
+      "kind": "stock",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 2000000,
+      "cost_awareness": 0,
+      "months": 2,
+      "upkeep": 0,
+      "effects": {
+        "stock": 40
+      },
+      "repeatable": true
+    },
+    {
+      "id": "repair",
+      "title": "Altyapı onarımı",
+      "kind": "repair",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {},
+      "repeatable": true
+    },
+    {
+      "id": "national_radio",
+      "title": "Ulusal telsiz ağı",
+      "kind": "national",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 36000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 120000,
+      "effects": {
+        "rescue_efficiency": 0.1,
+        "logistics_efficiency": 0.1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "early_warning",
+      "title": "Erken uyarı radarları",
+      "kind": "national",
+      "tab": 0,
+      "year": 1970,
+      "prerequisites": ["research_radar"],
+      "cost_budget": 36000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 160000,
+      "effects": {
+        "protection_flood": 10,
+        "protection_fire": 8,
+        "evacuation": 0.06
+      },
+      "repeatable": false
+    },
+    {
+      "id": "satellite_network",
+      "title": "Uydu haberleşme ağı",
+      "kind": "national",
+      "tab": 0,
+      "year": 1990,
+      "prerequisites": ["research_satellite"],
+      "cost_budget": 36000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 200000,
+      "effects": {
+        "rescue_efficiency": 0.15,
+        "logistics_efficiency": 0.15
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_structural",
+      "title": "Yapı güvenliği bilimi",
+      "kind": "research",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 3
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_ground",
+      "title": "Zemin etüdü",
+      "kind": "research",
+      "tab": 0,
+      "year": 1960,
+      "prerequisites": ["research_structural"],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 4,
+        "protection_flood": 2
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_automation",
+      "title": "Altyapı otomasyonu",
+      "kind": "research",
+      "tab": 0,
+      "year": 1980,
+      "prerequisites": ["research_ground"],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "resilience": 3
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_isolation",
+      "title": "Sismik izolasyon",
+      "kind": "research",
+      "tab": 0,
+      "year": 2000,
+      "prerequisites": ["research_automation"],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 8,
+        "protection_fire": 2
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_meteorology",
+      "title": "Meteoroloji ağı",
+      "kind": "research",
+      "tab": 1,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "protection_flood": 3,
+        "protection_avalanche": 2
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_radar",
+      "title": "Hava radarı",
+      "kind": "research",
+      "tab": 1,
+      "year": 1970,
+      "prerequisites": ["research_meteorology"],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "protection_flood": 4,
+        "evacuation": 0.02
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_satellite",
+      "title": "Uydu iletişimi",
+      "kind": "research",
+      "tab": 1,
+      "year": 1990,
+      "prerequisites": ["research_radar"],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "rescue_efficiency": 0.05
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_sensor",
+      "title": "Sayısal sensör ağı",
+      "kind": "research",
+      "tab": 1,
+      "year": 2005,
+      "prerequisites": ["research_satellite"],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "protection_landslide": 6,
+        "protection_fire": 5
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_coordination",
+      "title": "Kurtarma koordinasyonu",
+      "kind": "research",
+      "tab": 2,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "rescue_efficiency": 0.05
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_depots",
+      "title": "Bölgesel depo ağı",
+      "kind": "research",
+      "tab": 2,
+      "year": 1960,
+      "prerequisites": ["research_coordination"],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "logistics_efficiency": 0.08
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_capacity",
+      "title": "Araştırma kurumu",
+      "kind": "research",
+      "tab": 2,
+      "year": 1980,
+      "prerequisites": ["research_depots"],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "research_capacity": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_response",
+      "title": "Bütünleşik müdahale",
+      "kind": "research",
+      "tab": 2,
+      "year": 2000,
+      "prerequisites": ["research_capacity"],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "rescue_efficiency": 0.1,
+        "repair_efficiency": 0.1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "community_preparedness",
+      "title": "Afet çantası ve mahalle bilinci",
+      "kind": "awareness",
+      "tab": 3,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 0,
+      "cost_awareness": 15,
+      "months": 3,
+      "upkeep": 0,
+      "effects": {
+        "evacuation": 0.04,
+        "trust_decay_reduction": 0.1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "household_planning",
+      "title": "Aile afet planları",
+      "kind": "awareness",
+      "tab": 3,
+      "year": 1950,
+      "prerequisites": ["community_preparedness"],
+      "cost_budget": 0,
+      "cost_awareness": 15,
+      "months": 3,
+      "upkeep": 0,
+      "effects": {
+        "evacuation": 0.04
+      },
+      "repeatable": false
+    },
+    {
+      "id": "evacuation_drills",
+      "title": "Mahalle tatbikatları",
+      "kind": "awareness",
+      "tab": 3,
+      "year": 1950,
+      "prerequisites": ["household_planning"],
+      "cost_budget": 0,
+      "cost_awareness": 15,
+      "months": 3,
+      "upkeep": 0,
+      "effects": {
+        "evacuation": 0.05,
+        "rescue_efficiency": 0.03
+      },
+      "repeatable": false
+    },
+    {
+      "id": "volunteer_network",
+      "title": "Gönüllü koordinasyonu",
+      "kind": "awareness",
+      "tab": 3,
+      "year": 1950,
+      "prerequisites": ["community_preparedness"],
+      "cost_budget": 0,
+      "cost_awareness": 15,
+      "months": 3,
+      "upkeep": 0,
+      "effects": {
+        "rescue_efficiency": 0.08
+      },
+      "repeatable": false
+    },
+    {
+      "id": "public_communication",
+      "title": "Güvenilir kamu iletişimi",
+      "kind": "awareness",
+      "tab": 3,
+      "year": 1960,
+      "prerequisites": ["volunteer_network"],
+      "cost_budget": 0,
+      "cost_awareness": 15,
+      "months": 3,
+      "upkeep": 0,
+      "effects": {
+        "trust_decay_reduction": 0.25
+      },
+      "repeatable": false
+    },
+    {
+      "id": "community_coordination",
+      "title": "Dayanışma ağları",
+      "kind": "awareness",
+      "tab": 3,
+      "year": 1970,
+      "prerequisites": ["evacuation_drills", "public_communication"],
+      "cost_budget": 0,
+      "cost_awareness": 15,
+      "months": 3,
+      "upkeep": 0,
+      "effects": {
+        "logistics_efficiency": 0.08,
+        "trust_decay_reduction": 0.15
+      },
+      "repeatable": false
+    }
+  ]
+}

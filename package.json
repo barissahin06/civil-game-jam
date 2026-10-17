@@ -6,12 +6,14 @@
     "format:check": "prettier --check .",
     "format:gd": "uv run --project tools gdformat our-game art/preview",
     "format:gd:check": "uv run --project tools gdformat --check our-game art/preview",
-    "complexity": "uv run --project tools gdradon cc our-game/core our-game/shared our-game/tests art/preview",
+    "complexity": "uv run --project tools gdradon cc our-game/core our-game/shared our-game/campaign our-game/economy our-game/regions our-game/management our-game/events/domain our-game/crisis our-game/logistics our-game/simulation our-game/ui_preview our-game/tests art/preview",
     "check:data": "uv run --project tools python tools/checks/check_data.py",
     "setup:godot": "uv run --project tools python tools/checks/install_gdunit.py",
     "test:unit": "uv run --project tools python tools/checks/verify.py --unit-only",
     "test:tools": "uv run --project tools python -m unittest discover -s tools/checks -p test_*.py",
-    "verify": "uv run --project tools python tools/checks/verify.py"
+    "test:ui": "uv run --project tools python tools/checks/verify.py --ui-only",
+    "verify": "uv run --project tools python tools/checks/verify.py",
+    "build:windows": "uv run --project tools python tools/checks/build_windows.py"
   },
   "devDependencies": {
     "prettier": "3.9.9"

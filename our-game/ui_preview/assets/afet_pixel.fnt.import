@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://drnagtf0lhjco"
+path="res://.godot/imported/afet_pixel.fnt-1a6b673e79a81134679bb03d38453650.fontdata"
+
+[deps]
+
+source_file="res://ui_preview/assets/afet_pixel.fnt"
+dest_files=["res://.godot/imported/afet_pixel.fnt-1a6b673e79a81134679bb03d38453650.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=2
