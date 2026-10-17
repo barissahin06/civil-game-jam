@@ -26,6 +26,8 @@ const SHAKE_OFFSETS: Array[Vector2] = [
 var selected_overlay: int = 0
 var _map_clip: Control
 var _map_legend: Label
+var _hint_panel: PanelContainer
+var _hint_label: Label
 var _map_image: TextureRect
 var _selection: TextureRect
 var _hit_image: Image
@@ -100,11 +102,13 @@ func _ready() -> void:
 	reset_map()
 	UI.panel(self, Rect2(1638, 930, 254, 34))
 	_map_legend = UI.text(self, "BÖLGE RENKLERİ", Rect2(1650, 934, 230, 26), 18, UI.MUTED)
+	_map_legend.mouse_filter = Control.MOUSE_FILTER_PASS
+	_map_legend.tooltip_text = "Haritadaki renklerin şu an neyi gösterdiği. Alttaki düğmelerle değiştirilir."
 	UI.panel(self, Rect2(440, 966, 246, 48))
 	UI.panel(self, Rect2(1068, 966, 824, 48))
-	UI.button(self, "SIFIRLA", Rect2(452, 974, 124, 32), reset_map)
-	UI.button(self, "+", Rect2(584, 974, 42, 32), _zoom_map.bind(1, Vector2(960, 540)))
-	UI.button(self, "-", Rect2(634, 974, 42, 32), _zoom_map.bind(-1, Vector2(960, 540)))
+	UI.button(self, "SIFIRLA", Rect2(452, 974, 124, 32), reset_map).tooltip_text = ("Haritayı ilk görünümüne döndürür.")
+	UI.button(self, "+", Rect2(584, 974, 42, 32), _zoom_map.bind(1, Vector2(960, 540))).tooltip_text = ("Yakınlaştır")
+	UI.button(self, "-", Rect2(634, 974, 42, 32), _zoom_map.bind(-1, Vector2(960, 540))).tooltip_text = ("Uzaklaştır")
 	for index in range(4):
 		var title: String = ["GENEL", "HAZIRLIK", "LOJİSTİK", "HASAR/ONARIM"][index]
 		_layer_buttons.append(
@@ -116,7 +120,48 @@ func _ready() -> void:
 				index == 0
 			)
 		)
+		_layer_buttons[index].tooltip_text = [
+			"Bölgeleri yönetim alanlarına göre renklendirir. Kırmızı bölgede afet sürüyor.",
+			"Afete hazırlık düzeyi: turkuaz hazırlıklı, kırmızı zayıf. Tamamlanan tedbirler hazırlığı artırır.",
+			"Yardım stoğu: turkuaz dolu, kırmızı az. Stok, krizde sevk edilen yardımdır.",
+			"Hasar düzeyi: turkuaz sağlam, kırmızı hasarlı. Hasarlı bölgede gelir düşer, onarım gerekir.",
+		][index]
+	UI.wrap_tooltips(self)
+	_build_hints_above()
 	refresh()
+
+
+func _build_hints_above() -> void:
+	# Bottom controls sit at the screen edge, where the native tooltip opens over them.
+	_hint_panel = PanelContainer.new()
+	_hint_panel.add_theme_stylebox_override("panel", UI.style(Rect2(0, 0, 48, 48)))
+	_hint_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hint_panel.z_index = 10
+	_hint_panel.hide()
+	_hint_label = Label.new()
+	_hint_label.add_theme_font_override("font", UI.FONT)
+	_hint_label.add_theme_font_size_override("font_size", 18)
+	_hint_label.add_theme_color_override("font_color", UI.INK)
+	_hint_panel.add_child(_hint_label)
+	for child: Node in get_children():
+		var control := child as Control
+		if control != null and not control.tooltip_text.is_empty():
+			control.set_meta("hint", control.tooltip_text)
+			control.tooltip_text = ""
+			control.mouse_entered.connect(_show_hint_above.bind(control))
+			control.mouse_exited.connect(_hint_panel.hide)
+	add_child(_hint_panel)
+
+
+func _show_hint_above(control: Control) -> void:
+	_hint_label.text = control.get_meta("hint")
+	_hint_panel.show()
+	_hint_panel.reset_size()
+	var width := get_viewport_rect().size.x
+	_hint_panel.position = Vector2(
+		clampf(control.position.x, 8.0, width - _hint_panel.size.x - 8.0),
+		control.position.y - _hint_panel.size.y - 8.0
+	)
 
 
 func play_crisis_feedback() -> void:
@@ -200,7 +245,8 @@ func refresh() -> void:
 			Rect2(_native_point(sim.areas[id]) + Vector2(18, -42), Vector2(54, 34)),
 			sim.collect_bubble.bind(id)
 		)
-		bubble.tooltip_text = "Bilinç puanı topla"
+		bubble.tooltip_text = "Tıkla: +5 bilinç puanı. Sakin dönemlerde çıkar, en fazla 3 tane birikir."
+	UI.wrap_tooltips(_markers)
 	for shipment: Dictionary in sim.logistics.shipments:
 		if shipment.state in ["outbound", "returning"]:
 			var a: Vector2 = _native_point(sim.areas[int(shipment.source)])
@@ -305,6 +351,8 @@ func _constrain_map() -> void:
 
 
 func _on_map_input(event: InputEvent) -> void:
+	if not _shell.open_screen.is_empty():
+		return  # An open screen owns the input; gaps between top buttons must not reach the map.
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
 			_zoom_map(1, event.position)

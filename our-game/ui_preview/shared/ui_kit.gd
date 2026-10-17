@@ -78,6 +78,25 @@ static func panel(parent: Control, box: Rect2, raised: bool = false) -> Panel:
 	return result
 
 
+static func wrap_tooltips(root: Node, width: int = 44) -> void:
+	# The pixel tooltip never wraps, so long hints are broken into short lines here.
+	for node: Node in [root] + root.find_children("*", "Control", true, false):
+		var control := node as Control
+		if control == null or control.tooltip_text.length() <= width:
+			continue
+		var lines: Array[String] = []
+		for paragraph: String in control.tooltip_text.split("\n"):
+			var line := ""
+			for word: String in paragraph.split(" ", false):
+				if not line.is_empty() and line.length() + 1 + word.length() > width:
+					lines.append(line)
+					line = word
+				else:
+					line = word if line.is_empty() else line + " " + word
+			lines.append(line)
+		control.tooltip_text = "\n".join(lines)
+
+
 static func text(
 	parent: Control, content: String, box: Rect2, font_size: int = 18, ink: Color = INK
 ) -> Label:

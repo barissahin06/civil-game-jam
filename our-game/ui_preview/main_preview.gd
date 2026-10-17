@@ -325,6 +325,8 @@ func show_screen(screen: String) -> void:
 	_remove_modal()
 	sim.set_paused(true)
 	open_screen = screen
+	# The pause menu is a narrow centered column; other screens use the wide panel.
+	var box := Rect2(620, 174, 680, 800) if screen == "pause" else Rect2(432, 174, 1472, 846)
 	_modal = Control.new()
 	_modal.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_modal.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -338,14 +340,24 @@ func show_screen(screen: String) -> void:
 		if screen != "menu":
 			UI.panel(_modal, Rect2(248, 156, 1424, 824), true)
 	else:
-		UI.panel(_modal, Rect2(432, 174, 1472, 846), true)
-		var close: Button = UI.button(_modal, "KAPAT", Rect2(1738, 216, 116, 38), close_screen)
+		if sim.news_queue.is_empty() and sim.outcome.is_empty():
+			# Optional screens leave the screen-button row clickable, so one screen can replace another.
+			_modal.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			for blocked: Rect2 in [Rect2(0, 0, 1920, 110), Rect2(0, 166, 1920, 914)]:
+				var blocker := Control.new()
+				blocker.position = blocked.position
+				blocker.size = blocked.size
+				_modal.add_child(blocker)
+		UI.panel(_modal, box, true)
+		var close: Button = UI.button(
+			_modal, "KAPAT", Rect2(box.end.x - 166, 216, 116, 38), close_screen
+		)
 		close.disabled = not sim.news_queue.is_empty() or not sim.outcome.is_empty()
 	_screen_content = Control.new()
 	_screen_content.position = (
 		Vector2(116, 164)
 		if in_frontend and screen == "menu"
-		else Vector2(288, 220) if in_frontend else Vector2(474, 270)
+		else Vector2(288, 220) if in_frontend else Vector2(680 if screen == "pause" else 474, 270)
 	)
 	_screen_content.size = Vector2(1376, 690)
 	_modal.add_child(_screen_content)

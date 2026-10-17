@@ -124,6 +124,21 @@ func _run() -> void:
 		assert(not _shell.city_panel.visible)
 	await _click(points[31])
 	await _capture("city-summary")
+	for node: Node in (
+		_shell.hud.find_children("*", "Button", true, false) + _shell.map_view.get_children()
+	):
+		if node is Button:
+			assert(
+				not (node as Button).tooltip_text.is_empty() or node.has_meta("hint"),
+				"Missing tooltip: " + (node as Button).text
+			)
+	var hinted: Button = _find_button(_shell.map_view, "HAZIRLIK")
+	hinted.mouse_entered.emit()
+	var hint: Control = _shell.map_view._hint_panel
+	assert(hint.visible and hint.position.y + hint.size.y < hinted.position.y)
+	assert(hint.size.x > 100 and hint.position.x >= 0 and hint.position.x + hint.size.x <= 1920)
+	hinted.mouse_exited.emit()
+	assert(not hint.visible)
 	assert(_shell._guide.text.begins_with("REHBER 2/4"))
 	await _press_button("YATIRIM")
 	await _capture("city-investments")
@@ -149,6 +164,10 @@ func _run() -> void:
 	_shell.close_screen()
 	_shell.show_screen("projects")
 	await _capture("projects")
+	await _click(_find_button(_shell.hud, "ULUSAL PLAN").get_global_rect().get_center())
+	assert(_shell.open_screen == "national")
+	await _click(_find_button(_shell.hud, "PROJELER").get_global_rect().get_center())
+	assert(_shell.open_screen == "projects")
 	_shell.close_screen()
 	_shell.show_screen("national")
 	await _capture("national")
@@ -170,6 +189,8 @@ func _run() -> void:
 	assert(_shell.open_screen == "newspaper")
 	assert(_shell.sim.projects.is_completed("river_zoning", 31))
 	await _capture("first-newspaper")
+	await _click(_find_button(_shell.hud, "PROJELER").get_global_rect().get_center())
+	assert(_shell.open_screen == "newspaper")
 	await _press_button("KRİZ MERKEZİNE GEÇ")
 	assert(_shell.open_screen == "crisis")
 	await _capture("crisis")
