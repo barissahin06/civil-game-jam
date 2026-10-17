@@ -1,6 +1,7 @@
 # Klasörler ve mimari
 
 Godot kökü `our-game/`, giriş sahnesi `core/scenes/main.tscn`.
+Logo ve afet hafızası ekranının süresi ve kaynakları [açılış rehberindedir](opening.md).
 Onaylanan mantıksal viewport 1920×1080'dir; çalışan ayarların kaynağı
 `our-game/project.godot` dosyasıdır. Harita ve UI native Aseprite pixel art olarak üretilir.
 Oyun kuralları, P0/P1/P2 sınırları ve sınıf sahipleri [oyun tasarımında](game-design.md) tanımlıdır.
