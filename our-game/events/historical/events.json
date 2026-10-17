@@ -335,18 +335,7 @@
     "image": "res://assets/events/_fallback_earthquake.jpg",
     "is_active": false
   },
-  {
-    "name": "1988 Çatak Heyelanı",
-    "time": "1988-06-23",
-    "disaster_type": "landslide",
-    "description": "Trabzon Maçka Çatak'ta yağış sonrası kaya-toprak kayması.",
-    "casualties": 66,
-    "duration": 300,
-    "regions": ["Karadeniz"],
-    "city": ["Trabzon"],
-    "image": "res://assets/events/1988-catak-heyelani.jpg",
-    "is_active": false
-  },
+  
   {
     "name": "1990 Trabzon Seli",
     "time": "1990-06-20",
@@ -912,18 +901,6 @@
     "is_active": false
   },
   {
-    "name": "2025 Silivri Depremi",
-    "time": "2025-04-23",
-    "disaster_type": "earthquake",
-    "description": "İstanbul Silivri açıklarında 6.2 büyüklüğünde deprem.",
-    "casualties": 1,
-    "duration": 20,
-    "regions": ["Marmara"],
-    "city": ["İstanbul"],
-    "image": "res://assets/events/_fallback_earthquake.jpg",
-    "is_active": false
-  },
-  {
     "name": "2025 Marmaris Depremi",
     "time": "2025-06-03",
     "disaster_type": "earthquake",
@@ -1163,18 +1140,7 @@
     "image": "res://assets/events/2022-bati-karadeniz-seli.jpg",
     "is_active": false
   },
-  {
-    "name": "2024 İliç Toprak Kayması",
-    "time": "2024-02-13",
-    "disaster_type": "landslide",
-    "description": "Erzincan İliç'te maden sahasında liç yığınının kayması sonucu toprak kayması.",
-    "casualties": 9,
-    "duration": 120,
-    "regions": ["Doğu Anadolu"],
-    "city": ["Erzincan"],
-    "image": "res://assets/events/2024-ilic-toprak-kaymasi.jpg",
-    "is_active": false
-  },
+  
   {
     "name": "2024 İzmir Orman Yangını",
     "time": "2024-08-15",
