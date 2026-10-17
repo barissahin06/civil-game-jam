@@ -38,3 +38,11 @@ Karar kataloğu ortak olay şemasını kullanır ve `aftermath` alanını zorunl
 ```powershell
 uv run --project tools python -m check_jsonschema --schemafile schemas/events/historical/r_events.schema.json our-game/events/historical/r_events.json
 ```
+
+`our-game/events/historical/preventive_actions.json`, oyun için yazılmış önlemleri ek alan içermeyen
+bir metin dizisinde tutar. Eylem adı ve kısa açıklaması aynı metindedir; karşılığı
+`schemas/events/historical/preventive_actions.schema.json` dosyasıdır:
+
+```powershell
+uv run --project tools python -m check_jsonschema --schemafile schemas/events/historical/preventive_actions.schema.json our-game/events/historical/preventive_actions.json
+```
