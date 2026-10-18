@@ -9,6 +9,8 @@ import unittest
 from unittest import mock
 import zipfile
 
+from PIL import Image
+
 import build_windows
 
 
@@ -22,6 +24,27 @@ def executable_bytes(machine: int = 0x8664) -> bytes:
 
 
 class WindowsBuildTests(unittest.TestCase):
+    def test_icon_has_all_windows_sizes_and_preserves_logo_shape_and_pixels(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            source = directory / "logo.png"
+            target = directory / "logo.ico"
+            logo = Image.new("RGBA", (96, 32), (234, 223, 188, 255))
+            logo.paste((146, 87, 227, 255), (48, 0, 96, 32))
+            logo.save(source)
+            build_windows.prepare_windows_icon(source, target)
+            with Image.open(target) as icon:
+                self.assertEqual(icon.ico.sizes(), {(s, s) for s in (16, 32, 48, 64, 128, 256)})
+                for size in (16, 32, 48, 64, 128, 256):
+                    frame = icon.ico.getimage((size, size)).convert("RGBA")
+                    left, top, right, bottom = frame.getbbox()
+                    self.assertEqual((left, right), (0, size))
+                    self.assertLess(bottom - top, size // 2)
+                    self.assertLessEqual(abs(top - (size - bottom)), 1)
+                    self.assertEqual(frame.getpixel((0, 0))[3], 0)
+                    self.assertEqual(frame.getpixel((size // 4, size // 2)), (234, 223, 188, 255))
+                    self.assertEqual(frame.getpixel((3 * size // 4, size // 2)), (146, 87, 227, 255))
+
     def fixture_licenses(self, directory: Path) -> list[Path]:
         files = []
         for name in build_windows.LICENSE_SHA256:

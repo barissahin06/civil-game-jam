@@ -53,6 +53,10 @@ Bu rapor insan oynanış testi veya başarı oranı değildir.
 `npm run build:windows`, standart Godot 4.6.3 ile release EXE ve ayrı PCK üretir.
 Mono sürümü kullanılmaz. Gerekirse `GODOT_PATH` tanımlayın veya
 `uv run --project tools python tools/checks/build_windows.py --godot <path>` kullanın.
+Build, native başlık kaynağından export edilmiş `assets/branding/rewrite_it.png` görselini
+oranını koruyup şeffaf kareye ortalar; en yakın komşu örneklemeyle 16/32/48/64/128/256 px
+katmanlı `rewrite_it.ico` üretir. Bu ikon EXE kaynaklarına gömülür ve Windows görev çubuğunda
+kullanılır; ICO dosyası runtime paketine de dahil edilir. PNG veya native Aseprite kaynağı değişmez.
 İlk çalıştırmada resmi export şablon arşivi (yaklaşık 1,2 GB) indirilip SHA-256 ile doğrulanır;
 yalnız Windows x64 şablonları `generated/tools/` altına çıkarılır. Sonraki çalıştırmalar önbelleği kullanır.
 

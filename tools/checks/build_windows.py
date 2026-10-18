@@ -12,6 +12,8 @@ import subprocess
 import urllib.request
 import zipfile
 
+from PIL import Image, ImageOps
+
 ROOT = Path(__file__).resolve().parents[2]
 VERSION = "4.6.3.stable"
 ARCHIVE_NAME = "Godot_v4.6.3-stable_export_templates.tpz"
@@ -34,6 +36,21 @@ LICENSE_SHA256 = {
 LICENSE_BASE_URL = "https://raw.githubusercontent.com/godotengine/godot/4.6.3-stable/"
 TEMPLATE_CACHE = ROOT / "generated/tools/godot-export-templates"
 BUILD_DIRECTORY = ROOT / "generated/builds/windows-x64"
+
+
+def prepare_windows_icon(source: Path, target: Path) -> None:
+    with Image.open(source) as image:
+        logo = image.convert("RGBA")
+    frames = []
+    for size in (16, 32, 48, 64, 128, 256):
+        icon = Image.new("RGBA", (size, size))
+        scaled = ImageOps.contain(logo, (size, size), Image.Resampling.NEAREST)
+        icon.paste(scaled, ((size - scaled.width) // 2, (size - scaled.height) // 2))
+        frames.append(icon)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    frames[-1].save(
+        target, format="ICO", sizes=[frame.size for frame in frames], append_images=frames[:-1]
+    )
 
 
 def sha256(path: Path) -> str:
@@ -190,6 +207,10 @@ def main() -> None:
     # Stale derived outputs must never make a failed export look successful.
     for path in (executable, pack):
         path.unlink(missing_ok=True)
+    prepare_windows_icon(
+        ROOT / "our-game/assets/branding/rewrite_it.png",
+        ROOT / "our-game/assets/branding/rewrite_it.ico",
+    )
     run_godot(godot, ["--editor", "--import"], ROOT / "generated/reports/checks/windows-import.log")
     run_godot(
         godot, ["--export-release", "Windows Desktop", str(executable)],
