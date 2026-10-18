@@ -148,8 +148,16 @@ func _check_hud_feedback() -> void:
 	assert(hud._date_label.text == "30 HAZ 1950")
 	assert(hud._date_label.tooltip_text == "30 HAZİRAN 1950")
 	assert(hud._date_label.mouse_filter == Control.MOUSE_FILTER_PASS)
-	assert(hud._date_label.get_theme_font_size("font_size") == 36)
+	assert(hud._date_label.get_theme_font_size("font_size") == 30)
 	assert(hud._date_state.text == "NORMAL / AYLIK")
+	assert(hud._trust_limits.get_rect().end.y + 4 <= hud._trust.position.y)
+	for pair: Array in [
+		[hud._budget, hud._income],
+		[hud._trust, hud._trust_delta],
+		[hud._total_teams, hud._team_total],
+		[hud._date_label, hud._date_state],
+	]:
+		assert(pair[0].get_rect().end.y + 6 <= pair[1].position.y)
 	var clock_bounds := Rect2(1280, 16, 616, 108)
 	for control: Control in [
 		hud._date_label,
@@ -158,7 +166,7 @@ func _check_hud_feedback() -> void:
 		hud._speed_state,
 	]:
 		assert(clock_bounds.encloses(control.get_rect()))
-	assert(hud._date_label.get_rect().end.x < hud._pause_button.position.x)
+	assert(hud._date_label.get_rect().end.x + 12 <= hud._pause_button.position.x)
 	var button_ids: Array[int] = []
 	for button: Button in hud._speed_buttons:
 		assert(clock_bounds.encloses(button.get_rect()))

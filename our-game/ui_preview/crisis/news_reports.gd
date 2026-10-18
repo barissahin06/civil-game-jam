@@ -93,19 +93,9 @@ func _newspaper() -> void:
 	if not photo_path.is_empty():
 		photo.texture = load(photo_path)
 	frame.add_child(photo)
-	var caption := "GÖRSEL BULUNAMADI."
-	if not photo_path.is_empty():
-		caption = (
-			"AYNI AFET TÜRÜNDEN TEMSİLİ GÖRSEL"
-			if photo_path.get_file().begins_with("_fallback_")
-			else "HABER GÖRSELİ"
-		)
-	var photo_caption := UI.text(image_column, caption, Rect2(0, 394, 656, 60), 18, muted)
-	photo_caption.name = "NewspaperPhotoCaption"
-	photo_caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	photo.tooltip_text = entry.name + "\n" + caption
+	photo.tooltip_text = entry.name
 	_line(Rect2(40, 720, 1360, 2), muted)
-	UI.button(
+	var acknowledge := UI.button(
 		_content,
 		"HABERİ OKUDUM" if not sim.news_queue.is_empty() else "AFET MÜDAHALESİNE GEÇ",
 		Rect2(744, 750, 656, 50),
@@ -115,6 +105,7 @@ func _newspaper() -> void:
 			else _shell.show_screen.bind("crisis")
 		)
 	)
+	acknowledge.set_meta("guide_target", "newspaper")
 
 
 func _report() -> void:
@@ -198,12 +189,13 @@ func _report() -> void:
 	UI.button(
 		_content, "ONARIMI İNCELE", Rect2(456, 610, 432, 52), _repair.bind(int(report.area_id))
 	)
-	UI.button(
+	var acknowledge := UI.button(
 		_content,
 		"RAPORU OKUDUM" if not sim.news_queue.is_empty() else "RAPORU KAPAT",
 		Rect2(912, 610, 432, 52),
 		_shell.acknowledge_news if not sim.news_queue.is_empty() else _shell.close_screen
 	)
+	acknowledge.set_meta("guide_target", "report")
 
 
 func _comparison(report: Dictionary) -> void:

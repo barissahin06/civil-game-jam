@@ -55,7 +55,7 @@ func _run() -> void:
 	panel = _shell.units_panel
 	assert(panel._summary.text == "HAZIR / TOPLAM EKİP: 19 / 21")
 	assert(_shell.hud._total_teams.text == "19")
-	assert(_shell.hud._team_total.text == "TOPLAM EKİP\n21")
+	assert(_shell.hud._team_total.text == "TOPLAM: 21")
 	assert(panel._movements.text == "YOLDA 1 / GÖREVDE 1 / DÖNÜŞ 0")
 	assert(panel._rows[1].ready.text == "HAZIR 0 / TOPLAM 1")
 	assert(panel._rows[31].movement.text == "YOLDA 0 / GÖREVDE 1 / DÖNÜŞ 0")

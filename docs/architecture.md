@@ -49,6 +49,9 @@ konuşlanırken kondisyon sahipliği asıl üslerinde kalır. `TrustState.damage
 gerçek hasarını, altı aylık süresini ve uygulanmış ihmal kaybından geri alınabilecek payı saklar.
 `DecisionSystem` taahhüdün son gerçek ilerlemesini ve son aylık denetimini saklar.
 Geçersiz kayıt ve değişmiş içerik kataloğu reddedilir; mevcut dosya korunur.
+İki günlük müdahale uzatmasından hemen önceki bilinen sürüm 4 katalog hash'i ayrıca tanınır.
+Önce eski sürelerle bütün kayıt doğrulanır; ardından aktif ve gelecek krizlere iki gün eklenir.
+Bitmiş raporların günleri ve sonuçları korunur; bu geçmiş pencereler yeniden kayıtta da doğrulanır.
 Slot özetleri aynı doğrulamadan geçer; bozuk ve boş kayıtlar yüklenemez.
 `slot_directory` I/O sınırıdır; testler yalnız kendilerine ait izole dizini kullanır.
 Oyunun adı Rewrite it'tir. Windows veri dizini eski `Godot/app_userdata/Civil Game Jam`
@@ -76,9 +79,11 @@ Bütün HUD bilgileri tek ortak zemin kullanır; bilgi gruplarında ayrı dolgu 
 Büyük ekip sayısı yalnız hazır ekipleri gösterir; alt satırdaki toplam, yolda, görevde ve dönüşteki ekipleri de kapsar. Yardım sayısı tüm merkezlerde
 sevke hazır malzemeyi gösterir. Sayılar mevcut `Simulation.unit_overview()` özetinden alınır;
 sevk edilmiş yardım merkez stoğuna dahil değildir. Tam değer ve ekip durumları tooltip'te korunur.
-HUD'daki bütçe, güven ve bilinç ikonları mevcut 32×32 atlas hücrelerini 2× ölçekte,
-aynı düşey hizada gösterir.
-Takvim ve zaman kontrolleri sağda tek kompakt gruptadır. Tarih 36 px yazıyla,
+HUD'daki bütçe, güven ve bilinç ikonları mevcut 32×32 atlas hücrelerini 1,5× ölçekte,
+aynı düşey hizada gösterir. Üst şerit 112 px yüksekliğindedir; 18 px başlıklar,
+30 px ana değerler ve 18 px açıklamalar arasında en az 6 px boşluk bırakılır.
+Net gelir ve toplam ekip açıklamaları tek satırdır; gelir hesabının ayrıntısı tooltip'tedir.
+Takvim ve zaman kontrolleri sağda tek kompakt gruptadır. Tarih 30 px yazıyla,
 üç harfli ay adıyla gösterilir; tam tarih tooltip'tedir. Normal/aylık ve müdahale/günlük
 ayrımı, duraklatma durumu ve seçili hız görünür kalır. Bilinç değeri mor vurgulu puan alanındadır.
 `TrustState.feedback()` güvenin 0–100 sınırını ve geçmişe gerçekten uygulanmış son değişimi
@@ -121,12 +126,11 @@ Bu menü ve alt ekranları açıkken simülasyon yenilemesi zorunlu haber ekran�
 Ana menü splash art'ı `art/production/ui/main_menu/night_operations.aseprite` kaynağından
 export edilir; canlı başlık ve düğmeler resme gömülmez.
 Harita 3072×1728 native tuvali 1920×1080 viewport'un arka planında gösterir; bir panel çerçevesine sığdırılmaz.
-`art/production/ui/p0/map-general.aseprite` içindeki arazi katmanları, aynı native boyutta
-şeffaf `ui_preview/assets/map-terrain.png` olarak ayrı export edilir. `map_view.gd` bu görseli
-harita resminin kalıcı `TerrainDetails` çocuğunda, veri rengi üstünde ve seçim/etiket/işaretçi
-altında gösterir. Katman aynı nearest filtreyi ve 1×–3× kamera pan/zoom dönüşümünü miras alır;
-input yakalamaz. Yalnız Bölgeler modunda görünür; sayısal modların renk ve lejantını etkilemez.
-Arazi ayrıntıları görseldir; kaynak, yolculuk, afet veya kayıt modeline yeni kural eklemez.
+Harita dağ, orman/bozkır ve kıyı dokusu gibi dekoratif arazi ayrıntıları göstermez.
+`art/production/ui/p0/map-general.aseprite` içindeki arazi katmanları ve ayrı
+`ui_preview/assets/map-terrain.png` export'u düzenlenebilir kaynaklar olarak korunur;
+`map_view.gd` bu görseli yüklemez. Bu görsel değişiklik kaynak, yolculuk, afet veya kayıt
+modelini etkilemez.
 Ana dosya haritayı HUD ve şehir panelinden önce ekler. Harita, maskeler ve etiketler aynı kamera dönüşümünü
 paylaşır; 1× ölçekte pan ve 1–3× yakınlaştırma kullanılır. Ülke katmanları yalnız görseldir.
 Harita araçları sol altta kalıcı, başlangıçta kapalı bir çubuktadır. Seçili görünümü belirten
@@ -234,7 +238,7 @@ tür görseline dönülür. Gazete modalinin 1440×840 kâğıdı viewport'un or
 640×360 alana oranı korunarak, kırpılmadan sığar; farklı oranlarda kâğıt tonlu boşluk kalır.
 `crisis/newsprint.gdshader`, yalnız fotoğrafları parlaklıklarına göre yedi sıcak mürekkep/kâğıt
 tonuna posterize eder. Orijinal JPEG'ler korunur; görseller yeniden üretilmez veya kırpılmaz.
-Temsili görseller açıkça etiketlenir. Özgün arşiv runtime'da okunmaz; aktif olay JSON'u,
+Fotoğrafların altında genel açıklama gösterilmez. Özgün arşiv runtime'da okunmaz; aktif olay JSON'u,
 katalog fingerprint'i ve kayıt biçimi bu sunum verisinden etkilenmez. Rapor ekranı kendi
 yerleşimini kullanmayı sürdürür; haber kabulü ve Esc menüsünün davranışı değişmez.
 
@@ -297,3 +301,47 @@ tüketimi ve rapor/güvenin günlük ortalamasını saklar; kalan saha stoğu ra
 Sevk komutları isteğe bağlı asıl merkez kimliğiyle misafir grubu seçer. Üç gün içinde açık
 gören çalışan takvim gün işlemi sonunda durur ve `supply_warning_requested` üretir.
 `supply_alerted` çözülmemiş aynı açığın duruşunu tekrarlamaz; yeterli ikmal sonrası yeniden kurulur.
+
+## Uygulamalı kampanya rehberi
+
+Temel alıştırmaların hemen ardından `finish` bilgi adımı Oyunu Bitir onayını, kapanış
+gazetesinin içeriğini ve otomatik/üç manuel kaydın kalıcı silinmesini açıklar. Anladım
+yalnız dersi tamamlar; oyun bitirme veya kayıt silme komutu çalıştırmaz.
+
+`campaign/domain/campaign_guide.gd` kampanya başına rehber durumunun tek sahibidir.
+Tamamlanan ve atlanan adımlar, etkin ders, kriz kesintisinden dönüş ve ilgili kriz kimliği
+burada tutulur. Başarılı domain komutları yatırım, teknik araştırma, bilinç, ekip, yardım,
+sevk, gazete/rapor ve baloncuk ilerlemesini kaydeder. Harita ve ekran etkileşimleri yalnız
+kendi başarılı seçimlerini bildirir. Scheduler zamanı değiştirmez; UI yeni dersi ilk kez
+sunarken duraklatır. Okuma sonrası zamanı başlatmak oyuncunun eylemidir.
+
+`ui_preview/campaign/tour_guide.gd` görev kartı, metin, öneri ve hedef vurgusunu sunar.
+Öneriler mevcut `availability`, `preparation_plan` ve sevk önizlemelerine dayanır.
+Düğmeler `guide_target` kimliğiyle bulunur; kırpma, kaydırma ve harita dönüşümü güncel
+hedef geometrisine uygulanır. Kart dışındaki görsel katman inputu engellemez. Ana
+koordinatör yalnız kampanya, ekran ve menü yaşam döngüsünü bağlar. Rehber durumu/modeli
+her karede yeniden hesaplanmaz; simülasyon veya gezinme değişince yenilenir.
+
+Sürüm 4 kayıtlarında `guide` isteğe bağlıdır. Bulunursa tipler, bilinen/benzersiz adımlar
+ve gerçek aktif afet/rapor referansı doğrulanır; geçersiz veri reddedilir. Alanı olmayan
+mevcut v4 kayıtları yüklenir ve yeni tur kapalı kalır; menüden etkinleştirilebilir.
+Kayıt yolları, sürüm numarası ve gameplay katalog parmak izi değişmez. Eski dört adımlık
+`tutorial` alanları kayıt uyumluluğu için korunur; uygulamalı turu yönetmez.
+
+## Kapanış gazetesi
+
+`CampaignRetrospective.build` kampanya durumunu değiştirmeden olayları `event_id` ile
+birleştirir. Sonuçlar yalnız tamamlanan merkez raporlarından gelir; süren afetler ayrı
+kalır. Tamamlanan işler gerçek proje kayıtlarından alınır; dönem başlangıcında hazır
+gelen araştırmalar oyuncu katkısı sayılmaz. Kişi toplamları olay bazlı simülasyon
+tahminidir, benzersiz nüfus sayısı veya tek bir önlemin ayrı etkisi değildir.
+
+`ui_preview/campaign/ending_newspaper.gd` üç sayfalı anlatımı, afet listesini ve
+tamamlanan/yarım kalan çalışmaları sunar. Gönüllü bitirişte önce onay alınır, gazete
+verisi bellekte hazırlanır, otomatik kayıt durdurulur ve `SaveStore.clear_campaign_slots`
+yalnız dört v4 yuvasını ve ilgili `.tmp` dosyalarını siler. Çoklu dosya silme atomik
+değildir; hata kısmi silinme olabileceğini belirtir, yeniden deneme güvenlidir.
+Silme hatasında oyun bellekte tutulur; vazgeçilirse önceki otomatik kayıt durumu geri gelir.
+Başarıdan sonra kayıt, ESC ve çıkış akışı silinen kayıtları yeniden oluşturmaz.
+Yeni oyun/yükleme bu geçici oturum durumunu sıfırlar. 2026 ve güven tükenmesi aynı
+gazeteyi gösterir; bu doğal bitişler kayıtları silmez. Kayıt biçimi ve katalog hash'i değişmez.

@@ -62,6 +62,7 @@ func _research() -> void:
 			index == selected_tab
 		)
 		tab.name = "Category%d" % index
+		tab.set_meta("guide_target", "research_tab_%d" % index)
 	var nodes: Array[MeasureDefinition] = []
 	for definition: MeasureDefinition in sim.projects.definitions.values():
 		if definition.is_research() and definition.tab == selected_tab:
@@ -200,6 +201,7 @@ func _card(tree: Control, definition: MeasureDefinition, position: Vector2) -> v
 		card, "İNCELE", Rect2(14, 264, 432, 30), _shell.show_project.bind(definition.id, 0)
 	)
 	inspect.name = "Inspect_" + definition.id
+	inspect.set_meta("guide_target", "inspect_" + definition.id)
 	inspect.focus_entered.connect(_refresh_highlight)
 	inspect.focus_exited.connect(func() -> void: _refresh_highlight.call_deferred())
 

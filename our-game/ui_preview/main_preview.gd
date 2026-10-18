@@ -8,6 +8,7 @@ const HUD := preload("res://ui_preview/campaign/hud.gd")
 const UNITS_PANEL := preload("res://ui_preview/logistics/units_panel.gd")
 const MENU_SPLASH := preload("res://ui_preview/assets/main_menu_splash.png")
 const AUDIO := preload("res://core/audio/game_audio.gd")
+const TOUR := preload("res://ui_preview/campaign/tour_guide.gd")
 var sim: Simulation
 var saves := SaveStore.new()
 var map_view: MAP_VIEW
@@ -15,6 +16,7 @@ var city_panel: CITY_PANEL
 var preparation_panel: PREPARATION_PANEL
 var hud: HUD
 var units_panel: UNITS_PANEL
+var tour: TOUR
 var campaign := preload("res://ui_preview/campaign/campaign_screens.gd").new()
 var display := preload("res://ui_preview/campaign/display_settings.gd").new()
 var audio: AUDIO
@@ -24,6 +26,10 @@ var projects := preload("res://ui_preview/management/project_screens.gd").new()
 var crisis := preload("res://ui_preview/crisis/crisis_screen.gd").new()
 var news_reports := preload("res://ui_preview/crisis/news_reports.gd").new()
 var decision_view := preload("res://ui_preview/crisis/decision_view.gd").new()
+var ending := preload("res://ui_preview/campaign/ending_newspaper.gd").new()
+var campaign_finished: bool = false
+var _finish_save_suspended: bool = false
+var _finish_auto_save: bool = false
 var selected_area_id: int = 0
 var open_screen: String = ""
 var auto_save_enabled: bool = false
@@ -34,8 +40,6 @@ var _modal: Control
 var _screen_content: Control
 var _status: Label
 var _status_panel: Panel
-var _guide: Label
-var _guide_plate: Panel
 var _dirty: bool = true
 var _save_dirty: bool = false
 var _save_timer: float = 0.0
@@ -80,7 +84,9 @@ func _ready() -> void:
 	if not get_parent().has_node("TitleSplash"):
 		audio.start_music()
 	_bind_simulation()
-	for view in [campaign, save_slots, research, projects, crisis, news_reports, decision_view]:
+	for view in [
+		campaign, save_slots, research, projects, crisis, news_reports, decision_view, ending
+	]:
 		view.setup(self)
 	map_view = MAP_VIEW.new()
 	map_view.setup(self)
@@ -112,8 +118,11 @@ func _ready() -> void:
 	_status.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_status.ellipsis_char = "."
 	map_view.tools_toggled.connect(_on_map_tools_toggled)
-	_guide_plate = UI.panel(_gameplay, Rect2(432, 174, 1010, 36))
-	_guide = UI.text(_gameplay, "", Rect2(446, 178, 982, 28), 18, UI.GOLD)
+	tour = TOUR.new()
+	tour.setup(self)
+	add_child(tour)
+	if _testing():
+		sim.guide.close()
 	if not _testing():
 		return_to_main_menu()
 	_refresh_views()
@@ -128,10 +137,51 @@ func return_to_main_menu() -> void:
 	if auto_save_enabled and not _save():
 		return
 	auto_save_enabled = false
+	_pause_active = false
+	_pause_return_screen = ""
 	in_frontend = true
 	close_city_panel()
 	_gameplay.hide()
 	show_screen("menu")
+
+
+func request_campaign_finish() -> void:
+	if in_frontend or campaign_finished or not sim.outcome.is_empty():
+		return
+	ending.notice = ""
+	show_screen("finish_confirm")
+
+
+func cancel_campaign_finish() -> void:
+	if _finish_save_suspended:
+		auto_save_enabled = _finish_auto_save
+		_finish_save_suspended = false
+	ending.notice = ""
+	show_screen("pause")
+
+
+func confirm_campaign_finish() -> void:
+	if in_frontend or campaign_finished or open_screen != "finish_confirm":
+		return
+	sim.set_paused(true)
+	var snapshot := CampaignRetrospective.build(sim, "voluntary")
+	if not _finish_save_suspended:
+		_finish_auto_save = auto_save_enabled
+		_finish_save_suspended = true
+	auto_save_enabled = false
+	if not saves.clear_campaign_slots():
+		ending.notice = saves.error
+		refresh_screen()
+		return
+	campaign_finished = true
+	_finish_save_suspended = false
+	_save_dirty = false
+	_save_timer = 0.0
+	_pause_active = false
+	_pause_return_screen = ""
+	_pending_supply_warning = ""
+	ending.open(snapshot)
+	show_screen("retrospective")
 
 
 func _bind_simulation(resuming: bool = false) -> void:
@@ -201,6 +251,7 @@ func _process(delta: float) -> void:
 	sim.update(delta)
 	if _dirty and not get_viewport().gui_is_dragging():
 		_refresh_views()
+	tour.refresh()
 	_save_timer += delta
 	if auto_save_enabled and _save_dirty and _save_timer >= 10.0:
 		_save()
@@ -220,6 +271,10 @@ func _refresh_views() -> void:
 	_dirty = false
 	if in_frontend:
 		return
+	if campaign_finished:
+		if open_screen != "retrospective":
+			show_screen("retrospective")
+		return
 	_play_new_crisis_feedback()
 	hud.refresh()
 	city_panel.refresh()
@@ -230,32 +285,19 @@ func _refresh_views() -> void:
 			_last_ticker_message = sim.ticker.back()
 			_ticker_cursor = sim.ticker.size() - 1
 		_display_ticker()
-	var actions: Array[String] = ["city", "investment", "research", "dispatch"]
-	var hints: Array[String] = [
-		"REHBER 1/4: Sınırları parlak bir merkeze tıkla; soldaki bilgilere bak.",
-		"REHBER 2/4: Şehir > Yatırım > İncele: bütçene uygun bir proje başlat.",
-		"REHBER 3/4: Yatırım ve Araştırma > Araştırmalar: açık bir araştırma başlat.",
-		"REHBER 4/4: Zamanı başlat; ilk afette yardım gönder, her gün ihtiyaca bak."
-	]
-	_guide.text = ""
-	if sim.tutorial_enabled:
-		for index in range(actions.size()):
-			if not actions[index] in sim.tutorial_completed:
-				_guide.text = hints[index]
-				break
-	_guide_plate.visible = not _guide.text.is_empty()
-	_guide.visible = _guide_plate.visible
 	if _pause_active:
 		refresh_screen()
+	elif not sim.outcome.is_empty() and _presented_outcome != sim.outcome:
+		_presented_outcome = sim.outcome
+		show_screen(sim.outcome)
+	elif open_screen in ["ending", "defeat"]:
+		return
 	elif not sim.news_queue.is_empty():
 		var route: String = sim.news_queue.front().kind
 		if open_screen != route:
 			show_screen(route)
 		elif is_instance_valid(_screen_content):
 			refresh_screen()
-	elif not sim.outcome.is_empty() and _presented_outcome != sim.outcome:
-		_presented_outcome = sim.outcome
-		show_screen(sim.outcome)
 	elif not _pending_supply_warning.is_empty():
 		var id := _pending_supply_warning
 		_pending_supply_warning = ""
@@ -277,6 +319,7 @@ func select_area(id: int) -> void:
 		selected_area_id = id
 		map_view.select_area(id)
 		sim.learn("city")
+		sim.guide.record("city")
 		_mark_dirty()
 
 
@@ -307,10 +350,14 @@ func start_campaign(year: int) -> void:
 		preview_notice("Oyun verileri yüklenemedi")
 		return
 	sim = replacement
+	campaign_finished = false
+	_finish_save_suspended = false
+	ending.reset()
 	in_frontend = false
 	_gameplay.show()
 	_presented_outcome = ""
 	_bind_simulation()
+	tour.reset()
 	auto_save_enabled = not _testing()
 	_pause_return_screen = ""
 	_pause_active = false
@@ -331,7 +378,7 @@ func continue_campaign() -> void:
 
 
 func save_campaign_slot(slot: int) -> Dictionary:
-	if in_frontend or slot < 1 or slot > 3:
+	if in_frontend or campaign_finished or _finish_save_suspended or slot < 1 or slot > 3:
 		return {"ok": false, "message": "Manuel kayıt için açık oyun ve 1-3 arasında yuva seç."}
 	if not saves.save(sim, saves.slot_path(slot)):
 		return {"ok": false, "message": saves.error}
@@ -346,10 +393,14 @@ func load_campaign_slot(slot: int) -> Dictionary:
 	if restored == null:
 		return {"ok": false, "message": saves.error}
 	sim = restored
+	campaign_finished = false
+	_finish_save_suspended = false
+	ending.reset()
 	in_frontend = false
 	_gameplay.show()
 	_presented_outcome = ""
 	_bind_simulation(true)
+	tour.reset()
 	auto_save_enabled = not _testing()
 	_pause_return_screen = ""
 	_pause_active = false
@@ -361,6 +412,8 @@ func load_campaign_slot(slot: int) -> Dictionary:
 
 
 func _save() -> bool:
+	if campaign_finished or _finish_save_suspended:
+		return false
 	var saved := saves.save(sim, saves.slot_path(0))
 	if not saved:
 		preview_notice(saves.error)
@@ -375,6 +428,21 @@ func command_result(result: Dictionary) -> void:
 	sim.changed.emit()
 	if auto_save_enabled:
 		_save_timer = 10.0
+
+
+func resume_guide() -> void:
+	if in_frontend:
+		return
+	sim.guide.resume()
+	# Leaving the pause menu must not start the clock behind a reading lesson.
+	_pause_was_running = false
+	if _pause_active:
+		show_screen("pause")
+		close_screen()
+	elif open_screen == "tutorial":
+		_remove_modal()
+	tour.reset()
+	sim.changed.emit()
 
 
 func screen_focus_path() -> NodePath:
@@ -421,7 +489,9 @@ func refresh_screen() -> void:
 			news_reports.render(_screen_content, open_screen)
 		"decision":
 			decision_view.render(_screen_content, open_screen)
-		"menu", "newgame", "pause", "settings", "tutorial", "ending", "defeat":
+		"finish_confirm", "retrospective", "ending", "defeat":
+			ending.render(_screen_content, open_screen)
+		"menu", "newgame", "pause", "settings", "tutorial":
 			campaign.render(_screen_content, open_screen)
 	if is_instance_valid(_research_tab):
 		_research_tab.text = (
@@ -432,6 +502,8 @@ func refresh_screen() -> void:
 
 
 func show_screen(screen: String) -> void:
+	if campaign_finished and not in_frontend and screen != "retrospective":
+		return
 	if open_screen == "research" and screen not in ["research", "project"]:
 		research.reset_navigation()
 	if screen == "development":
@@ -448,6 +520,8 @@ func show_screen(screen: String) -> void:
 		_pause_return_screen = open_screen
 		_pause_was_running = not sim.paused
 		_pause_active = true
+	if screen in ["ending", "defeat"] and str(ending.summary.get("reason", "")) != screen:
+		ending.open(CampaignRetrospective.build(sim, screen))
 	if screen == "preparation":
 		if not sim.news_queue.is_empty() or not sim.outcome.is_empty():
 			return
@@ -463,12 +537,16 @@ func show_screen(screen: String) -> void:
 	UI.hide_hints(self)
 	sim.set_paused(true)
 	open_screen = screen
+	if screen == "projects":
+		sim.guide.record("projects")
 	_modal = Control.new()
 	_modal.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_modal.mouse_filter = (
 		Control.MOUSE_FILTER_IGNORE if screen in ["crisis", "units"] else Control.MOUSE_FILTER_STOP
 	)
 	add_child(_modal)
+	# GUI input follows sibling order, independently of the guide's drawing z_index.
+	move_child(tour, get_child_count() - 1)
 	if _screen_switchable(screen):
 		# Optional screens keep the top screen-button row clickable, so one screen can replace
 		# another without closing it first. The rest of the screen stays blocked.
@@ -490,7 +568,7 @@ func show_screen(screen: String) -> void:
 	elif screen in ["crisis", "units"]:
 		UI.panel(_modal, Rect2(1284, 174, 620, 846), true)
 		UI.button(_modal, "KAPAT", Rect2(1792, 198, 92, 34), close_screen)
-	elif screen in ["newspaper", "decision"]:
+	elif screen in ["newspaper", "decision", "retrospective", "ending", "defeat"]:
 		var shade := ColorRect.new()
 		shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		shade.color = Color(0.035, 0.06, 0.085, 0.65)
@@ -523,11 +601,13 @@ func show_screen(screen: String) -> void:
 	_screen_content.size = (
 		Vector2(580, 810) if screen in ["crisis", "units"] else Vector2(1376, 690)
 	)
-	if screen in ["newspaper", "decision"]:
+	if screen in ["newspaper", "decision", "retrospective", "ending", "defeat"]:
 		_screen_content.size = news_reports.NEWSPAPER_SIZE
 		_screen_content.position = (size - _screen_content.size) / 2.0
 	_screen_content.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_modal.add_child(_screen_content)
+	if screen in ["decision", "fund"]:
+		_screen_content.set_meta("guide_target", screen)
 	if screen in ["projects", "national", "research"]:
 		var routes: Array[String] = ["projects", "national", "research"]
 		var titles: Array[String] = ["PROJELER", "ÖNLEMLER", "ARAŞTIRMALAR"]
@@ -540,6 +620,7 @@ func show_screen(screen: String) -> void:
 				screen == routes[index]
 			)
 			tab.name = "Development_" + routes[index]
+			tab.set_meta("guide_target", routes[index])
 			if routes[index] == "research":
 				_research_tab = tab
 	if screen == "newspaper":
@@ -553,6 +634,8 @@ func show_screen(screen: String) -> void:
 			not _pause_active and (not sim.news_queue.is_empty() or not sim.outcome.is_empty())
 		)
 	refresh_screen()
+	if screen == "finish_confirm":
+		ending.focus_cancel.call_deferred()
 
 
 func _screen_switchable(screen: String) -> bool:
@@ -561,7 +644,22 @@ func _screen_switchable(screen: String) -> bool:
 		and not _pause_active
 		and sim.news_queue.is_empty()
 		and sim.outcome.is_empty()
-		and screen not in ["crisis", "units", "pause", "settings", "save", "load", "tutorial"]
+		and (
+			screen
+			not in [
+				"crisis",
+				"units",
+				"pause",
+				"settings",
+				"save",
+				"load",
+				"tutorial",
+				"finish_confirm",
+				"retrospective",
+				"ending",
+				"defeat"
+			]
+		)
 	)
 
 
@@ -581,6 +679,11 @@ func _remove_modal() -> void:
 
 func close_screen() -> void:
 	research.reset_navigation()
+	if open_screen in ["retrospective", "ending", "defeat"] and not in_frontend:
+		return
+	if open_screen == "finish_confirm":
+		cancel_campaign_finish()
+		return
 	if in_frontend:
 		if open_screen != "menu":
 			show_screen("menu")
@@ -698,12 +801,15 @@ func quit_game() -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_ESCAPE:
+			if open_screen in ["retrospective", "ending", "defeat"]:
+				get_viewport().set_input_as_handled()
+				return
 			if hud.close_events_menu():
 				get_viewport().set_input_as_handled()
 				return
 			if (
 				in_frontend
-				or open_screen in ["pause", "settings", "save", "load"]
+				or open_screen in ["pause", "settings", "save", "load", "finish_confirm"]
 				or (open_screen == "tutorial" and _pause_active)
 			):
 				close_screen()

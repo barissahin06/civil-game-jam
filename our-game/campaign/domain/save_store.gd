@@ -4,6 +4,9 @@ extends RefCounted
 const PATH := "user://campaign_v4.json"
 const MAX_FILE_BYTES := 16777216
 const MAX_VALUE := 1000000000000
+const PRE_EXTENSION_CATALOG := "af49f275c85943e8886640f143719d6d8d281f9deeb39ec78125cee5a6ed3f20"
+const EXTENDED_CATALOG := "884ce6e6dd03e8d37c8a5c0ec9fc75edd6ebacec8fad15996ae7270ba70b7bae"
+const RESPONSE_WINDOW_EXTENSION_DAYS := 2
 var error: String = ""
 var slot_directory: String = "user://"
 
@@ -42,6 +45,25 @@ func slot_summaries() -> Array[Dictionary]:
 		summaries.append(summary)
 	error = previous_error
 	return summaries
+
+
+func clear_campaign_slots() -> bool:
+	error = ""
+	var failed: Array[String] = []
+	for slot in range(4):
+		for path: String in [slot_path(slot), slot_path(slot) + ".tmp"]:
+			var absolute := ProjectSettings.globalize_path(path)
+			if DirAccess.dir_exists_absolute(absolute):
+				failed.append(path.get_file())
+			elif FileAccess.file_exists(path) and DirAccess.remove_absolute(absolute) != OK:
+				failed.append(path.get_file())
+	if not failed.is_empty():
+		error = (
+			"Kayıtların tümü silinemedi: %s. Bazı yuvalar silinmiş olabilir; yeniden deneyebilirsin."
+			% ", ".join(failed)
+		)
+		return false
+	return true
 
 
 func save(simulation: Simulation, path: String = PATH) -> bool:
@@ -143,7 +165,15 @@ func restore(data: Variant) -> Simulation:
 	var sim := Simulation.new()
 	if not sim.setup(int(data.start_year)):
 		return null
-	if data.get("catalog") != sim.content_fingerprint:
+	var extended_windows := sim.content_fingerprint == EXTENDED_CATALOG
+	var previous_windows: bool = extended_windows and data.get("catalog") == PRE_EXTENSION_CATALOG
+	if data.get("catalog") != sim.content_fingerprint and not previous_windows:
+		return null
+	if previous_windows:
+		# Validate the exact old catalog before extending any unfinished crisis.
+		for event: Dictionary in sim.historical.events:
+			event.response_window_days -= RESPONSE_WINDOW_EXTENSION_DAYS
+	elif extended_windows and not _restore_report_windows(data.reports, sim):
 		return null
 	var day := int(data.day)
 	if (
@@ -369,6 +399,20 @@ func restore(data: Variant) -> Simulation:
 	sim.speed = int(data.speed)
 	sim.outcome = data.outcome
 	sim.tutorial_enabled = data.tutorial_enabled
+	if data.has("guide"):
+		if not sim.guide.restore(data.guide):
+			return null
+		if not sim.guide.crisis_id.is_empty() and not sim.guide.crisis_id in crisis_ids:
+			return null
+	else:
+		sim.guide.close()
+		if "city" in sim.tutorial_completed:
+			sim.guide.record("city")
+		for project: ActiveProject in sim.projects.projects:
+			sim.guide.record_project(sim.projects.definition_for(project.definition_id).kind)
+		for shipment: Dictionary in sim.logistics.shipments:
+			if shipment.purpose == "crisis":
+				sim.guide.record("dispatch_teams" if shipment.kind == "team" else "dispatch_stock")
 	sim.paused = true
 	if not sim.decisions.restore(data.get("decisions"), sim):
 		return null
@@ -378,7 +422,41 @@ func restore(data: Variant) -> Simulation:
 		var event := sim.event_for(str(record.event_id))
 		if event.is_empty() or not _area_owns_event(restored[int(record.area_id)], event):
 			return null
+	if previous_windows:
+		for event: Dictionary in sim.historical.events:
+			if int(event.day) + int(event.response_window_days) > day:
+				event.response_window_days += RESPONSE_WINDOW_EXTENSION_DAYS
+		for crisis: Dictionary in sim.crises.active:
+			crisis.window += RESPONSE_WINDOW_EXTENSION_DAYS
 	return sim
+
+
+func _restore_report_windows(reports: Array, sim: Simulation) -> bool:
+	var windows: Dictionary = {}
+	for record: Variant in reports:
+		if (
+			not record is Dictionary
+			or not record.get("event_id") is String
+			or not ServiceArea._integer(record.get("day"))
+			or absf(float(record.day)) > MAX_VALUE
+		):
+			return false
+		var event := sim.event_for(record.event_id)
+		if event.is_empty():
+			return false
+		var window := int(record.day) - int(event.day)
+		if (
+			window != int(event.response_window_days)
+			and window != int(event.response_window_days) - RESPONSE_WINDOW_EXTENSION_DAYS
+		):
+			return false
+		if windows.has(event.id) and int(windows[event.id]) != window:
+			return false
+		windows[event.id] = window
+	for event_id: String in windows:
+		# Finished reports retain their original dates, consumption and outcomes after resaving.
+		sim.event_for(event_id).response_window_days = windows[event_id]
+	return true
 
 
 func _crisis_valid(record: Variant, sim: Simulation, day: int) -> bool:

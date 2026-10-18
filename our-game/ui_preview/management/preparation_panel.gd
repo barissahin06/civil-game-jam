@@ -33,6 +33,8 @@ func _ready() -> void:
 	_actions.aid_stock = UI.button(
 		self, "YARDIM HAZIRLA", Rect2(202, 116, 182, 42), select_action.bind("aid_stock")
 	)
+	_actions.rescue_team.set_meta("guide_target", "prepare_teams")
+	_actions.aid_stock.set_meta("guide_target", "prepare_stock")
 	_details = _paragraph("", Rect2(16, 172, 368, 100), UI.GOLD)
 	_summary = _paragraph("", Rect2(16, 282, 368, 88), UI.MUTED)
 	_summary.mouse_filter = Control.MOUSE_FILTER_PASS

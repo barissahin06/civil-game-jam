@@ -57,6 +57,8 @@ func _ready() -> void:
 	_quote.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_transfer = UI.button(self, "TAŞIMAYI ONAYLA", Rect2(0, 692, 284, 36), _send)
 	_recall = UI.button(self, "ASIL MERKEZE ÇAĞIR", Rect2(296, 692, 284, 36), _send.bind(true))
+	_transfer.set_meta("guide_target", "transfer")
+	_recall.set_meta("guide_target", "stationing")
 	_feedback = UI.text(self, "", Rect2(0, 738, 580, 56), 18, UI.TEAL)
 	_feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	refresh()

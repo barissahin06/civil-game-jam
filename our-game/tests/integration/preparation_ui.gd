@@ -58,12 +58,7 @@ func _run() -> void:
 	var origin: Vector2 = _shell.map_view._map_image.position
 	await _pan(points[6], points[6] + Vector2(40, 20))
 	assert(_shell.map_view._map_image.position != origin)
-	assert(
-		(
-			_shell.map_view._terrain.get_global_transform()
-			== _shell.map_view._map_image.get_global_transform()
-		)
-	)
+	assert(not _shell.map_view._map_image.has_node("TerrainDetails"))
 	assert(_shell.sim.projects.projects.size() == before, "Panning must not enqueue")
 	await _check_map_toolbar()
 	await _key(KEY_ESCAPE)
@@ -71,7 +66,7 @@ func _run() -> void:
 	assert(_shell.open_screen == "pause")
 	await _key(KEY_ESCAPE)
 	assert(_shell.open_screen.is_empty())
-	await _capture("terrain-map-overview")
+	await _capture("plain-map-overview")
 	await _click(points[31])
 	assert(_shell.city_panel.visible and _shell.selected_area_id == 31)
 	await _press_button("EKİP VE YARDIM HAZIRLA")
@@ -111,7 +106,7 @@ func _run() -> void:
 	_main.queue_free()
 	await process_frame
 	print(
-		"PREPARATION_UI_PASS: palette, repeat/parallel/busy orders, undo, persistent focus/scroll/markers/terrain, map toolbar/modes/legends/hover/pan/zoom, escape and modal exit"
+		"PREPARATION_UI_PASS: palette, repeat/parallel/busy orders, undo, persistent focus/scroll/markers, plain map toolbar/modes/legends/hover/pan/zoom, escape and modal exit"
 	)
 	quit()
 
@@ -139,13 +134,8 @@ func _check_map_toolbar() -> void:
 	)
 	assert(_shell._status.text == notice and _shell._status.get_meta("hint", "") == notice_tooltip)
 	await _capture("map-controls-expanded")
-	var terrain: TextureRect = map._map_image.get_node("TerrainDetails")
-	assert(terrain == map._terrain and terrain.texture.resource_path.ends_with("/map-terrain.png"))
-	assert(terrain.size == Vector2(3072, 1728) and terrain.texture.get_size() == terrain.size)
-	assert(terrain.mouse_filter == Control.MOUSE_FILTER_IGNORE)
-	assert(terrain.texture_filter == CanvasItem.TEXTURE_FILTER_PARENT_NODE)
-	assert(terrain.get_index() > map._heatmap.get_index())
-	assert(terrain.get_index() < map._selection.get_index())
+	assert(not map._map_image.has_node("TerrainDetails"))
+	assert(map._heatmap.get_index() < map._selection.get_index())
 	await _press_button("GÖRÜNÜMÜ SIFIRLA")
 	assert(map._zoom == 1 and map._zoom_out.disabled and not map._zoom_in.disabled)
 	assert(map._zoom_label.text == "1×")
@@ -154,7 +144,7 @@ func _check_map_toolbar() -> void:
 	for index in range(4):
 		await _click(map._layer_buttons[index].get_global_rect().get_center())
 		assert(map.selected_overlay == index)
-		assert(terrain.is_visible_in_tree() == (index == 0))
+		assert(not map._map_image.has_node("TerrainDetails"))
 		for selected in range(4):
 			assert(map._layer_buttons[selected].button_pressed == (selected == index))
 		# Clicking the active mode again must leave one mode selected.
@@ -190,7 +180,7 @@ func _check_map_toolbar() -> void:
 	_shell.sim.changed.emit()
 	await process_frame
 	assert(map.get_node("MapToolbar") == toolbar and map._layer_buttons[0] == first)
-	assert(map._terrain == terrain)
+	assert(not map._map_image.has_node("TerrainDetails"))
 	assert(map.selected_overlay == 3 and map._layer_buttons[3].button_pressed)
 	await _click(map._tools_toggle.get_global_rect().get_center())
 	assert(not map.tools_expanded and not first.is_visible_in_tree())
@@ -204,13 +194,12 @@ func _check_map_toolbar() -> void:
 	assert(map.tools_expanded and map._layer_buttons[3].button_pressed)
 	await _press_button("BÖLGELER")
 	await _capture("map-toolbar-reset")
-	await _capture("terrain-general-native")
+	await _capture("plain-map-general-native")
 	for zoom in [2, 3]:
 		await _wheel(Vector2(1100, 600), MOUSE_BUTTON_WHEEL_UP)
-		assert(terrain.is_visible_in_tree() and map._zoom == zoom)
-		assert(terrain.get_global_transform() == map._map_image.get_global_transform())
-		assert(terrain.get_global_transform().get_scale() == Vector2.ONE * zoom)
-		await _capture("terrain-zoom-%d" % zoom)
+		assert(not map._map_image.has_node("TerrainDetails") and map._zoom == zoom)
+		assert(map._map_image.get_global_transform().get_scale() == Vector2.ONE * zoom)
+		await _capture("plain-map-zoom-%d" % zoom)
 	await _press_button("GÖRÜNÜMÜ SIFIRLA")
 	await _click(map._tools_toggle.get_global_rect().get_center())
 	assert(not map.tools_expanded and map.selected_overlay == 0 and map._zoom == 1)

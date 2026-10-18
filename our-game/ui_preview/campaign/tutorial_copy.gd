@@ -19,7 +19,7 @@ const PAGES: Array[Dictionary] = [
 			{
 				"heading": "ZAMANI SEN YÖNETİRSİN",
 				"text":
-				"Oyun başladığında zaman durur. Bu sırada proje başlatabilir, ekip ve malzeme gönderebilirsin. Afet yokken aylar, afet sırasında günler geçer. Sağ üstten zamanı başlat, durdur veya hızını değiştir. Haber ve uyarıları kapattıktan sonra zamanın durup durmadığına bak."
+				"Oyun duraklatılmış başlar; proje ve sevk yapabilirsin. Afet yokken aylar geçer. Afette her başlatma yalnız bir gün ilerletir ve yine durur; sonraki gün için Zamanı Başlat'a tekrar bas. Hızı sağ üstten değiştir. Haberleri ve uyarıları okuduktan sonra zamanın durumuna bak."
 			}
 		]
 	},
@@ -166,7 +166,7 @@ const PAGES: Array[Dictionary] = [
 			{
 				"heading": "GÖNDERDİKTEN SONRA ZAMANI BAŞLAT",
 				"text":
-				"Ekip ve malzeme yoldayken yardım sağlamaz; afet bölgesine ulaşmaları gerekir. Yakın merkezden daha erken varabilirler. Yolculuğun kaç gün süreceğine ve afet için kalan süreye bak. Zamanı Başlat'a basıp günleri ilerlet. Birden çok afette ekip ve malzemeyi aralarında paylaştır."
+				"Ekip ve malzeme varana kadar yardım sağlamaz. Yolculuğu kalan afet süresiyle karşılaştır; yakın merkez erken varabilir. Her Zamanı Başlat bir afet gününü ilerletir, sonra zaman durur. Sonraki gün için yeniden başlat. Birden çok afetin ihtiyacını ayrı izle."
 			}
 		]
 	},
@@ -234,23 +234,23 @@ const PAGES: Array[Dictionary] = [
 		]
 	},
 	{
-		"title": "KAYIT, KONTROLLER VE SONRAKİ ADIM",
+		"title": "KAYIT, KONTROLLER VE OYUNU BİTİRME",
 		"sections":
 		[
 			{
 				"heading": "MENÜ > KAYDET / YÜKLE",
 				"text":
-				"Oyun kendisi kayıt tutar. Ayrıca Menü > Kaydet'ten kullanabileceğin üç kayıt yeri vardır. Önemli kararlardan önce kayıt alabilirsin. Ana menüye dönerken oyun kaydedilir. Yeni oyun yalnız otomatik kaydın yerine geçer. Eski kayıt yüklenince o kayıttaki tarihe dönersin."
+				"Menü > Kaydet'te üç manuel yuva vardır; oyun ayrıca otomatik kaydeder. Normalde ana menüye dönerken kayıt alınır. Yeni oyun otomatik kaydı değiştirir, manuel yuvalar korunur. Yükleyince o kaydın tarihine dönersin."
 			},
 			{
 				"heading": "ESC, AYARLAR VE REHBERE DÖNÜŞ",
 				"text":
-				"Esc ile oyunu durdurup menüyü açarsın. Devam Et ile önceki ekrana dönersin. Ayarlar'dan ekranı, müziği, diğer sesleri ve afet sarsıntısını ayarlayabilirsin. F11 ile pencere ve tam ekran arasında geçersin. Oyun Rehberi'ni yeniden açıp üst listeden istediğin bölümü seçebilirsin."
+				"Esc menüyü açıp zamanı durdurur. Devam Et önceki ekrana döner. Ayarlar ekran, ses ve sarsıntıyı; F11 pencere/tam ekranı yönetir. Oyun Rehberi'nde konu seçip okuyabilirsin. Rehbere Devam Et, kampanyadaki uygulamalı dersleri kaldığın yerden sürdürür; yalnız okumak dersleri değiştirmez."
 			},
 			{
-				"heading": "HARİTAYA DÖNDÜĞÜNDE",
+				"heading": "OYUNU BİTİR VE KAPANIŞ GAZETESİ",
 				"text":
-				"Önce parana ve aylık giderlerine bak. Bir merkezde neyin eksik olduğunu bul ve paran yetecek bir işe başla. Ekip ve malzeme hazırla, sonra zamanı başlat. Afette yardımı zamanında gönder; malzeme azaldıkça yenisini yolla. Sonrasında hasarı onar ve verdiğin sözleri yerine getir."
+				"Menü > Oyunu Bitir, onaydan sonra kapanış gazetesini açar; otomatik kayıt ve üç manuel yuva kalıcı silinir. Başka kampanyaların bu yuvalardaki kayıtları da silinir. Geri almak için yükleme yapılamaz. 2026'ya ulaşma veya güvenin tükenmesiyle oluşan doğal bitiş kayıtları silmez."
 			}
 		]
 	}

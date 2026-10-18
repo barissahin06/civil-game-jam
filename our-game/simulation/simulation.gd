@@ -33,6 +33,7 @@ var bubbles: Array[int] = []
 var ticker: Array[String] = []
 var tutorial_completed: Array[String] = []
 var tutorial_enabled: bool = true
+var guide := CampaignGuide.new()
 var _event_index: int = 0
 var _accumulator: float = 0.0
 var _calm_months: int = 0
@@ -78,6 +79,8 @@ func setup(year: int = 1950) -> bool:
 
 func set_paused(value: bool) -> void:
 	paused = value or not news_queue.is_empty() or not outcome.is_empty()
+	if not paused:
+		guide.record("time")
 	changed.emit()
 
 
@@ -93,20 +96,23 @@ func update(delta: float) -> void:
 	_accumulator += delta * speed
 	var previous_day := clock.day
 	while not paused:
+		var crisis_day := not crises.active.is_empty()
 		var next_month := clock.next_month_day()
-		var target := clock.day + 1 if not crises.active.is_empty() else next_month
+		var target := clock.day + 1 if crisis_day else next_month
 		if _event_index < historical.events.size():
 			target = mini(target, int(historical.events[_event_index].day))
 		target = mini(target, CalendarClock.date_to_day(END_DATE))
 		var seconds := (
 			CRISIS_DAY_SECONDS
-			if not crises.active.is_empty()
+			if crisis_day
 			else CALM_MONTH_SECONDS * float(target - clock.day) / maxi(1, next_month - clock.day)
 		)
 		if _accumulator < seconds:
 			break
 		_accumulator -= seconds
 		advance_to(target)
+		if crisis_day:
+			paused = true
 		if paused:
 			_accumulator = 0.0
 	if clock.day != previous_day:
@@ -224,6 +230,7 @@ func acknowledge() -> void:
 	if news_queue.is_empty() or news_queue.front().kind == "decision":
 		return
 	var item: Dictionary = news_queue.pop_front()
+	guide.record(str(item.kind))
 	if item.kind == "report":
 		var event_id := report_event_id(report_for(item.id))
 		if (
@@ -261,6 +268,7 @@ func start_project(id: String, area_id: int = 0) -> Dictionary:
 	var result := projects.start(id, area_id, clock.year)
 	if result.ok:
 		var definition := projects.definition_for(id)
+		guide.record_project(definition.kind)
 		if definition.is_research():
 			learn("research")
 		elif definition.is_local():
@@ -275,6 +283,7 @@ func enqueue_preparation(id: String, area_id: int) -> Dictionary:
 		return {"ok": false, "message": "Oyun tamamlandı"}
 	var result := projects.enqueue_preparation(id, area_id, clock.year)
 	if result.ok:
+		guide.record("teams" if id == "rescue_team" else "stock")
 		learn("investment")
 		log_message(result.message)
 		changed.emit()
@@ -368,6 +377,7 @@ func dispatch(
 	)
 	if result.ok:
 		learn("dispatch")
+		guide.record("dispatch_teams" if kind == "team" else "dispatch_stock")
 		log_message(result.message)
 		for notice: String in logistics.tick_day(clock.day, crises.active, crises):
 			log_message(notice)
@@ -618,6 +628,7 @@ func fund(crisis_id: String, amount: int) -> Dictionary:
 func collect_bubble(id: int) -> void:
 	if id in bubbles:
 		bubbles.erase(id)
+		guide.record("bubble")
 		treasury.awareness_points += 5
 		reward_earned.emit()
 		log_message("%s: +5 bilinç puanı" % areas[id].name)
@@ -747,5 +758,6 @@ func to_dict() -> Dictionary:
 		"ticker": ticker,
 		"calm_months": _calm_months,
 		"tutorial": tutorial_completed,
-		"tutorial_enabled": tutorial_enabled
+		"tutorial_enabled": tutorial_enabled,
+		"guide": guide.to_dict()
 	}

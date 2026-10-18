@@ -62,8 +62,9 @@ Etiketler ve il sınırları açık bırakılır. Kaynağın önceki 31 katmanı
 katmanı yeniden üretir. Aseprite önizlemesinde arazi haritayla birlikte görünür.
 Export sırasında bu katmanlar şeffaf `map-terrain.png` içinde birleştirilir;
 `map-general.png`, hitmask, etiketler ve seçim maskeleri değişmeden üretilir.
-Runtime araziyi 3072×1728 native ölçüde, yalnız **Bölgeler** görünümünde gösterir.
-Hazırlık, yardım stoğu ve hasar renkleriyle gösterilen sayısal görünümler araziyi gizler.
+Oyun haritası dağ, orman/bozkır ve kıyı dokusu gibi dekoratif arazi ayrıntılarını hiçbir
+görünümde göstermez. Native katmanlar ve ayrı export düzenlenebilir kaynaklar olarak korunur;
+runtime `map-terrain.png` dosyasını yüklemez.
 
 ## Export ve inceleme
 

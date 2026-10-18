@@ -82,22 +82,41 @@ kontrol için editör binary'si kullanılır. EXE açılışı ayrıca `--headle
 Gerçek release renderer çıktısı için `--windowed --resolution 1920x1080 --write-movie <mutlak PNG yolu>
 --quit-after 5` kullanılır; bu kısa açılış testi yeni kampanya veya kayıt aksiyonu vermez.
 
-İlk beş dakika kontrolü `test:ui` içinde ana menüden iki başlangıcı da açar: 1990 seçimi ve rehberi
-atlama; 1950 seçimi ve 12 rehber bölümünü bitirme. Yıl seçimi yapılana kadar otomatik kayıt kapalıdır.
+İlk oynanış kontrolü `test:ui` içinde ana menüden 1950 ve 1990 başlangıçlarını açar ve uygulamalı
+rehberi kapatarak normal oynanışı denetler. Yıl seçimi yapılana kadar otomatik kayıt kapalıdır.
 Ana menü ve kampanya seçiminde harita/HUD gizlidir; oyun içi menüde kampanya seçimi yoktur.
 Oyun ekranından doğrudan `menu`/`newgame` yönlendirmesi de engellenir. Ana menüye dönüş, ayrı bir aksiyondur.
-Sonra şehir → yatırım → araştırma → ilk afet sevkiyatı adımları, bağlamsal rehberin ilerleyip kapanması
-ve menüden rehberi yeniden açma gerçek input ile doğrulanır.
+Sonra şehir → yatırım → araştırma → ilk afet sevkiyatı adımları ve genel rehberin menüden açılması
+gerçek input ile doğrulanır.
 Oyun Rehberi metinleri `ui_preview/campaign/tutorial_copy.gd` içinde tutulur; bölüm seçimi,
 geri/ileri gezinme ve ana menü/duraklatma menüsüne dönüş `campaign_screens.gd` sahibindedir.
 Rehber; amaç ve zaman, harita, ekonomi, yerel projeler, araştırma/ulusal önlemler,
 ekip/yardım hazırlığı, merkezler arası taşıma, afet sevki, günlük ikmal, onarım/yenileme,
-kalıcı kararlar/güven ve kayıt/kontrolleri kapsar. Haritadaki dört eylemli bağlamsal rehber
+kalıcı kararlar/güven ve kayıt/kontrolleri kapsar. Uygulamalı kampanya rehberi
 ayrı kalır. `gameplay_ui.gd`, tüm bölümlerde metin taşmasını, ilk bölümde geri sınırını,
-geri/ileri ve gerçek açılır liste girdisini, okuma sırasında modelin değişmemesini ve üç
-giriş akışını denetler. Aynı sürücüyü `--capture` ile gerçek renderer'da çalıştırıp
+geri/ileri ve gerçek açılır liste girdisini, okuma sırasında modelin değişmemesini,
+ana menü ve duraklatma menüsü girişlerini denetler. `tour_guide_ui.gd`, genel rehberi
+açıp konu seçmenin etkin ders ve atlanan adımları değiştirmediğini, kapatınca aynı
+derse dönüldüğünü ve Rehbere Devam Et bağlantısını denetler.
+Aynı sürücüleri `--capture` ile gerçek renderer'da çalıştırıp
 `generated/gameplay-ui/guide-*.png` görüntülerini 1920×1080'de inceleyin.
 Bu otomatik kabul, oyuncunun okuma/karar süresini içeren beş dakikalık insan testi yerine geçmez.
+
+`tour_guide_ui.gd`, `verify` ve `test:ui` içinde uygulamalı rehberin gerçek fare/klavye akışını
+denetler. Merkez, pan/zoom, görünüm, yatırım, araştırma, ekip/yardım emirleri, zaman/hız,
+bilinç, sevkiyat, rapor ve onarım; tek adım atlama, kapatma, menüden sürdürme ve izole kayıttan
+devam kapsamdadır. 1952 başlangıcı erken kriz kesintisini sınar. `test_onboarding.gd` bütün
+1950–1990 başlangıçlarını, başarısız komutları, dönem farkını ve eski v4 kaydını doğrular.
+
+```powershell
+& $env:GODOT_PATH --path our-game --script res://tests/integration/tour_guide_ui.gd -- --capture
+```
+
+Başarı işareti `TOUR_GUIDE_UI_PASS`; gerçek 1920×1080 görüntüler
+`generated/gameplay-ui/tour-*.png` altındadır. Hedefin tıklanabilir kalması, pan/zoom ve
+kaydırmada vurgunun taşınması, kart metninin kırpılmaması ve yeni dersin yalnız bir kez
+duraklatması denetlenir. Oyuncu kayıtları ve tercihleri kullanılmaz; insanla anlaşılabilirlik
+ve okuma süresi kabulü ayrıca yapılır.
 
 Kayıt/yükleme kabulünde sürücü yalnız `user://test-revert-ui-slots` altındaki bilinen dört dosyayı
 kullanır ve temizler. Boş/bozuk yuva, iki manuel kaydın bağımsızlığı, üzerine yazma onayı/iptali,
@@ -141,7 +160,7 @@ girdisiyle kriz merkezine geçişi ve HUD'dan son haberin tekrar açılmasını 
 99 haberin tamamında 1440×840 gazetenin ortalanması, eşit iki sütun, sabit 640×360
 fotoğraf alanı, kırpmadan sığdırma, metinle çakışmama ve taşmama denetlenir. Olaya özel
 59 görsel ile türüne göre kullanılan
-40 temsili görsel ayrılır; temsili fotoğrafların açıklaması bunu açıkça belirtir.
+40 temsili görsel ayrılır; fotoğrafların altında genel açıklama gösterilmez.
 Sürücü oyuncu kayıtlarına veya tercihlerine dokunmaz; katalog ve kampanya parmak izi değişmez.
 
 Gerçek 1920×1080 renderer incelemesi için:
@@ -171,6 +190,12 @@ gazete yerleşimini gösterir. Kaynak/export ve yeniden import sözleşmesi
 onarım boyunca izler; bu fixture'da sonraki afetlerin otomatik başlangıcı kapatılır.
 Oyuncu kayıtları ve tercihlerine dokunmaz. Hızlı sevk, popup/harita girdisi,
 kaynak bağlamı, paralel hedefler, odağın ve düğümlerin korunması kontrol edilir.
+Kriz panelinde 1×/2×/4× hızlarda art arda başlatmaların her defasında yalnız bir gün ilerleyip
+durması da gerçek fare girdisiyle denetlenir. `pilot-daily-step-1x.png`,
+`pilot-daily-step-2x.png` ve `pilot-daily-step-4x.png` günlük duruşları gösterir.
+`test_simulation.gd` ilk krizin eski bitiş gününden sonra iki gün daha açık kaldığını denetler.
+`test_save_store.gd`, bilinen önceki katalogla kayıtları eski kurallarla doğrulayıp aktif ve gelecek
+krizleri uzatmayı, bitmiş raporların korunmasını ve tekrar kayıt/yüklemeyi denetler.
 
 Standart Godot 4.6.3 ile A/B incelemesi:
 
@@ -223,13 +248,13 @@ hazırlık/stok/hasar değerini korur. Kriz bitince ilin görünüm rengi geri d
 `test_map_overlay.gd`, salt okunur sorgunun
 stok, hasar, beş afet hazırlığının ortalaması ve kampanya durumundan bağımsız dönüş değerini doğrular.
 `test_preparation_queue.gd`, FIFO/aylık taksit/bütçe/iptal/duraklatma ve kayıt doğrulamasını kapsar.
-Native arazi kaynağı `art/production/ui/p0/map-general.aseprite`, ayrı runtime çıktısı
+Native arazi kaynağı `art/production/ui/p0/map-general.aseprite`, ayrı export çıktısı
 `our-game/ui_preview/assets/map-terrain.png` dosyasıdır; export sözleşmesi
-[P0 art rehberindedir](../art/production/ui/p0/README.md). `preparation_ui.gd` bu 3072×1728
-katmanın yalnız Bölgeler modunda görünmesini, veri rengi ile seçim/etiket katmanları arasındaki
-sırasını, yenilemede düğüm kimliğini ve pan/1×–3× zoom dönüşümünü kontrol eder.
-Gerçek tıklama, hazırlık emri ve harita taşıma akışı bu katmanın inputu engellemediğini de denetler.
-Arazi görseldir; simülasyon hesabı veya kayıt biçimi değiştirmez.
+[P0 art rehberindedir](../art/production/ui/p0/README.md). Bu kaynaklar korunur; dekoratif arazi
+oyunda gösterilmez. `preparation_ui.gd`, dört harita modunda, yenileme ve pan/1×–3× zoom
+sonrasında `TerrainDetails` düğümünün bulunmadığını kontrol eder. Veri rengi ile seçim katmanının
+sırası, gerçek tıklama, hazırlık emri ve harita taşıma akışı da denetlenir.
+Bu görsel değişiklik simülasyon hesabını veya kayıt biçimini etkilemez.
 Gerçek renderer'da aynı 1920×1080 kontrolü için:
 
 ```powershell
@@ -237,8 +262,8 @@ Gerçek renderer'da aynı 1920×1080 kontrolü için:
 ```
 
 Görüntüler `generated/gameplay-ui/preparation-*.png`, `map-toolbar-*.png`, `map-legend-*.png` ve
-`terrain-*.png` altındadır. `terrain-general-native.png` 1×, `terrain-zoom-2.png` ve
-`terrain-zoom-3.png` tamsayı yakınlaştırmadaki araziyi gösterir. Sürücü oyuncu kayıtlarına dokunmaz;
+`plain-map-*.png` altındadır. `plain-map-general-native.png` 1×, `plain-map-zoom-2.png` ve
+`plain-map-zoom-3.png` tamsayı yakınlaştırmada sade haritayı gösterir. Sürücü oyuncu kayıtlarına dokunmaz;
 kuyruk kayıt testleri kendi test dizinini kullanır. İnsanla kullanım denemesi ayrıca yapılır.
 
 ## Kompakt gezinme ve listeler
@@ -308,6 +333,22 @@ Görsel kontrol için gerçek renderer ile çalıştırın:
 risk/onay metinleri korunur.
 
 ## Pencere ve Esc kontrolleri
+
+`ending_ui.gd`, `verify` ve `test:ui` içinde Oyunu Bitir onayını, iptali, silme hatasını,
+dört yuvanın silinmesini ve zamanlayıcı/ESC/ana menü sonrasında yeniden oluşmamasını
+kontrol eder. Doğal bitişlerde kayıtlar korunur. Boş ve uzun kampanyalarda üç gazete
+sayfası, gerçek kaydırma ve sayfalar arası kaydırma sürekliliği sınanır. Testler yalnız
+kendilerine ait izole kayıt dizinini kullanır. `test_campaign_retrospective.gd` çok
+merkezli olayları, dönem araştırmalarını ve salt okunur özet sınırını doğrular.
+Temel derslerden sonraki `finish` açıklaması `tour_guide_ui.gd` ile gerçek Anladım
+girdisi üzerinden kontrol edilir; bu adım oyunu bitirmez veya kayıt silmez.
+
+```powershell
+& $env:GODOT_PATH --path our-game --script res://tests/integration/ending_ui.gd -- --capture
+```
+
+Gerçek 1920×1080 görüntüler `generated/gameplay-ui/ending-*.png` ve
+`tour-finish.png` altındadır; headless çalışma görsel kabulün yerini tutmaz.
 
 `verify` ve `test:ui`, `window_controls.gd` ile Esc menüsü/önceki ekrana dönüşü,
 okunmamış gazete/raporun korunmasını, ayarlar ve F11 akışlarını denetler.

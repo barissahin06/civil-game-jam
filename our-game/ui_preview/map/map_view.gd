@@ -12,7 +12,6 @@ const MAPS: Array[Texture2D] = [
 	preload("res://ui_preview/assets/map-damage.png"),
 ]
 const HITMASK := preload("res://ui_preview/assets/map-hitmask.png")
-const TERRAIN := preload("res://ui_preview/assets/map-terrain.png")
 const NATIVE_SIZE := Vector2i(3072, 1728)
 const DEFAULT_ORIGIN := Vector2(-624, -300)
 const FEEDBACK_SECONDS := 0.30
@@ -62,7 +61,6 @@ var _crisis_swatch: ColorRect
 var _overlay_data: Dictionary = {}
 var _hovered_area: int = 0
 var _map_image: TextureRect
-var _terrain: TextureRect
 var _selection: TextureRect
 var _hit_image: Image
 var _drag_start: Vector2
@@ -136,13 +134,6 @@ void fragment() {
 	material.shader = shader
 	_heatmap.material = material
 	_map_image.add_child(_heatmap)
-	_terrain = TextureRect.new()
-	_terrain.name = "TerrainDetails"
-	_terrain.texture = TERRAIN
-	assert(_terrain.texture.get_size() == Vector2(NATIVE_SIZE))
-	_terrain.size = Vector2(NATIVE_SIZE)
-	_terrain.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_map_image.add_child(_terrain)
 	_selection = TextureRect.new()
 	_selection.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_map_image.add_child(_selection)
@@ -177,6 +168,9 @@ void fragment() {
 	UI.hint_above(_zoom_label, "Harita yakınlığı: 1× - 3×. Fare tekerleğiyle de değiştirilebilir.")
 	_zoom_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	_zoom_in = UI.button(_toolbar, "+", Rect2(568, 4, 34, 34), _zoom_map.bind(1, Vector2(960, 540)))
+	_zoom_in.set_meta("guide_target", "zoom")
+	_zoom_out.set_meta("guide_target", "zoom")
+	_tools_toggle.set_meta("guide_target", "overlay_menu")
 	UI.hint_above(_zoom_out, "Uzaklaştır")
 	UI.hint_above(_zoom_in, "Yakınlaştır")
 	_tools_drawer = Control.new()
@@ -219,6 +213,8 @@ void fragment() {
 			select_overlay.bind(index)
 		)
 		button.toggle_mode = true
+		if index > 0:
+			button.set_meta("guide_target", "overlay")
 		button.add_theme_color_override("font_pressed_color", UI.GOLD)
 		(
 			UI
@@ -297,10 +293,12 @@ func _update_crisis_feedback() -> void:
 
 
 func select_overlay(index: int) -> void:
+	if is_node_ready() and index != selected_overlay:
+		_shell.sim.guide.record("overlay")
+		_shell.sim.changed.emit()
 	selected_overlay = clampi(index, 0, 3)
 	_sync_tools()
 	_map_image.texture = MAPS[0]
-	_terrain.visible = selected_overlay == 0
 	for button_index in range(_layer_buttons.size()):
 		var button := _layer_buttons[button_index]
 		button.set_pressed_no_signal(button_index == selected_overlay)
@@ -396,6 +394,7 @@ func refresh() -> void:
 					),
 					area_selected.emit.bind(int(area.area_id))
 				)
+				_marker_nodes[key].set_meta("guide_target", "prepare_area_%d" % int(area.area_id))
 			var marker: Button = _marker_nodes[key]
 			marker.text = str(area.planned_count) if int(area.planned_count) > 0 else "+"
 			marker.modulate = (
@@ -416,6 +415,7 @@ func refresh() -> void:
 				sim.collect_bubble.bind(id)
 			)
 			bubble.tooltip_text = "Bilinç puanı topla"
+			bubble.set_meta("guide_target", "bubble")
 			_marker_nodes[key] = bubble
 	for key: String in _marker_nodes.keys():
 		if not key in wanted:
@@ -666,10 +666,27 @@ func reset_map() -> void:
 	_update_zoom_controls()
 
 
+func show_guide_tools() -> void:
+	if not tools_expanded:
+		_toggle_tools()
+
+
+func guide_area_rect(id: int) -> Rect2:
+	if not _shell.sim.areas.has(id):
+		return Rect2()
+	var marker: Control = _marker_nodes.get("plan:%d" % id)
+	if marker != null:
+		return marker.get_global_rect().intersection(Rect2(0, 174, 1920, 846))
+	var point := _map_image.get_global_transform() * _native_point(_shell.sim.areas[id])
+	return Rect2(point - Vector2(36, 26), Vector2(72, 52)).intersection(Rect2(0, 174, 1920, 846))
+
+
 func _zoom_map(direction: int, focus: Vector2) -> void:
 	var next_zoom := clampi(_zoom + direction, 1, 3)
 	if next_zoom == _zoom:
 		return
+	_shell.sim.guide.record("zoom")
+	_shell.sim.changed.emit()
 	var source_point := (focus - _map_image.position) / float(_zoom)
 	_zoom = next_zoom
 	_map_image.scale = Vector2.ONE * _zoom

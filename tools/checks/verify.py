@@ -31,6 +31,8 @@ def main() -> None:
     if not args.godot:
         parser.error("Set GODOT_PATH or pass --godot")
     if args.ui_only:
+        run(args.godot, "ending-ui", ["--headless", "--script", "res://tests/integration/ending_ui.gd"], "ENDING_UI_PASS")
+        run(args.godot, "tour-guide-ui", ["--headless", "--script", "res://tests/integration/tour_guide_ui.gd"], "TOUR_GUIDE_UI_PASS")
         run(args.godot, "renewal-trust-ui", ["--headless", "--script", "res://tests/integration/renewal_trust_ui.gd"], "RENEWAL_TRUST_UI_PASS")
         run(args.godot, "micromanagement-ui", ["--headless", "--script", "res://tests/integration/micromanagement_ui.gd"], "MICROMANAGEMENT_UI_PASS")
         run(args.godot, "decision-ui", ["--headless", "--script", "res://tests/integration/decision_ui.gd"], "DECISION_UI_PASS")
@@ -51,6 +53,8 @@ def main() -> None:
         "-rd", str(ROOT / "generated/reports/gdunit"),
     ], "Overall Summary")
     if not args.unit_only:
+        run(args.godot, "ending-ui", ["--headless", "--script", "res://tests/integration/ending_ui.gd"], "ENDING_UI_PASS")
+        run(args.godot, "tour-guide-ui", ["--headless", "--script", "res://tests/integration/tour_guide_ui.gd"], "TOUR_GUIDE_UI_PASS")
         run(args.godot, "renewal-trust-ui", ["--headless", "--script", "res://tests/integration/renewal_trust_ui.gd"], "RENEWAL_TRUST_UI_PASS")
         run(args.godot, "micromanagement-ui", ["--headless", "--script", "res://tests/integration/micromanagement_ui.gd"], "MICROMANAGEMENT_UI_PASS")
         run(args.godot, "decision-ui", ["--headless", "--script", "res://tests/integration/decision_ui.gd"], "DECISION_UI_PASS")
