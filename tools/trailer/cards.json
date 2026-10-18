@@ -1,0 +1,96 @@
+{
+  "duration": 58.0,
+  "items": [
+    {
+      "t": 6.2,
+      "d": 5.6,
+      "text": "170 BÜYÜK AFET",
+      "x": 150,
+      "y": 650,
+      "size": 72,
+      "color": "#e7e6d8"
+    },
+    {
+      "t": 7.4,
+      "d": 4.4,
+      "text": "26 MİLYON ETKİLENEN",
+      "x": 150,
+      "y": 750,
+      "size": 72,
+      "color": "#d3b782"
+    },
+    {
+      "t": 8.6,
+      "d": 3.2,
+      "text": "89 BİN CAN KAYBI",
+      "x": 150,
+      "y": 850,
+      "size": 72,
+      "color": "#d17e70"
+    },
+    {
+      "t": 6.4,
+      "d": 5.4,
+      "text": "1950-2025 / KAYNAK: EM-DAT",
+      "x": 150,
+      "y": 960,
+      "size": 24,
+      "color": "#7eaea0"
+    },
+    {
+      "t": 19.5,
+      "d": 4.8,
+      "text": "HAZIRLAN",
+      "x": 420,
+      "y": 964,
+      "w": 860,
+      "size": 60,
+      "color": "#e7e6d8",
+      "align": "center"
+    },
+    {
+      "t": 26.8,
+      "d": 3.2,
+      "text": "AFET VURUR",
+      "x": 420,
+      "y": 964,
+      "w": 860,
+      "size": 60,
+      "color": "#d17e70",
+      "align": "center"
+    },
+    {
+      "t": 31.0,
+      "d": 4.8,
+      "text": "MÜDAHALE ET",
+      "x": 420,
+      "y": 964,
+      "w": 860,
+      "size": 60,
+      "color": "#d3b782",
+      "align": "center"
+    },
+    {
+      "t": 46.5,
+      "d": 3.0,
+      "text": "KARAR VER",
+      "x": 420,
+      "y": 966,
+      "w": 860,
+      "size": 60,
+      "color": "#7eaea0",
+      "align": "center"
+    },
+    {
+      "t": 51.8,
+      "d": 6.2,
+      "text": "GEÇMİŞİ YENİDEN YAZ",
+      "x": 0,
+      "y": 790,
+      "w": 1920,
+      "size": 72,
+      "color": "#e7e6d8",
+      "align": "center"
+    }
+  ]
+}

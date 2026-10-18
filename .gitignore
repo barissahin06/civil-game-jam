@@ -28,3 +28,5 @@
 .env
 .env.*
 !.env.example
+
+our-game/override.cfg
