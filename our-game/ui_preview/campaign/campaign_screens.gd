@@ -21,10 +21,6 @@ func render(content: Control, screen: String) -> void:
 			_newgame()
 		"tutorial":
 			_tutorial()
-		"ending":
-			_ending(false)
-		"defeat":
-			_ending(true)
 
 
 func _menu() -> void:
@@ -87,22 +83,30 @@ func _pause() -> void:
 	UI.button(
 		_content,
 		"DEVAM ET",
-		Rect2(0, 140, 560, 60),
+		Rect2(0, 100, 560, 52),
 		_shell.close_screen,
 		false,
 		UI.ButtonTone.CONFIRM
 	)
-	UI.button(_content, "KAYDET", Rect2(0, 230, 560, 60), _shell.save_slots.open.bind("save"))
-	UI.button(_content, "YÜKLE", Rect2(0, 320, 560, 60), _shell.save_slots.open.bind("load"))
-	UI.button(_content, "AYARLAR", Rect2(0, 410, 560, 60), _shell.show_screen.bind("settings"))
-	UI.button(_content, "KISA REHBER", Rect2(0, 500, 560, 60), _open_tutorial)
+	UI.button(_content, "KAYDET", Rect2(0, 182, 560, 52), _shell.save_slots.open.bind("save"))
+	UI.button(_content, "YÜKLE", Rect2(0, 264, 560, 52), _shell.save_slots.open.bind("load"))
+	UI.button(_content, "AYARLAR", Rect2(0, 346, 560, 52), _shell.show_screen.bind("settings"))
+	UI.button(_content, "KISA REHBER", Rect2(0, 428, 560, 52), _open_tutorial)
 	UI.button(
 		_content,
 		"ANA MENÜYE DÖN",
-		Rect2(0, 590, 560, 60),
+		Rect2(0, 510, 560, 52),
 		_shell.return_to_main_menu,
 		false,
 		UI.ButtonTone.CAUTION
+	)
+	UI.button(
+		_content,
+		"OYUNU BİTİR",
+		Rect2(0, 592, 560, 52),
+		_shell.request_campaign_finish,
+		false,
+		UI.ButtonTone.DANGER
 	)
 
 
@@ -175,43 +179,10 @@ func _start_campaign() -> void:
 		return
 	replace_confirmed = false
 	_shell.start_campaign(start_year)
-	tutorial_step = 0
-	_shell.show_screen("tutorial")
-
-
-func _ending(defeat: bool) -> void:
-	_title(
-		"HALKIN GÜVENİ TÜKENDİ" if defeat else "OYUN TAMAMLANDI",
-		(
-			"ERKEN YENİLGİ / MÜDAHALE DEĞERLENDİRMESİ"
-			if defeat
-			else "31 ARALIK 2026 / OYUN PERFORMANSI"
-		)
-	)
-	if defeat:
-		_metric("HALKIN GÜVENİ", "0 / 100", Rect2(0, 144, 650, 124), RED)
-		_paragraph(
-			"GECİKEN MÜDAHALELER VE KARŞILANAMAYAN İHTİYAÇLAR GÜVENİ TÜKETTİ. YENİ OYUNDA HAZIRLIK, EKİP DAĞILIMI VE ÖDEME ÖNCELİKLERİNİ DEĞERLENDİR.",
-			Rect2(0, 324, 1100, 180),
-			UI.INK
-		)
-	else:
-		for index in range(3):
-			var title: String = ["HAZIRLIK", "MÜDAHALE", "TOPARLANMA"][index]
-			var scores: Dictionary = _shell.sim.scores()
-			var value: int = scores[["preparation", "response", "recovery"][index]]
-			_metric(title, "%d / 100" % value, Rect2(index * 456, 144, 432, 124), UI.TEAL)
-			UI.bar(_content, Vector2(index * 456 + 20, 300), 392, value, UI.TEAL)
-		_paragraph(
-			"KORUYUCU TEDBİRLER, ZAMANINDA MÜDAHALE VE ONARIM BİRBİRİNİ TAMAMLADI. BAŞARIN HER BAŞLIKTA AYRI DEĞERLENDİRİLİR.",
-			Rect2(0, 382, 1200, 130),
-			UI.INK
-		)
-	UI.button(_content, "ANA MENÜ", Rect2(912, 600, 432, 54), _shell.return_to_main_menu)
 
 
 func _tutorial() -> void:
-	_title("İLK ADIMLAR", "KISA REHBER / İSTEDİĞİN ZAMAN ATLAYABİLİRSİN")
+	_title("OYUN REHBERİ", "GENEL BAKIŞ / UYGULAMALI DERSLER KAMPANYANIN İÇİNDE AÇILIR")
 	var titles := [
 		"1 / BİR ŞEHİR SEÇ",
 		"2 / YEREL YATIRIM PLANLA",
@@ -227,7 +198,9 @@ func _tutorial() -> void:
 	UI.text(_content, titles[tutorial_step], Rect2(0, 144, 1300, 54), 36, UI.GOLD)
 	_paragraph(descriptions[tutorial_step], Rect2(0, 256, 1120, 170), UI.INK)
 	UI.text(_content, "%d / 4" % (tutorial_step + 1), Rect2(0, 484, 500, 36), 18, UI.MUTED)
-	UI.button(_content, "REHBERİ ATLA", Rect2(0, 600, 432, 54), _skip_tutorial)
+	UI.button(_content, "GENEL BAKIŞI KAPAT", Rect2(0, 600, 432, 54), _shell.close_screen)
+	if not _shell.in_frontend:
+		UI.button(_content, "REHBERE DEVAM ET", Rect2(456, 600, 432, 54), _shell.resume_guide)
 	var finish_label: String = "ANA MENÜYE DÖN" if _shell.in_frontend else "HARİTAYA GEÇ"
 	UI.button(
 		_content,
@@ -249,9 +222,3 @@ func _next_tutorial() -> void:
 	else:
 		tutorial_step += 1
 		_shell.refresh_screen()
-
-
-func _skip_tutorial() -> void:
-	_shell.sim.tutorial_enabled = false
-	_shell.sim.changed.emit()
-	_shell.close_screen()

@@ -10,16 +10,39 @@ Oyuncu tek ulusal hazineyi yöneten afet koordinatörüdür. Ana döngü hazırl
 afet sırasında kaynak paylaşımı ve sonuçlardan öğrenmedir.
 
 - İlk beş dakikada temel mekanikler keşfedilir, bir yatırım tamamlanır ve en az bir afet görülür.
-- 1950–2026 tam kampanyasında yaklaşık 30–45 dakika aktif oyun hedeflenir.
+- 1950–2026 tam kampanyasında yaklaşık 30–50 dakika aktif oyun hedeflenir.
   Oyuncunun duraklayıp okuma/düşünme süresi bu hedefin dışındadır; hız seçimi süreyi değiştirir.
 - Başlangıç yılı 1950–1990 arasında seçilir; başlangıç günü 1 Ocak'tır.
 - Her kampanya 31 Aralık 2026 sonunda biter. Tarihsel mod oynanabilir, Sandbox kilitlidir.
 - Başlangıç ekonomisi, temel araştırmalar ve altyapı seçilen döneme uygun hazırlanır.
-- Kısa, atlanabilir ilk oyun rehberi şehir seçimi, yatırım, araştırma ve ilk afet sevkiyatını gösterir.
+- Her yeni kampanyada uygulamalı rehber başlar. Orta kapsamlı başlangıç eğitimi şehir, harita,
+  yatırım, araştırma, ekip/yardım hazırlığı ve zaman yönetimini öğretir; bilinç, ilk afet,
+  sevkiyat, rapor ve onarım dersleri uygun koşul oluştuğunda devam eder.
 - Oyun ayrı ana menüden açılır. Yeni oyun, Tarihsel/Sandbox ve yıl seçimi yalnız bu akışta bulunur;
   harita, HUD ve şehir panelleri burada görünmez. Kampanya seçilmeden otomatik kayıt başlamaz.
 - Oyun içi menü duraklatma ve ayarlar içindir; yeni kampanya seçimi içermez. Ana menüye dönmek
-  mevcut kampanyayı kaydeder ve oyun ekranını kapatır. Menüden yeniden açılan kısa rehber ilk sayfaya döner.
+  mevcut kampanyayı kaydeder ve oyun ekranını kapatır. Kısa Rehber genel bakış sunar;
+  oyun içinde buradaki Rehbere Devam Et, kampanyanın kalan uygulamalı derslerini açar.
+
+## Uygulamalı rehber
+
+Görev kartı yapılacak işlemi ve nedenini anlatır; ok ve çerçeve güncel hedefi gösterir.
+Oyuncu diğer kontrolleri kullanabilir. Bilgi adımları Anladım ile, alıştırmalar gerçek başarılı
+işlemle tamamlanır. Önceden yapılmış uygun işlem tekrar harcama gerektirmez. Yerel koruma,
+teknik araştırma, ekip, yardım ve bilinç geliştirmesi ayrı alıştırmalardır.
+
+Her yeni ders zamanı bir kez duraklatır; oyuncu kendi başlatır ve hızını kendi seçer.
+Kriz haberi başlangıç alıştırmasını keser; gazete, ekip/yardım sevki ve rapor sonrası kalan
+derslere dönülür. Baloncuk veya proje tamamlanmasını beklemek eğitimin geri kalanını kilitlemez.
+Rehber dönem, slot ve kaynak uygunluğunu mevcut oyun modelinden okur. Taksitli projeye başlamak
+gelecek ödemelerin garantisi değildir. Kaynak yoksa neden gösterilir; para, kaynak veya yapay
+afet eklenmez. Karşılanmış ihtiyaca yeniden sevk yaptırılmaz.
+
+Bu Adımı Atla yalnız dersi geçer; Rehberi Kapat ilerlemeyi korur. Menüden kalan dersler
+sürdürülür; yapılan işlemler geri alınmaz. Rehber, oyuncu yerine gazete veya karar onaylamaz.
+Ulusal önlem, proje kontrolleri, ikmal, acil bütçe, transfer, konuşlandırma/geri çağırma,
+afet sonrası karar/taahhüt ve kondisyon/yenileme ilk bağlamlarında açıklanır. Bu ileri dersler
+para harcamayı, taahhüt vermeyi veya proje iptalini zorunlu kılmaz.
 
 ## Harita ve yönetim alanları
 
@@ -170,7 +193,8 @@ ek zorunlu kazanma eşikleri yoktur. Hazırlık, müdahale ve toparlanma ayrı d
 ## Zaman ve tarihsel olaylar
 
 Tek takvim kullanılır. Normal zamanda aylar otomatik akar; afet başlangıcında oyun duraklar.
-Oyuncu devam ettirince gün ölçeğinde otomatik akış başlar. Her iki durumda duraklatma ve 1×/2×/4× vardır.
+Aktif krizlerde her devam komutu bir oyun günü ilerletir ve takvim tekrar durur.
+Her iki durumda duraklatma ve 1×/2×/4× vardır.
 Afet günleri de aynı takvimi ilerletir; ay değiştiğinde aylık gelir/gider yalnız bir kez uygulanır.
 Sakin moda ancak aktif acil kriz kalmadığında dönülür; onarım normal zamanda sürebilir.
 
@@ -282,8 +306,12 @@ ve örnek ucuz yerel proje için toplam ₺6 milyon/6 aydır. Diğer satırlar i
 | Kapasite araştırması       | 2 araştırma slotundan 3'e geçiş | İlk adayda bir kez +1; fiyatı testte ayarlanır     |
 
 Güncel tempo adayı 1× hızda sakin ay ve kriz günü için 1,5 gerçek saniyedir; 2×/4× korunur.
+Krizde her günün sonunda takvim durur; yeniden başlatılınca yalnız sonraki gün ilerler.
+Müdahale pencerelerine iki oyun günü eklenmiştir: çığ/heyelan 7, deprem/sel 9,
+büyük deprem 11, orman yangını 12 gün sürer.
 Kritik ikmal duruşları, gazete ve raporlar oyuncunun devam komutunu bekler. Aktif takvim hedefi
-30–45 dakikadır; insanın okuma ve düşünme süresi bu hedefe eklenir.
+30–50 dakikadır; daha uzun müdahale pencereleri bu aralığa dahildir. İnsanın okuma ve düşünme süresi
+bu hedefe eklenir.
 1958 başlangıcının ilk kayıtlı afetine kadar yaklaşık 69 sakin ay bulunması ilk beş dakika testinde kapsanır.
 
 İlk oynanış testinde öğretici duraklamalar, kısa krizlerin okunabilirliği, fon bonus sınırı,
@@ -428,8 +456,11 @@ Uzun dönemde para ve bilinç fazlası görüldü. Kullanıcı kararıyla bilin�
 süresini içeren ilk beş dakika kabulü henüz tamamlanmadı. İlk paylaşılabilir demo Windows x64
 taşınabilir ZIP olarak hazırlanır.
 
-Günlük ikmalle otomatik tempo kontrolünde 1950–2026 akışı 2.542 aktif saniye (42 dakika 22 saniye)
+Önceki müdahale pencereleriyle günlük ikmal tempo kontrolünde 1950–2026 akışı
+2.542 aktif saniye (42 dakika 22 saniye)
 sürdü. Bu kontrol haber okumayı ve yenilgi dengesini dışarıda tutar; insan oynanış testi değildir.
+İki günlük uzatmayla ve her gün sonunda duruşla güncel ölçüm 2.784 aktif saniyedir
+(46 dakika 24 saniye); aynı okuma ve denge sınırları geçerlidir.
 1950–1990 arasındaki 41 başlangıç yılının hepsinde ilk afetin 300 aktif saniyeden önce gelmesi
 ayrıca denetlenir. Haber bandı son mesajlarla tamamlanma/varış haberlerini dönüşümlü gösterir.
 
@@ -478,7 +509,7 @@ MVP'de kalan kabul işleri:
 - İlk kez oynayan bir kişiyle 1950 başlangıcında ilk beş dakikayı ölçmek: şehir seçimi,
   ilk yatırım ve araştırma, ilk gazete ve bilinçli sevkiyat. Otomatik test bu insan ölçümü değildir.
 - 1950 ve 1990 başlangıçlarını gerçek kararlarla sona kadar oynayıp güven baskısını,
-  uzun vadeli para birikimini ve 30–45 dakika hedefini değerlendirmek; maliyetleri bu veriye göre ayarlamak.
+  uzun vadeli para birikimini ve 30–50 dakika hedefini değerlendirmek; maliyetleri bu veriye göre ayarlamak.
 - Yeni 21 kararın bütçe/slot tercihlerini insan oynanışında değerlendirmek; ilk sayısal
   adayları 1950 ve 1990 kampanyalarında ayarlamak. Otomatik etki doğrulaması denge kanıtı değildir.
 - Taşınabilir Windows paketini geliştirme araçları kurulu olmayan ikinci bir cihazda açıp
@@ -493,7 +524,7 @@ Sandbox, ayrı sahra hastanesi/iş makinesi birimleri ve ayrı malzeme türleri 
 - Yetersiz bütçe, öncelik, bakım oranı ve duraklatıp slotu yeniden kullanma senaryoları.
 - Çakışan krizler, 1/2/3 günlük sevk ve dönüş, tüketilen stok, onarım ve gelir toparlanması.
 - Kayıt/yükleme aynı durumu korur; bozuk/sürümü uyuşmayan veri güvenle reddedilir.
-- İlk beş dakika ve 30–45 dakika hedefi gerçek oynanışta ayrıca ölçülür; şema/başarı kodu denge kanıtı değildir.
+- İlk beş dakika ve 30–50 dakika hedefi gerçek oynanışta ayrıca ölçülür; şema/başarı kodu denge kanıtı değildir.
 
 ## 18 Ekim 2026 arayüz dili kararı
 
