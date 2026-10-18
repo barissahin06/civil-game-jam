@@ -1,8 +1,8 @@
-s1 : 1950'den bugüne Türkiye, yaklaşık yüz yetmiş büyük afet yaşadı. Peki bu hikâyeyi yeniden yazabilseydin?
-s2 : Sen, ülkenin afet koordinatörüsün. Tek bir hazine. Tek bir halk güveni.
-s3 : Afet gelmeden hazırlan. Yatırım yap, araştırma ağacını aç.
-s4 : Sonra, tarihte olduğu gibi... deprem vurur.
-s5 : Ekibi ve yardımı haritadan sürükle. Yol günler sürer. Her karar bir bedel.
-s6 : Krizler aynı anda gelir. Kaynaklar sınırlı. Hazırlığın kaç can kurtardı?
-s7 : Yetmiş altı yıl. Doksan dokuz gerçek afet. Her karar kalıcı.
+s1 : 1950'den bugüne Türkiye'de yaklaşık yüz yetmiş büyük afet yaşandı. Peki karar veren sen olsaydın, neyi değiştirirdin?
+s2 : Elinde sınırlı bir bütçe var. Ve bir milletin sana duyduğu güven.
+s3 : Felaket gelmeden hazırlan. Bugün yaptığın yatırım, yarın can kurtarır.
+s4 : Sonra, tarihte yaşandığı gibi... deprem olur.
+s5 : Yardım yola çıkar, ama ulaşması günler sürer. Her kaynağın bir bedeli var.
+s6 : Bazen iki felaket aynı anda gelir. Sonunda, kaç can kurtardığını görürsün.
+s7 : Yetmiş altı yıl. Doksan dokuz gerçek felaket. Verdiğin her karar kalıcı.
 s8 : Rewrite it. Geçmişi yeniden yaz.

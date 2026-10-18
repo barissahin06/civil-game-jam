@@ -17,7 +17,7 @@ T = ROOT / "generated" / "trailer"
 FF = str(T / "ffmpeg.exe")
 BRAND = ROOT / "our-game" / "assets" / "branding"
 TOTAL = 58.0
-VO_START = [4.3, 13.3, 19.7, 25.3, 30.6, 36.6, 43.0, 50.0]  # s1..s8 başlangıçları (sn)
+VO_START = [4.3, 13.6, 19.7, 25.3, 30.6, 36.6, 43.0, 50.0]  # s1..s8 başlangıçları (sn)
 
 
 def run(*args: str) -> None:
