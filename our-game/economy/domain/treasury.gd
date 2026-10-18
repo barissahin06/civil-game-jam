@@ -4,9 +4,9 @@ extends RefCounted
 var money: int = 20000000
 var awareness_points: int = 10
 var maintenance_ratio: float = 1.0
-var last_income: int = 6000000
+var last_income: int = 4000000
 var last_upkeep: int = 1000000
-var last_net: int = 5000000
+var last_net: int = 3000000
 
 
 func refresh_forecast(areas: Dictionary, projects: ProjectSystem) -> void:

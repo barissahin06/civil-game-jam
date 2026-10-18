@@ -7,7 +7,7 @@
       "name": "İstanbul",
       "region": "Marmara",
       "population": 2400000,
-      "base_income": 620702,
+      "base_income": 413801,
       "base_upkeep": 16562,
       "resilience": 30.0,
       "damage": 0.0,
@@ -17,14 +17,15 @@
       "province_ids": [22, 34, 39, 59],
       "completed_measures": [],
       "latitude": 41.1285,
-      "longitude": 28.8463
+      "longitude": 28.8463,
+      "condition": 100.0
     },
     {
       "id": 41,
       "name": "Kocaeli",
       "region": "Marmara",
       "population": 800000,
-      "base_income": 206896,
+      "base_income": 137931,
       "base_upkeep": 5517,
       "resilience": 30.0,
       "damage": 0.0,
@@ -34,14 +35,15 @@
       "province_ids": [11, 41, 54],
       "completed_measures": [],
       "latitude": 40.9008,
-      "longitude": 29.9396
+      "longitude": 29.9396,
+      "condition": 100.0
     },
     {
       "id": 16,
       "name": "Bursa",
       "region": "Marmara",
       "population": 1200000,
-      "base_income": 310344,
+      "base_income": 206896,
       "base_upkeep": 8275,
       "resilience": 30.0,
       "damage": 0.0,
@@ -51,14 +53,15 @@
       "province_ids": [10, 16, 17, 77],
       "completed_measures": [],
       "latitude": 40.1314,
-      "longitude": 29.0593
+      "longitude": 29.0593,
+      "condition": 100.0
     },
     {
       "id": 35,
       "name": "İzmir",
       "region": "Ege",
       "population": 1600000,
-      "base_income": 413793,
+      "base_income": 275862,
       "base_upkeep": 11034,
       "resilience": 30.0,
       "damage": 0.0,
@@ -68,14 +71,15 @@
       "province_ids": [9, 35],
       "completed_measures": [],
       "latitude": 38.2426,
-      "longitude": 27.3977
+      "longitude": 27.3977,
+      "condition": 100.0
     },
     {
       "id": 48,
       "name": "Muğla",
       "region": "Ege",
       "population": 600000,
-      "base_income": 155172,
+      "base_income": 103448,
       "base_upkeep": 4137,
       "resilience": 30.0,
       "damage": 0.0,
@@ -85,14 +89,15 @@
       "province_ids": [20, 48],
       "completed_measures": [],
       "latitude": 37.0501,
-      "longitude": 28.6482
+      "longitude": 28.6482,
+      "condition": 100.0
     },
     {
       "id": 45,
       "name": "Manisa",
       "region": "Ege",
       "population": 800000,
-      "base_income": 206896,
+      "base_income": 137931,
       "base_upkeep": 5517,
       "resilience": 30.0,
       "damage": 0.0,
@@ -102,14 +107,15 @@
       "province_ids": [3, 43, 45, 64],
       "completed_measures": [],
       "latitude": 38.7115,
-      "longitude": 28.1324
+      "longitude": 28.1324,
+      "condition": 100.0
     },
     {
       "id": 6,
       "name": "Ankara",
       "region": "İç Anadolu",
       "population": 1600000,
-      "base_income": 413793,
+      "base_income": 275862,
       "base_upkeep": 11034,
       "resilience": 30.0,
       "damage": 0.0,
@@ -119,14 +125,15 @@
       "province_ids": [6, 18, 40, 50, 58, 66, 71],
       "completed_measures": [],
       "latitude": 39.829,
-      "longitude": 32.578
+      "longitude": 32.578,
+      "condition": 100.0
     },
     {
       "id": 42,
       "name": "Konya",
       "region": "İç Anadolu",
       "population": 1400000,
-      "base_income": 362068,
+      "base_income": 241379,
       "base_upkeep": 9655,
       "resilience": 30.0,
       "damage": 0.0,
@@ -136,14 +143,15 @@
       "province_ids": [38, 42, 51, 68, 70],
       "completed_measures": [],
       "latitude": 38.04,
-      "longitude": 32.469
+      "longitude": 32.469,
+      "condition": 100.0
     },
     {
       "id": 26,
       "name": "Eskişehir",
       "region": "İç Anadolu",
       "population": 800000,
-      "base_income": 206896,
+      "base_income": 137931,
       "base_upkeep": 5517,
       "resilience": 30.0,
       "damage": 0.0,
@@ -153,14 +161,15 @@
       "province_ids": [26],
       "completed_measures": [],
       "latitude": 39.6297,
-      "longitude": 31.0894
+      "longitude": 31.0894,
+      "condition": 100.0
     },
     {
       "id": 7,
       "name": "Antalya",
       "region": "Akdeniz",
       "population": 1000000,
-      "base_income": 258620,
+      "base_income": 172413,
       "base_upkeep": 6896,
       "resilience": 30.0,
       "damage": 0.0,
@@ -170,14 +179,15 @@
       "province_ids": [7, 15, 32],
       "completed_measures": [],
       "latitude": 37.1141,
-      "longitude": 30.9564
+      "longitude": 30.9564,
+      "condition": 100.0
     },
     {
       "id": 1,
       "name": "Adana",
       "region": "Akdeniz",
       "population": 1400000,
-      "base_income": 362068,
+      "base_income": 241379,
       "base_upkeep": 9655,
       "resilience": 30.0,
       "damage": 0.0,
@@ -187,14 +197,15 @@
       "province_ids": [1, 33, 46, 80],
       "completed_measures": [],
       "latitude": 37.4006,
-      "longitude": 35.7555
+      "longitude": 35.7555,
+      "condition": 100.0
     },
     {
       "id": 31,
       "name": "Hatay",
       "region": "Akdeniz",
       "population": 800000,
-      "base_income": 206896,
+      "base_income": 137931,
       "base_upkeep": 5517,
       "resilience": 30.0,
       "damage": 0.0,
@@ -204,14 +215,15 @@
       "province_ids": [31],
       "completed_measures": [],
       "latitude": 36.4876,
-      "longitude": 36.2284
+      "longitude": 36.2284,
+      "condition": 100.0
     },
     {
       "id": 55,
       "name": "Samsun",
       "region": "Karadeniz",
       "population": 1200000,
-      "base_income": 310344,
+      "base_income": 206896,
       "base_upkeep": 8275,
       "resilience": 30.0,
       "damage": 0.0,
@@ -221,14 +233,15 @@
       "province_ids": [5, 14, 19, 37, 52, 55, 57, 60, 67, 74, 78, 81],
       "completed_measures": [],
       "latitude": 41.2761,
-      "longitude": 36.0198
+      "longitude": 36.0198,
+      "condition": 100.0
     },
     {
       "id": 61,
       "name": "Trabzon",
       "region": "Karadeniz",
       "population": 800000,
-      "base_income": 206896,
+      "base_income": 137931,
       "base_upkeep": 5517,
       "resilience": 30.0,
       "damage": 0.0,
@@ -238,14 +251,15 @@
       "province_ids": [28, 29, 61, 69],
       "completed_measures": [],
       "latitude": 40.7988,
-      "longitude": 39.8034
+      "longitude": 39.8034,
+      "condition": 100.0
     },
     {
       "id": 53,
       "name": "Rize",
       "region": "Karadeniz",
       "population": 600000,
-      "base_income": 155172,
+      "base_income": 103448,
       "base_upkeep": 4137,
       "resilience": 30.0,
       "damage": 0.0,
@@ -255,14 +269,15 @@
       "province_ids": [8, 53],
       "completed_measures": [],
       "latitude": 40.9466,
-      "longitude": 40.8691
+      "longitude": 40.8691,
+      "condition": 100.0
     },
     {
       "id": 25,
       "name": "Erzurum",
       "region": "Doğu Anadolu",
       "population": 1000000,
-      "base_income": 258620,
+      "base_income": 172413,
       "base_upkeep": 6896,
       "resilience": 30.0,
       "damage": 0.0,
@@ -272,14 +287,15 @@
       "province_ids": [12, 25, 36, 49, 75],
       "completed_measures": [],
       "latitude": 39.9678,
-      "longitude": 41.403
+      "longitude": 41.403,
+      "condition": 100.0
     },
     {
       "id": 65,
       "name": "Van",
       "region": "Doğu Anadolu",
       "population": 1000000,
-      "base_income": 258620,
+      "base_income": 172413,
       "base_upkeep": 6896,
       "resilience": 30.0,
       "damage": 0.0,
@@ -289,14 +305,15 @@
       "province_ids": [4, 13, 30, 65, 76],
       "completed_measures": [],
       "latitude": 38.5212,
-      "longitude": 43.5684
+      "longitude": 43.5684,
+      "condition": 100.0
     },
     {
       "id": 44,
       "name": "Malatya",
       "region": "Doğu Anadolu",
       "population": 1000000,
-      "base_income": 258620,
+      "base_income": 172413,
       "base_upkeep": 6896,
       "resilience": 30.0,
       "damage": 0.0,
@@ -306,14 +323,15 @@
       "province_ids": [23, 24, 44, 62],
       "completed_measures": [],
       "latitude": 38.5144,
-      "longitude": 38.1872
+      "longitude": 38.1872,
+      "condition": 100.0
     },
     {
       "id": 27,
       "name": "Gaziantep",
       "region": "Güneydoğu Anadolu",
       "population": 1000000,
-      "base_income": 258620,
+      "base_income": 172413,
       "base_upkeep": 6896,
       "resilience": 30.0,
       "damage": 0.0,
@@ -323,14 +341,15 @@
       "province_ids": [27, 79],
       "completed_measures": [],
       "latitude": 36.9988,
-      "longitude": 37.2462
+      "longitude": 37.2462,
+      "condition": 100.0
     },
     {
       "id": 21,
       "name": "Diyarbakır",
       "region": "Güneydoğu Anadolu",
       "population": 1200000,
-      "base_income": 310344,
+      "base_income": 206896,
       "base_upkeep": 8275,
       "resilience": 30.0,
       "damage": 0.0,
@@ -340,14 +359,15 @@
       "province_ids": [21, 47, 56, 72, 73],
       "completed_measures": [],
       "latitude": 38.0261,
-      "longitude": 40.2706
+      "longitude": 40.2706,
+      "condition": 100.0
     },
     {
       "id": 63,
       "name": "Şanlıurfa",
       "region": "Güneydoğu Anadolu",
       "population": 1000000,
-      "base_income": 258620,
+      "base_income": 172413,
       "base_upkeep": 6896,
       "resilience": 30.0,
       "damage": 0.0,
@@ -357,7 +377,8 @@
       "province_ids": [2, 63],
       "completed_measures": [],
       "latitude": 37.3189,
-      "longitude": 39.0508
+      "longitude": 39.0508,
+      "condition": 100.0
     }
   ]
 }

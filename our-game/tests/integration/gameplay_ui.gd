@@ -3,7 +3,8 @@ extends SceneTree
 
 const SHELL := preload("res://ui_preview/main_preview.gd")
 const UI := preload("res://ui_preview/shared/ui_kit.gd")
-const TEST_SAVE_DIR := "user://test-revert-ui-slots"
+# Parallel UI runs must not overwrite each other's test saves.
+var _test_save_dir: String = "user://test-revert-ui-slots-%d" % OS.get_process_id()
 var capture_screens: bool = false
 var _shell: SHELL
 var _main: Node
@@ -34,12 +35,12 @@ func _run() -> void:
 	await process_frame
 	_shell = _main.get_node("MainPreview")
 	_shell.auto_save_enabled = false
-	_shell.saves.slot_directory = TEST_SAVE_DIR
+	_shell.saves.slot_directory = _test_save_dir
 	await _main.get_node("TitleSplash").tree_exited
 	print("UI_CHECKPOINT: opening complete")
 	_clear_test_slots()
 	assert(
-		DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(TEST_SAVE_DIR)) == OK
+		DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(_test_save_dir)) == OK
 	)
 	_shell.return_to_main_menu()
 	assert(_shell.open_screen == "menu" and _shell.in_frontend and not _shell.auto_save_enabled)
@@ -54,8 +55,8 @@ func _run() -> void:
 	await _press_button("GERİ")
 	await _press_button("YÜKLE")
 	await _capture("load-empty")
-	assert(_find_button(_shell._modal, "OTOMATİK YÜKLE").disabled)
-	assert(_find_button(_shell._modal, "MANUEL 1 YÜKLE").disabled)
+	assert(_find_button(_shell._modal, "OTOMATİK KAYDI YÜKLE").disabled)
+	assert(_find_button(_shell._modal, "1. KAYDI YÜKLE").disabled)
 	await _press_button("GERİ")
 	await _press_button("YENİ OYUN")
 	assert(_shell.open_screen == "newgame")
@@ -74,7 +75,7 @@ func _run() -> void:
 	await _press_button("MENÜ")
 	assert(_shell.open_screen == "pause")
 	assert(_find_button(_shell._modal, "YENİ OYUN") == null)
-	assert(_find_button(_shell._modal, "KAMPANYAYI AÇ") == null)
+	assert(_find_button(_shell._modal, "YENİ OYUNU BAŞLAT") == null)
 	var selected_campaign := _shell.sim
 	_shell.show_screen("newgame")
 	_shell.show_screen("menu")
@@ -143,7 +144,8 @@ func _run() -> void:
 	assert(_shell.sim.projects.active_count("local", 31) == 1)
 	assert(_shell._guide.text.begins_with("REHBER 3/4"))
 	await _press_button("KAPAT")
-	await _press_button("ARAŞTIRMA 0/2")
+	await _press_button("YATIRIM VE ARAŞTIRMA")
+	await _press_button("ARAŞTIRMALAR 0/2")
 	await _capture("research-protection")
 	await _press_button("İNCELE")
 	await _press_button("BAŞLAT")
@@ -161,7 +163,7 @@ func _run() -> void:
 	_shell.show_screen("national")
 	await _capture("national")
 	_shell.close_screen()
-	await _press_button("DEVAM")
+	await _press_button("ZAMANI BAŞLAT")
 	_shell.sim.update(300.0)
 	await process_frame
 	await process_frame
@@ -169,16 +171,16 @@ func _run() -> void:
 	assert(_shell.open_screen == "newspaper")
 	assert(_shell.sim.projects.is_completed("river_zoning", 31))
 	await _capture("first-newspaper")
-	await _press_button("KRİZ MERKEZİNE GEÇ")
+	await _press_button("HABERİ OKUDUM")
 	assert(_shell.open_screen == "crisis")
 	await _capture("crisis")
-	_check_button_tone("SEVK ET", UI.ButtonTone.CONFIRM)
+	_check_button_tone("GÖNDERİMİ ONAYLA", UI.ButtonTone.CONFIRM)
 	_check_button_tone("ACİL BÜTÇE", UI.ButtonTone.CAUTION)
 	var target: Dictionary = _shell.sim.crises.active.front()
 	var source_id: int = _shell.sim.areas.keys()[_shell.crisis.source_index]
 	var quote := _shell.sim.logistics.quote(source_id, 31, "team", 1)
 	var before := _shell.sim.treasury.money
-	await _press_button("SEVK ET")
+	await _press_button("GÖNDERİMİ ONAYLA")
 	assert(_shell.sim.areas[source_id].teams == 0)
 	assert(_shell.sim.treasury.money == before - int(quote.fee))
 	assert(not _shell._guide_plate.visible and _shell.sim.tutorial_completed.size() == 4)
@@ -187,7 +189,7 @@ func _run() -> void:
 	_check_button_tone("₺1,0 M AKTAR", UI.ButtonTone.CAUTION)
 	await _press_button("₺1,0 M AKTAR")
 	assert(int(target.funds) == 1000000)
-	await _press_button("KRİZE DÖN")
+	await _press_button("AFET MÜDAHALESİNE DÖN")
 	await _press_button("KAPAT")
 	# Same dispatch command through a native GUI drag from the city onto its target province.
 	_shell.select_area(1)
@@ -227,6 +229,7 @@ func _run() -> void:
 	assert(_shell.open_screen == "pause", "Help returns to its parent pause menu")
 	await _press_button("ANA MENÜYE DÖN")
 	await _capture("menu")
+	await _shell.audio.shutdown()
 	_main.queue_free()
 	await process_frame
 	_clear_test_slots()
@@ -239,27 +242,28 @@ func _run() -> void:
 
 func _clear_test_slots() -> void:
 	var store := SaveStore.new()
-	store.slot_directory = TEST_SAVE_DIR
+	store.slot_directory = _test_save_dir
 	for slot in range(4):
 		for path: String in [store.slot_path(slot), store.slot_path(slot) + ".tmp"]:
 			if FileAccess.file_exists(path):
 				assert(DirAccess.remove_absolute(ProjectSettings.globalize_path(path)) == OK)
-	if DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(TEST_SAVE_DIR)):
-		assert(DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_SAVE_DIR)) == OK)
+	if DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(_test_save_dir)):
+		assert(DirAccess.remove_absolute(ProjectSettings.globalize_path(_test_save_dir)) == OK)
 
 
 func _check_save_load_flow() -> void:
 	await _press_button("KAYDET")
 	await _capture("save-empty")
-	_check_button_tone("MANUEL 1 KAYDET", UI.ButtonTone.CONFIRM)
+	_check_button_tone("1. YUVAYA KAYDET", UI.ButtonTone.CONFIRM)
 	assert(_find_button(_shell._modal, "OTOMATİK").disabled)
-	await _press_button("MANUEL 1 KAYDET")
-	assert(_shell.saves.slot_summaries()[1].game_date == "1990-01-01")
+	await _press_button("1. YUVAYA KAYDET")
+	var first_save: Dictionary = _shell.saves.slot_summaries()[1]
+	assert(first_save.game_date == "1990-01-01", str(first_save))
 	_shell.sim.advance_to(CalendarClock.date_to_day("1990-02-01"))
 	await process_frame
-	await _press_button("MANUEL 2 KAYDET")
+	await _press_button("2. YUVAYA KAYDET")
 	assert(_shell.saves.slot_summaries()[2].game_date == "1990-02-01")
-	await _press_button("MANUEL 1 KAYDET")
+	await _press_button("1. YUVAYA KAYDET")
 	await _capture("save-confirm-overwrite")
 	_check_button_tone("ÜZERİNE YAZ", UI.ButtonTone.DANGER)
 	_check_button_tone("VAZGEÇ", UI.ButtonTone.NEUTRAL)
@@ -273,24 +277,24 @@ func _check_save_load_flow() -> void:
 	await _press_button("GERİ")
 	await _press_button("YÜKLE")
 	await _capture("load-slots")
-	assert(_find_button(_shell._modal, "MANUEL 3 YÜKLE").disabled)
-	await _press_button("MANUEL 1 YÜKLE")
+	assert(_find_button(_shell._modal, "3. KAYDI YÜKLE").disabled)
+	await _press_button("1. KAYDI YÜKLE")
 	await _capture("load-confirm")
-	_check_button_tone("ONAYLA: YÜKLE", UI.ButtonTone.DANGER)
+	_check_button_tone("KAYDI YÜKLE", UI.ButtonTone.DANGER)
 	assert(_shell.save_slots.pending_slot == 1 and _shell.sim.clock.month == 2)
 	await _press_button("VAZGEÇ")
 	assert(_shell.sim.clock.month == 2)
-	await _press_button("MANUEL 1 YÜKLE")
-	await _press_button("ONAYLA: YÜKLE")
+	await _press_button("1. KAYDI YÜKLE")
+	await _press_button("KAYDI YÜKLE")
 	assert(_shell.open_screen.is_empty() and _shell.sim.clock.month == 1 and _shell.sim.paused)
 	await _press_button("MENÜ")
 	await _press_button("YÜKLE")
-	await _press_button("MANUEL 2 YÜKLE")
-	await _press_button("ONAYLA: YÜKLE")
+	await _press_button("2. KAYDI YÜKLE")
+	await _press_button("KAYDI YÜKLE")
 	assert(_shell.sim.clock.month == 2)
 	await _press_button("MENÜ")
 	await _press_button("KAYDET")
-	await _press_button("MANUEL 1 KAYDET")
+	await _press_button("1. YUVAYA KAYDET")
 	await _press_button("ÜZERİNE YAZ")
 	assert(_shell.saves.slot_summaries()[1].game_date == "1990-02-01")
 	await _press_button("GERİ")
@@ -298,12 +302,12 @@ func _check_save_load_flow() -> void:
 
 
 func _open_campaign_from_form(year: int) -> void:
-	_check_button_tone("KAMPANYAYI AÇ", UI.ButtonTone.CONFIRM)
-	await _press_button("KAMPANYAYI AÇ")
+	_check_button_tone("YENİ OYUNU BAŞLAT", UI.ButtonTone.CONFIRM)
+	await _press_button("YENİ OYUNU BAŞLAT")
 	if _shell.open_screen == "newgame":
-		_check_button_tone("ONAYLA: YENİ KAMPANYA", UI.ButtonTone.DANGER)
+		_check_button_tone("OTOMATİK KAYDIN YERİNE BAŞLAT", UI.ButtonTone.DANGER)
 		await _capture("newgame-confirm-replace")
-		await _press_button("ONAYLA: YENİ KAMPANYA")
+		await _press_button("OTOMATİK KAYDIN YERİNE BAŞLAT")
 	assert(_shell.open_screen == "tutorial" and _shell.campaign.tutorial_step == 0)
 	assert(not _shell.in_frontend)
 	assert(_shell.sim.start_year == year and _shell.sim.paused)
@@ -340,7 +344,9 @@ func _check_project_effects() -> void:
 	var before := JSON.stringify(_shell.sim.to_dict())
 	var map_position: Vector2 = _shell.map_view._map_image.position
 	var preview := _shell.sim.projects.effect_preview("river_zoning", 31)
-	var scroll: ScrollContainer = _shell.projects._content.get_node("ProjectEffects")
+	var scroll: ScrollContainer = _shell.projects._content.get_node(
+		"ProjectBody/Details/ProjectEffects"
+	)
 	assert(preview.rows.size() == 3)
 	_check_effect_rows(scroll, preview)
 	var track: Control = scroll.get_child(0).get_child(0).get_child(4)
@@ -362,7 +368,7 @@ func _check_project_effects() -> void:
 	_shell.projects.show_project("assembly_areas", 31)
 	await process_frame
 	await process_frame
-	scroll = _shell.projects._content.get_node("ProjectEffects")
+	scroll = _shell.projects._content.get_node("ProjectBody/Details/ProjectEffects")
 	preview = _shell.sim.projects.effect_preview("assembly_areas", 31)
 	assert(preview.rows.size() == 6)
 	_check_effect_rows(scroll, preview)
@@ -374,20 +380,20 @@ func _check_project_effects() -> void:
 	await _capture("project-effects-scrolled")
 	_shell.projects.show_project("national_radio")
 	await process_frame
-	scroll = _shell.projects._content.get_node("ProjectEffects")
+	scroll = _shell.projects._content.get_node("ProjectBody/Details/ProjectEffects")
 	preview = _shell.sim.projects.effect_preview("national_radio")
 	_check_effect_rows(scroll, preview)
 	assert(preview.global and preview.rows[0].unit == "percent")
 	assert(String(scroll.get_child(0).get_child(0).get_child(1).text).contains("%"))
 	var has_global_note := false
-	for child: Node in _shell.projects._content.get_children():
+	for child: Node in _shell.projects._content.get_node("ProjectBody/Details").get_children():
 		if child is Label and child.text.begins_with("ULUSAL ORTALAMA"):
 			has_global_note = true
 	assert(has_global_note)
 	await _capture("project-effects-national")
 	_shell.projects.show_project("research_capacity")
 	await process_frame
-	scroll = _shell.projects._content.get_node("ProjectEffects")
+	scroll = _shell.projects._content.get_node("ProjectBody/Details/ProjectEffects")
 	_check_effect_rows(scroll, _shell.sim.projects.effect_preview("research_capacity"))
 	assert(scroll.get_child(0).get_child(0).get_child(1).text == "2 / 3 (+1)")
 	await _capture("project-effects-capacity")
@@ -397,7 +403,7 @@ func _check_project_effects() -> void:
 	area.damage = 60.0
 	_shell.projects.show_project("repair", 31)
 	await process_frame
-	scroll = _shell.projects._content.get_node("ProjectEffects")
+	scroll = _shell.projects._content.get_node("ProjectBody/Details/ProjectEffects")
 	_check_effect_rows(scroll, _shell.sim.projects.effect_preview("repair", 31))
 	var damage_row: Control = scroll.get_child(0).get_node("damage")
 	assert(damage_row.get_child(1).text == "60 / 0 (-60)")
@@ -406,7 +412,7 @@ func _check_project_effects() -> void:
 	area.base_income = 0
 	_shell.projects.show_project("repair", 31)
 	await process_frame
-	scroll = _shell.projects._content.get_node("ProjectEffects")
+	scroll = _shell.projects._content.get_node("ProjectBody/Details/ProjectEffects")
 	_check_effect_rows(scroll, _shell.sim.projects.effect_preview("repair", 31))
 	var income_track: Control = scroll.get_child(0).get_node("income").get_child(4)
 	assert(income_track.get_child(3).position.x == -1.0)
@@ -584,7 +590,11 @@ func _check_text(parent: Node) -> void:
 				character == "\n" or font.has_char(character.unicode_at(0)),
 				"Missing font glyph: " + character + " in " + control.text
 			)
-		var width := font.get_string_size(control.text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		var width := 0.0
+		for line: String in control.text.split("\n"):
+			width = maxf(
+				width, font.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+			)
 		var authored: Vector2 = control.get_meta("p0_text_size", control.size)
 		var available := authored.x
 		if parent is Button:
@@ -597,7 +607,21 @@ func _check_text(parent: Node) -> void:
 		elif not (
 			parent is Label and parent.text_overrun_behavior != TextServer.OVERRUN_NO_TRIMMING
 		):
-			assert(width <= available, "Clipped text: " + control.text)
+			assert(
+				width <= available,
+				(
+					"Clipped text: %s (%s): %s > %s"
+					% [control.text, control.get_path(), width, available]
+				)
+			)
+		if (
+			parent is Label
+			and ("\n" in control.text or parent.autowrap_mode != TextServer.AUTOWRAP_OFF)
+		):
+			assert(
+				parent.get_visible_line_count() == parent.get_line_count(),
+				"Hidden final line: " + control.text
+			)
 		# Map annotations and scroll contents have explicit clipping parents.
 		var clipped := _shell.map_view._markers.is_ancestor_of(parent)
 		var ancestor := parent.get_parent()

@@ -15,6 +15,7 @@ var cost_budget: int
 var repair_damage: float = 0.0
 var repair_support_used: int = 0
 var repair_discount: float = 0.0
+var renewal_value: int = 0
 
 
 func occupies_slot() -> bool:
@@ -35,6 +36,7 @@ func to_dict() -> Dictionary:
 		"repair_damage": repair_damage,
 		"repair_support_used": repair_support_used,
 		"repair_discount": repair_discount,
+		"renewal_value": renewal_value,
 	}
 
 
@@ -48,7 +50,8 @@ static func from_dict(data: Variant) -> ActiveProject:
 		"paid",
 		"sequence",
 		"cost_budget",
-		"repair_support_used"
+		"repair_support_used",
+		"renewal_value"
 	]:
 		if not ServiceArea._integer(data.get(key)) or int(data[key]) < 0:
 			return null
@@ -85,6 +88,7 @@ static func from_dict(data: Variant) -> ActiveProject:
 		"repair_damage",
 		"repair_support_used",
 		"repair_discount",
+		"renewal_value",
 	]:
 		project.set(key, data[key])
 	return project

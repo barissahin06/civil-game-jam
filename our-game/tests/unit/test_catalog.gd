@@ -14,8 +14,34 @@ func test_all_centers_and_every_province_have_one_owner() -> void:
 	assert_int(provinces.size()).is_equal(81)
 	for index: int in range(81):
 		assert_int(provinces[index]).is_equal(index + 1)
-	assert_int(total_income).is_equal(6000000)
+	assert_int(total_income).is_equal(4000000)
 	assert_int(catalog.validation_errors.size()).is_equal(0)
+
+
+func test_monthly_budget_keeps_headroom_for_two_projects_and_overcommitment_uses_reserve() -> void:
+	var catalog := Catalog.new()
+	var areas := catalog.load_areas(1950)
+	var treasury := Treasury.new()
+	var projects := ProjectSystem.new()
+	projects.setup(catalog.load_definitions(), areas, treasury, TrustState.new())
+	treasury.refresh_forecast(areas, projects)
+	assert_int(treasury.money).is_equal(20000000)
+	assert_int(treasury.last_income).is_equal(4000000)
+	assert_int(treasury.last_upkeep).is_equal(1000000)
+	assert_int(treasury.last_net).is_equal(3000000)
+	assert_int(projects.monthly_cost_for("river_zoning", 34)).is_equal(1000000)
+	for area_id: int in [34, 31]:
+		assert_bool(projects.start("river_zoning", area_id, 1950).ok).is_true()
+	var settlement := treasury.collect_and_maintain(areas, projects)
+	projects.tick_month(1950, bool(settlement.can_pay_budget))
+	assert_int(treasury.money).is_equal(21000000)
+	for area_id: int in [1, 6]:
+		assert_bool(projects.start("river_zoning", area_id, 1950).ok).is_true()
+	for month: int in range(2):
+		settlement = treasury.collect_and_maintain(areas, projects)
+		projects.tick_month(1950, bool(settlement.can_pay_budget))
+	assert_int(treasury.money).is_equal(19000000)
+	assert_float(treasury.maintenance_ratio).is_equal(1.0)
 
 
 func test_linked_research_groups_and_cross_benefits() -> void:
@@ -27,9 +53,8 @@ func test_linked_research_groups_and_cross_benefits() -> void:
 			counts[definition.tab] += 1
 		for requirement: String in definition.prerequisites:
 			assert_bool(definitions.has(requirement)).is_true()
-	for index: int in range(3):
-		assert_int(counts[index]).is_equal(4)
-	assert_int(counts[3]).is_equal(6)
+	for index: int in range(4):
+		assert_int(counts[index]).is_equal(10)
 	var river: MeasureDefinition = definitions.river_zoning
 	assert_bool(river.effects.has("protection_flood")).is_true()
 	assert_bool(river.effects.has("protection_earthquake")).is_true()

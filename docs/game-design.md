@@ -117,7 +117,7 @@ eşit öncelikte eski başlayan önce ödenir. Ödenemeyen taksit o ay ilerleme 
   Yeniden başlatırken kapasite tekrar kontrol edilir. İptalde ödenen taksitler iade edilmez.
 - Tamamlama, ödeme ve etki uygulama aynı proje için yalnız bir kez gerçekleşir.
 
-Üst menüde **Hazırlık Planla**, solda haritayı açık bırakan emir panelini açar.
+Üst menüde **Ekip ve Yardım Hazırla**, solda haritayı açık bırakan emir panelini açar.
 Oyuncu **Ekip Kur** veya **Yardım Hazırla** seçtikten sonra yönetim merkezlerine tıklar;
 her tıklama bir iş ekler, seçili eylem değişmez. Aynı merkeze tekrar tıklanabilir.
 Şehirdeki yerel slot boşsa iş hemen başlar, doluysa şehir bazında eklenme sırasını bekler.
@@ -185,7 +185,13 @@ Gizli zar atışı kullanılmaz.
 Mevcut kaynak `our-game/events/historical/events.json` içindeki 99 kayıttır.
 Bu, bütün tarihsel afetlerin eksiksiz ve doğrulanmış listesi olduğu iddiası değildir.
 Tarihsel kaynak doğrulaması ve kaynak bağlantıları içerik hazırlama aşamasında tamamlanır.
-Seçenekli olayların JSON içerikleri ayrıca gelecektir; olay tarihleri rastgele yeniden atanmaz.
+Afet sonrası kararlar `events/data/decisions.json` içindeki 21 karttır. Son alan raporu
+okunduktan sonra açılır; tarihsel karar tarihi bilgi olarak gösterilir. İliç maden kararı
+ilk kapsamın dışındadır. Seçim kampanya boyunca kalıcıdır; ret normal proje ekranından
+aşılamaz. Uygulama yerel/ulusal slotu paylaşır, dolu slotta sıraya girer. Anlık güven
+sonucu seçimde, kalıcı fayda projenin tamamlanmasında uygulanır. Önizleme gerçek sayısal
+farkı, toplam/taksit/bakım giderini ve süreyi gösterir.
+Ayrıntılar ve sayısal ilk adaylar [karar rehberindedir](decision-events.md).
 
 Mevcut `duration` alanı fiziksel saniye değil, oyun müdahale penceresi için düşünülmüştür.
 Entegrasyonda açık birim taşıyan `response_window_days` alanına dönüştürülüp değerleri dengelenir.
@@ -207,7 +213,7 @@ MVP'de üç müdahale kategorisi vardır:
 
 Her merkezin ekipleri ve yardım stoğu ayrıdır. Başlangıç miktarları döneme uygundur.
 Yeni ekip kurma ve stok hazırlama bütçe/süre isteyen yerel projelerdir.
-Haritada sürükle-bırak ana etkileşimdir; kaynak/miktar seçip Sevk et düğmesiyle aynı komut verilebilir.
+Haritada sürükle-bırak ana etkileşimdir; kaynak/miktar seçip Gönderimi Onayla düğmesiyle aynı komut verilebilir.
 
 Yakın/orta/uzak yolculuk 1/2/3 gündür. Göndermeden önce kaynak, miktar, hedef, varış günü ve TL bedeli görülür.
 Ekipler görevden sonra kaynağa dönüş yolculuğu yapar; varınca yeniden kullanılabilir.
@@ -258,14 +264,14 @@ Normal kampanyada A kullanılır; B'nin genişletilmesi insan görsel/oynanış 
 Kabul: oyuncu yardımsız sevk yapabilmeli, bir kararının etkisini ve sonraki denemede
 değiştireceği yaklaşımı anlatabilmelidir. Otomatik test bu insan kabulünün yerine geçmez.
 
-Onaylanan başlangıç profili 1950 için ₺20 milyon hazine, bakım sonrası/proje öncesi aylık +₺5 milyon
+Onaylanan başlangıç profili 1950 için ₺20 milyon hazine, bakım sonrası/proje öncesi aylık +₺3 milyon
 ve örnek ucuz yerel proje için toplam ₺6 milyon/6 aydır. Diğer satırlar ilk prototip adaylarıdır.
 
 | Kalem                      | Başlangıç adayı                 | Süre / açıklama                                    |
 | -------------------------- | ------------------------------- | -------------------------------------------------- |
 | 1950 hazine                | ₺20 milyon                      | Onaylanan ilk deneme                               |
-| 1950 brüt alan gelirleri   | ₺6 milyon/ay                    | Toplam bakım adayı ₺1 milyon/ay                    |
-| 1950 net akış              | +₺5 milyon/ay                   | Bakım sonrası, proje taksitleri öncesi             |
+| 1950 brüt alan gelirleri   | ₺4 milyon/ay                    | Toplam bakım adayı ₺1 milyon/ay                    |
+| 1950 net akış              | +₺3 milyon/ay                   | Bakım sonrası, proje taksitleri öncesi             |
 | Temel yerel tedbir         | ₺6 milyon                       | 6 ay, aylık ₺1 milyon                              |
 | Fiziksel koruma projesi    | ₺18 milyon                      | 12 ay; tamamlanınca bakım başlar                   |
 | Teknik araştırma           | ₺12 milyon                      | 12 ay                                              |
@@ -275,10 +281,9 @@ ve örnek ucuz yerel proje için toplam ₺6 milyon/6 aydır. Diğer satırlar i
 | Yardım hazırlama           | ₺2 milyon / örnek stok partisi  | 2 ay; parti büyüklüğü alan kapasitesiyle ayarlanır |
 | Kapasite araştırması       | 2 araştırma slotundan 3'e geçiş | İlk adayda bir kez +1; fiyatı testte ayarlanır     |
 
-İlk tempo adayı 1× hızda sakin ay için 2 gerçek saniye, kriz günü için 1 gerçek saniyedir.
-Yalnız tempo hesabında deprem/sel için 7, yangın için 10, çığ/heyelan için 5 günlük geçici pencereler
-kullanıldığında mevcut 99 kaydın çakışmalarıyla 676 kriz günü ve 901,78 sakin ay eşdeğeri elde edilir:
-yaklaşık 41,3 dakika. Bu **takvim hesabıdır, oynanış testi değildir**.
+Güncel tempo adayı 1× hızda sakin ay ve kriz günü için 1,5 gerçek saniyedir; 2×/4× korunur.
+Kritik ikmal duruşları, gazete ve raporlar oyuncunun devam komutunu bekler. Aktif takvim hedefi
+30–45 dakikadır; insanın okuma ve düşünme süresi bu hedefe eklenir.
 1958 başlangıcının ilk kayıtlı afetine kadar yaklaşık 69 sakin ay bulunması ilk beş dakika testinde kapsanır.
 
 İlk oynanış testinde öğretici duraklamalar, kısa krizlerin okunabilirliği, fon bonus sınırı,
@@ -384,11 +389,11 @@ Bir ekip/gün sınıfı taşıma bedeli ₺100 bin, bir yardım birimi/gün sın
 lojistik geliştirmesi ücreti azaltır. İlk bedel ekip dönüşünü de kapsar.
 Acil fon kriz başına ₺5 milyonla sınırlıdır; kaynak verimine en fazla %25, sonraki onarıma
 en fazla %20 indirim sağlar. Araştırmanın onarım indirimi ayrıca en fazla %15'tir.
-Bilinç baloncukları sakin dönemde iki ayda bir, en fazla üç adet birikir; her biri 5 BP verir.
+Bilinç baloncukları sakin dönemde iki ayda bir, en fazla üç adet birikir; her biri 5 Bilinç Puanı verir.
 Altı bilinç geliştirmesinin tamamı bitince yeni baloncuk üretimi durur; mevcut baloncuklar toplanabilir.
-Ulusal güvenin aylık taban aşınması 0,015 puandır. Bunlar gerçek oynanışla ayarlanacak değerlerdir.
+Ulusal güvenin aylık taban aşınması 0,01 puandır. Bunlar gerçek oynanışla ayarlanacak değerlerdir.
 
-### İlk denge düzeltmeleri ve görsel geri bildirim
+### İlk denge düzeltmeleri ve görsel geri bildirim (17 Ekim tarihsel tanı)
 
 17 Ekim oynanış tanısında altı otomatik politika, kaynak/güven yenilemesi olmadan çalıştırıldı.
 Önceki modelde yalnız ekip sevk ederek, yardım stoğu tükenmiş ve onarımlar yapılmamışken bile
@@ -410,7 +415,7 @@ yaklaşık 100 güvenle 2026'ya ulaşılabiliyordu. Kullanıcı hazırlık, yard
   HUD ve paneller sabittir. Menüde sarsıntı kapatılabilir; kırmızı vurgu korunur. Tercih ayrı
   `user://preferences.cfg` dosyasındadır, kampanya kaydının parçası değildir.
 
-Aynı politikaların yeni modeldeki tanı sonuçları:
+17 Ekim güven düzeltmesinin, günlük ikmal eklenmeden önceki tanı sonuçları:
 
 | Başlangıç | Aksiyonsuz            | Yalnız müdahale        | Hazırlık ve müdahale    |
 | --------- | --------------------- | ---------------------- | ----------------------- |
@@ -423,10 +428,48 @@ Uzun dönemde para ve bilinç fazlası görüldü. Kullanıcı kararıyla bilin�
 süresini içeren ilk beş dakika kabulü henüz tamamlanmadı. İlk paylaşılabilir demo Windows x64
 taşınabilir ZIP olarak hazırlanır.
 
-Entegrasyonun otomatik tempo kontrolünde 1950–2026 akışı 2.619 aktif saniye (43 dakika 39 saniye)
+Günlük ikmalle otomatik tempo kontrolünde 1950–2026 akışı 2.542 aktif saniye (42 dakika 22 saniye)
 sürdü. Bu kontrol haber okumayı ve yenilgi dengesini dışarıda tutar; insan oynanış testi değildir.
 1950–1990 arasındaki 41 başlangıç yılının hepsinde ilk afetin 300 aktif saniyeden önce gelmesi
 ayrıca denetlenir. Haber bandı son mesajlarla tamamlanma/varış haberlerini dönüşümlü gösterir.
+
+### Günlük ikmal ve kaynak baskısı
+
+18 Ekim deneme profili başlangıç rezervini korur; gelirler aynı bölgesel oranlarla toplam
+₺4 milyona indirilir. İki standart ₺1 milyon taksit sonrasında aylık ₺1 milyon operasyon payı
+kalır; daha fazla eşzamanlı taahhüt rezervi tüketir. Onarım, stok hazırlama, teknik araştırma
+ve mevcut 21 karar kartının projeleri aynı bütçe ve slotlar için yarışır.
+
+Sakin dönemde oyuncu birkaç oyun ayında bir stok üretimini, yatırım sırasını ve ekip konumunu
+gözden geçirir. Hazır ekip başka merkeze geçici konuşlandırılabilir; asıl üssü değişmez.
+Görevden asıl üsse döner, hazır beklerken elle geri çağrılabilir. Yardım merkezler arasında
+taşındığında hedef depoda kalır. Ekip taşıması yön başına ekip/gün ₺50 bin; kriz emri gidiş ve
+asıl merkeze dönüşü birlikte öder. Yardım taşıması birim/gün ₺2.500'dür.
+
+Afetin günlük yardım ihtiyacı `şiddet × 5`, saha kapasitesi üç günlük ihtiyaçtır. Bütün varışlar
+günlük tüketimden önce işlenir; öngörülen kapasiteyi aşacak sevk emri reddedilir. Yardım
+eksikliğinde o günün desteği orantılı azalır. Rapor ve güven günlük karşılanma ortalamasını
+kullanır; son gün boşalan stok başarısızlık sayılmaz. Kalan yardım hedef depoya döner.
+Önümüzdeki üç günde yoldaki partiler dahil açık varsa çalışan takvim durur. Aynı açık yeniden
+duruş üretmez; yeterli ikmalden sonra ortaya çıkan yeni açık tekrar uyarır.
+
+Bu değerler ilk deneme adaylarıdır. `tests/integration/balance_probe.gd`, 1950/1990 için
+aksiyonsuz, yalnız ekip, hazırlık/ikmal ve aşırı taahhüt politikalarını oyuncu kaydına veya
+durum yenilemesine başvurmadan karşılaştırır. Sonuçlar insan başarı oranı değildir.
+
+18 Ekim sürüm 3 denemesi sekiz koşuyu tamamladı. Hazırlık/ikmal politikası ₺8 milyon rezerv
+eşiği ve aylık netin en fazla %75'i kadar yeni taksit taahhüdü kullanır. Karar kartlarında
+odaklı programı seçer; aksiyonsuz ve yalnız ekip politikaları programları reddeder.
+
+| Başlangıç | Aksiyonsuz yenilgi | Yalnız ekip yenilgisi | Hazırlık/ikmal sonucu | Aşırı taahhütte en düşük hazine / bekleyen proje-ay |
+| --------- | ------------------ | --------------------- | --------------------- | --------------------------------------------------- |
+| 1950      | 1975               | 1996                  | 2026, 77,1 güven      | ₺0 / 19.924                                         |
+| 1990      | 2008               | 2021                  | 2026, 99,5 güven      | ₺14 / 9.132                                         |
+
+Hazırlık politikası iki başlangıçta da yaklaşık ₺341–345 milyonla biter; uzun dönem para
+fazlası tamamen giderilmiş değildir. Yeni ikmal kararlarının hissi ve sonraki sayısal ayar
+insan oynanışında değerlendirilmelidir. Bekleyen proje-ay, her ay bekleyen proje sayısının
+toplamıdır; geçen takvim ayı veya oyuncunun bekleme süresi değildir.
 
 ### Doğrulama hedefleri
 
@@ -436,8 +479,8 @@ MVP'de kalan kabul işleri:
   ilk yatırım ve araştırma, ilk gazete ve bilinçli sevkiyat. Otomatik test bu insan ölçümü değildir.
 - 1950 ve 1990 başlangıçlarını gerçek kararlarla sona kadar oynayıp güven baskısını,
   uzun vadeli para birikimini ve 30–45 dakika hedefini değerlendirmek; maliyetleri bu veriye göre ayarlamak.
-- Ayrı tarihsel karar olayı JSON'ları geldiğinde seçenek/etki doğrulaması, model komutu,
-  gazete aksiyonları ve kayıt devamlılığını eklemek. Mevcut 99 afet haberi seçenekli karar sistemi değildir.
+- Yeni 21 kararın bütçe/slot tercihlerini insan oynanışında değerlendirmek; ilk sayısal
+  adayları 1950 ve 1990 kampanyalarında ayarlamak. Otomatik etki doğrulaması denge kanıtı değildir.
 - Taşınabilir Windows paketini geliştirme araçları kurulu olmayan ikinci bir cihazda açıp
   tam ekran, kayıt/yükleme ve ilk kriz akışını kontrol etmek.
 
@@ -451,3 +494,82 @@ Sandbox, ayrı sahra hastanesi/iş makinesi birimleri ve ayrı malzeme türleri 
 - Çakışan krizler, 1/2/3 günlük sevk ve dönüş, tüketilen stok, onarım ve gelir toparlanması.
 - Kayıt/yükleme aynı durumu korur; bozuk/sürümü uyuşmayan veri güvenle reddedilir.
 - İlk beş dakika ve 30–45 dakika hedefi gerçek oynanışta ayrıca ölçülür; şema/başarı kodu denge kanıtı değildir.
+
+## 18 Ekim 2026 arayüz dili kararı
+
+Arayüz gündelik Türkçe kullanır: Halkın Güveni, Bilinç Puanı ve Yardım Malzemesi.
+Oyuncuya görünen başlangıç ve sonuç metinlerinde kampanya yerine oyun denir.
+Teknik yatırım/araştırma adları korunur ve listelerde kısa fayda açıklamasıyla sunulur.
+Açıklamaların görünürlüğü satır yoğunluğundan önce gelir. Yeni menü adları ve sunum sahipliği
+[mimari belgede](architecture.md#arayüz-metinleri-ve-açıklamalar) tanımlıdır.
+
+### Uzun kampanyada bakım, yenileme ve güven (sürüm 4)
+
+- Güven 70 başlar. Bütün proje tamamlama bonusları kaldırılmıştır; hazırlık, zamanında ekip ve
+  günlük yardımın gerçek afet sonucu değerlendirilir. Her tarihsel afet tek ulusal değerlendirme
+  alır; merkez sayısı güven cezasını çarpmaz. Merkez sonuçları maruz kalan nüfusla ağırlıklandırılır.
+  İlk aday sınırlar normal olayda en fazla +0,8, büyük olayda +1,2, kayıpta −3 puandır.
+- Güven her seviyede ayda 0,01 taban aşınır; bilinç araştırmalarının mevcut azaltımı uygulanır.
+- Her merkez 100 üzerinden tek kondisyon taşır; tam bakımda ayda 0,25 puan kaybeder.
+  Eksik bakım aşınmayı artırır. 75'te uyarı, 65'te kritik uyarı çıkar ve takvim durur.
+  Ekip ve fiziksel tesis verimi kondisyonla 1,0'dan 0,5'e yavaşça iner. Araştırma ve düzenlemeler
+  yaşlanmaz. Geçici konuşlandırma ekibin asıl üssündeki kondisyonu kullanır.
+- Merkez yenilemesi 6 ay, bir yerel slot ve aylık taksit ister; bitince kondisyonu 100 yapar.
+  Toplam bedel kurulu ekip ve yerel fiziksel tesis kurulum değerinin yarısıdır. Bedel başlangıçta
+  sabitlenir. Yeni yatırım yapmak kondisyonu sıfırlamaz; yenileme afet hasarını onarmaz.
+  Böylece yaklaşık 8–12 yılda bir kapasiteyi güncel tutma kararı oluşur.
+- Hasar afet ve merkez bazında kaydedilir. Altı tam takvim ayı sonrasında kalan gerçek hasar
+  ulusal nüfus payıyla aylık güven baskısı üretir. Onarım en eski hasardan düşer; gerçekten
+  uygulanmış ihmal kaybının en fazla yarısını, onarılan pay oranında geri kazandırabilir.
+  Yeni afet eski hasarın süresini sıfırlamaz; sıfır güven sınırında uygulanmamış kayıp iade edilmez.
+- Sıradan reform reddi cezasızdır. Açık taahhüdün iptali bir kez −0,5 güven; ilerlemesiz 6 ay
+  uyarı ve 12 aydan itibaren ayda −0,1 güven doğurur. Duraklatma/yükleme sayaç yenilemez.
+- Bütçe hedefi dikkatli yönetimde 3–6 aylık olağan harcama rezervidir. Bu bir para tavanı değildir.
+  Denge tanısı birikmiş nakdi de kullanabilen politikayla bakım, yenileme, taksit, yardım ve onarımı
+  birlikte ölçer; otomatik politika sonuçları insanın zorluk deneyiminin kanıtı değildir.
+
+## 18 Ekim 2026 araştırma ve ulusal önlem genişlemesi
+
+Araştırma dört dalda 40 seçeneğe çıkar: Altyapı ve Koruma, Uyarı ve Haberleşme,
+Lojistik ve Müdahale, Bilinç. Her dalda 1950/1970/1990/2005/2020 için iki araştırma
+vardır. Tarihler dönem erişim kilididir; kesin icat veya Türkiye'de kuruluş tarihi değildir.
+Her önkoşulun tamamlanması gerekir; dallar birbirini dışlamaz.
+
+Araştırmalar küçük yöntem kazanımları sağlar. 15 normal ulusal uygulama daha güçlü
+fiziksel/operasyonel faydalar için araştırmaları kullanır. Yapı denetimi, güvenli dönüşüm
+ve diğer afet sonrası karar programları ayrıca korunur; normal listeye kopyalanmaz.
+Tek ulusal slot ve iki ortak araştırma slotu korunur; Araştırma kurumu yalnız bir ek
+araştırma slotu açar. Bakım/kondisyon ve güvenin son ortak denge kararı geçerlidir:
+proje tamamlamak doğrudan güven kazandırmaz; fayda gerçek afet sonuçlarıyla değerlendirilir.
+
+| Dönem | Teknik araştırma   | Bilinç geliştirmesi | Ulusal uygulama    | Ulusal aylık bakım |
+| ----- | ------------------ | ------------------- | ------------------ | ------------------ |
+| 1950  | ₺12 milyon / 12 ay | 15 puan / 3 ay      | ₺24 milyon / 12 ay | ₺60 bin            |
+| 1970  | ₺16 milyon / 12 ay | 20 puan / 3 ay      | ₺36 milyon / 12 ay | ₺80 bin            |
+| 1990  | ₺20 milyon / 15 ay | 25 puan / 4 ay      | ₺48 milyon / 15 ay | ₺100 bin           |
+| 2005  | ₺24 milyon / 18 ay | 30 puan / 4 ay      | ₺60 milyon / 18 ay | ₺120 bin           |
+| 2020  | ₺30 milyon / 18 ay | 35 puan / 6 ay      | ₺72 milyon / 18 ay | ₺150 bin           |
+
+Araştırma bakım istemez. Geç başlangıçta başlangıç yılından en az 20 yıl eski teknik
+araştırmalar önkoşulları uygunsa otomatik tamamlanır; bilinç geliştirmeleri otomatik
+tamamlanmaz. Otomatik kazanım güven ödülü üretmez. Otomatik gaz kesme 1990 otomasyon
+araştırmasını gerektirir. Katalog değişikliği için eski kayıt geçişi yapılmaz; dosyalar
+silinmez veya otomatik dönüştürülmez.
+
+Ağaçta tarih soldan sağa ilerler. Her kart kısa bir nedensel açıklama ve bağımsız
+tarih/araştırma kilitlerini gösterir. Önkoşul okları yönlüdür; başka daldaki gereklilikler
+kategori adıyla ilgili karta bağlanır. Ulusal önlemler yıllara göre gruplanır. Ayrıntıda
+uzun açıklama, gerçek sayısal etki karşılaştırması ve açılan içerikler bulunur. Metinler
+sevk maliyetini varış süresiyle, kurtarma verimini ekip üretimiyle veya koruyucu bakımı
+afet hasarı onarımıyla karıştırmaz.
+
+Bedel ve bonuslar başlangıç denge değerleridir; otomatik kontroller insan oynanış
+kabulünün yerine geçmez.
+
+Sürüm 4 tanısında sekiz politika koşusu, nakit veya güven sıfırlamadan tamamlandı. Dikkatli
+politika, gelecekteki bakım/yenileme yükünü ve on iki aylık taksit akışını hesaba katar; olağan
+giderlere göre 4,5 aylık tamponu koruyarak yeni işe karar verir. Geç dönem medyan rezervi
+1950 başlangıcında 4,89 ay, 1990 başlangıcında 4,80 ay oldu. İki koşu da 2026 sonuna ulaştı,
+bakım tam ödendi ve bütçe yüzünden proje taksiti beklemedi; bitiş güvenleri 78,51 ve 85,39.
+Aksiyonsuz, yalnız ekip ve aşırı taahhüt politikaları iki başlangıçta da kaybetti. Bu sonuçlar
+3–6 ay hedefinin bu politikayla erişilebilirliğini gösterir; insan zorluk kabulü değildir.

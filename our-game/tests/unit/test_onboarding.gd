@@ -9,6 +9,7 @@ func _fixture() -> Simulation:
 
 func test_national_construction_does_not_complete_research_step() -> void:
 	var simulation := _fixture()
+	simulation.projects.global_completed.append("research_radio")
 	assert_bool(simulation.start_project("national_radio").ok).is_true()
 	assert_bool("research" in simulation.tutorial_completed).is_false()
 	assert_bool("investment" in simulation.tutorial_completed).is_false()

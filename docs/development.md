@@ -30,6 +30,24 @@ Godot'u `our-game/project.godot` ile açın; F6 mevcut sahneyi, F5 başlangıç 
 UI/input/animasyon değişimlerini projenin kendi viewport ayarlarında ve normal hızda ayrıca inceleyin.
 Headless testler görsel kabul kanıtı değildir.
 
+Günlük ikmal ve geçici konuşlandırma, `verify` ve `test:ui` içindeki
+`micromanagement_ui.gd` sürücüsüyle kontrol edilir. Gerçek renderer görüntülerini üretmek için:
+
+```powershell
+& $env:GODOT_PATH --path our-game --script res://tests/integration/micromanagement_ui.gd -- --capture
+```
+
+Görüntüler `generated/micromanagement-ui/` altına yazılır; gerçek boyutta ayrıca incelenir.
+Oyuncu kaydına dokunmayan sekiz politika denemesi için:
+
+```powershell
+& $env:GODOT_PATH --headless --path our-game --script res://tests/integration/balance_probe.gd
+```
+
+`BALANCE_V3_PASS` ve `generated/reports/checks/balance-v3.json`, 1950/1990 için
+aksiyonsuz, yalnız ekip, hazırlık/ikmal ve aşırı taahhüt politikalarının tanısıdır.
+Bu rapor insan oynanış testi veya başarı oranı değildir.
+
 ## Taşınabilir Windows demosu
 
 `npm run build:windows`, standart Godot 4.6.3 ile release EXE ve ayrı PCK üretir.
@@ -86,6 +104,26 @@ ve Godot import/unit/startup kontrollerini çalıştırır.
 MCP sağlayıcı testleri oyun CI'ının parçası değildir; toolkit güncellenirken isteğe bağlı çalıştırılır.
 MCP native görsel testleri lisanslı yerel Aseprite gerektirir.
 Yerel başarı remote CI sonucu sayılmaz.
+
+## Afet sonrası kararlar
+
+`test_decisions.gd`, Gediz/Samsun/Marmara pilotlarını, bütün 21 kartın 63 alternatifini,
+kalıcı ret/iptali, yerel/ulusal slot sırasını, taksit/tamamlama etkilerini ve kayıt
+devamlılığını denetler. Sürüm 1 geçişi yalnız bilinen eski katalog hash'iyle yapılır.
+`test_decision_catalog.gd` ve Python katalog testleri referans, kapsam, etki ve kaynak
+aksiyonlarının eşlemesini doğrular. Bu kontroller insan oynanış dengesi kanıtı değildir.
+
+`verify` ve `test:ui`, `decision_ui.gd` ile rapor sonrası gerçek seçim/onay girdisini,
+Esc menüsünden dönüşü, bekleyen kararın bellekte yüklenmesini ve bütün kartların
+native fontla çizilmesini kontrol eder. 63 alternatifin özetleri en fazla dört satırda,
+kaydırma veya taşma olmadan gösterilir; artı/eksi işaretleri, etki renkleri, dolu slot
+ve sıfır kazanım/güven sınırı da denetlenir. Oyuncunun kayıtları ve tercihleri kullanılmaz.
+
+```powershell
+& $env:GODOT_PATH --path our-game --script res://tests/integration/decision_ui.gd -- --capture
+```
+
+1920×1080 görüntüler `generated/gameplay-ui/decision-*.png` altındadır.
 
 ## Gazete fotoğrafları
 
@@ -194,7 +232,25 @@ Görüntüler `generated/gameplay-ui/preparation-*.png`, `map-toolbar-*.png`, `m
 `terrain-zoom-3.png` tamsayı yakınlaştırmadaki araziyi gösterir. Sürücü oyuncu kayıtlarına dokunmaz;
 kuyruk kayıt testleri kendi test dizinini kullanır. İnsanla kullanım denemesi ayrıca yapılır.
 
-## Birliklere doğrudan erişim
+## Kompakt gezinme ve listeler
+
+`verify` ve `test:ui`, `compaction_ui.gd` ile altı üst girişi, Yatırım ve Araştırma sekmelerini,
+Olaylar açılır menüsünü ve boş rapor/proje durumunu gerçek input ile denetler.
+Proje takibinde altı, şehir yatırımlarında beş satırın aynı anda görünmesi;
+yenileme ve ayrıntıdan dönüşte kaydırma/odak; araştırma kategorisinin ve son Yatırım ve Araştırma
+sekmesinin korunması kapsamdadır. Şehirde ekip/yardım üretimi ve yinelenen genel kriz
+düğmesi bulunmamalıdır; hazırlık emirleri mevcut `preparation_ui.gd` ile doğrulanır.
+`crisis_pilot.gd` ve `units_ui.gd`, miktar seçiminin harcama yapmadığını ve Sevk Et'in
+mevcut kaynak/hedef doğrulamalarını kullandığını denetler. Gazete/rapor kuyruğu ve Esc
+dönüşü mevcut sürücülerde korunur. Oyuncu kayıtları kullanılmaz.
+
+```powershell
+& $env:GODOT_PATH --path our-game --script res://tests/integration/compaction_ui.gd -- --capture
+```
+
+Gerçek 1920×1080 görüntüler `generated/gameplay-ui/compact-*.png` altındadır.
+
+## Ekipler ve Yardıme doğrudan erişim
 
 `verify` ve `test:ui`, `units_ui.gd` ile HUD'dan birlik listesine erişimi, aktif kriz
 yokken sevk gerekçesini, seçilen merkezden şehir lojistiği/sevk formuna geçişi ve
@@ -268,3 +324,75 @@ Kriz pilotu ayrıca Acil Bütçe/Kapat başlık hizasını ve fon ekranı gidiş
 
 MCP kurulumu ve sürüm güncellemesi için [toolkit rehberini](../tools/mcp/README.md) kullanın.
 Kimlik bilgilerini ve makine yollarını yerel dosyalarda tutun; genel Codex yapılandırmasını kopyalamayın.
+
+## Ses ve müzik kontrolleri
+
+`verify` ve `test:ui`, `audio_ui.gd` ile gerçek fare/klavye girdisi üzerinden müzik aç/kapat,
+duraklat/sürdür, iki ses slider'ı, menü/kampanya geçişinde süreklilik, işlem onay/ret sesleri,
+tamamlanma ve tek seferlik afet uyarısını kontrol eder. Testler oyuncu tercihlerini kullanmaz.
+`test_audio_preferences.gd`, yalnız izole CFG ile ses tercihlerini, geçersiz tipleri, sınırları
+ve mevcut görüntü/görsel tercihlerin korunmasını, gecikmeli kaydı ve çıkışta son değişikliğin
+saklanmasını denetler. Sesli sürücüler kapanırken `audio.shutdown()` beklenir: Godot'un ses
+iş parçacığı durdurulan oynatım referanslarını bir sonraki karışımda bırakır.
+
+Gerçek 1920×1080 görüntülü kabul için:
+
+```powershell
+& $env:GODOT_PATH --path our-game --script res://tests/integration/audio_ui.gd -- --capture
+```
+
+Çıktılar `generated/gameplay-ui/audio-settings-*.png` altındadır. Headless kontrol sesin
+duyusal dengesini kanıtlamaz; normal ses çıkışında dinleyerek ayrıca değerlendirin.
+
+## Arayüz metinlerinin kabulü
+
+`npm run verify` yeni adları, kayıt onaylarını, gönderim özetini ve hazır/toplam ekip ayrımını
+kontrol eder. Proje açıklamalarının katalog kimlikleriyle eşleşmesi unit testle doğrulanır.
+Uzun teknik adlar ve açıklamalar için gerçek 1920×1080 görüntüde `gameplay_ui.gd`,
+`compaction_ui.gd`, `preparation_ui.gd` ve `window_controls.gd` sürücülerini `--capture` ile
+çalıştırın. Temel metinler kırpılmamalı; açıklama için küçültülen yazı kullanılmamalıdır.
+Açıklamalar nedeniyle daha az satır görünmesi kabul edilir; kaydırma ve klavye odağı korunur.
+Headless kontroller görsel kabulün yerine geçmez.
+
+## Araştırma ağacı ve ulusal önlemler
+
+Dört kategoride beş dönem × iki seçenek, toplam 40 araştırma ve 15 normal ulusal önlem
+vardır. Afet sonrası karar programları bu sayılara dahil değildir. Katalog testleri dönem,
+önkoşul, maliyet/süre ve etki dağılımını; eksik/döngülü/gelecek tarihli önkoşulların reddini,
+geç başlangıç sırasının bağımsızlığını, tek seferlik etkileri ve kapasiteyi denetler.
+Ekonomi denemeleri 1950/1990 için aylık gelir, bakım ve taksitlerle borçsuz ilerlemeyi;
+ayrı bir yeterli kaynak senaryosu 2020 içeriğinin 2026 sonundan önce tamamlanmasını sınar.
+Bunlar afetli kampanyanın veya insan oynanışının dengeli olduğu anlamına gelmez.
+
+`npm run verify` ve `npm run test:ui`, `research_tree_ui.gd` ile gerçek fare/klavye
+girdisi üzerinden beş tarih sütununu, kartları kesmeyen yönlü okları, kategori dışı
+önkoşulları, önlemden araştırmaya gidiş/dönüşü ve 55 uzun açıklamanın okunmasını kontrol eder.
+Oyuncunun kayıtları ve tercihleri kullanılmaz. Gerçek 1920×1080 renderer incelemesi için:
+
+```powershell
+& $env:GODOT_PATH --path our-game --script res://tests/integration/research_tree_ui.gd -- --capture
+```
+
+Görüntüler `generated/gameplay-ui/research-*.png` altındadır. Her kategorinin ilk/son dönemi,
+kategori geçişi, 2020 ulusal önlemleri ve uzun araştırma açıklaması ayrıca incelenir.
+
+## Kondisyon, yenileme ve taahhüt kabulü
+
+`test_center_renewal.gd`, kapasiteye bağlı bedeli, yerel slotu, taksitleri, kondisyon/verim
+kaybını ve yeni kayıt alanlarının doğrulamasını kontrol eder. `test_trust_recovery.gd`, ayrı
+hasar partilerinin altı aylık süresini, uygulanmış kaybın sınırlı iadesini ve ortak afet
+puanlamasını; `test_decisions.gd`, taahhüdün gerçek ilerleme ve 6/12 ay sınırlarını denetler.
+
+`verify` ve `test:ui` içindeki `renewal_trust_ui.gd`, gerçek fare girdisiyle yenileme bedelini,
+başlatmayı, taahhüt uyarısını, proje listesinde durumu ve iki aşamalı iptal bedelini kontrol eder.
+Oyuncu kaydı veya tercihi kullanılmaz. Gerçek 1920×1080 görüntülü kabul:
+
+```powershell
+& $env:GODOT_PATH --path our-game --script res://tests/integration/renewal_trust_ui.gd -- --capture
+```
+
+Görüntüler `generated/balance-ui/` altında oluşur. Uzun kampanya tanısı için
+`balance_probe.gd` çalıştırılır; çıktı `generated/reports/checks/balance-v4.json`.
+Politikalar oyun kuralları değildir; nakit veya güven sıfırlanmaz. Dikkatli politika normal
+bakım ve taksitlere göre 4,5 aylık rezervi hedefler, gelecekteki bakım/yenileme yükünü hesaba katar.
+İnsanla uzun kampanya denemesi ayrı kabul aşamasıdır.

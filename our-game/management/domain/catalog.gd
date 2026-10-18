@@ -2,6 +2,7 @@ class_name Catalog
 extends RefCounted
 
 const AREA_IDS := [1, 6, 7, 16, 21, 25, 26, 27, 31, 34, 35, 41, 42, 44, 45, 48, 53, 55, 61, 63, 65]
+const RESEARCH_ERAS := [1950, 1970, 1990, 2005, 2020]
 
 var validation_errors: Array[String] = []
 var definitions: Dictionary = {}
@@ -22,6 +23,12 @@ func load_definitions(path: String = "res://management/data/measures.json") -> D
 		var definition := MeasureDefinition.from_dict(record)
 		if definition == null or parsed.has(definition.id):
 			return _invalid("Geçersiz veya yinelenmiş tedbir tanımı.")
+		if (
+			(definition.is_research() or definition.kind == "national")
+			and not definition.id.begins_with("decision_")
+			and not definition.year in RESEARCH_ERAS
+		):
+			return _invalid("Geçersiz araştırma veya ulusal önlem dönemi.")
 		parsed[definition.id] = definition
 	if parsed.is_empty():
 		return _invalid("Tedbir kataloğu boş.")
@@ -35,6 +42,8 @@ func load_definitions(path: String = "res://management/data/measures.json") -> D
 			for requirement: String in definition.prerequisites:
 				if not parsed.has(requirement):
 					return _invalid("Bilinmeyen önkoşul: " + requirement)
+				if parsed[requirement].year > definition.year:
+					return _invalid("Önkoşul daha sonraki bir döneme ait: " + requirement)
 				if not requirement in resolved:
 					ready = false
 			if ready:

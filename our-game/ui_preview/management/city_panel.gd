@@ -6,6 +6,7 @@ signal close_requested
 signal dispatch_requested(source: int)
 
 const UI := preload("res://ui_preview/shared/ui_kit.gd")
+const Copy := preload("res://ui_preview/management/measure_copy.gd")
 
 var selected_area_id: int = 0
 var selected_tab: int = 0
@@ -14,7 +15,13 @@ var _city_title: Label
 var _city_region: Label
 var _city_body: Control
 var _city_tabs: Array[Button] = []
-var _investment_page: int = 0
+var _rendered_tab: int = -1
+var _rendered_area_id: int = 0
+var _investment_scroll: ScrollContainer
+var _investment_capacity: Label
+var _investment_rows: Dictionary = {}
+var _investment_position: int = 0
+var _investment_focus: String = ""
 
 
 func setup(shell: Control) -> void:
@@ -24,23 +31,28 @@ func setup(shell: Control) -> void:
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	UI.panel(self, Rect2(16, 174, 400, 846))
-	_city_title = UI.text(self, "", Rect2(36, 194, 310, 48), 36)
+	_city_title = UI.text(self, "", Rect2(36, 194, 310, 88), 36)
+	_city_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	var close_button := UI.button(self, "×", Rect2(358, 198, 38, 38), close_requested.emit)
 	close_button.tooltip_text = "ŞEHİR PANELİNİ KAPAT / ESC"
-	_city_region = UI.text(self, "", Rect2(36, 244, 364, 26), 18, UI.MUTED)
+	_city_region = UI.text(self, "", Rect2(36, 286, 364, 26), 18, UI.MUTED)
+	var totals := UI.text(
+		self, "DEĞERLER, MERKEZE BAĞLI İLLERİN TOPLAMIDIR.", Rect2(36, 316, 364, 44), 18, UI.MUTED
+	)
+	totals.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for index: int in range(3):
 		_city_tabs.append(
 			UI.button(
 				self,
-				["ÖZET", "YATIRIM", "LOJİSTİK"][index],
-				Rect2(36 + index * 122, 282, 114, 34),
+				["ÖZET", "YATIRIM", "GÖNDERİM"][index],
+				Rect2(36 + index * 122, 362, 114, 34),
 				select_tab.bind(index),
 				index == 0
 			)
 		)
 	_city_body = Control.new()
-	_city_body.position = Vector2(36, 334)
-	_city_body.size = Vector2(360, 660)
+	_city_body.position = Vector2(36, 408)
+	_city_body.size = Vector2(360, 588)
 	add_child(_city_body)
 	hide()
 
@@ -50,10 +62,12 @@ func select_area(id: int) -> bool:
 	if not sim.areas.has(id):
 		return false
 	if selected_area_id != id:
-		_investment_page = 0
+		_investment_position = 0
+		_investment_focus = ""
+		_rendered_area_id = 0
 	selected_area_id = id
 	var area: ServiceArea = sim.areas[id]
-	_city_title.text = area.name.to_upper()
+	_city_title.text = area.name.to_upper() + " VE ÇEVRESİ"
 	_city_region.text = area.region.to_upper()
 	_render_city(area)
 	show()
@@ -80,7 +94,16 @@ func select_tab(index: int) -> void:
 
 
 func _render_city(area: ServiceArea) -> void:
+	if selected_tab == 1 and _rendered_tab == 1 and _rendered_area_id == area.id:
+		_refresh_investments(area)
+		return
+	if _rendered_tab == 1 and is_instance_valid(_investment_scroll):
+		if _rendered_area_id == area.id:
+			_investment_position = _investment_scroll.scroll_vertical
+	_investment_rows.clear()
 	UI.clear(_city_body)
+	_rendered_tab = selected_tab
+	_rendered_area_id = area.id
 	match selected_tab:
 		0:
 			_summary(area)
@@ -94,157 +117,166 @@ func _summary(area: ServiceArea) -> void:
 	var sim: Simulation = _shell.sim
 	UI.text(_city_body, "YÖNETİLEN NÜFUS", Rect2(0, 0, 240, 26), 18, UI.MUTED)
 	UI.text(_city_body, _shell.fmt_count(area.population), Rect2(252, 0, 108, 26))
-	UI.text(_city_body, "ALAN GELİRİ", Rect2(0, 42, 180, 26), 18, UI.MUTED)
+	UI.text(_city_body, "AYLIK GELİR", Rect2(0, 42, 180, 26), 18, UI.MUTED)
 	UI.text(
 		_city_body, _shell.fmt_money(area.income()) + "/AY", Rect2(174, 42, 186, 26), 18, UI.TEAL
 	)
 	var resilience := sim.projects.infrastructure(area.id)
-	UI.text(_city_body, "ALTYAPI DİRENCİ", Rect2(0, 104, 250, 26), 18, UI.MUTED)
-	UI.text(_city_body, "%d/100" % roundi(resilience), Rect2(276, 104, 84, 26))
-	UI.bar(_city_body, Vector2(0, 142), 360, resilience, UI.TEAL)
-	UI.text(_city_body, "AFET HAZIRLIĞI", Rect2(0, 180, 360, 26), 18, UI.MUTED)
+	UI.text(_city_body, "ALTYAPI DAYANIKLILIĞI", Rect2(0, 92, 264, 26), 18, UI.MUTED)
+	UI.text(_city_body, "%d/100" % roundi(resilience), Rect2(276, 92, 84, 26))
+	UI.bar(_city_body, Vector2(0, 130), 360, resilience, UI.TEAL)
+	UI.text(_city_body, "AFET HAZIRLIĞI", Rect2(0, 160, 360, 26), 18, UI.MUTED)
 	for index: int in range(5):
 		var kind: String = ["earthquake", "flood", "fire", "avalanche", "landslide"][index]
 		var value := sim.projects.preparedness(area.id, kind)
 		UI.text(
 			_city_body,
 			["DEPREM", "SEL", "YANGIN", "ÇIĞ", "HEYELAN"][index],
-			Rect2(0, 222 + index * 34, 132, 26)
+			Rect2(0, 200 + index * 32, 132, 26)
 		)
 		UI.bar(
 			_city_body,
-			Vector2(136, 232 + index * 34),
+			Vector2(136, 210 + index * 32),
 			158,
 			value,
 			UI.GOLD if value < 60 else UI.TEAL
 		)
-		UI.text(_city_body, "%d" % roundi(value), Rect2(312, 222 + index * 34, 48, 26))
-	UI.panel(_city_body, Rect2(0, 422, 174, 88), true)
-	UI.panel(_city_body, Rect2(186, 422, 174, 88), true)
-	UI.icon(_city_body, 4, Vector2(10, 432), UI.TEAL)
-	UI.icon(_city_body, 5, Vector2(196, 432), UI.GOLD)
-	UI.text(_city_body, "%d EKİP" % area.teams, Rect2(50, 434, 122, 26))
-	UI.text(_city_body, "%d YARDIM" % area.stock, Rect2(234, 434, 124, 26))
-	UI.text(_city_body, "%d TOPLAM" % area.total_teams, Rect2(14, 474, 148, 22), 18, UI.MUTED)
-	UI.text(_city_body, "HAZIR", Rect2(200, 474, 144, 22), 18, UI.MUTED)
+		UI.text(_city_body, "%d" % roundi(value), Rect2(312, 200 + index * 32, 48, 26))
+	UI.panel(_city_body, Rect2(0, 380, 360, 100), true)
+	UI.text(_city_body, "KENDİ HAZIR EKİBİ", Rect2(12, 386, 240, 26), 18, UI.MUTED)
+	UI.text(_city_body, str(area.teams), Rect2(264, 386, 84, 26))
+	UI.text(_city_body, "KENDİ TOPLAM EKİBİ", Rect2(12, 416, 240, 26), 18, UI.MUTED)
+	UI.text(_city_body, str(area.total_teams), Rect2(264, 416, 84, 26))
+	UI.text(_city_body, "YARDIM MALZEMESİ", Rect2(12, 446, 240, 26), 18, UI.MUTED)
+	UI.text(_city_body, str(area.stock), Rect2(264, 446, 84, 26))
 	UI.text(
 		_city_body,
-		"AKTİF PROJE: %d/1" % sim.projects.active_count("local", area.id),
-		Rect2(0, 546, 360, 26),
+		(
+			"KONDİSYON: %%%d / VERİM: %%%d"
+			% [roundi(area.condition), roundi(area.capacity_efficiency() * 100.0)]
+		),
+		Rect2(0, 494, 360, 26),
 		18,
-		UI.MUTED
+		UI.GOLD if area.condition <= ProjectSystem.RENEWAL_WARNING else UI.MUTED
 	)
-	UI.button(_city_body, "YATIRIMLARI GÖR", Rect2(0, 598, 360, 48), select_tab.bind(1))
+	UI.button(_city_body, "YATIRIMLARI GÖR", Rect2(0, 536, 360, 48), select_tab.bind(1))
 
 
 func _investments(area: ServiceArea) -> void:
 	var sim: Simulation = _shell.sim
 	var definitions: Array[MeasureDefinition] = []
 	for definition: MeasureDefinition in sim.projects.definitions.values():
-		if definition.is_local():
+		if (
+			definition.is_local()
+			and not definition.id in ["rescue_team", "aid_stock"]
+			and not definition.id.begins_with("decision_")
+		):
 			definitions.append(definition)
-	var last_page := maxi(0, int((definitions.size() - 1) / 3))
-	_investment_page = clampi(_investment_page, 0, last_page)
 	UI.text(_city_body, "YEREL YATIRIMLAR", Rect2(0, 0, 360, 28), 18, UI.GOLD)
-	UI.text(
-		_city_body,
-		"AKTİF PROJE: %d/1" % sim.projects.active_count("local", area.id),
-		Rect2(0, 40, 360, 26),
-		18,
-		UI.MUTED
-	)
-	for row: int in range(3):
-		var index := _investment_page * 3 + row
-		if index >= definitions.size():
-			break
+	_investment_capacity = UI.text(_city_body, "", Rect2(0, 36, 360, 26), 18, UI.MUTED)
+	_investment_scroll = ScrollContainer.new()
+	_investment_scroll.name = "InvestmentList"
+	_investment_scroll.position = Vector2(0, 74)
+	_investment_scroll.size = Vector2(360, 514)
+	_investment_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_city_body.add_child(_investment_scroll)
+	var list := Control.new()
+	list.name = "Rows"
+	list.custom_minimum_size = Vector2(336, definitions.size() * 256)
+	_investment_scroll.add_child(list)
+	for index: int in range(definitions.size()):
 		var definition := definitions[index]
-		var y := 92 + row * 160
-		UI.panel(_city_body, Rect2(0, y, 360, 144), true)
-		var title := UI.text(_city_body, definition.title.to_upper(), Rect2(12, y + 12, 336, 48))
+		var row := UI.panel(list, Rect2(0, index * 256, 336, 248), true)
+		row.name = definition.id
+		var title := UI.text(row, definition.title.to_upper(), Rect2(10, 2, 316, 44), 18)
 		title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		title.size = Vector2(336, 48)
+		title.size = Vector2(316, 44)
 		title.tooltip_text = definition.title
-		UI.text(
-			_city_body,
-			(
-				"%s / %d AY"
-				% [
-					_shell.fmt_money(sim.projects.cost_for(definition.id, area.id)),
-					definition.months
-				]
-			),
-			Rect2(12, y + 62, 336, 26),
+		var explanation := UI.text(
+			row,
+			Copy.explanation_for(definition.id).to_upper(),
+			Rect2(10, 48, 316, 66),
 			18,
 			UI.MUTED
 		)
-		var availability := sim.projects.availability(definition.id, area.id, sim.clock.year)
-		var inspect := UI.button(
-			_city_body,
-			"TAMAMLANDI" if sim.projects.is_completed(definition.id, area.id) else "İNCELE",
-			Rect2(12, y + 96, 336, 36),
-			project_requested.emit.bind(definition.id, area.id)
+		explanation.name = "Explanation"
+		explanation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		var status := UI.text(row, "", Rect2(10, 142, 316, 66), 18, UI.MUTED)
+		status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_investment_rows[definition.id] = {
+			"cost": UI.text(row, "", Rect2(10, 116, 316, 24), 18, UI.MUTED),
+			"status": status,
+			"inspect":
+			UI.button(
+				row,
+				"İNCELE",
+				Rect2(214, 210, 112, 34),
+				_inspect_investment.bind(definition.id, area.id)
+			),
+		}
+		_investment_rows[definition.id].inspect.name = "Inspect"
+	_refresh_investments(area)
+	_investment_scroll.set_deferred("scroll_vertical", _investment_position)
+
+
+func _refresh_investments(area: ServiceArea) -> void:
+	var sim: Simulation = _shell.sim
+	_investment_capacity.text = (
+		"AYNI ANDA ÇALIŞAN PROJE: %d/1" % sim.projects.active_count("local", area.id)
+	)
+	for id: String in _investment_rows:
+		var definition: MeasureDefinition = sim.projects.definition_for(id)
+		var row: Dictionary = _investment_rows[id]
+		row.cost.text = (
+			"%s / %d AY" % [_shell.fmt_money(sim.projects.cost_for(id, area.id)), definition.months]
 		)
-		inspect.tooltip_text = availability.message
-	UI.button(_city_body, "GERİ", Rect2(0, 580, 84, 34), _change_page.bind(-1)).disabled = (
-		_investment_page == 0
-	)
-	UI.text(
-		_city_body,
-		"%d / %d" % [_investment_page + 1, last_page + 1],
-		Rect2(94, 584, 172, 26),
-		18,
-		UI.MUTED
-	)
-	UI.button(_city_body, "İLERİ", Rect2(276, 580, 84, 34), _change_page.bind(1)).disabled = (
-		_investment_page == last_page
-	)
-	UI.button(
-		_city_body, "PROJE TAKİBİ", Rect2(0, 630, 360, 30), screen_requested.emit.bind("projects")
-	)
+		var availability: Dictionary = sim.projects.availability(id, area.id, sim.clock.year)
+		var status: String = String(availability.message).to_upper()
+		if sim.projects.is_completed(id, area.id):
+			status = "TAMAMLANDI"
+		else:
+			for project: ActiveProject in sim.projects.projects:
+				if project.definition_id == id and project.area_id == area.id:
+					if project.status in ["active", "waiting", "paused", "queued"]:
+						status = Copy.status_for(project.status)
+		row.status.text = status
+		row.inspect.tooltip_text = availability.message
 
 
-func _change_page(offset: int) -> void:
-	_investment_page += offset
-	refresh()
+func _inspect_investment(id: String, area_id: int) -> void:
+	_investment_focus = id
+	project_requested.emit(id, area_id)
+
+
+func restore_investment_focus() -> void:
+	if selected_tab == 1 and _investment_rows.has(_investment_focus):
+		_investment_rows[_investment_focus].inspect.call_deferred("grab_focus")
 
 
 func _logistics(area: ServiceArea) -> void:
-	UI.text(_city_body, "MERKEZ LOJİSTİĞİ", Rect2(0, 0, 360, 28), 18, UI.GOLD)
+	UI.text(_city_body, "MERKEZDEN GÖNDERİM", Rect2(0, 0, 360, 28), 18, UI.GOLD)
 	UI.text(
 		_city_body,
-		"HAZIR / TOPLAM EKİP: %d / %d" % [area.teams, area.total_teams],
-		Rect2(0, 60, 360, 28)
+		"KENDİ HAZIR EKİBİ: %d\nKENDİ TOPLAM EKİBİ: %d" % [area.teams, area.total_teams],
+		Rect2(0, 60, 360, 44)
 	)
-	UI.text(_city_body, "YARDIM STOĞU: %d" % area.stock, Rect2(0, 110, 360, 28))
+	UI.text(_city_body, "YARDIM MALZEMESİ: %d" % area.stock, Rect2(0, 110, 360, 28))
 	var team := UI.button(_city_body, "1 EKİP SÜRÜKLE", Rect2(0, 174, 360, 42), Callable())
 	team.disabled = area.teams < 1
 	team.set_drag_forwarding(_drag.bind("team", team), Callable(), Callable())
-	var stock := UI.button(_city_body, "10 YARDIM SÜRÜKLE", Rect2(0, 230, 360, 42), Callable())
+	var stock := UI.button(
+		_city_body, "10 BİRİM MALZEME SÜRÜKLE", Rect2(0, 230, 360, 42), Callable()
+	)
 	stock.disabled = area.stock < 10
 	stock.set_drag_forwarding(_drag.bind("stock", stock), Callable(), Callable())
 	UI.button(
 		_city_body,
-		"EKİP KUR",
-		Rect2(0, 306, 174, 44),
-		project_requested.emit.bind("rescue_team", area.id)
-	)
-	UI.button(
-		_city_body,
-		"STOK HAZIRLA",
-		Rect2(186, 306, 174, 44),
-		project_requested.emit.bind("aid_stock", area.id)
-	)
-	UI.button(
-		_city_body, "KRİZ MERKEZİ", Rect2(0, 384, 360, 48), screen_requested.emit.bind("crisis")
-	)
-	UI.button(
-		_city_body,
-		"BU MERKEZDEN GÖNDER",
-		Rect2(0, 444, 360, 42),
+		"GÖNDERİM HAZIRLA",
+		Rect2(0, 306, 360, 42),
 		dispatch_requested.emit.bind(area.id)
 	)
-	UI.text(_city_body, "HEDEF ALANA BIRAKARAK SEVK ET", Rect2(0, 502, 360, 28), 18, UI.MUTED)
-	UI.text(_city_body, "YAKIN 1 / ORTA 2 / UZAK 3 GÜN", Rect2(0, 562, 360, 50), 18, UI.MUTED)
+	UI.text(_city_body, "HEDEF MERKEZE BIRAK.", Rect2(0, 374, 360, 28), 18, UI.MUTED)
+	UI.text(_city_body, "YAKIN 1 / ORTA 2 / UZAK 3 GÜN", Rect2(0, 414, 360, 28), 18, UI.MUTED)
 
 
 func _drag(_position: Vector2, kind: String, token: Control) -> Variant:
@@ -257,7 +289,8 @@ func _drag(_position: Vector2, kind: String, token: Control) -> Variant:
 		return null
 	var preview := Label.new()
 	preview.text = (
-		"%s / %d %s" % [area.name.to_upper(), amount, "EKİP" if kind == "team" else "YARDIM"]
+		"%s / %d %s"
+		% [area.name.to_upper(), amount, "EKİP" if kind == "team" else "BİRİM YARDIM MALZEMESİ"]
 	)
 	preview.add_theme_font_override("font", UI.FONT)
 	preview.add_theme_font_size_override("font_size", 18)

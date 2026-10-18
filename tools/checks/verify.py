@@ -31,12 +31,18 @@ def main() -> None:
     if not args.godot:
         parser.error("Set GODOT_PATH or pass --godot")
     if args.ui_only:
+        run(args.godot, "renewal-trust-ui", ["--headless", "--script", "res://tests/integration/renewal_trust_ui.gd"], "RENEWAL_TRUST_UI_PASS")
+        run(args.godot, "micromanagement-ui", ["--headless", "--script", "res://tests/integration/micromanagement_ui.gd"], "MICROMANAGEMENT_UI_PASS")
+        run(args.godot, "decision-ui", ["--headless", "--script", "res://tests/integration/decision_ui.gd"], "DECISION_UI_PASS")
+        run(args.godot, "compaction-ui", ["--headless", "--script", "res://tests/integration/compaction_ui.gd"], "COMPACTION_UI_PASS")
+        run(args.godot, "research-tree-ui", ["--headless", "--script", "res://tests/integration/research_tree_ui.gd"], "RESEARCH_TREE_UI_PASS")
         run(args.godot, "gameplay-ui", ["--headless", "--script", "res://tests/integration/gameplay_ui.gd"], "GAMEPLAY_UI_PASS")
         run(args.godot, "newspaper-ui", ["--headless", "--script", "res://tests/integration/newspaper_ui.gd"], "NEWSPAPER_UI_PASS")
         run(args.godot, "crisis-pilot", ["--headless", "--script", "res://tests/integration/crisis_pilot.gd"], "CRISIS_PILOT_PASS")
         run(args.godot, "preparation-ui", ["--headless", "--script", "res://tests/integration/preparation_ui.gd"], "PREPARATION_UI_PASS")
         run(args.godot, "units-ui", ["--headless", "--script", "res://tests/integration/units_ui.gd"], "UNITS_UI_PASS")
         run(args.godot, "window-controls", ["--headless", "--script", "res://tests/integration/window_controls.gd"], "WINDOW_CONTROLS_PASS")
+        run(args.godot, "audio-ui", ["--headless", "--script", "res://tests/integration/audio_ui.gd"], "AUDIO_UI_PASS")
         return
     run(args.godot, "import", ["--headless", "--editor", "--import"])
     run(args.godot, "gdunit", [
@@ -45,6 +51,11 @@ def main() -> None:
         "-rd", str(ROOT / "generated/reports/gdunit"),
     ], "Overall Summary")
     if not args.unit_only:
+        run(args.godot, "renewal-trust-ui", ["--headless", "--script", "res://tests/integration/renewal_trust_ui.gd"], "RENEWAL_TRUST_UI_PASS")
+        run(args.godot, "micromanagement-ui", ["--headless", "--script", "res://tests/integration/micromanagement_ui.gd"], "MICROMANAGEMENT_UI_PASS")
+        run(args.godot, "decision-ui", ["--headless", "--script", "res://tests/integration/decision_ui.gd"], "DECISION_UI_PASS")
+        run(args.godot, "compaction-ui", ["--headless", "--script", "res://tests/integration/compaction_ui.gd"], "COMPACTION_UI_PASS")
+        run(args.godot, "research-tree-ui", ["--headless", "--script", "res://tests/integration/research_tree_ui.gd"], "RESEARCH_TREE_UI_PASS")
         run(args.godot, "startup", ["--headless", "--script", "res://tests/integration/startup.gd"], "STARTUP PASS")
         run(args.godot, "gameplay-ui", ["--headless", "--script", "res://tests/integration/gameplay_ui.gd"], "GAMEPLAY_UI_PASS")
         run(args.godot, "newspaper-ui", ["--headless", "--script", "res://tests/integration/newspaper_ui.gd"], "NEWSPAPER_UI_PASS")
@@ -52,6 +63,7 @@ def main() -> None:
         run(args.godot, "preparation-ui", ["--headless", "--script", "res://tests/integration/preparation_ui.gd"], "PREPARATION_UI_PASS")
         run(args.godot, "units-ui", ["--headless", "--script", "res://tests/integration/units_ui.gd"], "UNITS_UI_PASS")
         run(args.godot, "window-controls", ["--headless", "--script", "res://tests/integration/window_controls.gd"], "WINDOW_CONTROLS_PASS")
+        run(args.godot, "audio-ui", ["--headless", "--script", "res://tests/integration/audio_ui.gd"], "AUDIO_UI_PASS")
     print("Verification PASS", flush=True)
 
 

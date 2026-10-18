@@ -1,7 +1,7 @@
 class_name SaveStore
 extends RefCounted
 
-const PATH := "user://campaign_v1.json"
+const PATH := "user://campaign_v4.json"
 const MAX_FILE_BYTES := 16777216
 const MAX_VALUE := 1000000000000
 var error: String = ""
@@ -11,7 +11,7 @@ var slot_directory: String = "user://"
 func slot_path(slot: int) -> String:
 	if slot < 0 or slot > 3:
 		return ""
-	var filename := "campaign_v1.json" if slot == 0 else "manual_%d_v1.json" % slot
+	var filename := "campaign_v4.json" if slot == 0 else "manual_%d_v4.json" % slot
 	return slot_directory.path_join(filename)
 
 
@@ -48,7 +48,7 @@ func save(simulation: Simulation, path: String = PATH) -> bool:
 	error = ""
 	var text := JSON.stringify(simulation.to_dict())
 	if text.to_utf8_buffer().size() > MAX_FILE_BYTES or restore(JSON.parse_string(text)) == null:
-		error = "Kampanya durumu doğrulanamadı; önceki kayıt korundu."
+		error = "Oyun durumu doğrulanamadı; önceki kayıt korundu."
 		return false
 	var file := FileAccess.open(path + ".tmp", FileAccess.WRITE)
 	if file == null:
@@ -91,7 +91,9 @@ func load_campaign(path: String = PATH) -> Simulation:
 
 
 func restore(data: Variant) -> Simulation:
-	if not data is Dictionary or data.get("version") != 1:
+	if not data is Dictionary or not ServiceArea._integer(data.get("version")):
+		return null
+	if int(data.version) != 4:
 		return null
 	for key: String in [
 		"start_year",
@@ -129,6 +131,7 @@ func restore(data: Variant) -> Simulation:
 		"active",
 		"reports",
 		"shipments",
+		"stationed",
 		"news_queue",
 		"bubbles",
 		"ticker",
@@ -138,7 +141,9 @@ func restore(data: Variant) -> Simulation:
 		if not data.get(key) is Array or data[key].size() > 20000:
 			return null
 	var sim := Simulation.new()
-	if not sim.setup(int(data.start_year)) or data.get("catalog") != sim.content_fingerprint:
+	if not sim.setup(int(data.start_year)):
+		return null
+	if data.get("catalog") != sim.content_fingerprint:
 		return null
 	var day := int(data.day)
 	if (
@@ -184,7 +189,7 @@ func restore(data: Variant) -> Simulation:
 	sim.projects.setup(sim.projects.definitions, restored, sim.treasury, sim.trust)
 	if not sim.projects.restore(data.get("projects")):
 		return null
-	sim.crises.setup(restored, sim.projects, sim.trust)
+	sim.crises.setup(restored, sim.projects, sim.trust, sim.logistics)
 	sim.logistics.setup(restored, sim.treasury, sim.projects)
 	var event_index := int(data.event_index)
 	if event_index < 0 or event_index > sim.historical.events.size():
@@ -207,10 +212,33 @@ func restore(data: Variant) -> Simulation:
 		return null
 	var shipment_ids: Array[int] = []
 	var reserved: Dictionary = {}
+	var guest_pairs: Array[String] = []
+	for group: Variant in data.stationed:
+		if not group is Dictionary:
+			return null
+		for key: String in ["home", "location", "amount"]:
+			if not ServiceArea._integer(group.get(key)) or absf(float(group[key])) > MAX_VALUE:
+				return null
+		if (
+			not restored.has(int(group.home))
+			or not restored.has(int(group.location))
+			or group.home == group.location
+			or group.amount < 1
+			or group.amount > 1000000
+		):
+			return null
+		var pair := "%d:%d" % [group.home, group.location]
+		if pair in guest_pairs:
+			return null
+		guest_pairs.append(pair)
+		reserved[int(group.home)] = int(reserved.get(int(group.home), 0)) + int(group.amount)
+		sim.logistics.stationed.append(group.duplicate(true))
 	for record: Variant in data.shipments:
 		if not record is Dictionary:
 			return null
-		for key: String in ["id", "source", "target", "amount", "days", "arrival"]:
+		for key: String in [
+			"id", "source", "target", "home", "amount", "days", "return_days", "arrival"
+		]:
 			if not ServiceArea._integer(record.get(key)) or absf(float(record[key])) > MAX_VALUE:
 				return null
 		if (
@@ -221,17 +249,27 @@ func restore(data: Variant) -> Simulation:
 		if (
 			not restored.has(int(record.source))
 			or not restored.has(int(record.target))
+			or not restored.has(int(record.home))
 			or record.amount < 1
 			or record.amount > 1000000000
 			or record.days < 0
 			or record.days > 3
+			or record.return_days < 0
+			or record.return_days > 3
 		):
 			return null
 		if (
 			record.id < 1
 			or record.id > data.shipment_sequence
 			or int(record.id) in shipment_ids
-			or not record.get("crisis_id") in crisis_ids
+			or not record.get("purpose") in ["crisis", "transfer"]
+			or not record.get("delivered") is bool
+			or not record.get("crisis_id") is String
+		):
+			return null
+		if (
+			(record.purpose == "crisis" and not record.crisis_id in crisis_ids)
+			or (record.purpose == "transfer" and record.crisis_id != "")
 		):
 			return null
 		if (
@@ -240,8 +278,8 @@ func restore(data: Variant) -> Simulation:
 		):
 			return null
 		if record.kind == "team" and record.state != "done":
-			reserved[int(record.source)] = (
-				int(reserved.get(int(record.source), 0)) + int(record.amount)
+			reserved[int(record.home)] = (
+				int(reserved.get(int(record.home), 0)) + int(record.amount)
 			)
 		shipment_ids.append(int(record.id))
 		sim.logistics.shipments.append(record.duplicate(true))
@@ -255,7 +293,7 @@ func restore(data: Variant) -> Simulation:
 	for item: Variant in data.news_queue:
 		if (
 			not item is Dictionary
-			or not item.get("kind") in ["newspaper", "report"]
+			or not item.get("kind") in ["newspaper", "report", "decision"]
 			or not item.get("id") is String
 		):
 			return null
@@ -264,11 +302,23 @@ func restore(data: Variant) -> Simulation:
 			or (item.kind == "report" and sim.report_for(item.id).is_empty())
 		):
 			return null
-		var news_day := (
-			int(sim.event_for(item.id).day)
-			if item.kind == "newspaper"
-			else int(sim.report_for(item.id).day)
-		)
+		var news_day: int
+		if item.kind == "decision":
+			if (
+				not data.get("decisions") is Dictionary
+				or not data.decisions.get("records") is Dictionary
+			):
+				return null
+			var record: Variant = data.decisions.records.get(item.id)
+			if not record is Dictionary or not ServiceArea._integer(record.get("offered_day")):
+				return null
+			news_day = int(record.offered_day)
+		else:
+			news_day = (
+				int(sim.event_for(item.id).day)
+				if item.kind == "newspaper"
+				else int(sim.report_for(item.id).day)
+			)
 		var key: String = item.kind + ":" + item.id
 		if news_day > day or news_day < last_news_day or key in queued:
 			return null
@@ -320,6 +370,14 @@ func restore(data: Variant) -> Simulation:
 	sim.outcome = data.outcome
 	sim.tutorial_enabled = data.tutorial_enabled
 	sim.paused = true
+	if not sim.decisions.restore(data.get("decisions"), sim):
+		return null
+	if not sim.trust.restore_recovery(data.get("damage_records"), restored, day):
+		return null
+	for record: Dictionary in sim.trust.damage_records:
+		var event := sim.event_for(str(record.event_id))
+		if event.is_empty() or not _area_owns_event(restored[int(record.area_id)], event):
+			return null
 	return sim
 
 
@@ -334,6 +392,7 @@ func _crisis_valid(record: Variant, sim: Simulation, day: int) -> bool:
 		"elapsed",
 		"teams",
 		"stock",
+		"consumed_stock",
 		"funds",
 		"rescued",
 		"losses",
@@ -342,9 +401,13 @@ func _crisis_valid(record: Variant, sim: Simulation, day: int) -> bool:
 	]:
 		if not ServiceArea._integer(record.get(key)) or absf(float(record[key])) > MAX_VALUE:
 			return false
-	for key: String in ["protection", "damage", "support_sum", "baseline_support_sum"]:
+	for key: String in [
+		"protection", "damage", "support_sum", "baseline_support_sum", "aid_coverage_sum"
+	]:
 		if not ServiceArea._number(record.get(key)) or record[key] < 0:
 			return false
+	if not record.get("supply_alerted") is bool:
+		return false
 	var event := sim.event_for(str(record.get("event_id", "")))
 	if event.is_empty() or not sim.areas.has(int(record.area_id)):
 		return false
@@ -369,6 +432,22 @@ func _crisis_valid(record: Variant, sim: Simulation, day: int) -> bool:
 	):
 		return false
 	if record.protection > 100 or record.damage > 100 or record.funds < 0 or record.funds > 5000000:
+		return false
+	var need := sim.crises.requirements(record)
+	if (
+		record.stock > int(need.stock)
+		or record.consumed_stock < 0
+		or record.consumed_stock > int(record.elapsed) * int(need.daily_stock)
+		or (
+			absf(
+				(
+					float(record.aid_coverage_sum)
+					- float(record.consumed_stock) / int(need.daily_stock)
+				)
+			)
+			> 0.00001
+		)
+	):
 		return false
 	for key: String in ["teams", "stock", "rescued", "losses", "counter_rescued", "counter_losses"]:
 		if record[key] < 0 or record[key] > sim.areas[int(record.area_id)].population:
@@ -398,7 +477,9 @@ func _report_valid(record: Variant, sim: Simulation, day: int) -> bool:
 		"prevented_losses",
 		"prevented_damage",
 		"repair_estimate",
-		"funds"
+		"funds",
+		"consumed_stock",
+		"returned_stock"
 	]:
 		if (
 			not ServiceArea._integer(record.get(key))
@@ -406,7 +487,7 @@ func _report_valid(record: Variant, sim: Simulation, day: int) -> bool:
 			or (key != "day" and record[key] < 0)
 		):
 			return false
-	for key: String in ["quality", "trust_delta"]:
+	for key: String in ["quality", "trust_delta", "aid_coverage"]:
 		if not ServiceArea._number(record.get(key)):
 			return false
 	if not sim.areas.has(int(record.area_id)):
@@ -421,9 +502,42 @@ func _report_valid(record: Variant, sim: Simulation, day: int) -> bool:
 		or not _area_owns_event(sim.areas[int(record.area_id)], event)
 	):
 		return false
+	if record.get("event_id") != event.id or record.get("severity") != event.severity:
+		return false
+	if not record.get("trust_assessed") is bool:
+		return false
+	for key: String in ["preparation", "team_coverage"]:
+		if not ServiceArea._number(record.get(key)) or record[key] < 0.0 or record[key] > 1.0:
+			return false
+	if record.has("national_trust_delta"):
+		if (
+			not ServiceArea._number(record.national_trust_delta)
+			or not record.trust_assessed
+			or record.national_trust_delta != record.trust_delta
+		):
+			return false
+	elif record.trust_delta != 0.0:
+		return false
 	if int(record.day) != int(event.day) + int(event.response_window_days) or record.day > day:
 		return false
 	if record.exposed > sim.areas[int(record.area_id)].population or record.funds > 5000000:
+		return false
+	var daily := int(event.severity) * 5
+	if (
+		record.consumed_stock > daily * int(event.response_window_days)
+		or record.returned_stock > daily * 3
+		or record.aid_coverage < 0.0
+		or record.aid_coverage > 1.0
+		or (
+			absf(
+				(
+					float(record.aid_coverage)
+					- float(record.consumed_stock) / (daily * int(event.response_window_days))
+				)
+			)
+			> 0.00001
+		)
+	):
 		return false
 	return (
 		record.affected + record.safe == record.exposed
@@ -463,6 +577,18 @@ func _event_records_complete(sim: Simulation, event_index: int, day: int) -> boo
 		if not expected.has(record.id) or bool(expected[record.id]):
 			return false
 		expected.erase(record.id)
+	var evaluated_events: Dictionary = {}
+	for report: Dictionary in sim.crises.reports:
+		var pending := false
+		for crisis: Dictionary in sim.crises.active:
+			pending = pending or crisis.event_id == report.event_id
+		if bool(report.trust_assessed) == pending:
+			return false
+		if report.has("national_trust_delta"):
+			evaluated_events[report.event_id] = int(evaluated_events.get(report.event_id, 0)) + 1
+	for report: Dictionary in sim.crises.reports:
+		if report.trust_assessed and int(evaluated_events.get(report.event_id, 0)) != 1:
+			return false
 	return expected.is_empty()
 
 
@@ -470,6 +596,23 @@ func _shipment_states_valid(sim: Simulation, day: int) -> bool:
 	var deployed: Dictionary = {}
 	var delivered: Dictionary = {}
 	for shipment: Dictionary in sim.logistics.shipments:
+		var arrival := int(shipment.arrival)
+		var days := int(shipment.days)
+		var outbound_days := sim.logistics.travel_days(int(shipment.source), int(shipment.target))
+		if shipment.purpose == "transfer":
+			if (
+				shipment.source == shipment.target
+				or shipment.delivered
+				or shipment.return_days != 0
+				or days != outbound_days
+				or not shipment.state in ["outbound", "done"]
+			):
+				return false
+			if shipment.state == "outbound" and (arrival <= day or arrival > day + days):
+				return false
+			if shipment.state == "done" and arrival > day:
+				return false
+			continue
 		var active := sim.crises.get_crisis(shipment.crisis_id)
 		var report := sim.report_for(shipment.crisis_id)
 		var target_area := int(active.area_id) if not active.is_empty() else int(report.area_id)
@@ -477,29 +620,36 @@ func _shipment_states_valid(sim: Simulation, day: int) -> bool:
 			return false
 		var event_id: String = shipment.crisis_id.trim_suffix("-%d" % target_area)
 		var event := sim.event_for(event_id)
-		var quote := sim.logistics.quote(
-			int(shipment.source), target_area, shipment.kind, int(shipment.amount)
+		var deadline := int(event.day) + int(event.response_window_days)
+		var return_days := (
+			sim.logistics.travel_days(target_area, int(shipment.home))
+			if shipment.kind == "team"
+			else 0
 		)
-		if int(shipment.days) != int(quote.days):
+		if int(shipment.return_days) != return_days:
 			return false
-		var arrival := int(shipment.arrival)
-		var days := int(shipment.days)
+		var returning: bool = shipment.kind == "team" and shipment.state in ["returning", "done"]
+		if days != (return_days if returning else outbound_days):
+			return false
 		match String(shipment.state):
 			"outbound":
-				if arrival <= day or arrival > day + days:
-					return false
 				var dispatch_day := arrival - days
 				if (
-					dispatch_day < int(event.day)
-					or dispatch_day >= int(event.day) + int(event.response_window_days)
+					shipment.delivered
+					or arrival <= day
+					or arrival > day + days
+					or dispatch_day < int(event.day)
+					or dispatch_day >= deadline
 				):
 					return false
 			"deployed":
 				if (
 					shipment.kind != "team"
+					or not shipment.delivered
 					or active.is_empty()
 					or arrival > day
 					or arrival - days < int(event.day)
+					or arrival > deadline
 				):
 					return false
 				deployed[shipment.crisis_id] = (
@@ -520,14 +670,26 @@ func _shipment_states_valid(sim: Simulation, day: int) -> bool:
 					return false
 				if shipment.kind == "team" and (report.is_empty() or arrival < int(report.day)):
 					return false
-				if shipment.kind == "stock" and not active.is_empty():
-					delivered[shipment.crisis_id] = (
-						int(delivered.get(shipment.crisis_id, 0)) + int(shipment.amount)
-					)
+				if shipment.kind == "stock":
+					if shipment.delivered != (arrival <= deadline):
+						return false
+					if arrival - days < int(event.day) or arrival - days >= deadline:
+						return false
+		if shipment.kind == "stock" and shipment.delivered:
+			delivered[shipment.crisis_id] = (
+				int(delivered.get(shipment.crisis_id, 0)) + int(shipment.amount)
+			)
 	for crisis: Dictionary in sim.crises.active:
 		if (
 			int(crisis.teams) != int(deployed.get(crisis.id, 0))
-			or int(crisis.stock) != int(delivered.get(crisis.id, 0))
+			or int(crisis.stock) + int(crisis.consumed_stock) != int(delivered.get(crisis.id, 0))
+			or not bool(sim.crises.supply_forecast(crisis.id, sim.logistics, day).capacity_ok)
+		):
+			return false
+	for report: Dictionary in sim.crises.reports:
+		if (
+			int(report.consumed_stock) + int(report.returned_stock)
+			!= int(delivered.get(report.id, 0))
 		):
 			return false
 	return true

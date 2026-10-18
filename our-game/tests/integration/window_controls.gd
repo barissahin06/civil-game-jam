@@ -62,7 +62,7 @@ func _run() -> void:
 	await _press_button("AYARLAR")
 	await _capture("window-settings-fullscreen")
 	for mode: String in ["borderless", "fullscreen"]:
-		await _press_button("KENARLIKSIZ" if mode == "borderless" else "TAM EKRAN")
+		await _press_button("KENARLIKSIZ TAM EKRAN" if mode == "borderless" else "TAM EKRAN")
 		await _check_mode(mode)
 		await _key(KEY_F11)
 		await _check_mode("windowed")
@@ -71,14 +71,14 @@ func _run() -> void:
 	await _press_button("PENCERE")
 	await _check_mode("windowed")
 	await _capture("window-settings-windowed")
-	await _press_button("KENARLIKSIZ")
+	await _press_button("KENARLIKSIZ TAM EKRAN")
 	await _check_mode("borderless")
 	await _capture("window-settings-borderless")
 	await _key(KEY_ESCAPE)
 	assert(_shell.open_screen == "pause")
 	await _key(KEY_ESCAPE)
 	assert(_shell.open_screen == "newspaper" and _shell.sim.news_queue == pending)
-	await _press_button("KRİZ MERKEZİNE GEÇ")
+	await _press_button("HABERİ OKUDUM")
 	assert(_shell.hud._date_state.text == "MÜDAHALE / GÜNLÜK")
 	var target: Dictionary = _shell.crisis.selected()
 	_shell.sim.advance_to(int(target.start) + int(target.window))
@@ -90,6 +90,7 @@ func _run() -> void:
 	assert(_shell.open_screen == "pause")
 	await _key(KEY_ESCAPE)
 	assert(_shell.open_screen == "report" and _shell.sim.news_queue == pending)
+	await _shell.audio.shutdown()
 	_main.queue_free()
 	await process_frame
 	print(
@@ -115,9 +116,9 @@ func _check_hud_feedback() -> void:
 	sim.changed.emit()
 	await process_frame
 	await process_frame
-	assert(hud._trust_limits.text == "GÜVEN 0-100")
-	assert(hud._trust.text == "100,00" and hud._trust_delta.text == "DEĞİŞİM YOK")
-	assert("kampanya" in hud._trust.tooltip_text.to_lower() and "0" in hud._trust.tooltip_text)
+	assert(hud._trust_limits.text == "HALKIN GÜVENİ")
+	assert(hud._trust.text == "70,00" and hud._trust_delta.text == "DEĞİŞİM YOK")
+	assert("oyun" in hud._trust.tooltip_text.to_lower() and "0" in hud._trust.tooltip_text)
 	assert(hud._awareness.text == "9999")
 	assert(hud._total_teams.text == "21" and hud._total_stock.text == "840")
 	var team_label_id := hud._total_teams.get_instance_id()
@@ -149,7 +150,7 @@ func _check_hud_feedback() -> void:
 	assert(hud._date_label.mouse_filter == Control.MOUSE_FILTER_PASS)
 	assert(hud._date_label.get_theme_font_size("font_size") == 36)
 	assert(hud._date_state.text == "NORMAL / AYLIK")
-	var clock_bounds := Rect2(1280, 16, 616, 92)
+	var clock_bounds := Rect2(1280, 16, 616, 108)
 	for control: Control in [
 		hud._date_label,
 		hud._date_state,
@@ -178,7 +179,7 @@ func _check_hud_feedback() -> void:
 	sim.changed.emit()
 	await process_frame
 	await process_frame
-	assert(hud._trust.text in ["99,98", "99,99"])
+	assert(hud._trust.text in ["69,98", "69,99"])
 	assert(hud._trust_delta.text == "SON -0,015")
 	assert("HUD testindeki gerçek güven aşınması" in hud._trust_delta.tooltip_text)
 	var latest_text := hud._trust_delta.text
@@ -193,10 +194,10 @@ func _check_hud_feedback() -> void:
 	for speed: int in [1, 2, 4]:
 		await _press_button("%d×" % speed)
 		sim._accumulator = 0.0
-		await _press_button("DEVAM")
+		await _press_button("ZAMANI BAŞLAT")
 		_assert_hud_speed(speed, false)
 		await _capture("hud-running-%dx" % speed)
-		await _press_button("DURAKLAT")
+		await _press_button("ZAMANI DURDUR")
 		_assert_hud_speed(speed, true)
 	sim.clock.set_day(original_day)
 	sim.treasury.money = original_money

@@ -18,15 +18,12 @@ func test_team_only_response_cannot_replace_aid_and_preparation() -> void:
 	)
 
 
-func test_damage_pressure_ends_as_damage_is_repaired() -> void:
+func test_natural_decay_remains_small_at_every_trust_level() -> void:
 	var trust := TrustState.new()
-	trust.value = 50.0
-	trust.decay_month(0.0, 60.0)
-	assert_float(trust.value).is_equal_approx(49.895, 0.000001)
-	var before := trust.value
-	trust.decay_month(0.0, 0.0)
-	assert_float(before - trust.value).is_equal_approx(0.015, 0.000001)
-	assert_str(trust.history[1].reason).is_equal("Onarılmayan altyapının güven etkisi")
+	for level: float in [1.0, 50.0, 100.0]:
+		trust.value = level
+		trust.decay_month()
+		assert_float(level - trust.value).is_equal_approx(0.01, 0.000001)
 
 
 func test_repeatable_logistics_projects_do_not_farm_trust() -> void:
@@ -41,11 +38,12 @@ func test_repeatable_logistics_projects_do_not_farm_trust() -> void:
 	assert_bool(sim.projects.start("river_zoning", 34, 1950).ok).is_true()
 	for month: int in range(6):
 		sim.projects.tick_month(1950)
-	assert_float(sim.trust.value).is_equal_approx(50.6, 0.000001)
+	assert_float(sim.trust.value).is_equal_approx(50.0, 0.000001)
 
 
 func test_response_report_shows_actual_clamped_trust_change() -> void:
 	var trust := TrustState.new()
+	trust.value = 100.0
 	assert_float(trust.assess_response(1.0, 1.0, 1.0, 1.0, "Başarı")).is_equal(0.0)
 	trust.value = 0.5
 	assert_float(trust.assess_response(0.0, 0.0, 0.0, 0.0, "Eksik müdahale")).is_equal(-0.5)
@@ -55,7 +53,7 @@ func test_response_report_shows_actual_clamped_trust_change() -> void:
 func test_feedback_identifies_initial_bounds_without_an_invented_change() -> void:
 	var trust := TrustState.new()
 	var result := trust.feedback()
-	assert_float(result.value).is_equal(100.0)
+	assert_float(result.value).is_equal(70.0)
 	assert_float(result.minimum).is_equal(0.0)
 	assert_float(result.maximum).is_equal(100.0)
 	assert_bool(result.has_change).is_false()
@@ -81,12 +79,25 @@ func test_feedback_preserves_small_changes_and_cannot_modify_trust() -> void:
 	var trust := TrustState.new()
 	trust.decay_month()
 	var result := trust.feedback()
-	assert_float(result.latest_amount).is_equal_approx(-0.015, 0.000001)
+	assert_float(result.latest_amount).is_equal_approx(-0.01, 0.000001)
 	assert_bool(result.has_change).is_true()
 	assert_str(result.latest_reason).is_equal("Aylık güven aşınması")
 	result.value = 0.0
 	result.latest_amount = -90.0
 	result.latest_reason = "Değiştirilmiş"
-	assert_float(trust.value).is_equal_approx(99.985, 0.000001)
-	assert_float(trust.feedback().latest_amount).is_equal_approx(-0.015, 0.000001)
+	assert_float(trust.value).is_equal_approx(69.99, 0.000001)
+	assert_float(trust.feedback().latest_amount).is_equal_approx(-0.01, 0.000001)
 	assert_str(trust.feedback().latest_reason).is_equal("Aylık güven aşınması")
+
+
+func test_response_recovers_slowly_and_large_event_scaling_stays_bounded() -> void:
+	var trust := TrustState.new()
+	assert_float(trust.assess_response(1.0, 0.95, 1.0, 1.0, "Başarı")).is_equal_approx(
+		0.8, 0.000001
+	)
+	assert_float(trust.assess_response(1.0, 0.95, 1.0, 1.0, "Büyük başarı", 10.0)).is_equal_approx(
+		1.2, 0.000001
+	)
+	assert_float(trust.assess_response(0.0, 0.0, 0.0, 0.0, "Başarısızlık", 10.0)).is_equal_approx(
+		-3.0, 0.000001
+	)

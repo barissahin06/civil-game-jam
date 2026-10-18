@@ -29,9 +29,48 @@ func test_paused_speed_first_event_and_monthly_settlement() -> void:
 	assert_int(sim.news_queue.size()).is_equal(1)
 	assert_str(sim.projects.get_project(project.uid).status).is_equal("completed")
 	assert_bool(sim.projects.is_completed("research_structural")).is_true()
-	assert_int(sim.treasury.money).is_equal(77000000)
+	assert_int(sim.treasury.money).is_equal(47000000)
 	sim.update(100.0)
 	assert_str(CalendarClock.day_to_iso(sim.clock.day)).is_equal("1951-04-08")
+
+
+func test_critical_supply_stops_fast_clock_once_and_rearms_after_replenishment() -> void:
+	var sim := _fixture()
+	var crisis := _first_crisis(sim)
+	var warnings: Array[String] = []
+	sim.supply_warning_requested.connect(func(id: String) -> void: warnings.append(id))
+	sim.set_speed(4)
+	sim.set_paused(false)
+	sim.update(100.0)
+	assert_int(sim.clock.day).is_equal(int(crisis.start) + 1)
+	assert_bool(sim.paused).is_true()
+	assert_int(warnings.size()).is_equal(1)
+	sim.set_paused(false)
+	sim.update(Simulation.CRISIS_DAY_SECONDS / 4.0)
+	assert_bool(sim.paused).is_false()
+	assert_int(warnings.size()).is_equal(1)
+	assert_bool(sim.dispatch(31, crisis.id, "stock", 30).ok).is_true()
+	assert_bool(crisis.supply_alerted).is_false()
+	sim.update(Simulation.CRISIS_DAY_SECONDS / 4.0)
+	assert_bool(sim.paused).is_true()
+	assert_int(warnings.size()).is_equal(2)
+	assert_int(sim.clock.day).is_equal(int(crisis.start) + 3)
+
+
+func test_capacity_reserves_future_arrivals_before_spending_or_removing_stock() -> void:
+	var sim := _fixture()
+	var crisis := _first_crisis(sim)
+	var before := JSON.stringify(sim.to_dict())
+	assert_bool(sim.dispatch(31, crisis.id, "stock", 31).ok).is_false()
+	assert_str(JSON.stringify(sim.to_dict())).is_equal(before)
+	assert_bool(sim.dispatch(31, crisis.id, "stock", 30).ok).is_true()
+	# Three days away: two consumptions precede the arrival, leaving room for twenty.
+	assert_int(sim.missing_dispatch_amount(34, crisis.id, "stock")).is_equal(20)
+	before = JSON.stringify(sim.to_dict())
+	assert_bool(sim.dispatch(34, crisis.id, "stock", 21).ok).is_false()
+	assert_str(JSON.stringify(sim.to_dict())).is_equal(before)
+	assert_bool(sim.dispatch(34, crisis.id, "stock", 20).ok).is_true()
+	assert_int(sim.missing_dispatch_amount(34, crisis.id, "stock")).is_equal(0)
 
 
 func test_newspaper_archive_reveals_started_events_and_survives_restore() -> void:
@@ -94,7 +133,7 @@ func test_deterministic_response_and_delay_cost() -> void:
 		if sim == delayed:
 			sim.advance_to(sim.clock.day + 3)
 		sim.dispatch(31, target.id, "team", 1)
-		sim.dispatch(31, target.id, "stock", 40)
+		sim.dispatch(31, target.id, "stock", 30)
 		sim.advance_to(int(target.start) + int(target.window))
 	assert_dict(early.report_for()).is_equal(repeat.report_for())
 	assert_bool(early.report_for().rescued > delayed.report_for().rescued).is_true()

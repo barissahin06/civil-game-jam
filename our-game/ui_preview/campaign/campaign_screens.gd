@@ -1,6 +1,7 @@
 extends "res://ui_preview/shared/screen_view.gd"
 
 const RED := Color("cf9584")
+const AUDIO_CONTROLS := preload("res://ui_preview/campaign/audio_controls.gd")
 
 var start_year: int = 1950
 var tutorial_step: int = 0
@@ -46,12 +47,7 @@ func _menu() -> void:
 	UI.button(_content, "AYARLAR", Rect2(0, 398, 500, 52), _shell.show_screen.bind("settings"))
 	UI.button(_content, "KISA REHBER", Rect2(0, 468, 500, 52), _open_tutorial)
 	UI.button(
-		_content,
-		"ÇIKIŞ",
-		Rect2(0, 538, 500, 52),
-		_shell.get_tree().quit,
-		false,
-		UI.ButtonTone.DANGER
+		_content, "ÇIKIŞ", Rect2(0, 538, 500, 52), _shell.quit_game, false, UI.ButtonTone.DANGER
 	)
 
 
@@ -59,7 +55,7 @@ func _settings() -> void:
 	_title("AYARLAR")
 	UI.text(_content, "GÖRÜNTÜ MODU", Rect2(0, 116, 960, 28), 18, UI.MUTED)
 	var ids: Array[String] = ["fullscreen", "borderless", "windowed"]
-	var titles: Array[String] = ["TAM EKRAN", "KENARLIKSIZ", "PENCERE"]
+	var titles: Array[String] = ["TAM EKRAN", "KENARLIKSIZ TAM EKRAN", "PENCERE"]
 	for index in range(ids.size()):
 		UI.button(
 			_content,
@@ -71,10 +67,15 @@ func _settings() -> void:
 	UI.text(
 		_content, "F11: PENCERE / SEÇTİĞİN TAM EKRAN MODU", Rect2(0, 232, 1100, 28), 18, UI.MUTED
 	)
-	_shake_setting(Rect2(0, 300, 650, 60))
+	var audio_controls := AUDIO_CONTROLS.new()
+	audio_controls.position = Vector2(0, 300)
+	audio_controls.size = Vector2(650, 264)
+	_content.add_child(audio_controls)
+	audio_controls.setup(_shell.audio)
+	_shake_setting(Rect2(720, 300, 624, 52))
 	_paragraph(
 		"Sarsıntı kapalıyken kırmızı afet vurgusu görünmeye devam eder.",
-		Rect2(0, 382, 1100, 70),
+		Rect2(720, 382, 624, 100),
 		UI.MUTED
 	)
 	UI.button(_content, "GERİ", Rect2(0, 600, 432, 52), _shell.close_screen)
@@ -121,7 +122,7 @@ func _open_tutorial() -> void:
 
 
 func _newgame() -> void:
-	_title("YENİ KAMPANYA", "BAŞLANGIÇ YILINI SEÇ / HER KAMPANYA 2026 SONUNDA BİTER")
+	_title("YENİ OYUN", "BAŞLANGIÇ YILINI SEÇ / HER OYUN 2026 SONUNDA BİTER")
 	UI.panel(_content, Rect2(0, 120, 650, 188), true)
 	UI.text(_content, "TARİHSEL", Rect2(24, 142, 580, 36), 36, UI.GOLD)
 	_paragraph(
@@ -130,7 +131,7 @@ func _newgame() -> void:
 		UI.INK
 	)
 	var sandbox: Button = UI.button(
-		_content, "SANDBOX / KİLİTLİ", Rect2(694, 120, 650, 188), Callable()
+		_content, "SERBEST OYUN / HENÜZ KULLANILAMIYOR", Rect2(694, 120, 650, 188), Callable()
 	)
 	sandbox.disabled = true
 	sandbox.tooltip_text = "Henüz kullanılamıyor."
@@ -144,8 +145,8 @@ func _newgame() -> void:
 	UI.text(_content, "01 OCAK %d  /  31 ARALIK 2026" % start_year, Rect2(0, 516, 1260, 32))
 	UI.button(
 		_content,
-		"ONAYLA: YENİ KAMPANYA" if replace_confirmed else "KAMPANYAYI AÇ",
-		Rect2(850, 600, 494, 52),
+		"OTOMATİK KAYDIN YERİNE BAŞLAT" if replace_confirmed else "YENİ OYUNU BAŞLAT",
+		Rect2(810, 600, 534, 52),
 		_start_campaign,
 		false,
 		UI.ButtonTone.DANGER if replace_confirmed else UI.ButtonTone.CONFIRM
@@ -179,17 +180,17 @@ func _start_campaign() -> void:
 
 func _ending(defeat: bool) -> void:
 	_title(
-		"ULUSAL GÜVEN TÜKENDİ" if defeat else "KAMPANYA TAMAMLANDI",
+		"HALKIN GÜVENİ TÜKENDİ" if defeat else "OYUN TAMAMLANDI",
 		(
 			"ERKEN YENİLGİ / MÜDAHALE DEĞERLENDİRMESİ"
 			if defeat
-			else "31 ARALIK 2026 / KAMPANYA PERFORMANSI"
+			else "31 ARALIK 2026 / OYUN PERFORMANSI"
 		)
 	)
 	if defeat:
-		_metric("ULUSAL GÜVEN", "0 / 100", Rect2(0, 144, 650, 124), RED)
+		_metric("HALKIN GÜVENİ", "0 / 100", Rect2(0, 144, 650, 124), RED)
 		_paragraph(
-			"GECİKEN MÜDAHALELER VE KARŞILANAMAYAN İHTİYAÇLAR GÜVENİ TÜKETTİ. YENİ KAMPANYADA HAZIRLIK, EKİP DAĞILIMI VE ÖDEME ÖNCELİKLERİNİ DEĞERLENDİR.",
+			"GECİKEN MÜDAHALELER VE KARŞILANAMAYAN İHTİYAÇLAR GÜVENİ TÜKETTİ. YENİ OYUNDA HAZIRLIK, EKİP DAĞILIMI VE ÖDEME ÖNCELİKLERİNİ DEĞERLENDİR.",
 			Rect2(0, 324, 1100, 180),
 			UI.INK
 		)
@@ -214,13 +215,13 @@ func _tutorial() -> void:
 		"1 / BİR ŞEHİR SEÇ",
 		"2 / YEREL YATIRIM PLANLA",
 		"3 / ARAŞTIRMAYI İNCELE",
-		"4 / İLK SEVKİYATI PLANLA"
+		"4 / İLK GÖNDERİMİ HAZIRLA"
 	]
 	var descriptions := [
 		"HARİTADAKİ İL SINIRINA TIKLA. SOLDA NÜFUS, GELİR, ALTYAPI VE HAZIRLIĞI İNCELE.",
 		"ŞEHİR PANELİNDE YATIRIM SEKMESİNE GEÇ. BEDELİ, AYLIK TAKSİTİ VE TAMAMLANMA SÜRESİNİ KARŞILAŞTIR.",
-		"TEKNİK ARAŞTIRMALAR VE BİLİNÇ GELİŞTİRMELERİ ORTAK ARAŞTIRMA KAPASİTESİNİ KULLANIR. ÖNKOŞULLARI VE AÇILIŞ YILLARINI İNCELE.",
-		"KRİZDE KAYNAK MERKEZİ SEÇ. EKİBİ HEDEF KARTA SÜRÜKLE VEYA SEVK ET DÜĞMESİNİ KULLAN. VARIŞ GÜNÜNE DİKKAT ET."
+		"YATIRIM VE ARAŞTIRMA > ARAŞTIRMALAR SEKMESİNİ AÇ. TEKNİK ARAŞTIRMALAR VE BİLİNÇ GELİŞTİRMELERİ ORTAK KAPASİTEYİ KULLANIR. EKİP VE YARDIM MALZEMESİ İÇİN EKİP VE YARDIM HAZIRLA'YI KULLAN.",
+		"KRİZDE KAYNAK MERKEZİ SEÇ. EKİBİ HEDEF KARTA SÜRÜKLE VEYA GÖNDERİMİ ONAYLA DÜĞMESİNİ KULLAN. VARIŞ GÜNÜNE DİKKAT ET."
 	]
 	UI.text(_content, titles[tutorial_step], Rect2(0, 144, 1300, 54), 36, UI.GOLD)
 	_paragraph(descriptions[tutorial_step], Rect2(0, 256, 1120, 170), UI.INK)

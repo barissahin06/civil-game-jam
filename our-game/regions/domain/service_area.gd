@@ -9,6 +9,7 @@ var base_income: int
 var base_upkeep: int
 var resilience: float
 var damage: float = 0.0
+var condition: float = 100.0
 var teams: int
 var total_teams: int
 var stock: int
@@ -22,6 +23,10 @@ func income() -> int:
 	return roundi(base_income * (1.0 - clampf(damage, 0.0, 100.0) / 100.0))
 
 
+func capacity_efficiency() -> float:
+	return 0.5 + condition / 200.0
+
+
 func to_dict() -> Dictionary:
 	return {
 		"id": id,
@@ -32,6 +37,7 @@ func to_dict() -> Dictionary:
 		"base_upkeep": base_upkeep,
 		"resilience": resilience,
 		"damage": damage,
+		"condition": condition,
 		"teams": teams,
 		"total_teams": total_teams,
 		"stock": stock,
@@ -57,12 +63,14 @@ static func from_dict(data: Variant) -> ServiceArea:
 	for key: String in ["name", "region"]:
 		if not data.get(key) is String or String(data[key]).is_empty():
 			return null
-	for key: String in ["resilience", "damage", "latitude", "longitude"]:
+	for key: String in ["resilience", "damage", "condition", "latitude", "longitude"]:
 		if not _number(data.get(key)):
 			return null
 	if float(data.resilience) < 0.0 or float(data.resilience) > 100.0:
 		return null
 	if float(data.damage) < 0.0 or float(data.damage) > 100.0:
+		return null
+	if float(data.condition) < 0.0 or float(data.condition) > 100.0:
 		return null
 	if absf(float(data.latitude)) > 90.0 or absf(float(data.longitude)) > 180.0:
 		return null
@@ -92,6 +100,7 @@ static func from_dict(data: Variant) -> ServiceArea:
 		"base_upkeep",
 		"resilience",
 		"damage",
+		"condition",
 		"teams",
 		"total_teams",
 		"stock",

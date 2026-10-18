@@ -37,38 +37,44 @@ func _run() -> void:
 	_shell.crisis.operation_scene_enabled = true
 	_shell.refresh_screen()
 	await _capture("pilot-b-waiting")
-	# Actual city shortcut opens the same source, then direct quick dispatch reserves once.
+	# The city shortcut retains its source; presets only select, then confirm reserves once.
 	_shell.close_screen()
 	_shell.select_area(1)
 	_shell.city_panel.select_tab(2)
-	await _press_button("BU MERKEZDEN GÖNDER")
+	await _press_button("GÖNDERİM HAZIRLA")
 	assert(_shell.crisis.source_id == 1)
 	var target: Dictionary = _shell.crisis.selected()
 	var before := _shell.sim.treasury.money
 	var quote := _shell.sim.dispatch_preview(1, target.id, "team", 1)
-	await _press_button("1 EKİP GÖNDER")
+	await _preset_without_spending("team")
+	await _press_button("GÖNDERİMİ ONAYLA")
 	assert(_shell.sim.areas[1].teams == 0)
 	assert(_shell.sim.treasury.money == before - int(quote.fee))
-	assert(_shell.crisis._panel._quick_team.disabled)
+	assert(_shell.crisis._panel._send.disabled)
 	assert(_shell.sim.crisis_feedback(target.id).teams.on_time == 1)
 	await _capture("pilot-outbound")
 	_shell.close_screen()
 	_shell.select_area(31)
 	_shell.city_panel.select_tab(2)
-	await _press_button("BU MERKEZDEN GÖNDER")
-	await _press_button("1 EKİP GÖNDER")
+	await _press_button("GÖNDERİM HAZIRLA")
+	await _preset_without_spending("team")
+	await _press_button("GÖNDERİMİ ONAYLA")
 	assert(_shell.sim.crisis_feedback(target.id).teams.missing == 0)
 	await _capture("pilot-b-rescue")
-	await _press_button("10 YARDIM GÖNDER")
+	await _preset_without_spending("stock")
+	await _press_button("GÖNDERİMİ ONAYLA")
 	await _capture("pilot-b-aid")
-	await _press_button("YARDIM SEÇ")
+	await _preset_without_spending("stock")
 	var shipment_count := _shell.sim.logistics.shipments.size()
-	await _press_button("EKSİK KADAR SEÇ")
-	assert(_shell.crisis.amount == 30)
+	var expected_amount: int = _shell.sim.missing_dispatch_amount(
+		_shell.crisis.source_id, target.id, "stock", _shell.crisis.source_home
+	)
+	await _press_button("İHTİYACA GÖRE AYARLA")
+	assert(_shell.crisis.amount == expected_amount)
 	assert(_shell.sim.logistics.shipments.size() == shipment_count, "Fill must not spend")
-	await _press_button("SEVK ET")
+	await _press_button("GÖNDERİMİ ONAYLA")
 	assert(_shell.sim.crisis_feedback(target.id).stock.missing == 0)
-	assert(_shell.crisis._panel._quick_stock.disabled)
+	assert(_shell.crisis._panel._fill.disabled)
 	# Refresh does not replay arrivals, replace nodes, or lose the chosen source.
 	var ticker_count := _shell.sim.ticker.size()
 	panel = _shell.crisis._panel
@@ -132,6 +138,8 @@ func _run() -> void:
 	assert(_shell.crisis.require_target_selection)
 	assert(_shell.crisis._panel._send.disabled)
 	assert(_shell.crisis._panel._fund.disabled, "Budget support needs an explicit crisis target")
+	await _preset_without_spending("stock")
+	assert(_shell.crisis.require_target_selection and _shell.crisis._panel._send.disabled)
 	var picker: OptionButton = _shell.crisis._panel._target
 	await _click(picker.get_global_rect().get_center())
 	assert(picker.get_popup().visible, "Target popup must open from real mouse input")
@@ -154,7 +162,7 @@ func _run() -> void:
 	await _press_button("ACİL BÜTÇE")
 	assert(_shell.open_screen == "fund", "Budget button must open support, not close the panel")
 	await _capture("pilot-emergency-budget")
-	await _press_button("KRİZE DÖN")
+	await _press_button("AFET MÜDAHALESİNE DÖN")
 	assert(_shell.open_screen == "crisis")
 	assert(
 		_shell.crisis.selected().id == chosen_target and _shell.crisis.source_id == chosen_source
@@ -166,12 +174,37 @@ func _run() -> void:
 	await _click(other_marker.get_global_rect().get_center())
 	assert(_shell.crisis.selected().id == other.id and _shell.crisis.source_id == chosen_source)
 	await _capture("pilot-parallel")
+	await _shell.audio.shutdown()
 	_main.queue_free()
 	await process_frame
 	print(
-		"CRISIS_PILOT_PASS: red active-crisis palette and restoration, synchronized HUD/map shake, aligned budget header, fund navigation, quick dispatch, fill, source context, parallel targets, persistent focus/markers, A/B poses, 1/2/4x, report, repair"
+		"CRISIS_PILOT_PASS: red active-crisis palette and restoration, synchronized HUD/map shake, aligned budget header, fund navigation, select/confirm dispatch, fill, source context, parallel targets, persistent focus/markers, A/B poses, 1/2/4x, report, repair"
 	)
 	quit()
+
+
+func _preset_without_spending(kind: String) -> void:
+	var source: int = _shell.crisis.source_id
+	var area: ServiceArea = _shell.sim.areas[source]
+	var before: Array[int] = [
+		_shell.sim.treasury.money, area.teams, area.stock, _shell.sim.logistics.shipments.size()
+	]
+	await _press_button("EKİP SEÇ" if kind == "team" else "MALZEME SEÇ")
+	assert(_shell.crisis.dispatch_kind == kind)
+	assert(_shell.crisis.amount == (1 if kind == "team" else 10))
+	assert(_shell.crisis.source_id == source)
+	assert(
+		(
+			before
+			== [
+				_shell.sim.treasury.money,
+				area.teams,
+				area.stock,
+				_shell.sim.logistics.shipments.size()
+			]
+		),
+		"Selecting a preset must not spend or create a shipment"
+	)
 
 
 func _check_crisis_map_feedback() -> void:
@@ -337,6 +370,7 @@ func _motion() -> void:
 	await create_timer(2.8).timeout
 	_shell.sim.set_paused(true)
 	print("CRISIS_PILOT_MOTION_PASS: 1x travel, arrival, rescue and aid poses")
+	await _shell.audio.shutdown()
 	_main.queue_free()
 	await process_frame
 	quit()

@@ -13,6 +13,8 @@ func _initialize() -> void:
 	root.add_child(main)
 	await process_frame
 	await process_frame
+	var audio: Node = main.get_node("MainPreview").audio
+	assert(not audio._music.has_stream_playback(), "Opening must stay silent until the menu")
 	assert(main.has_node("Splash"))
 	assert(is_equal_approx(main.LOGO_SECONDS, 3.5))
 	assert(is_equal_approx(main.TITLE_SECONDS, 3.5))
@@ -107,8 +109,14 @@ func _initialize() -> void:
 	await title.tree_exited
 	assert(not main.has_node("TitleSplash"))
 	assert(main.get_node("MainPreview").is_visible_in_tree())
+	await create_timer(0.1).timeout
+	assert(audio._music.has_stream_playback(), "Music must begin after the title splash")
 	if "--capture" in OS.get_cmdline_user_args():
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png("res://../generated/startup-menu.png")
+	await audio.shutdown()
+	main.queue_free()
+	await process_frame
+	await process_frame
 	print("STARTUP PASS")
 	quit()

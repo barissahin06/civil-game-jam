@@ -22,10 +22,10 @@ func _ready() -> void:
 	size = Vector2(400, 846)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	UI.panel(self, Rect2(Vector2.ZERO, size), true)
-	UI.text(self, "HAZIRLIK PLANLA", Rect2(16, 12, 320, 32), 18, UI.GOLD)
+	UI.text(self, "EKİP VE YARDIM HAZIRLA", Rect2(16, 12, 320, 32), 18, UI.GOLD)
 	UI.button(self, "×", Rect2(350, 10, 34, 32), close)
 	_instruction = _paragraph(
-		"BİR EYLEM SEÇ.\nSONRA HARİTADA MERKEZLERE TIKLA.", Rect2(16, 54, 368, 52), UI.INK
+		"BİR EYLEM SEÇ.\nHARİTADAKİ MERKEZLERE TIKLA.", Rect2(16, 54, 368, 52), UI.INK
 	)
 	_actions.rescue_team = UI.button(
 		self, "EKİP KUR", Rect2(16, 116, 174, 42), select_action.bind("rescue_team")
@@ -34,17 +34,17 @@ func _ready() -> void:
 		self, "YARDIM HAZIRLA", Rect2(202, 116, 182, 42), select_action.bind("aid_stock")
 	)
 	_details = _paragraph("", Rect2(16, 172, 368, 100), UI.GOLD)
-	_summary = _paragraph("", Rect2(16, 282, 368, 78), UI.MUTED)
+	_summary = _paragraph("", Rect2(16, 282, 368, 88), UI.MUTED)
 	_summary.mouse_filter = Control.MOUSE_FILTER_PASS
 	_scroll = ScrollContainer.new()
-	_scroll.position = Vector2(16, 372)
-	_scroll.size = Vector2(368, 408)
+	_scroll.position = Vector2(16, 382)
+	_scroll.size = Vector2(368, 398)
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	add_child(_scroll)
 	_list = Control.new()
 	_list.custom_minimum_size = Vector2(344, 0)
 	_scroll.add_child(_list)
-	UI.text(self, "- SON BEKLEYEN EMRİ KALDIRIR", Rect2(16, 790, 368, 24), 18, UI.MUTED)
+	UI.text(self, "- SON BEKLEYEN İŞİ KALDIRIR", Rect2(16, 790, 368, 24), 18, UI.MUTED)
 	UI.text(self, "ESC / ×: PLANLAMADAN ÇIK", Rect2(16, 816, 368, 24), 18, UI.MUTED)
 	hide()
 
@@ -79,7 +79,7 @@ func refresh() -> void:
 	if not visible:
 		return
 	var plan: Dictionary = _shell.sim.preparation_plan()
-	_details.text = "EYLEM SEÇİLMEDİ\nHER TIKLAMA BİR HAZIRLIK EMRİ EKLER."
+	_details.text = "EYLEM SEÇİLMEDİ\nHER TIKLAMA BİR HAZIRLIK İŞİ EKLER."
 	for action: Dictionary in plan.actions:
 		var button: Button = _actions[action.id]
 		button.disabled = not action.ok
@@ -99,12 +99,12 @@ func refresh() -> void:
 				]
 			)
 	_instruction.text = (
-		"BİR EYLEM SEÇ.\nSONRA HARİTADA MERKEZLERE TIKLA."
+		"BİR EYLEM SEÇ.\nHARİTADAKİ MERKEZLERE TIKLA."
 		if action_id.is_empty()
-		else "HER TIKLAMA BİR EMİR EKLER.\nDOLU MERKEZDE SIRAYA EKLENİR."
+		else "HER TIKLAMA BİR İŞ EKLER.\nPROJE VARSA SIRAYA ALINIR."
 	)
 	_summary.text = (
-		"AKTİF: %d / SIRADA: %d\nAYLIK PROJE TAKSİTİ: %s\nSIRADAKİ EMİRLER ÜCRET ÖDEMEZ."
+		"ÇALIŞAN İŞ: %d / SIRADA: %d\nAYLIK PROJE TAKSİTİ: %s\nSIRADAKİ İŞLER İÇİN ÖDEME YAPILMAZ."
 		% [
 			plan.summary.active_count,
 			plan.summary.queued_count,
@@ -112,28 +112,31 @@ func refresh() -> void:
 		]
 	)
 	_summary.tooltip_text = (
-		"Aylık taksit, tüm çalışan projeleri kapsar. Bekleyen emirlerin toplam bedeli: "
+		"Aylık taksit, tüm çalışan projeleri kapsar. Bekleyen işlerin toplam bedeli: "
 		+ _shell.fmt_money(plan.summary.queued_cost)
 	)
+	var row_offset: int = 0
 	for index in range(plan.areas.size()):
 		var area: Dictionary = plan.areas[index]
 		if not _rows.has(area.area_id):
-			var row := UI.panel(_list, Rect2(0, index * 124, 344, 116))
-			var title := UI.text(row, "", Rect2(8, 4, 238, 26), 18, UI.GOLD)
-			var progress := UI.text(row, "", Rect2(250, 4, 86, 26), 18, UI.MUTED)
-			var inventory := UI.text(row, "", Rect2(8, 30, 328, 24), 18, UI.MUTED)
-			var active := UI.text(row, "", Rect2(8, 54, 328, 26), 18)
+			var row := UI.panel(_list, Rect2(0, index * 232, 344, 224))
+			var title := UI.text(row, "", Rect2(8, 4, 328, 26), 18, UI.GOLD)
+			var progress := UI.text(row, "", Rect2(250, 78, 86, 26), 18, UI.MUTED)
+			var inventory := UI.text(row, "", Rect2(8, 32, 328, 44), 18, UI.MUTED)
+			var active := UI.text(row, "", Rect2(8, 78, 328, 94), 18)
+			active.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			active.mouse_filter = Control.MOUSE_FILTER_PASS
-			var queue := UI.text(row, "", Rect2(8, 84, 280, 26), 18, UI.TEAL)
+			var queue := UI.text(row, "", Rect2(8, 176, 280, 44), 18, UI.TEAL)
 			var undo := UI.button(
 				row,
 				"-",
-				Rect2(300, 82, 36, 28),
+				Rect2(300, 184, 36, 28),
 				_undo.bind(area.area_id),
 				false,
 				UI.ButtonTone.DANGER
 			)
 			_rows[area.area_id] = {
+				"panel": row,
 				"title": title,
 				"progress": progress,
 				"inventory": inventory,
@@ -143,10 +146,14 @@ func refresh() -> void:
 				"last_uid": 0
 			}
 		var view: Dictionary = _rows[area.area_id]
-		view.title.text = String(area.name).to_upper()
-		view.inventory.text = "STOK: %d EKİP / %d YARDIM" % [area.teams, area.stock]
+		view.title.text = String(area.name).to_upper() + " VE ÇEVRESİ"
+		view.inventory.text = (
+			"KENDİ HAZIR EKİBİ: %d\nYARDIM MALZEMESİ: %d" % [area.teams, area.stock]
+		)
 		view.active.text = (
-			String(area.active_title).to_upper() if area.busy else "YEREL PROJE SLOTU BOŞ"
+			"ÇALIŞAN: " + String(area.active_title).to_upper()
+			if area.busy
+			else "YENİ BİR PROJE BAŞLAYABİLİR."
 		)
 		view.progress.text = (
 			"%d/%d AY" % [area.active_progress, area.active_months] if area.busy else ""
@@ -154,14 +161,27 @@ func refresh() -> void:
 		view.active.tooltip_text = view.active.text
 		if not String(area.queued_blocked_reason).is_empty():
 			view.active.tooltip_text += "\n" + String(area.queued_blocked_reason)
-			if not area.busy:
-				view.active.text = "SIRA BEKLİYOR / ÜZERİNE GEL"
-		view.active.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		view.queue.text = "SIRA: %d EKİP / %d YARDIM" % [area.queued_teams, area.queued_stock]
+			view.active.text = (
+				(view.active.text + "\n" if area.busy else "")
+				+ String(area.queued_blocked_reason).to_upper()
+			)
+		view.queue.text = (
+			"SIRADA: %d EKİP KURMA\n%d MALZEME HAZIRLAMA İŞİ"
+			% [area.queued_teams, area.queued_stock]
+		)
 		view.last_uid = area.last_uid
 		view.undo.disabled = int(area.last_uid) == 0
-		view.undo.tooltip_text = "Bu merkezdeki son bekleyen emri kaldır. Henüz ödeme yapılmadı."
-	_list.custom_minimum_size.y = plan.areas.size() * 124
+		view.undo.tooltip_text = "Bu merkezdeki son bekleyen işi kaldır. Henüz ödeme yapılmadı."
+		var active: Label = view.active
+		active.position.y = 104 if area.busy else 78
+		active.size.y = maxi(44, active.get_line_count() * active.get_line_height())
+		active.set_meta("p0_text_size", active.size)
+		view.queue.position.y = active.position.y + active.size.y + 8
+		view.undo.position.y = view.queue.position.y + 8
+		view.panel.position.y = row_offset
+		view.panel.size.y = view.queue.position.y + 52
+		row_offset += int(view.panel.size.y) + 8
+	_list.custom_minimum_size.y = row_offset
 
 
 func _undo(area_id: int) -> void:

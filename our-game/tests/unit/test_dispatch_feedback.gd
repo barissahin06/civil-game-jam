@@ -6,6 +6,9 @@ func _fixture() -> Simulation:
 	assert_bool(sim.setup()).is_true()
 	sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
 	sim.acknowledge()
+	# Dispatch feedback is tested independently of monthly capacity wear.
+	for area: ServiceArea in sim.areas.values():
+		area.condition = 100.0
 	return sim
 
 
@@ -18,7 +21,7 @@ func test_feedback_distinguishes_field_timely_and_late_shipments() -> void:
 	assert_int(feedback.teams.field).is_equal(1)
 	assert_int(feedback.teams.on_time).is_equal(1)
 	assert_int(feedback.teams.missing).is_equal(0)
-	assert_int(feedback.stock.missing).is_equal(40)
+	assert_int(feedback.stock.missing).is_equal(30)
 	assert_float(feedback.support).is_equal_approx(30.0, 0.00001)
 	# The same outbound quantity stops covering the response need after the cutoff.
 	sim.logistics.shipments.back().arrival = int(crisis.start) + int(crisis.window) + 1
@@ -39,7 +42,7 @@ func test_outbound_coverage_is_isolated_by_crisis_and_resource() -> void:
 	var feedback := sim.crisis_feedback(crisis.id)
 	assert_int(feedback.teams.missing).is_equal(2)
 	assert_int(feedback.teams.on_time).is_equal(0)
-	assert_int(feedback.stock.missing).is_equal(30)
+	assert_int(feedback.stock.missing).is_equal(20)
 	assert_int(feedback.stock.on_time).is_equal(10)
 
 
@@ -114,7 +117,7 @@ func test_missing_selection_uses_exact_rounded_quote_and_available_capacity() ->
 	sim.areas[1].stock = 3
 	assert_int(sim.missing_dispatch_amount(1, crisis.id, "stock")).is_equal(3)
 	sim.areas[1].stock = 80
-	assert_int(sim.missing_dispatch_amount(1, crisis.id, "stock")).is_equal(40)
+	assert_int(sim.missing_dispatch_amount(1, crisis.id, "stock")).is_equal(30)
 
 
 func test_zero_budget_blocks_paid_transport_but_not_free_local_dispatch() -> void:
@@ -148,7 +151,7 @@ func test_repeated_shortcuts_recheck_pending_need_without_overfilling() -> void:
 func test_partial_help_need_uses_selection_instead_of_ten_unit_shortcut() -> void:
 	var sim := _fixture()
 	var crisis: Dictionary = sim.crises.active.front()
-	assert_bool(sim.dispatch(31, crisis.id, "stock", 35).ok).is_true()
+	assert_bool(sim.dispatch(31, crisis.id, "stock", 25).ok).is_true()
 	assert_bool(sim.quick_dispatch(1, crisis.id, "stock").ok).is_false()
 	assert_int(sim.missing_dispatch_amount(1, crisis.id, "stock")).is_equal(5)
 	assert_bool(sim.dispatch(1, crisis.id, "stock", 5).ok).is_true()
@@ -162,7 +165,7 @@ func test_queries_leave_state_unchanged_and_same_day_notices_do_not_repeat() -> 
 	var convoy: Dictionary = sim.logistics.shipments.back()
 	assert_float(sim.shipment_progress(convoy)).is_equal(0.0)
 	sim.set_paused(false)
-	sim.update(0.5)
+	sim.update(0.75)
 	assert_float(sim.shipment_progress(convoy)).is_equal_approx(0.5, 0.00001)
 	sim.set_paused(true)
 	sim.update(0.25)
@@ -189,7 +192,7 @@ func test_support_feedback_is_the_daily_model_input_and_ignores_inbound() -> voi
 	assert_bool(sim.dispatch(1, crisis.id, "team", 1).ok).is_true()
 	assert_bool(sim.fund(crisis.id, 5000000).ok).is_true()
 	var feedback := sim.crisis_feedback(crisis.id)
-	assert_float(feedback.support).is_equal_approx(19.6875, 0.00001)
+	assert_float(feedback.support).is_equal_approx(19.03125, 0.00001)
 	sim.crises.tick_day(sim.clock.day + 1, sim.logistics)
 	assert_float(float(crisis.support_sum) * 100.0).is_equal_approx(feedback.support, 0.00001)
 	assert_float(crisis.baseline_support_sum).is_equal_approx(0.1875, 0.00001)
