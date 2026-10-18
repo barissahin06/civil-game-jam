@@ -89,6 +89,8 @@ static func text(
 	result.position = box.position
 	result.size = box.size
 	result.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	# Bitmap text boxes use the font line height without extra theme spacing.
+	result.add_theme_constant_override("line_spacing", 0)
 	result.add_theme_font_override("font", FONT)
 	result.add_theme_font_size_override("font_size", font_size)
 	result.add_theme_color_override("font_color", ink)

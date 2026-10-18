@@ -1,7 +1,9 @@
 class_name MeasureDefinition
 extends RefCounted
 
-const KINDS := ["policy", "local", "research", "awareness", "national", "repair", "team", "stock"]
+const KINDS := [
+	"policy", "local", "research", "awareness", "national", "repair", "team", "stock", "renewal"
+]
 
 var id: String
 var title: String

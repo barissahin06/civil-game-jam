@@ -13,11 +13,11 @@ func _run() -> void:
 	_shell = _main
 	_shell.auto_save_enabled = false
 	_shell.sim.tutorial_enabled = false
-	await _press_button("BİRLİKLER")
+	await _press_button("EKİPLER VE YARDIM")
 	assert(_shell.open_screen == "units" and _shell.units_panel._rows.size() == 21)
 	var panel: Control = _shell.units_panel
 	for row: Dictionary in panel._rows.values():
-		assert(row.dispatch.disabled and row.dispatch.tooltip_text.contains("aktif kriz"))
+		assert(row.dispatch.disabled and row.dispatch.tooltip_text.contains("aktif afet"))
 	_check_toolbar_clear()
 	assert(not _shell.map_view.tools_expanded)
 	await _click(_shell.map_view._tools_toggle.get_global_rect().get_center())
@@ -33,28 +33,33 @@ func _run() -> void:
 	await process_frame
 	await process_frame
 	assert(_shell.open_screen == "newspaper")
-	await _press_button("KRİZ MERKEZİNE GEÇ")
+	await _press_button("HABERİ OKUDUM")
 	assert(_shell.sim.news_queue.is_empty())
 	_shell.close_screen()
-	await _press_button("BİRLİKLER")
+	await _press_button("EKİPLER VE YARDIM")
 	await _row_click(31, "dispatch")
 	assert(_shell.open_screen == "crisis" and _shell.crisis.source_id == 31)
-	await _press_button("1 EKİP GÖNDER")
+	await _preset_without_spending("team")
+	await _press_button("GÖNDERİMİ ONAYLA")
 	assert(_shell.sim.areas[31].teams == 0)
 	_shell.close_screen()
-	await _press_button("BİRLİKLER")
+	await _press_button("EKİPLER VE YARDIM")
 	await _row_click(1, "dispatch")
 	assert(_shell.crisis.source_id == 1)
-	await _press_button("1 EKİP GÖNDER")
-	await _press_button("10 YARDIM GÖNDER")
+	await _preset_without_spending("team")
+	await _press_button("GÖNDERİMİ ONAYLA")
+	await _preset_without_spending("stock")
+	await _press_button("GÖNDERİMİ ONAYLA")
 	_shell.close_screen()
-	await _press_button("BİRLİKLER")
+	await _press_button("EKİPLER VE YARDIM")
 	panel = _shell.units_panel
 	assert(panel._summary.text == "HAZIR / TOPLAM EKİP: 19 / 21")
+	assert(_shell.hud._total_teams.text == "19")
+	assert(_shell.hud._team_total.text == "TOPLAM EKİP\n21")
 	assert(panel._movements.text == "YOLDA 1 / GÖREVDE 1 / DÖNÜŞ 0")
 	assert(panel._rows[1].ready.text == "HAZIR 0 / TOPLAM 1")
 	assert(panel._rows[31].movement.text == "YOLDA 0 / GÖREVDE 1 / DÖNÜŞ 0")
-	assert(panel._rows[1].stock.text == "YARDIM STOĞU: 30")
+	assert(panel._rows[1].stock.text == "YARDIM MALZEMESİ: 30")
 	await _focus_row(31, "center")
 	var title_id: int = panel._rows[31].title.get_instance_id()
 	var scroll: int = panel._scroll.scroll_vertical
@@ -77,7 +82,9 @@ func _run() -> void:
 	await process_frame
 	await _row_click(6, "dispatch")
 	assert(_shell.crisis.source_id == 6 and _shell.crisis.require_target_selection)
-	assert(_shell.crisis._panel._send.disabled and _shell.crisis._panel._quick_team.disabled)
+	assert(_shell.crisis._panel._send.disabled)
+	await _preset_without_spending("team")
+	assert(_shell.crisis.require_target_selection and _shell.crisis._panel._send.disabled)
 	var picker: OptionButton = _shell.crisis._panel._target
 	await _click(picker.get_global_rect().get_center())
 	assert(picker.get_popup().visible)
@@ -94,9 +101,33 @@ func _run() -> void:
 	_main.queue_free()
 	await process_frame
 	print(
-		"UNITS_UI_PASS: direct fleet access, source centers, quick dispatch, live counts, stable scroll/focus, map tools, parallel target and Escape"
+		"UNITS_UI_PASS: direct fleet access, source centers, select/confirm dispatch, live counts, stable scroll/focus, map tools, parallel target and Escape"
 	)
 	quit()
+
+
+func _preset_without_spending(kind: String) -> void:
+	var source: int = _shell.crisis.source_id
+	var area: ServiceArea = _shell.sim.areas[source]
+	var before: Array[int] = [
+		_shell.sim.treasury.money, area.teams, area.stock, _shell.sim.logistics.shipments.size()
+	]
+	await _press_button("EKİP SEÇ" if kind == "team" else "MALZEME SEÇ")
+	assert(_shell.crisis.dispatch_kind == kind)
+	assert(_shell.crisis.amount == (1 if kind == "team" else 10))
+	assert(_shell.crisis.source_id == source)
+	assert(
+		(
+			before
+			== [
+				_shell.sim.treasury.money,
+				area.teams,
+				area.stock,
+				_shell.sim.logistics.shipments.size()
+			]
+		),
+		"Selecting a preset must not spend or create a shipment"
+	)
 
 
 func _check_toolbar_clear() -> void:

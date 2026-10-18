@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["format_version", "note", "cards"],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cards": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "description",
+          "historical_note",
+          "event_ids",
+          "area_id",
+          "options"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]+$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "historical_note": {
+            "type": "string",
+            "minLength": 1
+          },
+          "event_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^historical-[0-9]{3}$"
+            }
+          },
+          "area_id": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 81
+          },
+          "options": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "title", "description", "project_id", "trust_delta"],
+              "properties": {
+                "id": {
+                  "enum": ["full", "focused", "decline"]
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "project_id": {
+                  "type": "string"
+                },
+                "trust_delta": {
+                  "type": "number",
+                  "minimum": -100,
+                  "maximum": 100
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "id": {
+                        "const": "decline"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "project_id": {
+                        "const": ""
+                      },
+                      "trust_delta": {
+                        "const": 0
+                      }
+                    }
+                  },
+                  "else": {
+                    "properties": {
+                      "project_id": {
+                        "pattern": "^decision_[a-z0-9_]+$"
+                      },
+                      "trust_delta": {
+                        "const": 0
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

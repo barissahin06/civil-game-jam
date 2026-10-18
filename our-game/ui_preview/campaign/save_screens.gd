@@ -29,13 +29,13 @@ func render(content: Control, screen: String) -> void:
 		var prompt := (
 			"MANUEL KAYIT %d üzerine yazılsın mı? Önceki kayıt değişecek." % pending_slot
 			if mode == "save"
-			else "Kayıt yüklensin mi? Kaydedilmemiş ilerleme değişecek."
+			else "Kayıt yüklensin mi? Kaydedilmemiş ilerleme kaybedilecek."
 		)
 		_paragraph(prompt, Rect2(0, 548, 1344, 56), UI.GOLD)
 		UI.button(_content, "VAZGEÇ", Rect2(720, 624, 240, 48), _cancel_confirmation)
 		UI.button(
 			_content,
-			"ÜZERİNE YAZ" if mode == "save" else "ONAYLA: YÜKLE",
+			"ÜZERİNE YAZ" if mode == "save" else "KAYDI YÜKLE",
 			Rect2(1024, 624, 320, 48),
 			_execute.bind(pending_slot),
 			false,
@@ -75,9 +75,9 @@ func _slot_row(summary: Dictionary) -> void:
 		_paragraph(str(summary.error), Rect2(18, y + 36, 970, 54), RED)
 	else:
 		UI.text(_content, "Boş kayıt yuvası", Rect2(18, y + 36, 970, 28), 18, UI.MUTED)
-	var title: String = "OTOMATİK YÜKLE" if slot == 0 else "MANUEL %d YÜKLE" % slot
+	var title: String = "OTOMATİK KAYDI YÜKLE" if slot == 0 else "%d. KAYDI YÜKLE" % slot
 	if mode == "save":
-		title = "OTOMATİK" if slot == 0 else "MANUEL %d KAYDET" % slot
+		title = "OTOMATİK" if slot == 0 else "%d. YUVAYA KAYDET" % slot
 	var action: Button = UI.button(
 		_content,
 		title,

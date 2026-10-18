@@ -13,11 +13,11 @@ func test_initial_month_pays_maintenance_before_installments() -> void:
 	var started := system.start("river_zoning", 34, 1950)
 	assert_bool(started.ok).is_true()
 	var settlement := system.treasury.collect_and_maintain(system.areas, system)
-	assert_int(settlement.income).is_equal(6000000)
+	assert_int(settlement.income).is_equal(4000000)
 	assert_int(settlement.upkeep).is_equal(1000000)
-	assert_int(settlement.net).is_equal(5000000)
+	assert_int(settlement.net).is_equal(3000000)
 	system.tick_month(1950, settlement.can_pay_budget)
-	assert_int(system.treasury.money).is_equal(24000000)
+	assert_int(system.treasury.money).is_equal(22000000)
 	assert_int(system.get_project(started.uid).progress_months).is_equal(1)
 	assert_float(system.get_effect(34, "protection_flood")).is_equal(0.0)
 
@@ -62,6 +62,7 @@ func test_shared_research_slots_pause_resume_and_awareness_payment() -> void:
 
 func test_local_and_national_slots_are_independent() -> void:
 	var system := _fixture()
+	system.global_completed.append("research_radio")
 	var local := system.start("river_zoning", 34, 1950)
 	assert_bool(local.ok).is_true()
 	assert_bool(system.start("strengthening", 34, 1950).ok).is_false()
@@ -232,7 +233,7 @@ func test_global_effect_preview_averages_actual_centers_and_maintenance() -> voi
 	assert_float(row.after).is_equal(_mean_preparedness(system, "earthquake"))
 	assert_float(row.after).is_equal(100.0)
 	var radio := system.effect_preview("national_radio")
-	assert_float(_effect_row(radio, "rescue_efficiency").delta).is_equal(5.0)
+	assert_float(_effect_row(radio, "rescue_efficiency").delta).is_equal(1.5)
 	assert_float(radio.maintenance_ratio).is_equal(0.5)
 
 

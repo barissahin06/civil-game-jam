@@ -23,6 +23,7 @@ var research := preload("res://ui_preview/management/research_screen.gd").new()
 var projects := preload("res://ui_preview/management/project_screens.gd").new()
 var crisis := preload("res://ui_preview/crisis/crisis_screen.gd").new()
 var news_reports := preload("res://ui_preview/crisis/news_reports.gd").new()
+var decision_view := preload("res://ui_preview/crisis/decision_view.gd").new()
 var selected_area_id: int = 0
 var open_screen: String = ""
 var auto_save_enabled: bool = false
@@ -43,10 +44,13 @@ var _ticker_cursor: int = 0
 var _ticker_elapsed: float = 0.0
 var _last_ticker_message: String = ""
 var _feedback_event_ids: Array[String] = []
+var _pending_supply_warning: String = ""
 var _pause_return_screen: String = ""
 var _pause_active: bool = false
 var _pause_was_running: bool = false
 var _quitting: bool = false
+var _development_screen: String = "projects"
+var _research_tab: Button
 
 
 func _ready() -> void:
@@ -60,7 +64,7 @@ func _ready() -> void:
 	theme.set_color("font_color", "TooltipLabel", UI.INK)
 	sim = Simulation.new()
 	if not sim.setup():
-		push_error("Kampanya verileri yüklenemedi; oyun başlatılamadı.")
+		push_error("Oyun verileri yüklenemedi; oyun başlatılamadı.")
 		set_process(false)
 		get_tree().quit(1)
 		return
@@ -76,7 +80,7 @@ func _ready() -> void:
 	if not get_parent().has_node("TitleSplash"):
 		audio.start_music()
 	_bind_simulation()
-	for view in [campaign, save_slots, research, projects, crisis, news_reports]:
+	for view in [campaign, save_slots, research, projects, crisis, news_reports, decision_view]:
 		view.setup(self)
 	map_view = MAP_VIEW.new()
 	map_view.setup(self)
@@ -102,8 +106,8 @@ func _ready() -> void:
 	map_view.set_shake_enabled(map_shake_enabled)
 	_gameplay.add_child(city_panel)
 	_gameplay.add_child(preparation_panel)
-	_status_panel = UI.panel(_gameplay, Rect2(432, 1030, 1472, 42))
-	_status = UI.text(_gameplay, "", Rect2(448, 1040, 1440, 26), 18, UI.MUTED)
+	_status_panel = UI.panel(_gameplay, Rect2(672, 1030, 1232, 42))
+	_status = UI.text(_gameplay, "", Rect2(688, 1040, 1200, 26), 18, UI.MUTED)
 	_status.mouse_filter = Control.MOUSE_FILTER_PASS
 	_status.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_status.ellipsis_char = "."
@@ -137,6 +141,9 @@ func _bind_simulation(resuming: bool = false) -> void:
 	sim.notification_requested.connect(_mark_dirty)
 	sim.notification_requested.connect(_play_new_crisis_feedback)
 	sim.reward_earned.connect(audio.play_effect.bind("reward_complete"))
+	sim.supply_warning_requested.connect(_on_supply_warning)
+	sim.management_warning_requested.connect(_on_management_warning)
+	_pending_supply_warning = ""
 	_feedback_event_ids.clear()
 	for event: Dictionary in sim.historical.events:
 		if int(event.day) < sim.clock.day or (resuming and int(event.day) == sim.clock.day):
@@ -151,6 +158,11 @@ func _play_new_crisis_feedback() -> void:
 			_feedback_event_ids.append(item.id)
 			map_view.play_crisis_feedback()
 			audio.play_effect("crisis_alert")
+
+
+func _on_supply_warning(crisis_id: String) -> void:
+	_pending_supply_warning = crisis_id
+	_mark_dirty()
 
 
 func _load_visual_preferences() -> void:
@@ -222,8 +234,8 @@ func _refresh_views() -> void:
 	var hints: Array[String] = [
 		"REHBER 1/4: Bir yönetim merkezi seç.",
 		"REHBER 2/4: Şehirde yerel yatırım başlat.",
-		"REHBER 3/4: Üst menüden araştırma başlat.",
-		"REHBER 4/4: İlk afette ekip veya yardım sevk et."
+		"REHBER 3/4: Yatırım ve Araştırma > Araştırmalar üzerinden araştırma başlat.",
+		"REHBER 4/4: İlk afette ekip veya yardım malzemesi gönder."
 	]
 	_guide.text = ""
 	if sim.tutorial_enabled:
@@ -244,6 +256,12 @@ func _refresh_views() -> void:
 	elif not sim.outcome.is_empty() and _presented_outcome != sim.outcome:
 		_presented_outcome = sim.outcome
 		show_screen(sim.outcome)
+	elif not _pending_supply_warning.is_empty():
+		var id := _pending_supply_warning
+		_pending_supply_warning = ""
+		if not sim.crises.get_crisis(id).is_empty():
+			crisis.select_crisis(id)
+			show_screen("crisis")
 	elif not open_screen.is_empty():
 		refresh_screen()
 
@@ -286,7 +304,7 @@ func show_unit_center(area_id: int) -> void:
 func start_campaign(year: int) -> void:
 	var replacement := Simulation.new()
 	if not replacement.setup(year):
-		preview_notice("Kampanya verileri yüklenemedi")
+		preview_notice("Oyun verileri yüklenemedi")
 		return
 	sim = replacement
 	in_frontend = false
@@ -314,7 +332,7 @@ func continue_campaign() -> void:
 
 func save_campaign_slot(slot: int) -> Dictionary:
 	if in_frontend or slot < 1 or slot > 3:
-		return {"ok": false, "message": "Manuel kayıt için açık kampanya ve 1-3 arasında yuva seç."}
+		return {"ok": false, "message": "Manuel kayıt için açık oyun ve 1-3 arasında yuva seç."}
 	if not saves.save(sim, saves.slot_path(slot)):
 		return {"ok": false, "message": saves.error}
 	return {"ok": true, "message": "Manuel kayıt %d kaydedildi." % slot}
@@ -339,7 +357,7 @@ func load_campaign_slot(slot: int) -> Dictionary:
 	close_city_panel()
 	_remove_modal()
 	_mark_dirty()
-	return {"ok": true, "message": "Kampanya yüklendi."}
+	return {"ok": true, "message": "Oyun yüklendi."}
 
 
 func _save() -> bool:
@@ -359,9 +377,29 @@ func command_result(result: Dictionary) -> void:
 		_save_timer = 10.0
 
 
+func screen_focus_path() -> NodePath:
+	var focused := get_viewport().gui_get_focus_owner()
+	if (
+		focused != null
+		and is_instance_valid(_screen_content)
+		and _screen_content.is_ancestor_of(focused)
+	):
+		return _screen_content.get_path_to(focused)
+	return NodePath()
+
+
+func restore_screen_focus(path: NodePath) -> void:
+	if path.is_empty() or not is_instance_valid(_screen_content):
+		return
+	var focused := _screen_content.get_node_or_null(path) as Control
+	if focused != null:
+		focused.grab_focus()
+
+
 func refresh_screen() -> void:
 	if not is_instance_valid(_screen_content):
 		return
+	var focus_path := screen_focus_path()
 	if not open_screen in ["crisis", "units"]:
 		UI.clear(_screen_content)
 	match open_screen:
@@ -381,16 +419,31 @@ func refresh_screen() -> void:
 			crisis.render(_screen_content, open_screen)
 		"newspaper", "report":
 			news_reports.render(_screen_content, open_screen)
+		"decision":
+			decision_view.render(_screen_content, open_screen)
 		"menu", "newgame", "pause", "settings", "tutorial", "ending", "defeat":
 			campaign.render(_screen_content, open_screen)
+	if is_instance_valid(_research_tab):
+		_research_tab.text = (
+			"ARAŞTIRMALAR %d/%d"
+			% [sim.projects.active_count("research"), sim.projects.research_capacity]
+		)
+	restore_screen_focus(focus_path)
 
 
 func show_screen(screen: String) -> void:
+	if open_screen == "research" and screen not in ["research", "project"]:
+		research.reset_navigation()
+	if screen == "development":
+		screen = _development_screen
 	if (
 		(not in_frontend and screen in ["menu", "newgame"])
 		or (in_frontend and screen not in ["menu", "newgame", "load", "settings", "tutorial"])
 	):
 		return
+	hud.close_events_menu()
+	if screen in ["projects", "national", "research"]:
+		_development_screen = screen
 	if screen == "pause" and not _pause_active:
 		_pause_return_screen = open_screen
 		_pause_was_running = not sim.paused
@@ -426,7 +479,7 @@ func show_screen(screen: String) -> void:
 	elif screen in ["crisis", "units"]:
 		UI.panel(_modal, Rect2(1284, 174, 620, 846), true)
 		UI.button(_modal, "KAPAT", Rect2(1792, 198, 92, 34), close_screen)
-	elif screen == "newspaper":
+	elif screen in ["newspaper", "decision"]:
 		var shade := ColorRect.new()
 		shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		shade.color = Color(0.035, 0.06, 0.085, 0.65)
@@ -451,11 +504,25 @@ func show_screen(screen: String) -> void:
 	_screen_content.size = (
 		Vector2(580, 810) if screen in ["crisis", "units"] else Vector2(1376, 690)
 	)
-	if screen == "newspaper":
+	if screen in ["newspaper", "decision"]:
 		_screen_content.size = news_reports.NEWSPAPER_SIZE
 		_screen_content.position = (size - _screen_content.size) / 2.0
 	_screen_content.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_modal.add_child(_screen_content)
+	if screen in ["projects", "national", "research"]:
+		var routes: Array[String] = ["projects", "national", "research"]
+		var titles: Array[String] = ["PROJELER", "ÖNLEMLER", "ARAŞTIRMALAR"]
+		for index in range(routes.size()):
+			var tab := UI.button(
+				_modal,
+				titles[index],
+				Rect2(474 + index * 320, 204, 308, 42),
+				show_screen.bind(routes[index]),
+				screen == routes[index]
+			)
+			tab.name = "Development_" + routes[index]
+			if routes[index] == "research":
+				_research_tab = tab
 	if screen == "newspaper":
 		var close := UI.button(
 			_modal,
@@ -474,11 +541,13 @@ func _remove_modal() -> void:
 		remove_child(_modal)
 		_modal.queue_free()
 	_modal = null
+	_research_tab = null
 	units_panel = null
 	open_screen = ""
 
 
 func close_screen() -> void:
+	research.reset_navigation()
 	if in_frontend:
 		if open_screen != "menu":
 			show_screen("menu")
@@ -516,7 +585,7 @@ func acknowledge_news() -> void:
 
 
 func _on_map_tools_toggled(expanded: bool) -> void:
-	var left: float = 1284.0 if expanded else 432.0
+	var left: float = 1510.0 if expanded else 672.0
 	_status_panel.position.x = left
 	_status_panel.size.x = 1904.0 - left
 	_status.position.x = left + 16.0
@@ -528,6 +597,13 @@ func preview_notice(message: String) -> void:
 		_status.text = message
 		_status.tooltip_text = message
 		sim.log_message(message)
+
+
+func _on_management_warning(message: String) -> void:
+	if is_instance_valid(_status):
+		var notices := message.split("\n", false)
+		_status.text = "YÖNETİM UYARISI (%d): %s" % [notices.size(), notices[0]]
+		_status.tooltip_text = message
 
 
 func _display_ticker() -> void:
@@ -589,6 +665,9 @@ func quit_game() -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_ESCAPE:
+			if hud.close_events_menu():
+				get_viewport().set_input_as_handled()
+				return
 			if (
 				in_frontend
 				or open_screen in ["pause", "settings", "save", "load"]

@@ -31,7 +31,8 @@
           "province_ids",
           "completed_measures",
           "latitude",
-          "longitude"
+          "longitude",
+          "condition"
         ],
         "properties": {
           "id": {
@@ -117,6 +118,11 @@
             "type": "number",
             "minimum": -180,
             "maximum": 180
+          },
+          "condition": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
           }
         },
         "additionalProperties": false

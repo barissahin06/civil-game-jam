@@ -13,7 +13,7 @@ func _run() -> void:
 	_shell.auto_save_enabled = false
 	_shell.sim.tutorial_enabled = false
 	assert(_shell.sim.start_project("river_zoning", 31).ok)
-	await _press_button("HAZIRLIK PLANLA")
+	await _press_button("EKİP VE YARDIM HAZIRLA")
 	var panel: Control = _shell.preparation_panel
 	assert(panel.visible and panel.action_id.is_empty())
 	assert(not _shell.city_panel.visible and _shell.open_screen.is_empty())
@@ -74,19 +74,26 @@ func _run() -> void:
 	await _capture("terrain-map-overview")
 	await _click(points[31])
 	assert(_shell.city_panel.visible and _shell.selected_area_id == 31)
-	await _press_button("HAZIRLIK PLANLA")
+	await _press_button("EKİP VE YARDIM HAZIRLA")
 	assert(panel.visible and panel.action_id.is_empty() and not _shell.city_panel.visible)
 	await _press_button("YARDIM HAZIRLA")
-	await _press_button("PROJELER")
+	await _press_button("YATIRIM VE ARAŞTIRMA")
 	assert(not panel.visible and panel.action_id.is_empty())
 	await _capture("preparation-project-tracker")
 	var paused := _find_button(_shell._modal, "DURAKLAT")
 	assert(paused != null)
-	await _press_button("İLERİ")
-	assert(_find_button(_shell._modal, "DURAKLAT").disabled, "Queued orders cannot pause")
+	var queued_count := 0
+	for project_row: Control in _shell._screen_content.get_node("ProjectList/Rows").get_children():
+		var project: ActiveProject = _shell.sim.projects.get_project(
+			String(project_row.name).trim_prefix("Project").to_int()
+		)
+		assert(project_row.get_node("Pause").disabled == (project.status == "queued"))
+		if project.status == "queued":
+			queued_count += 1
+	assert(queued_count > 0, "Queued orders remain visible in the scroll list")
 	await _capture("preparation-queued-projects")
 	_shell.close_screen()
-	await _press_button("HAZIRLIK PLANLA")
+	await _press_button("EKİP VE YARDIM HAZIRLA")
 	await _press_button("YARDIM HAZIRLA")
 	# A pending newspaper exits stamping before another click can create an order.
 	_shell.sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
@@ -114,7 +121,7 @@ func _check_map_toolbar() -> void:
 	var before: int = _shell.sim.projects.projects.size()
 	var toolbar: Panel = map.get_node("MapToolbar")
 	var first: Button = map._layer_buttons[0]
-	assert(toolbar.position == Vector2(16, 1030) and toolbar.size == Vector2(400, 42))
+	assert(toolbar.position == Vector2(16, 1030) and toolbar.size == Vector2(640, 42))
 	assert(not map.tools_expanded and not first.is_visible_in_tree())
 	assert(not map._legend_panel.is_visible_in_tree())
 	assert(not toolbar.get_global_rect().intersects(_shell.preparation_panel.get_global_rect()))
@@ -122,7 +129,7 @@ func _check_map_toolbar() -> void:
 	var notice: String = _shell._status.text
 	var notice_tooltip: String = _shell._status.tooltip_text
 	await _click(map._tools_toggle.get_global_rect().get_center())
-	assert(map.tools_expanded and toolbar.size == Vector2(1254, 42))
+	assert(map.tools_expanded and toolbar.size == Vector2(1478, 42))
 	assert(first.is_visible_in_tree() and map._legend_panel.is_visible_in_tree())
 	assert(not toolbar.get_global_rect().intersects(_shell._status_panel.get_global_rect()))
 	assert(
@@ -139,7 +146,7 @@ func _check_map_toolbar() -> void:
 	assert(terrain.texture_filter == CanvasItem.TEXTURE_FILTER_PARENT_NODE)
 	assert(terrain.get_index() > map._heatmap.get_index())
 	assert(terrain.get_index() < map._selection.get_index())
-	await _press_button("SIFIRLA")
+	await _press_button("GÖRÜNÜMÜ SIFIRLA")
 	assert(map._zoom == 1 and map._zoom_out.disabled and not map._zoom_in.disabled)
 	assert(map._zoom_label.text == "1×")
 	await _click(map._zoom_out.get_global_rect().get_center())
@@ -154,10 +161,10 @@ func _check_map_toolbar() -> void:
 		await _click(map._layer_buttons[index].get_global_rect().get_center())
 		assert(map._layer_buttons[index].button_pressed)
 		await _capture("map-toolbar-mode-%d" % index)
-	await _click(toolbar.global_position + Vector2(404, 22))
+	await _click(toolbar.global_position + Vector2(624, 22))
 	await _click(map._legend_panel.global_position + Vector2(4, 4))
 	var camera_before: Vector2 = map._map_image.position
-	var gutter: Vector2 = toolbar.global_position + Vector2(404, 22)
+	var gutter: Vector2 = toolbar.global_position + Vector2(624, 22)
 	await _pan(gutter, gutter + Vector2(30, 0))
 	assert(map._map_image.position == camera_before, "Dragging map controls must not pan the map")
 	for zoom in [2, 3]:
@@ -169,14 +176,14 @@ func _check_map_toolbar() -> void:
 	await _capture("map-toolbar-zoom-max")
 	await _click(map._zoom_out.get_global_rect().get_center())
 	assert(map._zoom == 2 and not map._zoom_in.disabled)
-	await _press_button("SIFIRLA")
+	await _press_button("GÖRÜNÜMÜ SIFIRLA")
 	assert(map._map_image.position == map.DEFAULT_ORIGIN and map._zoom_out.disabled)
 	for zoom in [2, 3, 3]:
 		await _wheel(Vector2(1100, 600), MOUSE_BUTTON_WHEEL_UP)
 		assert(map._zoom == zoom and map._zoom_label.text == "%d×" % zoom)
 	await _wheel(Vector2(1100, 600), MOUSE_BUTTON_WHEEL_DOWN)
 	assert(map._zoom == 2 and not map._zoom_in.disabled)
-	await _press_button("SIFIRLA")
+	await _press_button("GÖRÜNÜMÜ SIFIRLA")
 	await _wheel(Vector2(1100, 600), MOUSE_BUTTON_WHEEL_DOWN)
 	assert(map._zoom == 1 and map._zoom_out.disabled)
 	assert(_shell.sim.projects.projects.size() == before, "Toolbar/wheel must not enqueue")
@@ -187,9 +194,9 @@ func _check_map_toolbar() -> void:
 	assert(map.selected_overlay == 3 and map._layer_buttons[3].button_pressed)
 	await _click(map._tools_toggle.get_global_rect().get_center())
 	assert(not map.tools_expanded and not first.is_visible_in_tree())
-	assert(map._tools_toggle.text == "HASAR +" and map.selected_overlay == 3)
+	assert(map._tools_toggle.text == "HARİTA GÖRÜNÜMÜ" and map.selected_overlay == 3)
 	assert(not toolbar.get_global_rect().intersects(_shell._status_panel.get_global_rect()))
-	assert(_shell._status_panel.position.x == 432)
+	assert(_shell._status_panel.position.x == 672)
 	_shell.sim.changed.emit()
 	await process_frame
 	assert(not map.tools_expanded and map._tools_toggle.has_focus())
@@ -204,7 +211,7 @@ func _check_map_toolbar() -> void:
 		assert(terrain.get_global_transform() == map._map_image.get_global_transform())
 		assert(terrain.get_global_transform().get_scale() == Vector2.ONE * zoom)
 		await _capture("terrain-zoom-%d" % zoom)
-	await _press_button("SIFIRLA")
+	await _press_button("GÖRÜNÜMÜ SIFIRLA")
 	await _click(map._tools_toggle.get_global_rect().get_center())
 	assert(not map.tools_expanded and map.selected_overlay == 0 and map._zoom == 1)
 
@@ -222,7 +229,7 @@ func _check_map_legend() -> void:
 	var native_palette := DisplayServer.get_name() != "headless"
 	assert(map._region_labels.size() == 7 and map._region_swatches.size() == 7)
 	assert(map._legend_values.size() == 3 and map._legend_swatches.size() == 3)
-	assert(map._crisis_key.text == "! KIRMIZI / AKTİF KRİZ")
+	assert(map._crisis_key.text == "! KIRMIZI / AKTİF AFET")
 	_check_palette_color(map._crisis_swatch.color, map.CRISIS_COLOR)
 	for mode in range(4):
 		await _click(map._layer_buttons[mode].get_global_rect().get_center())
@@ -268,7 +275,7 @@ func _check_map_legend() -> void:
 	_shell.sim.areas[1].stock = 0
 	_shell.sim.areas[6].stock = 80
 	_shell.sim.areas[31].stock = 240
-	await _press_button("YARDIM STOĞU")
+	await _press_button("YARDIM MALZEMESİ")
 	_shell.sim.changed.emit()
 	await process_frame
 	await process_frame
@@ -305,7 +312,7 @@ func _check_map_legend() -> void:
 	_shell.sim.areas[1].damage = 0.0
 	_shell.sim.areas[6].damage = 100.0
 	_shell.sim.areas[31].damage = 100.0
-	await _press_button("HASAR")
+	await _press_button("ALTYAPI HASARI")
 	_shell.sim.changed.emit()
 	await process_frame
 	await process_frame

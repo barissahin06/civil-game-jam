@@ -212,7 +212,11 @@ func test_parallel_multi_area_event_and_2026_ending_round_trip() -> void:
 	var checked_parallel := false
 	var safety := 0
 	while sim.outcome.is_empty() and safety < 1000:
-		sim.news_queue.clear()
+		while not sim.news_queue.is_empty():
+			if sim.news_queue.front().kind == "decision":
+				assert_bool(sim.choose_decision(sim.news_queue.front().id, "decline").ok).is_true()
+			else:
+				sim.acknowledge()
 		sim.trust.value = 100.0
 		sim.advance_to(ending)
 		if sim.crises.active.size() > 1 and not checked_parallel:
@@ -224,16 +228,16 @@ func test_parallel_multi_area_event_and_2026_ending_round_trip() -> void:
 	_round_trip(sim)
 
 
-func test_slot_paths_keep_legacy_autosave_and_reject_out_of_range_ids() -> void:
+func test_slot_paths_use_v4_and_reject_out_of_range_ids() -> void:
 	var store := SaveStore.new()
 	assert_str(store.slot_path(0)).is_equal(SaveStore.PATH)
 	for slot in range(1, 4):
-		assert_str(store.slot_path(slot)).is_equal("user://manual_%d_v1.json" % slot)
+		assert_str(store.slot_path(slot)).is_equal("user://manual_%d_v4.json" % slot)
 	for slot: int in [-100, -1, 4, 100]:
 		assert_str(store.slot_path(slot)).is_empty()
 	store.slot_directory = TEST_SLOT_DIRECTORY
-	assert_str(store.slot_path(0)).is_equal(TEST_SLOT_DIRECTORY + "/campaign_v1.json")
-	assert_str(store.slot_path(3)).is_equal(TEST_SLOT_DIRECTORY + "/manual_3_v1.json")
+	assert_str(store.slot_path(0)).is_equal(TEST_SLOT_DIRECTORY + "/campaign_v4.json")
+	assert_str(store.slot_path(3)).is_equal(TEST_SLOT_DIRECTORY + "/manual_3_v4.json")
 
 
 func test_slot_summaries_are_fixed_and_do_not_create_missing_files() -> void:
@@ -322,3 +326,99 @@ func test_oversized_slot_is_visible_but_never_loadable() -> void:
 	var preserved := FileAccess.open(store.slot_path(3), FileAccess.READ)
 	assert_int(preserved.get_length()).is_equal(SaveStore.MAX_FILE_BYTES + 1)
 	preserved.close()
+
+
+func test_transfer_stationing_guest_mission_and_recall_round_trip() -> void:
+	var sim := _fixture()
+	assert_bool(sim.transfer_resources(6, 31, "team", 1).ok).is_true()
+	assert_bool(sim.transfer_resources(1, 31, "stock", 10).ok).is_true()
+	_round_trip(sim)
+	sim.advance_to(sim.clock.day + 3)
+	assert_int(sim.logistics.available_teams(31, 6)).is_equal(1)
+	_round_trip(sim)
+	sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
+	sim.acknowledge()
+	var crisis: Dictionary = sim.crises.active.front()
+	assert_bool(sim.dispatch(31, crisis.id, "team", 1, 6).ok).is_true()
+	assert_bool(sim.dispatch(31, crisis.id, "stock", 20).ok).is_true()
+	_round_trip(sim)
+	sim.set_paused(false)
+	sim.advance_to(sim.clock.day + 1)
+	assert_int(crisis.consumed_stock).is_greater(0)
+	assert_bool(crisis.supply_alerted).is_true()
+	_round_trip(sim)
+	sim.advance_to(int(crisis.start) + int(crisis.window))
+	assert_str(sim.logistics.shipments[2].state).is_equal("returning")
+	_round_trip(sim)
+	sim.acknowledge()
+	sim.advance_to(sim.clock.day + 3)
+	assert_int(sim.areas[6].teams).is_equal(1)
+	_round_trip(sim)
+	assert_bool(sim.transfer_resources(6, 31, "team", 1).ok).is_true()
+	sim.advance_to(sim.clock.day + 3)
+	assert_bool(sim.recall_teams(31, 6, 1).ok).is_true()
+	_round_trip(sim)
+
+
+func test_stationed_ownership_purpose_and_supply_corruption_is_rejected() -> void:
+	var sim := _fixture()
+	assert_bool(sim.transfer_resources(6, 31, "team", 1).ok).is_true()
+	sim.advance_to(sim.clock.day + 3)
+	var store := SaveStore.new()
+	var data := sim.to_dict()
+	for key: String in ["home", "location", "amount"]:
+		var bad := data.duplicate(true)
+		bad.stationed[0][key] = "6"
+		assert_object(store.restore(bad)).is_null()
+	var bad := data.duplicate(true)
+	bad.stationed[0].home = 999
+	assert_object(store.restore(bad)).is_null()
+	bad = data.duplicate(true)
+	bad.stationed.append(bad.stationed[0].duplicate(true))
+	assert_object(store.restore(bad)).is_null()
+	bad = data.duplicate(true)
+	bad.shipments[0].delivered = true
+	assert_object(store.restore(bad)).is_null()
+	bad = data.duplicate(true)
+	bad.shipments[0].purpose = "crisis"
+	assert_object(store.restore(bad)).is_null()
+	sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
+	sim.acknowledge()
+	var crisis: Dictionary = sim.crises.active.front()
+	assert_bool(sim.dispatch(31, crisis.id, "stock", 20).ok).is_true()
+	sim.advance_to(sim.clock.day + 1)
+	data = sim.to_dict()
+	for key: String in ["consumed_stock", "aid_coverage_sum", "supply_alerted"]:
+		bad = data.duplicate(true)
+		bad.active[0][key] = "1"
+		assert_object(store.restore(bad)).is_null()
+	bad = data.duplicate(true)
+	bad.active[0].consumed_stock += 1
+	assert_object(store.restore(bad)).is_null()
+	bad = data.duplicate(true)
+	bad.active[0].stock = int(crisis.severity) * 15 + 1
+	assert_object(store.restore(bad)).is_null()
+	bad = data.duplicate(true)
+	bad.active[0].aid_coverage_sum = INF
+	assert_object(store.restore(bad)).is_null()
+	bad = data.duplicate(true)
+	bad.shipments[1].delivered = false
+	assert_object(store.restore(bad)).is_null()
+
+
+func test_reports_keep_consumed_and_returned_aid_ledger() -> void:
+	var sim := _crisis_fixture()
+	var crisis: Dictionary = sim.crises.active.front()
+	assert_bool(sim.transfer_resources(1, 31, "stock", 40).ok).is_true()
+	assert_bool(sim.dispatch(31, crisis.id, "stock", 30).ok).is_true()
+	sim.advance_to(int(crisis.start) + int(crisis.window) - 1)
+	assert_bool(sim.dispatch(31, crisis.id, "stock", 20).ok).is_true()
+	sim.advance_to(sim.clock.day + 1)
+	assert_int(sim.crises.reports[0].returned_stock).is_greater(0)
+	_round_trip(sim)
+	var bad := sim.to_dict()
+	bad.reports[0].consumed_stock += 1
+	assert_object(SaveStore.new().restore(bad)).is_null()
+	bad = sim.to_dict()
+	bad.reports[0].returned_stock += 1
+	assert_object(SaveStore.new().restore(bad)).is_null()

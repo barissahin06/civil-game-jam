@@ -4,6 +4,7 @@ const DISPATCH_PANEL := preload("res://ui_preview/crisis/dispatch_panel.gd")
 var crisis_index: int = 0
 var source_index: int = 0
 var source_id: int = 0
+var source_home: int = 0
 var dispatch_kind: String = "team"
 var amount: int = 1
 var operation_scene_enabled: bool = false
@@ -32,6 +33,7 @@ func selected() -> Dictionary:
 
 func open_from_source(source: int) -> void:
 	source_id = source
+	source_home = source
 	source_index = _shell.sim.areas.keys().find(source)
 	require_target_selection = _shell.sim.crises.active.size() > 1
 	_feedback = ""
@@ -50,6 +52,7 @@ func _fund() -> void:
 	_title("ACİL BÜTÇE DESTEĞİ")
 	if target.is_empty():
 		return
+	UI.text(_content, String(target.name).to_upper(), Rect2(0, 96, 1344, 30), 18, UI.GOLD)
 	_metric(
 		"AKTARILAN / EN FAZLA ₺5 M",
 		_shell.fmt_money(int(target.funds)),
@@ -57,7 +60,7 @@ func _fund() -> void:
 		UI.GOLD
 	)
 	_paragraph(
-		"DESTEK SINIRLI VERİM ARTIŞI VE KRİZ SONRASI ONARIM İNDİRİMİ SAĞLAR. EKİP VE STOK İHTİYACI DEVAM EDER.",
+		"MÜDAHALEYİ GÜÇLENDİRİR, SONRAKİ ONARIM GİDERİNİ AZALTIR. EKİP VE YARDIM MALZEMESİ AYRICA GÖNDERİLMELİDİR.",
 		Rect2(0, 316, 1200, 100),
 		UI.INK
 	)
@@ -72,7 +75,9 @@ func _fund() -> void:
 			UI.ButtonTone.CAUTION
 		)
 		pay.disabled = int(target.funds) + value > 5000000 or _shell.sim.treasury.money < value
-	UI.button(_content, "KRİZE DÖN", Rect2(0, 600, 432, 52), _shell.show_screen.bind("crisis"))
+	UI.button(
+		_content, "AFET MÜDAHALESİNE DÖN", Rect2(0, 600, 432, 52), _shell.show_screen.bind("crisis")
+	)
 
 
 func _pay(value: int) -> void:

@@ -1,0 +1,657 @@
+{
+  "format_version": 1,
+  "note": "Tarihsel notlar kaynaklı aftermath.json arşivinden alınır. Sunulan alternatifler, sayısal etkiler, maliyetler ve süreler oyun tasarımıdır; tarihsel sonuç iddiası değildir. Bedel ve kalıcı etkilerin tek sahibi measures.json dosyasıdır.",
+  "cards": [
+    {
+      "id": "gediz_relocation",
+      "title": "Gediz için güvenli yerleşim",
+      "description": "Gediz depreminden sonra yeniden yerleşimin kapsamını belirleyin. Seçenekler oyun tasarımıdır; tamamlanmış afet raporunu değiştirmez.",
+      "historical_note": "5 Ağustos 1970 tarihli 7/1164 sayılı Bakanlar Kurulu kararıyla Gediz'in yeni yerleşim alanına taşınması kararlaştırıldı.",
+      "event_ids": ["historical-020"],
+      "area_id": 45,
+      "options": [
+        {
+          "id": "full",
+          "title": "Planlı yeniden yerleşim",
+          "description": "Yerleşimi güvenliği incelenmiş alana taşıyan kapsamlı programı başlatın. Daha yüksek maliyet ve daha uzun slot kullanımı karşılığında kalıcı koruma sağlayın.",
+          "project_id": "decision_gediz_relocation_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Öncelikli kesimleri taşı",
+          "description": "Önce en riskli kesimleri taşıyın. Daha kısa uygulama ve daha düşük maliyet karşılığında daha sınırlı koruma kazanın.",
+          "project_id": "decision_gediz_relocation_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "samsun_flood",
+      "title": "Yılanlıdere için öncelik",
+      "description": "Samsun selinden sonra dere yatağındaki yerleşimler ile müdahale kapasitesi arasında öncelik belirleyin. Seçenekler oyun tasarımıdır.",
+      "historical_note": "Yılanlıdere yatağındaki konutların kaldırılması kararlaştırıldı ve yıkıma başlandı. Yılanlıdere'nin yukarı havzasında taşkın kontrolü için dere ıslahı yapıldı.",
+      "event_ids": ["historical-058"],
+      "area_id": 55,
+      "options": [
+        {
+          "id": "full",
+          "title": "Yerleşim ve dere ıslahı",
+          "description": "Dere yatağındaki yapıları taşıyın ve yukarı havzada taşkın kontrolü kurun. Uzun uygulama ve sürekli bakım karşılığında kalıcı taşkın koruması sağlayın.",
+          "project_id": "decision_samsun_flood_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce müdahale kapasitesi",
+          "description": "Yerel kurtarma ekibini hazırlayın. Daha kısa sürede başka afetlerde de kullanılabilecek bir ekip kazanın; kalıcı taşkın koruması oluşmaz.",
+          "project_id": "decision_samsun_flood_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "construction_inspection",
+      "title": "Yapı denetiminin kapsamı",
+      "description": "Marmara ve Düzce depremlerinin ardından yapı denetimi programının kapsamını belirleyin. Bu ortak reform ikinci afette yeniden seçilmez veya ikinci kez kazanç üretmez.",
+      "historical_note": "Yapı güvenliğinin denetlenmesi için 2001'de 4708 sayılı Yapı Denetimi Hakkında Kanun çıkarıldı. 2000'de yapı denetimi için 595 sayılı KHK çıkarıldı; iptalinin ardından 2001'de 4708 sayılı Kanun yürürlüğe girdi.",
+      "event_ids": ["historical-040", "historical-041"],
+      "area_id": 0,
+      "options": [
+        {
+          "id": "full",
+          "title": "Yaygın yapı denetimi",
+          "description": "Ülke çapında zemin, proje, malzeme ve yapım denetimini yaygınlaştırın. Daha uzun ulusal slot kullanımı karşılığında daha geniş koruma sağlayın.",
+          "project_id": "decision_construction_inspection_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Yüksek riskli yapıları denetle",
+          "description": "Denetim kapasitesini önce yüksek riskli yapılara ayırın. Düşük maliyet ve kısa süre karşılığında daha sınırlı ulusal koruma kazanın.",
+          "project_id": "decision_construction_inspection_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "kursunlu_relocation",
+      "title": "Kurşunlu köylerinin geleceği",
+      "description": "Dengi ve Ağılözü köylerinde güvenli yeniden yerleşimin kapsamını belirleyin. Alternatifler ve etkiler oyun tasarımıdır.",
+      "historical_note": "Dengi ve Ağılözü köylerinin başka yerleşim alanlarına taşınması kararlaştırıldı.",
+      "event_ids": ["historical-002"],
+      "area_id": 6,
+      "options": [
+        {
+          "id": "full",
+          "title": "İki köyü planlı taşı",
+          "description": "İki köyü güvenliği incelenmiş alanlara taşıyın. Daha uzun uygulama karşılığında geniş yerleşim koruması kazanın.",
+          "project_id": "decision_kursunlu_relocation_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce riskli konutları taşı",
+          "description": "En riskli konutlardan başlayın. Bütçeyi ve slotu daha az bağlayın; koruma daha sınırlı kalsın.",
+          "project_id": "decision_kursunlu_relocation_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "hazard_zoning",
+      "title": "Tehlikeli alanlarda yapılaşma",
+      "description": "Varto depreminden sonra tehlikeli alanların kullanımını düzenleyin. Tarihsel düzenleme sonraki reform sürecine aittir; oyun seçimi rapor sonrasında yapılır.",
+      "historical_note": "1968'de 1051 sayılı Kanun çıkarıldı; tehlikeli alanlarda yapılaşma ve ikamet yasağı ile riskli binaların boşaltılması düzenlendi.",
+      "event_ids": ["historical-016"],
+      "area_id": 0,
+      "options": [
+        {
+          "id": "full",
+          "title": "Ulusal tehlikeli alan düzeni",
+          "description": "Yapılaşma ve ikamet denetimini yaygınlaştırın, riskli yapıları boşaltma planları hazırlayın. Kapsamlı ulusal çalışma için uzun slot kullanın.",
+          "project_id": "decision_hazard_zoning_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce yüksek riskli alanlar",
+          "description": "Denetimi öncelikli tehlike alanlarıyla sınırlayın. Daha düşük bedel karşılığında daha dar koruma kazanın.",
+          "project_id": "decision_hazard_zoning_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "catak_relocation",
+      "title": "Çatak için güvenli konutlar",
+      "description": "Heyelan sonrasında etkilenen konutları ve güvenli yerleşimi planlayın. Alternatifler ve etkiler oyun tasarımıdır.",
+      "historical_note": "Heyelandan etkilenen 34 konutun başka bir alana taşınması kararlaştırıldı.",
+      "event_ids": ["historical-029"],
+      "area_id": 61,
+      "options": [
+        {
+          "id": "full",
+          "title": "Konutları güvenli alana taşı",
+          "description": "Etkilenen yerleşim için güvenliği incelenmiş alanlarda yeniden konut programı başlatın. Taşıma süresi ve bütçe karşılığında kalıcı koruma sağlayın.",
+          "project_id": "decision_catak_relocation_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce acil riskli konutlar",
+          "description": "İlk programı en riskli konutlarla sınırlandırın. Daha kısa sürede daha düşük kapsamlı koruma sağlayın.",
+          "project_id": "decision_catak_relocation_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "senirkent_flood",
+      "title": "Senirkent için havza koruması",
+      "description": "Doğru ve Suyolu derelerinde su ve moloz akışını azaltacak programı seçin. Alternatifler ve etkiler oyun tasarımıdır.",
+      "historical_note": "Doğru ve Suyolu dereleri için tersip bentleri, ıslah sekileri ve çevirme yapıları içeren taşkın koruma projesi onaylandı.",
+      "event_ids": ["historical-034"],
+      "area_id": 7,
+      "options": [
+        {
+          "id": "full",
+          "title": "Havza ve bent programı",
+          "description": "Tersip bentleri, ıslah sekileri ve çevirme yapıları kurun. İnşaat ve bakım karşılığında kapsamlı taşkın koruması sağlayın.",
+          "project_id": "decision_senirkent_flood_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Öncelikli bentleri kur",
+          "description": "Önce yerleşime yakın kritik akışlara müdahale edin. Daha düşük bedel ve bakım karşılığında daha sınırlı koruma kazanın.",
+          "project_id": "decision_senirkent_flood_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "medical_rescue",
+      "title": "Tıbbi kurtarma hazırlığı",
+      "description": "1999 depremlerinin ardından tıbbi kurtarma hazırlığını düzenleyin. Tarihsel kurumlaşma deprem sonrası reform sürecidir; seçenekler oyun tasarımıdır.",
+      "historical_note": "Afetlerde tıbbi kurtarmayı yürütmek üzere Ulusal Medikal Kurtarma Ekipleri (UMKE) oluşturuldu. Bu yapılanma 1999 depremlerinden sonraki reform sürecine aittir; deprem günü kurulmuş olarak sunulmaz.",
+      "event_ids": ["historical-040"],
+      "area_id": 0,
+      "options": [
+        {
+          "id": "full",
+          "title": "Ulusal tıbbi kurtarma ağı",
+          "description": "Tıbbi kurtarma eğitimini, donanımını ve görevlendirmesini ülke çapında düzenleyin. Uzun ulusal slot ve bakım karşılığında müdahale verimi kazanın.",
+          "project_id": "decision_medical_rescue_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce ortak eğitim düzeni",
+          "description": "Mevcut ekiplerin tıbbi kurtarma eğitimi ve görev paylaşımına odaklanın. Daha az maliyetle daha sınırlı müdahale verimi kazanın.",
+          "project_id": "decision_medical_rescue_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "national_coordination",
+      "title": "Ulusal afet koordinasyonu",
+      "description": "1999 depremlerinden sonraki görev paylaşımı ihtiyacına yanıt verin. Tarihsel AFAD kuruluşu 2009 yılına aittir; oyuncunun programı bir oyun alternatifidir.",
+      "historical_note": "2009'da 5902 sayılı Kanun ile AFAD kuruldu; afet yönetimindeki üç genel müdürlüğün görevleri tek çatı altında toplandı.",
+      "event_ids": ["historical-040"],
+      "area_id": 0,
+      "options": [
+        {
+          "id": "full",
+          "title": "Bütünleşik görev ve iletişim",
+          "description": "Kurumlar arası görev, iletişim ve lojistik düzenini ülke çapında birleştirin. Uzun uygulama ve bakım karşılığında daha geniş verim sağlayın.",
+          "project_id": "decision_national_coordination_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Ortak müdahale protokolü",
+          "description": "Önce kurumların görev ve iletişim protokollerini eşleştirin. Daha kısa uygulama karşılığında daha sınırlı verim kazanın.",
+          "project_id": "decision_national_coordination_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "istanbul_streambeds",
+      "title": "Ayamama yatağında risk tespiti",
+      "description": "İstanbul selinden sonra dere yatağı kullanımını inceleyin. Kaynaklı tespit çalışmasının ötesindeki uygulama alternatifleri oyun tasarımıdır.",
+      "historical_note": "Ayamama Deresi yatağındaki kaçak yapıların uydu görüntüleriyle tespitine başlandı.",
+      "event_ids": ["historical-051"],
+      "area_id": 34,
+      "options": [
+        {
+          "id": "full",
+          "title": "Tespit ve dere yatağı düzeni",
+          "description": "Riskli yapıları belirleyip dere yatağının kullanımını düzenleyen programı başlatın. Tespit ile uygulamayı birlikte finanse edin.",
+          "project_id": "decision_istanbul_streambeds_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce risk envanteri",
+          "description": "Yapı tespitine ve riskli kesimlerin planlanmasına odaklanın. Daha düşük maliyetle sınırlı koruma ve tahliye hazırlığı kazanın.",
+          "project_id": "decision_istanbul_streambeds_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "silivri_school_safety",
+      "title": "Silivri sonrası okul güvenliği",
+      "description": "Güvenliği ayrıntılı incelenecek okullar ile afet eğitimine ayrılacak kaynakları belirleyin. Alternatifler ve etkiler oyun tasarımıdır.",
+      "historical_note": "İleri inceleme gereken okulların öğrencilerinin 9 Ekim 2019'dan itibaren başka binalarda eğitime devam etmesi kararlaştırıldı. Okul Tabanlı Afet Eğitimi Programı'nı geliştirmek için deprem sırasında kaydedilen okul görüntülerinin incelenmesine başlandı.",
+      "event_ids": ["historical-061"],
+      "area_id": 34,
+      "options": [
+        {
+          "id": "full",
+          "title": "Güvenli okul ve eğitim programı",
+          "description": "İnceleme gereken binaları boşaltın, öğrencileri güvenli binalara aktarın ve afet eğitimini yenileyin. Taşıma ve uygulama giderlerini üstlenin.",
+          "project_id": "decision_silivri_school_safety_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce yüksek riskli okullar",
+          "description": "Öncelikli okullarda ayrıntılı inceleme ve geçici aktarma uygulayın. Daha düşük bütçe karşılığında daha sınırlı güvenlik kazanın.",
+          "project_id": "decision_silivri_school_safety_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "dereli_flood",
+      "title": "Dereli için güvenli dere geçişleri",
+      "description": "Dere yatağındaki yerleşimler ve köprülerin akışa uygunluğu için program seçin. Alternatifler ve etkiler oyun tasarımıdır.",
+      "historical_note": "Dere yataklarındaki yapıların kaldırılması ve bazı köprülerin kemer köprü olarak yeniden yapılması açıklandı.",
+      "event_ids": ["historical-066"],
+      "area_id": 61,
+      "options": [
+        {
+          "id": "full",
+          "title": "Dere yatağı ve köprüleri düzenle",
+          "description": "Riskli yapıları kaldırma ve akışa uygun köprüleri birlikte planlayın. İnşaat ve bakım karşılığında geniş taşkın koruması sağlayın.",
+          "project_id": "decision_dereli_flood_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce kritik köprüler",
+          "description": "Akışı engelleyen öncelikli geçişleri düzeltin. Daha kısa sürede daha sınırlı taşkın koruması sağlayın.",
+          "project_id": "decision_dereli_flood_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "izmir_risk_planning",
+      "title": "İzmir için ortak risk planı",
+      "description": "Yapı envanteri, zemin araştırması ve kurumlar arası koordinasyonun kapsamını belirleyin. Alternatifler ve etkiler oyun tasarımıdır.",
+      "historical_note": "Yapı envanteri, zemin etütleri ve kara-deniz depremsellik araştırmaları hızlandırıldı. Afet risklerini azaltma çalışmalarını kurumlar ve uzmanlarla koordine etmek için İzmir Afet Platformu oluşturuldu.",
+      "event_ids": ["historical-067"],
+      "area_id": 35,
+      "options": [
+        {
+          "id": "full",
+          "title": "Envanter ve ortak risk platformu",
+          "description": "Yapı, zemin ve depremsellik incelemelerini koordinasyon platformuyla birleştirin. Daha uzun programla koruma ve müdahale verimi sağlayın.",
+          "project_id": "decision_izmir_risk_planning_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce öncelikli yapı envanteri",
+          "description": "İncelemeyi öncelikli yapı ve zeminlere yoğunlaştırın. Daha düşük maliyetle daha sınırlı koruma kazanın.",
+          "project_id": "decision_izmir_risk_planning_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "bozkurt_flood",
+      "title": "Ezine Çayı için kalıcı koruma",
+      "description": "Bozkurt çevresindeki dere ıslahı, taşkın duvarları ve köprüler için yatırım kapsamını belirleyin. Alternatifler ve etkiler oyun tasarımıdır.",
+      "historical_note": "Ezine Çayı'nda kalıcı dere ıslahı, taşkın duvarı ve köprü projeleri ihale edilerek inşaata başlandı.",
+      "event_ids": ["historical-069"],
+      "area_id": 55,
+      "options": [
+        {
+          "id": "full",
+          "title": "Dere, duvar ve köprü programı",
+          "description": "Ezine Çayı için bütünleşik taşkın yapıları kurun. Uzun uygulama ve sürekli bakım karşılığında kapsamlı koruma kazanın.",
+          "project_id": "decision_bozkurt_flood_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce kritik taşkın kesimleri",
+          "description": "Öncelikli dar boğazlarda dere ve geçiş çalışması yürütün. Daha az bütçe ve bakım karşılığında sınırlı koruma kazanın.",
+          "project_id": "decision_bozkurt_flood_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "urban_transformation",
+      "title": "Güvenli yapı dönüşümü",
+      "description": "Kahramanmaraş depremlerinden sonra riskli yapıların yenilenmesini ve kurumlar arası dönüşüm kapasitesini belirleyin. Alternatifler ve etkiler oyun tasarımıdır.",
+      "historical_note": "Kentsel dönüşümü hızlandırmak için 2023'te Çevre, Şehircilik ve İklim Değişikliği Bakanlığına bağlı Kentsel Dönüşüm Başkanlığı kuruldu.",
+      "event_ids": ["historical-071"],
+      "area_id": 0,
+      "options": [
+        {
+          "id": "full",
+          "title": "Ulusal güvenli dönüşüm programı",
+          "description": "Riskli yapıları güvenli yapılarla yenileme planını ülke çapında koordine edin. Uzun ulusal slot ve yüksek bedel karşılığında kalıcı yapı güvenliği kazanın.",
+          "project_id": "decision_urban_transformation_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce yüksek riskli yapı grupları",
+          "description": "Dönüşüm planını öncelikli risk gruplarıyla sınırlandırın. Daha düşük maliyet ve sürede daha sınırlı koruma kazanın.",
+          "project_id": "decision_urban_transformation_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "yesilyurt_training",
+      "title": "Hasarlı yapılarda güvenli davranış",
+      "description": "Yeşilyurt depreminden sonra hasarlı binalara giriş ve güvenli davranış iletişimini düzenleyin. Bu program geçmiş rapordaki kayıpları değiştirmez.",
+      "historical_note": "Artçı depremler sürerken hasarlı binalara girilmemesi uyarısı yinelendi.",
+      "event_ids": ["historical-073"],
+      "area_id": 44,
+      "options": [
+        {
+          "id": "full",
+          "title": "Yerel uyarı ve tatbikat ağı",
+          "description": "Hasarlı yapılara giriş uyarılarını mahalle iletişimi ve tahliye tatbikatlarıyla pekiştirin. Uygulama ve bakım karşılığında davranış hazırlığı sağlayın.",
+          "project_id": "decision_yesilyurt_training_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce hasarlı yapı uyarıları",
+          "description": "İletişimi hasarlı yapılara giriş riskine yoğunlaştırın. Daha kısa ve ucuz uygulama karşılığında sınırlı tahliye hazırlığı kazanın.",
+          "project_id": "decision_yesilyurt_training_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "sanliurfa_flood",
+      "title": "Şanlıurfa derelerinde koruma",
+      "description": "Karakoyun, Cavsak ve Sırrın derelerindeki taşkın korumasının kapsamını belirleyin. Alternatifler ve etkiler oyun tasarımıdır.",
+      "historical_note": "Karakoyun, Cavsak ve Sırrın dereleri için taşkın koruma projeleri hazırlandı; 2023 sonunda yapım sözleşmelerinin imzalandığı açıklandı.",
+      "event_ids": ["historical-074"],
+      "area_id": 63,
+      "options": [
+        {
+          "id": "full",
+          "title": "Üç derede koruma programı",
+          "description": "Üç dere için koruma yapılarını birlikte uygulayın. Daha uzun inşaat ve sürekli bakım karşılığında geniş taşkın koruması sağlayın.",
+          "project_id": "decision_sanliurfa_flood_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce yüksek riskli kesimler",
+          "description": "İlk yatırımı en riskli dere kesimlerine yoğunlaştırın. Daha az bütçe ve bakım karşılığında daha sınırlı koruma kazanın.",
+          "project_id": "decision_sanliurfa_flood_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "silivri_awareness",
+      "title": "Eğitime dönüşte afet bilinci",
+      "description": "Silivri depreminden sonra öğrencilerin afet farkındalığı ve tatbikat programını belirleyin. Alternatifler ve etkiler oyun tasarımıdır.",
+      "historical_note": "Eğitime dönüşte öğrencilere afet farkındalık dersi verildi.",
+      "event_ids": ["historical-076"],
+      "area_id": 34,
+      "options": [
+        {
+          "id": "full",
+          "title": "Okul ve mahalle tatbikatları",
+          "description": "Farkındalık derslerini uygulamalı okul ve mahalle tahliye çalışmalarıyla destekleyin. Süre ve uygulama gideri karşılığında geniş hazırlık kazanın.",
+          "project_id": "decision_silivri_awareness_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce farkındalık dersleri",
+          "description": "Kaynakları öğrencilerin temel korunma ve tahliye eğitimine ayırın. Daha kısa ve ucuz uygulama karşılığında sınırlı hazırlık kazanın.",
+          "project_id": "decision_silivri_awareness_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "uzengili_relocation",
+      "title": "Üzengili için güvenli yerleşim",
+      "description": "Çığdan etkilenen yerleşim için Bayburt çevresinde güvenli yeniden yerleşimi planlayın. Alternatifler ve etkiler oyun tasarımıdır.",
+      "historical_note": "Çığdan etkilenen köy sakinlerinin yerleşimi için Bayburt merkezinde yeni alan seçildi.",
+      "event_ids": ["historical-088"],
+      "area_id": 61,
+      "options": [
+        {
+          "id": "full",
+          "title": "Güvenli yeniden yerleşim",
+          "description": "Köy sakinleri için güvenliği incelenmiş yeni yerleşim programı başlatın. Daha uzun uygulama karşılığında kalıcı çığ koruması kazanın.",
+          "project_id": "decision_uzengili_relocation_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce yüksek riskli haneler",
+          "description": "İlk taşıma programını en yüksek riskli hanelerle sınırlandırın. Daha kısa süre ve daha düşük bedel karşılığında sınırlı koruma kazanın.",
+          "project_id": "decision_uzengili_relocation_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "tasagil_firebreaks",
+      "title": "Taşağıl için yangına direnç",
+      "description": "Orman ile yerleşim arasındaki yangın hazırlığını düzenleyin. YARDOP kapsamındaki kaynaklı önlemler tarihsel bilgidir; alternatifler oyun tasarımıdır.",
+      "historical_note": "YARDOP tamimiyle yangına dirençli ormanlar, yangın durdurma zonları ve orman-yerleşim ayırma tesisleri oluşturulması düzenlendi.",
+      "event_ids": ["historical-091"],
+      "area_id": 7,
+      "options": [
+        {
+          "id": "full",
+          "title": "Yangın kuşağı ve dirençli orman",
+          "description": "Yangın durdurma zonları ve orman-yerleşim ayırma tesisleri oluşturun. İnşaat ve düzenli bakım karşılığında kalıcı yangın koruması sağlayın.",
+          "project_id": "decision_tasagil_firebreaks_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce yerleşim çevresi kuşaklar",
+          "description": "İlk çalışmayı yerleşim çevresindeki kritik kuşaklara ayırın. Daha düşük maliyet ve bakım karşılığında sınırlı koruma kazanın.",
+          "project_id": "decision_tasagil_firebreaks_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "hatay_fire_response",
+      "title": "Hatay için ilk yangın müdahalesi",
+      "description": "Yerel su ikmali ve ilk müdahale hazırlığının kapsamını belirleyin. Tarihsel tanker tahsisi bilgidir; oyuncu seçenekleri oyun tasarımıdır.",
+      "historical_note": "Yangına ilk müdahale için köy muhtarlarına traktöre monteli yedi su tankeri tahsis edildi.",
+      "event_ids": ["historical-094"],
+      "area_id": 31,
+      "options": [
+        {
+          "id": "full",
+          "title": "Yerel ekip ve su ikmal ağı",
+          "description": "Ekip eğitimini, tankerleri ve su ikmalini birlikte hazırlayın. Uygulama ve bakım karşılığında yangın koruması ile kurtarma verimi kazanın.",
+          "project_id": "decision_hatay_fire_response_full",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "focused",
+          "title": "Önce tanker ve ekipman hazırlığı",
+          "description": "Mevcut yerel kapasitenin ekipman ve su erişimini düzenleyin. Daha kısa program ve düşük bakım karşılığında sınırlı yangın koruması kazanın.",
+          "project_id": "decision_hatay_fire_response_focused",
+          "trust_delta": 0.0
+        },
+        {
+          "id": "decline",
+          "title": "Bu programı uygulama",
+          "description": "Yeni harcama ve slot taahhüdü oluşmaz; bu kartın iki programı kampanya boyunca kapalı kalır. Yeni koruma veya kapasite kazanılmaz.",
+          "project_id": "",
+          "trust_delta": 0.0
+        }
+      ]
+    }
+  ]
+}

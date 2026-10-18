@@ -160,22 +160,22 @@ void fragment() {
 	_crisis_flash.modulate = Color(0.95, 0.12, 0.08, 0.0)
 	_crisis_flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_crisis_flash)
-	_toolbar = UI.panel(self, Rect2(16, 1030, 400, 42))
+	_toolbar = UI.panel(self, Rect2(16, 1030, 640, 42))
 	_toolbar.name = "MapToolbar"
-	_tools_toggle = UI.button(_toolbar, "", Rect2(8, 4, 144, 34), _toggle_tools)
+	_tools_toggle = UI.button(_toolbar, "", Rect2(8, 4, 214, 34), _toggle_tools)
 	_tools_toggle.name = "MapToolsToggle"
 	_tools_toggle.toggle_mode = true
-	UI.button(_toolbar, "SIFIRLA", Rect2(158, 4, 96, 34), reset_map)
+	UI.button(_toolbar, "GÖRÜNÜMÜ SIFIRLA", Rect2(228, 4, 214, 34), reset_map)
 	_zoom_out = UI.button(
-		_toolbar, "-", Rect2(260, 4, 34, 34), _zoom_map.bind(-1, Vector2(960, 540))
+		_toolbar, "-", Rect2(448, 4, 34, 34), _zoom_map.bind(-1, Vector2(960, 540))
 	)
-	_zoom_label = UI.text(_toolbar, "", Rect2(300, 4, 44, 34))
+	_zoom_label = UI.text(_toolbar, "", Rect2(488, 4, 72, 34))
 	_zoom_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_zoom_label.tooltip_text = "Harita yakınlığı: 1× - 3×"
 	_zoom_label.mouse_filter = Control.MOUSE_FILTER_PASS
-	_zoom_in = UI.button(_toolbar, "+", Rect2(350, 4, 34, 34), _zoom_map.bind(1, Vector2(960, 540)))
+	_zoom_in = UI.button(_toolbar, "+", Rect2(568, 4, 34, 34), _zoom_map.bind(1, Vector2(960, 540)))
 	_tools_drawer = Control.new()
-	_tools_drawer.position = Vector2(416, 0)
+	_tools_drawer.position = Vector2(640, 0)
 	_tools_drawer.size = Vector2(838, 42)
 	_tools_drawer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_toolbar.add_child(_tools_drawer)
@@ -185,7 +185,7 @@ void fragment() {
 	_region_note = UI.text(_legend_panel, "21 MERKEZ", Rect2(264, 34, 190, 22), 18, UI.MUTED)
 	_crisis_swatch = _swatch(_legend_panel, Rect2(462, 10, 18, 18), CRISIS_COLOR)
 	_crisis_key = UI.text(
-		_legend_panel, "! KIRMIZI / AKTİF KRİZ", Rect2(482, 8, 344, 22), 18, UI.INK
+		_legend_panel, "! KIRMIZI / AKTİF AFET", Rect2(482, 8, 344, 22), 18, UI.INK
 	)
 	for index: int in range(3):
 		_legend_swatches.append(
@@ -206,9 +206,12 @@ void fragment() {
 		)
 	_legend_readout = UI.text(_legend_panel, "", Rect2(12, 84, 814, 22), 18, UI.INK)
 	for index in range(4):
-		var title: String = ["BÖLGELER", "HAZIRLIK", "YARDIM STOĞU", "HASAR"][index]
+		var title: String = ["BÖLGELER", "AFET HAZIRLIĞI", "YARDIM MALZEMESİ", "ALTYAPI HASARI"][index]
 		var button := UI.button(
-			_tools_drawer, title, Rect2(12 + index * 206, 4, 196, 34), select_overlay.bind(index)
+			_tools_drawer,
+			title,
+			Rect2([12, 160, 376, 608][index], 4, [136, 204, 220, 216][index], 34),
+			select_overlay.bind(index)
 		)
 		button.toggle_mode = true
 		button.add_theme_color_override("font_pressed_color", UI.GOLD)
@@ -224,18 +227,15 @@ func _toggle_tools() -> void:
 
 
 func _sync_tools() -> void:
-	_toolbar.size.x = 1254 if tools_expanded else 400
+	_toolbar.size.x = 1478 if tools_expanded else 640
 	_tools_drawer.visible = tools_expanded
 	_legend_panel.visible = tools_expanded
 	_tools_toggle.set_pressed_no_signal(tools_expanded)
-	_tools_toggle.text = (
-		["BÖLGELER", "HAZIRLIK", "STOK", "HASAR"][selected_overlay]
-		+ (" -" if tools_expanded else " +")
-	)
+	_tools_toggle.text = "HARİTA GÖRÜNÜMÜ"
 	_tools_toggle.tooltip_text = (
 		("Harita görünümlerini kapat. " if tools_expanded else "Harita görünümlerini sağa aç. ")
 		+ "Seçili: "
-		+ ["Bölgeler", "Hazırlık", "Yardım Stoğu", "Hasar"][selected_overlay]
+		+ ["Bölgeler", "Afet Hazırlığı", "Yardım Malzemesi", "Altyapı Hasarı"][selected_overlay]
 	)
 
 
@@ -380,7 +380,7 @@ func refresh() -> void:
 				UI.GOLD if int(area.queued_count) > 0 else UI.MUTED if area.busy else UI.TEAL
 			)
 			marker.tooltip_text = (
-				"%s\nStok: %d ekip / %d yardım\nSırada: %d ekip / %d yardım emri\nSayı: aktif + sıradaki hazırlık işleri.\nSeçili eylemi eklemek için tıkla."
+				"%s\nStok: %d ekip / %d yardım\nSırada: %d ekip / %d malzeme işi\nSayı: aktif + sıradaki hazırlık işleri.\nSeçili eylemi eklemek için tıkla."
 				% [area.name, area.teams, area.stock, area.queued_teams, area.queued_stock]
 			)
 	for id: int in [] if planning else sim.bubbles:
@@ -389,8 +389,8 @@ func refresh() -> void:
 		if not _marker_nodes.has(key):
 			var bubble := UI.button(
 				_markers,
-				"+5",
-				Rect2(_native_point(sim.areas[id]) + Vector2(18, -42), Vector2(54, 34)),
+				"+5 BİLİNÇ PUANI",
+				Rect2(_native_point(sim.areas[id]) + Vector2(18, -42), Vector2(198, 34)),
 				sim.collect_bubble.bind(id)
 			)
 			bubble.tooltip_text = "Bilinç puanı topla"
@@ -432,19 +432,19 @@ func _update_legend() -> void:
 	_map_legend.text = [
 		"BÖLGELER / RİSK GÖSTERMEZ",
 		"ORTALAMA AFET HAZIRLIĞI",
-		"MERKEZDEKİ YARDIM STOĞU",
+		"MERKEZDEKİ YARDIM MALZEMESİ",
 		"ALTYAPIDAKİ HASAR"
 	][selected_overlay]
 	_legend_description.text = [
 		"",
-		"5 AFETİN ORT. / 0-100 PUAN",
+		"BEŞ AFET TÜRÜNÜN ORTALAMASI / 0-100",
 		"%d+ RENK TAVANI / KAPASİTE DEĞİL" % maximum,
 		"0-100 YÜZDE / YÜKSEK = DAHA HASARLI"
 	][selected_overlay]
 	var captions: Array = [
 		[],
 		["0 / DÜŞÜK", "50 / ORTA", "100 / YÜKSEK"],
-		["0 / BOŞ", "%d YARDIM" % (maximum / 2), "%d+ YARDIM" % maximum],
+		["0 / BOŞ", "%d BİRİM" % (maximum / 2), "%d+ BİRİM" % maximum],
 		["0% / HASAR YOK", "50% HASAR", "100% / AĞIR HASAR"]
 	]
 	for index: int in range(3):
@@ -468,7 +468,7 @@ func _clear_readout() -> void:
 func _update_readout() -> void:
 	if not is_instance_valid(_legend_readout):
 		return
-	_legend_readout.text = "MERKEZİN ÜZERİNE GEL: GERÇEK DEĞERİ GÖR"
+	_legend_readout.text = "MERKEZ İLİN ÜZERİNE GEL: ALANIN DEĞERİNİ GÖR"
 	if selected_overlay == 0 or not _overlay_data.get("areas", {}).has(_hovered_area):
 		return
 	var area: Dictionary = _overlay_data.areas[_hovered_area]
@@ -494,12 +494,11 @@ func _sync_shipments() -> void:
 			continue
 		var id: int = shipment.id
 		wanted.append(id)
-		var a: Vector2 = _native_point(_shell.sim.areas[int(shipment.source)])
-		var b: Vector2 = _native_point(_shell.sim.areas[int(shipment.target)])
-		if shipment.state == "returning":
-			var swap := a
-			a = b
-			b = swap
+		var returning: bool = shipment.state == "returning"
+		var origin := int(shipment.target) if returning else int(shipment.source)
+		var destination := int(shipment.home) if returning else int(shipment.target)
+		var a: Vector2 = _native_point(_shell.sim.areas[origin])
+		var b: Vector2 = _native_point(_shell.sim.areas[destination])
 		if not _shipment_nodes.has(id):
 			var group := Control.new()
 			group.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -552,11 +551,7 @@ func _sync_shipments() -> void:
 		view.label.modulate = tint
 		view.icon.tooltip_text = (
 			"%s > %s\n%s"
-			% [
-				_shell.sim.areas[int(shipment.source)].name,
-				_shell.sim.areas[int(shipment.target)].name,
-				view.label.text
-			]
+			% [_shell.sim.areas[origin].name, _shell.sim.areas[destination].name, view.label.text]
 		)
 	for id: int in _shipment_nodes.keys():
 		if not id in wanted:
@@ -612,7 +607,13 @@ func _can_marker_drop(_point: Vector2, data: Variant, id: String) -> bool:
 func _marker_drop(point: Vector2, data: Variant, id: String) -> void:
 	if _can_marker_drop(point, data, id):
 		_shell.command_result(
-			_shell.sim.dispatch(int(data.source), id, data.kind, int(data.get("amount", 1)))
+			_shell.sim.dispatch(
+				int(data.source),
+				id,
+				data.kind,
+				int(data.get("amount", 1)),
+				int(data.get("home", 0))
+			)
 		)
 
 

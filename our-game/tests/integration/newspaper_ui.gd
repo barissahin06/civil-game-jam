@@ -26,11 +26,12 @@ func _run() -> void:
 	_shell = _main
 	_shell.auto_save_enabled = false
 	_shell.sim.tutorial_enabled = false
-	await _press_button("GAZETE")
+	await _press_button("HABERLER VE RAPORLAR")
+	await _press_button("SON HABER")
 	assert(_shell.open_screen == "newspaper")
 	_check_paper()
 	assert(_shell._screen_content.find_child("NewspaperPhoto", true, false) == null)
-	assert(_label("KAMPANYADA HENÜZ AFET HABERİ YOK.") != null)
+	assert(_label("OYUNDA HENÜZ AFET HABERİ YOK.") != null)
 	await _capture("newspaper-empty")
 	await _press_button("KAPAT")
 	_shell.sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
@@ -43,10 +44,13 @@ func _run() -> void:
 	assert(_shell.open_screen == "newspaper" and _shell.sim.news_queue.size() == 1)
 	_check_photo(_shell.sim.event_for("historical-001"))
 	await _capture("newspaper-first-fallback")
-	await _press_button("KRİZ MERKEZİNE GEÇ")
+	await _press_button(
+		"HABERİ OKUDUM" if not _shell.sim.news_queue.is_empty() else "AFET MÜDAHALESİNE GEÇ"
+	)
 	assert(_shell.open_screen == "crisis" and _shell.sim.news_queue.is_empty())
 	await _press_button("KAPAT")
-	await _press_button("GAZETE")
+	await _press_button("HABERLER VE RAPORLAR")
+	await _press_button("SON HABER")
 	assert(_shell.open_screen == "newspaper")
 	_check_photo(_shell.sim.latest_event())
 	await _capture("newspaper-latest-reopened")
@@ -74,9 +78,12 @@ func _run() -> void:
 	await _capture_font_specimen()
 	_shell.sim.news_queue.clear()
 	_shell.close_screen()
-	await _press_button("GAZETE")
+	await _press_button("HABERLER VE RAPORLAR")
+	await _press_button("SON HABER")
 	_check_photo(_shell.sim.event_for("historical-001"))
-	await _press_button("KRİZ MERKEZİNE GEÇ")
+	await _press_button(
+		"HABERİ OKUDUM" if not _shell.sim.news_queue.is_empty() else "AFET MÜDAHALESİNE GEÇ"
+	)
 	assert(_shell.open_screen == "crisis", "Latest newspaper CTA must still accept real input")
 	await _shell.audio.shutdown()
 	_main.queue_free()
@@ -138,7 +145,10 @@ func _check_photo(entry: Dictionary) -> void:
 		assert(entry.description == HATIP_DESCRIPTION)
 		assert(_label(HATIP_DESCRIPTION).text.contains("Çayı'nın"))
 		assert(UI.FONT.has_char(39))
-	var cta: Button = _find_button(_shell._screen_content, "KRİZ MERKEZİNE GEÇ")
+	var cta: Button = _find_button(
+		_shell._screen_content,
+		"HABERİ OKUDUM" if not _shell.sim.news_queue.is_empty() else "AFET MÜDAHALESİNE GEÇ"
+	)
 	assert(cta != null and cta.position == Vector2(744, 750))
 	assert(cta.size == Vector2(656, 50))
 	assert(paper.get_global_rect().encloses(cta.get_global_rect()))

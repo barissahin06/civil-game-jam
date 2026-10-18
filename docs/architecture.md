@@ -22,7 +22,7 @@ Oyun kuralları, P0/P1/P2 sınırları ve sınıf sahipleri [oyun tasarımında]
 | `our-game/economy/domain/`    | Hazine, gelir, bakım ödemesi ve verim oranı                            |
 | `our-game/regions/`           | 21 merkez ve 81 ilin tek sorumluluk alanı sahipliği                    |
 | `our-game/management/`        | Tedbir tanımları, araştırma/projeler, taksit, slot ve etkiler          |
-| `our-game/events/`            | Doğrulanan tarihsel katalog; karar olayları henüz sağlanmadı           |
+| `our-game/events/`            | Tarihsel afet kataloğu ve 21 kalıcı afet sonrası karar                 |
 | `our-game/crisis/domain/`     | Afet türü modelleri, paralel müdahale ve karşılaştırmalı rapor         |
 | `our-game/logistics/domain/`  | Rezervasyon, sevk bedeli, varış, görev ve dönüş                        |
 | `art/production/`             | Kullanılan üretim araçlarının düzenlenebilir kaynak dosyaları          |
@@ -39,8 +39,15 @@ Yeni özellik klasörünü ilk gerçek dosyasıyla açın; oyun tasarımı belli
 Tek tüketicili yardımcı o özelliğin yanında kalır. UI aksiyon talep eder, domain/model kuralı uygular,
 sunum sonucu gösterir; aynı kural bir panelde tekrar hesaplanmaz.
 
-Kayıt sahibi `campaign/domain/save_store.gd`: otomatik `user://campaign_v1.json`,
-manuel `user://manual_1_v1.json`–`manual_3_v1.json`; içerik sürümü 1.
+Kayıt sahibi `campaign/domain/save_store.gd`: otomatik `user://campaign_v4.json`,
+manuel `user://manual_1_v4.json`–`manual_3_v4.json`; içerik sürümü 4.
+Kondisyon, afet hasarı partileri ve taahhüt takibi yeni kampanya gerektirir; sürüm 1/2/3 kayıtları taşınmaz.
+Eski kayıt dosyaları değiştirilmez. Karar kartı/proje durumu yeni kayıtta korunur.
+`ServiceArea.condition` merkezdeki ekip ve fiziksel tesislerin ortak kondisyonudur;
+`ProjectSystem` yaşlanmayı, yenileme bedelini ve etkilerini hesaplar. Ekipler başka merkezde
+konuşlanırken kondisyon sahipliği asıl üslerinde kalır. `TrustState.damage_records`, her afetin
+gerçek hasarını, altı aylık süresini ve uygulanmış ihmal kaybından geri alınabilecek payı saklar.
+`DecisionSystem` taahhüdün son gerçek ilerlemesini ve son aylık denetimini saklar.
 Geçersiz kayıt ve değişmiş içerik kataloğu reddedilir; mevcut dosya korunur.
 Slot özetleri aynı doğrulamadan geçer; bozuk ve boş kayıtlar yüklenemez.
 `slot_directory` I/O sınırıdır; testler yalnız kendilerine ait izole dizini kullanır.
@@ -63,10 +70,10 @@ iptal, çıkış ve kayıt değiştiren son onay kırmızıdır. Gezinme, kapatm
 seçimi nötr mavidir.
 Hover ve basılı durumlar eylem rengini korur; klavye odağı çerçeveyle görünür.
 Devre dışı düğmeler bütün eylemlerde aynı soluk nötr görünümü kullanır.
-HUD üst şeridinde bütçe, güven, bilinç, toplam birlik ve yardım stoğu solda;
+HUD üst şeridinde bütçe, Halkın Güveni, Bilinç Puanı, hazır ekip ve Yardım Malzemesi solda;
 takvim ve zaman kontrolleri sağda gösterilir.
 Bütün HUD bilgileri tek ortak zemin kullanır; bilgi gruplarında ayrı dolgu veya çerçeve bulunmaz.
-Birlik sayısı hazır, yolda, görevde ve dönüşteki ekipleri kapsar; yardım sayısı tüm merkezlerde
+Büyük ekip sayısı yalnız hazır ekipleri gösterir; alt satırdaki toplam, yolda, görevde ve dönüşteki ekipleri de kapsar. Yardım sayısı tüm merkezlerde
 sevke hazır malzemeyi gösterir. Sayılar mevcut `Simulation.unit_overview()` özetinden alınır;
 sevk edilmiş yardım merkez stoğuna dahil değildir. Tam değer ve ekip durumları tooltip'te korunur.
 HUD'daki bütçe, güven ve bilinç ikonları mevcut 32×32 atlas hücrelerini 2× ölçekte,
@@ -76,7 +83,7 @@ Takvim ve zaman kontrolleri sağda tek kompakt gruptadır. Tarih 36 px yazıyla,
 ayrımı, duraklatma durumu ve seçili hız görünür kalır. Bilinç değeri mor vurgulu puan alanındadır.
 `TrustState.feedback()` güvenin 0–100 sınırını ve geçmişe gerçekten uygulanmış son değişimi
 salt okunur sunar. HUD güveni iki, son değişimi üç ondalıkla gösterir; dönemsel değişim varsaymaz.
-Sıfır güvenin kampanyayı bitirdiği ve son değişimin nedeni tooltip'tedir.
+Sıfır güvenin oyunu bitirdiği görünürdür; son değişimin nedeni tooltip'tedir.
 Hız düğmelerinin basılı durumu seçili hızı korur; ayrı metin çalışan hızı veya duraklatılmışken
 seçili hızı belirtir. Bu alanlar simülasyon yenilemesinde yerinde güncellenir.
 `shared/ui_kit.gd`, açılışta native Aseprite imleçlerini donanım imleci olarak yükler;
@@ -129,7 +136,7 @@ dört görünüm düğmesi sağa, açıklama ve renk lejantı da bu düğmelerin
 simülasyon yenilemesinde korunur; oyuncu kayıtlarına yeni alan eklenmez.
 Bildirim şeridi kalan sağ alanı kullanır; dar alanda metin kısalır, tamamı tooltip'te korunur.
 Yakınlık etiketi geçerli ölçeği gösterir; 1×–3× sınırlarında ilgili yakınlaştırma düğmesi kapanır.
-Mod adları gösterilen veriyi belirtir: Bölgeler, Hazırlık, Yardım Stoğu ve Hasar.
+Mod adları gösterilen veriyi belirtir: Bölgeler, Afet Hazırlığı, Yardım Malzemesi ve Altyapı Hasarı.
 Bölgeler lejantı native haritanın yedi rengini tam bölge adlarıyla eşler; renklerin risk göstermediğini belirtir.
 Sayısal modlarda aynı mavi–turkuaz–altın ölçek düşük değerden yüksek değere gider;
 lejantta birimler ve örnek değerler, merkezin üzerine gelince gerçek değer görünür.
@@ -143,7 +150,24 @@ Yeni afetin kısa kırmızı uyarısı ve 0,30 saniyelik sarsıntısı olay baş
 Harita aynı ofseti sinyalle HUD'a iletir; kamera koordinatları ve modal paneller sabit kalır.
 Afet sarsıntısı kapatıldığında harita/HUD anında yerine döner; kırmızı bölge ve kısa uyarı sürer.
 Yenileme ve kayıt yükleme başlangıç efektini tekrar oynatmaz. Kayıt veya oyun dengesi değişmez.
-Üst gezintide Birlikler/Kriz Merkezi/Hazırlık Planla, geliştirme ve kayıt/haber erişimlerinden önce birlikte yer alır.
+Üst gezinti altı girişten oluşur: Ekipler ve Yardım, Afet Müdahalesi, Ekip ve Yardım Hazırla, Yatırım ve Araştırma, Olaylar ve Menü.
+Afet Müdahalesi aktif kriz sayısını gösterir. Yatırım ve Araştırma, Projeler/Önlemler/Araştırma
+sekmelerini aynı pencere altında toplar; oturum içinde son sekme ve liste kaydırması korunur.
+Araştırmanın kategori ve önkoşul ağacı ile kapasite sayacı kendi sekmesindedir.
+Araştırma ağacı dört kategoride 1950/1970/1990/2005/2020 sütunlarını kullanır; her
+kategori/dönemde iki araştırma vardır. Oklar gerçek önkoşulları gösterir; kategori dışı
+bağlantı doğru karta gider. `ProjectSystem.requirement_status()` tarih ve bütün araştırma
+koşullarını ayrı sunar; `unlocks_for()` doğrudan açılan içerikleri aynı katalogdan türetir.
+Ulusal önlemler dönem başlıkları altında listelenir. Araştırma bağlantıları, ayrıntı ve geri
+dönüş kategori, odak ve kaydırmayı oturum içinde korur. Kısa ve uzun açıklamalar
+`MeasureCopy` sunum kaynağındadır; bedel, etki ve bağımlılık verisi gameplay kataloğunda kalır.
+Haberler ve Raporlar, son haber/afet raporu ekranlarını açan küçük bir menüdür; dış tıklama veya Esc yalnız bu
+menüyü kapatır. Otomatik haber/rapor kuyruğunun onay ve duraklatma davranışı korunur.
+Şehir yatırımları, ulusal tedbirler ve proje takibi kaydırılabilir özet satırlar kullanır;
+ayrıntıdan geri dönüş geldiği sekmeyi veya şehir yatırım listesini, odak ve kaydırmayı korur.
+Ekip/yardım üretiminin tek UI girişi Ekip ve Yardım Hazırla'dır; şehirdeki yatırım ve lojistik
+görünümlerinde bu üretim düğmeleri yoktur. Şehir lojistiği kaynak merkezini koruyan
+Gönderim Hazırla eylemini ve haritaya sürükleyerek sevki sunar.
 
 `LogisticsSystem.unit_overview()` hazır ekipleri kaynak merkez envanterinden, yol/görev/dönüş
 sayılarını aynı merkeze ait ekip sevkiyatlarından, toplam yardım stoğunu merkez envanterlerinden
@@ -151,7 +175,7 @@ salt okunur toplar. Tamamlanmış ve yardım türü
 sevkiyatlar ekip durumuna eklenmez. `Simulation.unit_overview()` sevk formuna geçiş uygunluğunu ekler;
 yeni kayıt alanı veya sevk komutu yoktur. `logistics/units_panel.gd` bu sorguyla 21 merkezi gösterir,
 yenilemede satırları, odak ve kaydırmayı korur. Merkez erişimi şehir lojistiğini açar;
-Sevk Aç mevcut kaynak seçimli kriz formuna gider, birden fazla krizde hedefi oyuncu seçer.
+Gönderim Hazırla mevcut kaynak seçimli kriz formuna gider, birden fazla krizde hedefi oyuncu seçer.
 
 Üç geliştirici için dosya paylaşımı, ortak sözleşme ve kabul komutları
 [paralel çalışma rehberinde](team-workflow.md) bulunur.
@@ -174,8 +198,8 @@ UI taksit veya slot formülü hesaplamaz. Panel satırları ve harita işaretçi
 Boş şehirde emir hemen aktiftir; aylık ödeme turu bittikten sonra boşalan slotta sıradaki iş
 aktifleşir ve ilk taksitini sonraki ay öder. İptal de boşalan slotun sırasını çalıştırır.
 Elle duraklatma anında otomatik sıra çalıştırılmaz; aynı türde duraklatılmış iş sıra başını engeller.
-Yükleme sırasında sıra çalıştırılmaz. Kayıt sürümü 1 ve alan yapısı korunur;
-eski kayıtlar yüklenir, `queued` içeren yeni kayıtlar bu durumu tanımayan eski binary ile açılamaz.
+Yükleme sırasında sıra çalıştırılmaz. Karar projeleri de aynı yerel/ulusal slotu ve
+`sequence` sırasını kullanır. Sürüm 2 karar kayıtlarını eski binary açamaz.
 
 Proje ayrıntılarında `ProjectSystem.effect_preview()` yalnız seçilen projenin tamamlanmasını
 salt okunur bir kopyada uygular. Aynı `preparedness`, `infrastructure`, `get_effect` ve gelir
@@ -193,7 +217,14 @@ etki doğrulaması ve oyuncu kayıt biçimi değişmez.
 Aktif kataloglar `regions/data/service_areas.json`, `management/data/measures.json`,
 `events/data/historical/events.json` dosyalarıdır. `events/historical/events.json` özgün arşivdir;
 runtime okumaz. Tarih/ad/açıklama/kayıp referansı korunur, eski belirsiz `duration` yerine
-oyun gününü açıkça belirten `response_window_days` kullanılır. Ayrı karar olayları eklenmedi.
+oyun gününü açıkça belirten `response_window_days` kullanılır.
+`events/data/decisions.json`, 20 kaynak afete bağlı 21 karar kartını tanımlar.
+`DecisionCatalog` referansları doğrular; `DecisionSystem` teklif, seçim ve bağlı proje
+kayıtlarını sahiplenir. Maliyet, süre ve kalıcı etkiler `management/data/measures.json`
+ve `ProjectSystem` üzerinden uygulanır. Son alan raporu okunduğunda kararlar sıraya
+eklenir; seçim yapılmadan takvim ilerlemez. Seçim kalıcıdır; iptal ve farklı bir ekran
+kararı yeniden açmaz. Marmara/Düzce denetimi ortak karardır; İliç maden kararı kapsam dışıdır.
+Kart listesi ve ilk denge değerleri [karar rehberindedir](decision-events.md).
 
 Gazete fotoğraflarını `ui_preview/crisis/news_photos.gd` sunum eşlemesi seçer: 59 olayın
 kararlı ID'si mevcut JPEG'lere bağlanır; diğer 40 haber afet türüne uygun beş temsili
@@ -222,8 +253,47 @@ takvimi durdurmaya devam eder. Kriz panelinin Devam/Duraklat eylemi aynı takvim
 `quick_dispatch_preview`, `missing_dispatch_amount` ve `report_feedback` sorgularını sunar.
 `shipment_progress`, kriz gününün mevcut takvim kesrini yalnız yolculuk sunumuna verir.
 Eksik ihtiyaç zamanında varacak aynı kriz/türdeki sevkleri içerir; geç varış ayrı kalır.
-`quick_dispatch` sabit 1 ekip/10 yardım için ihtiyacı yeniden doğrular ve mevcut
-`dispatch` komutuna gider. Standart form ve drag/drop aynı komutta kalır.
-Kayıt sürümü ve kayıt alanları değişmez. Temsili operasyon sahnesi yalnız izole
+`quick_dispatch` sabit 1 ekip/10 yardım için ihtiyacı yeniden doğrulayan model komutudur.
+UI'da 1 Ekip Seç/10 Yardım Seç yalnız tür ve miktarı, Eksik Kadar Seç yalnız mevcut türün
+miktarını doldurur; bu seçimler harcama yapmaz. Tek Sevk Et düğmesi ve drag/drop mevcut
+`dispatch` komutunu kullanır. Sevk paneli ihtiyaç, toplam ücret, yol süresi ve işlem hatasını
+görünür tutar; uzun yolculuk açıklaması kısa özet ve tooltip olarak sunulur.
+Günlük ikmal ve konuşlandırma kayıt sözleşmesi aşağıdadır. Temsili operasyon sahnesi yalnız izole
 A/B sürücüsünün B görünümünde açılır; native kaynak/export eşlemesi
 [pilot art rehberinde](../art/production/ui/crisis_pilot/README.md) tutulur.
+
+## Arayüz metinleri ve açıklamalar
+
+Oyuncuya görünen dil gündelik Türkçedir. Üst menü Ekipler ve Yardım, Afet Müdahalesi,
+Ekip ve Yardım Hazırla, Yatırım ve Araştırma, Haberler ve Raporlar ve Menü girişlerini kullanır.
+Yatırım sekmeleri Projeler, Önlemler ve Araştırmalar'dır. Teknik proje adları korunur;
+`ui_preview/management/measure_copy.gd` kısa açıklamaların tek sunum kaynağıdır. Açıklamalar
+listelerde ve ayrıntılarda görünür. Satır yüksekliği okunabilir metne göre artabilir.
+Bu metinler gameplay kataloğuna eklenmez; içerik parmak izi ve kayıt biçimi değişmez.
+
+Merkez başlığı İstanbul ve Çevresi biçimindedir; nüfus ve gelir bağlı illeri kapsar.
+Bütçe altındaki son ay değeri gelir eksi bakımdır; proje taksitleri hariç olduğu görünürdür.
+Gönderim Hazırla formu açar; Gönderimi Onayla seçili miktarı gönderir. Sürükleme her zaman
+1 ekip veya 10 birim yardım malzemesi gönderir. Varış ve taşıma bedeli ayrı adlandırılır.
+Zamanı Başlat / Zamanı Durdur tüm simülasyon zamanını kontrol eder.
+
+## Günlük ikmal ve geçici konuşlandırma
+
+`LogisticsSystem.stationed`, hazır misafir ekipleri `home`, `location`, `amount` ile tutar.
+`ServiceArea.teams` yalnız asıl merkezinde hazır ekipleri; `total_teams` merkeze bağlı bütün
+ekipleri sayar. Sevkiyattaki `source` çıkış, `home` asıl merkezdir; `purpose` kriz görevi ve
+merkez transferini ayırır. Görevden dönüş mesafesi afet alanından asıl merkeze hesaplanır.
+Transferde yardım hedef depoya, ekip geçici konuma geçer; geri çağırma ayrı tek yön emridir.
+Birlik görünümü hazır ekipleri bulundukları yerde, bağlı toplamları asıl merkezde gösterir.
+
+`CrisisSystem.supply_forecast` bütün varışları gün bazında toplar, kapasiteyi tüketimden önce
+kontrol eder ve sonraki günlerin tüketimini yürütür. Sevk önizlemesi, miktar doldurma ve
+kritik duruş aynı salt okunur tahmini kullanır. `has_shortage` eksik günün varlığını belirtir;
+1970 öncesi gün sayıları negatif olduğu için tarihin işaretiyle yokluk sınanmaz.
+Gerçek günlük destek tüketilebilen yardımdan gelir. `consumed_stock` ve `aid_coverage_sum`
+tüketimi ve rapor/güvenin günlük ortalamasını saklar; kalan saha stoğu raporda hedef depoya döner.
+
+`Simulation.transfer_preview`, `transfer_resources` ve `recall_teams` arayüz sınırıdır.
+Sevk komutları isteğe bağlı asıl merkez kimliğiyle misafir grubu seçer. Üç gün içinde açık
+gören çalışan takvim gün işlemi sonunda durur ve `supply_warning_requested` üretir.
+`supply_alerted` çözülmemiş aynı açığın duruşunu tekrarlamaz; yeterli ikmal sonrası yeniden kurulur.

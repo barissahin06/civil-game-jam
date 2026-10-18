@@ -57,6 +57,44 @@ class CatalogTests(unittest.TestCase):
                     check_data.validate_references(self.root)
                 self.write(path, {collection: [entry]})
 
+    def test_decisions_validate_events_project_scope_and_unique_options(self) -> None:
+        import copy
+
+        path = self.root / "our-game/events/data/decisions.json"
+        measures_path = self.root / "our-game/management/data/measures.json"
+        self.write(self.events, {"events": [{"id": "historical-001", "province_ids": [1]}]})
+        self.write(self.root / "our-game/regions/data/service_areas.json", {"areas": [{"id": 1, "province_ids": [1]}]})
+        projects = [{"id": "decision_test_" + option, "kind": "local", "year": 1950, "prerequisites": [], "repeatable": False, "cost_awareness": 0} for option in ["full", "focused"]]
+        self.write(measures_path, {"measures": projects})
+        card = {"id": "test", "area_id": 1, "event_ids": ["historical-001"], "options": [
+            {"id": "full", "project_id": "decision_test_full"},
+            {"id": "focused", "project_id": "decision_test_focused"},
+            {"id": "decline", "project_id": ""},
+        ]}
+        self.write(path, {"cards": [card]})
+        check_data.validate_references(self.root)
+        malformed = []
+        value = copy.deepcopy(card)
+        value["event_ids"] = ["historical-999"]
+        malformed.append((value, "Unknown decision event_id"))
+        value = copy.deepcopy(card)
+        value["area_id"] = 0
+        malformed.append((value, "scope mismatch"))
+        value = copy.deepcopy(card)
+        value["options"][1]["project_id"] = "decision_test_full"
+        malformed.append((value, "Duplicate decision project_id"))
+        value = copy.deepcopy(card)
+        value["options"][1]["id"] = "full"
+        malformed.append((value, "Duplicate id"))
+        value = copy.deepcopy(card)
+        value["options"][2]["project_id"] = "decision_test_full"
+        malformed.append((value, "Decline cannot"))
+        for value, message in malformed:
+            with self.subTest(error=message):
+                self.write(path, {"cards": [value]})
+                with self.assertRaisesRegex(ValueError, message):
+                    check_data.validate_references(self.root)
+
     def test_aftermath_schema_rejects_missing_sources_and_unexplained_research(self) -> None:
         entry = {"event_id": "historical-001", "actions": [{
             "type": "decision", "description": "A sourced decision", "sources": ["https://example.com/source"],
@@ -80,6 +118,30 @@ class CatalogTests(unittest.TestCase):
         self.assertTrue(valid())
         entry["research_sources"] = ["http://example.com/source"]
         self.assertFalse(valid())
+
+    def test_authored_decisions_cover_all_natural_disaster_actions_once(self) -> None:
+        game = ROOT / "our-game"
+        cards = json.loads((game / "events/data/decisions.json").read_text(encoding="utf-8"))["cards"]
+        measures = json.loads((game / "management/data/measures.json").read_text(encoding="utf-8"))["measures"]
+        aftermath = json.loads((game / "events/data/historical/aftermath.json").read_text(encoding="utf-8"))["entries"]
+        source_entries = {entry["event_id"]: entry for entry in aftermath if entry["actions"] and entry["event_id"] != "historical-097"}
+        covered = {event_id for card in cards for event_id in card["event_ids"]}
+        self.assertEqual(len(cards), 21)
+        self.assertEqual(len(covered), 20)
+        self.assertEqual(covered, set(source_entries))
+        projects = [measure["id"] for measure in measures if measure["id"].startswith("decision_")]
+        references = [option["project_id"] for card in cards for option in card["options"] if option["project_id"]]
+        self.assertEqual(len(projects), 42)
+        self.assertEqual(len(set(references)), 42)
+        self.assertEqual(set(projects), set(references))
+        actions = [action["description"] for entry in source_entries.values() for action in entry["actions"]]
+        self.assertEqual(len(actions), 25)
+        for action in actions:
+            with self.subTest(action=action):
+                self.assertEqual(sum(action in card["historical_note"] for card in cards), 1)
+        reform = [card for card in cards if "historical-041" in card["event_ids"]]
+        self.assertEqual([card["id"] for card in reform], ["construction_inspection"])
+        check_data.validate_references(ROOT)
 
 
 if __name__ == "__main__":

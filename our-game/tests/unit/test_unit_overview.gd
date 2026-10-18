@@ -86,7 +86,7 @@ func test_dispatch_access_explains_crisis_inventory_and_campaign_gates() -> void
 	var sim := _fixture()
 	var center := _center(sim.unit_overview(), 31)
 	assert_bool(center.can_dispatch).is_false()
-	assert_str(center.dispatch_message).contains("aktif kriz")
+	assert_str(center.dispatch_message).contains("aktif afet")
 	sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
 	sim.acknowledge()
 	assert_bool(_center(sim.unit_overview(), 31).can_dispatch).is_true()
@@ -100,4 +100,4 @@ func test_dispatch_access_explains_crisis_inventory_and_campaign_gates() -> void
 	sim.outcome = "ending"
 	center = _center(sim.unit_overview(), 31)
 	assert_bool(center.can_dispatch).is_false()
-	assert_str(center.dispatch_message).contains("Kampanya tamamlandı")
+	assert_str(center.dispatch_message).contains("Oyun tamamlandı")

@@ -82,7 +82,7 @@
       "title": "Otomatik gaz kesme",
       "kind": "local",
       "tab": 0,
-      "year": 1980,
+      "year": 1990,
       "prerequisites": ["research_automation"],
       "cost_budget": 18000000,
       "cost_awareness": 0,
@@ -159,19 +159,33 @@
       "repeatable": true
     },
     {
+      "id": "center_renewal",
+      "title": "Merkez yenilemesi",
+      "kind": "renewal",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 0,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {},
+      "repeatable": true
+    },
+    {
       "id": "national_radio",
       "title": "Ulusal telsiz ağı",
       "kind": "national",
       "tab": 0,
       "year": 1950,
-      "prerequisites": [],
-      "cost_budget": 36000000,
+      "prerequisites": ["research_radio"],
+      "cost_budget": 24000000,
       "cost_awareness": 0,
-      "months": 18,
-      "upkeep": 120000,
+      "months": 12,
+      "upkeep": 60000,
       "effects": {
-        "rescue_efficiency": 0.1,
-        "logistics_efficiency": 0.1
+        "rescue_efficiency": 0.03,
+        "logistics_efficiency": 0.02
       },
       "repeatable": false
     },
@@ -181,15 +195,14 @@
       "kind": "national",
       "tab": 0,
       "year": 1970,
-      "prerequisites": ["research_radar"],
+      "prerequisites": ["research_radar", "research_basin"],
       "cost_budget": 36000000,
       "cost_awareness": 0,
-      "months": 18,
-      "upkeep": 160000,
+      "months": 12,
+      "upkeep": 80000,
       "effects": {
-        "protection_flood": 10,
-        "protection_fire": 8,
-        "evacuation": 0.06
+        "protection_flood": 4,
+        "evacuation": 0.005
       },
       "repeatable": false
     },
@@ -200,13 +213,13 @@
       "tab": 0,
       "year": 1990,
       "prerequisites": ["research_satellite"],
-      "cost_budget": 36000000,
+      "cost_budget": 48000000,
       "cost_awareness": 0,
-      "months": 18,
-      "upkeep": 200000,
+      "months": 15,
+      "upkeep": 100000,
       "effects": {
-        "rescue_efficiency": 0.15,
-        "logistics_efficiency": 0.15
+        "rescue_efficiency": 0.04,
+        "logistics_efficiency": 0.03
       },
       "repeatable": false
     },
@@ -222,24 +235,24 @@
       "months": 12,
       "upkeep": 0,
       "effects": {
-        "protection_earthquake": 3
+        "protection_earthquake": 1
       },
       "repeatable": false
     },
     {
       "id": "research_ground",
-      "title": "Zemin etüdü",
+      "title": "Zemin ve yapı etkileşimi",
       "kind": "research",
       "tab": 0,
-      "year": 1960,
+      "year": 1970,
       "prerequisites": ["research_structural"],
-      "cost_budget": 12000000,
+      "cost_budget": 16000000,
       "cost_awareness": 0,
       "months": 12,
       "upkeep": 0,
       "effects": {
-        "protection_earthquake": 4,
-        "protection_flood": 2
+        "protection_earthquake": 2,
+        "protection_landslide": 1
       },
       "repeatable": false
     },
@@ -248,14 +261,14 @@
       "title": "Altyapı otomasyonu",
       "kind": "research",
       "tab": 0,
-      "year": 1980,
-      "prerequisites": ["research_ground"],
-      "cost_budget": 12000000,
+      "year": 1990,
+      "prerequisites": ["research_structural"],
+      "cost_budget": 20000000,
       "cost_awareness": 0,
-      "months": 12,
+      "months": 15,
       "upkeep": 0,
       "effects": {
-        "resilience": 3
+        "resilience": 1
       },
       "repeatable": false
     },
@@ -264,21 +277,20 @@
       "title": "Sismik izolasyon",
       "kind": "research",
       "tab": 0,
-      "year": 2000,
-      "prerequisites": ["research_automation"],
-      "cost_budget": 12000000,
+      "year": 2005,
+      "prerequisites": ["research_ground"],
+      "cost_budget": 24000000,
       "cost_awareness": 0,
-      "months": 12,
+      "months": 18,
       "upkeep": 0,
       "effects": {
-        "protection_earthquake": 8,
-        "protection_fire": 2
+        "protection_earthquake": 3
       },
       "repeatable": false
     },
     {
       "id": "research_meteorology",
-      "title": "Meteoroloji ağı",
+      "title": "Meteorolojik tahmin yöntemleri",
       "kind": "research",
       "tab": 1,
       "year": 1950,
@@ -288,25 +300,24 @@
       "months": 12,
       "upkeep": 0,
       "effects": {
-        "protection_flood": 3,
-        "protection_avalanche": 2
+        "protection_flood": 1,
+        "protection_avalanche": 1
       },
       "repeatable": false
     },
     {
       "id": "research_radar",
-      "title": "Hava radarı",
+      "title": "Radar meteorolojisi",
       "kind": "research",
       "tab": 1,
       "year": 1970,
       "prerequisites": ["research_meteorology"],
-      "cost_budget": 12000000,
+      "cost_budget": 16000000,
       "cost_awareness": 0,
       "months": 12,
       "upkeep": 0,
       "effects": {
-        "protection_flood": 4,
-        "evacuation": 0.02
+        "protection_flood": 2
       },
       "repeatable": false
     },
@@ -316,30 +327,30 @@
       "kind": "research",
       "tab": 1,
       "year": 1990,
-      "prerequisites": ["research_radar"],
-      "cost_budget": 12000000,
+      "prerequisites": ["research_radio"],
+      "cost_budget": 20000000,
       "cost_awareness": 0,
-      "months": 12,
+      "months": 15,
       "upkeep": 0,
       "effects": {
-        "rescue_efficiency": 0.05
+        "rescue_efficiency": 0.01
       },
       "repeatable": false
     },
     {
       "id": "research_sensor",
-      "title": "Sayısal sensör ağı",
+      "title": "Uzaktan sensör ağları",
       "kind": "research",
       "tab": 1,
       "year": 2005,
-      "prerequisites": ["research_satellite"],
-      "cost_budget": 12000000,
+      "prerequisites": ["research_radio", "research_terrain"],
+      "cost_budget": 24000000,
       "cost_awareness": 0,
-      "months": 12,
+      "months": 18,
       "upkeep": 0,
       "effects": {
-        "protection_landslide": 6,
-        "protection_fire": 5
+        "protection_landslide": 1,
+        "protection_fire": 1
       },
       "repeatable": false
     },
@@ -355,23 +366,23 @@
       "months": 12,
       "upkeep": 0,
       "effects": {
-        "rescue_efficiency": 0.05
+        "rescue_efficiency": 0.01
       },
       "repeatable": false
     },
     {
       "id": "research_depots",
-      "title": "Bölgesel depo ağı",
+      "title": "Depo ve stok planlaması",
       "kind": "research",
       "tab": 2,
-      "year": 1960,
-      "prerequisites": ["research_coordination"],
+      "year": 1950,
+      "prerequisites": [],
       "cost_budget": 12000000,
       "cost_awareness": 0,
       "months": 12,
       "upkeep": 0,
       "effects": {
-        "logistics_efficiency": 0.08
+        "logistics_efficiency": 0.02
       },
       "repeatable": false
     },
@@ -380,11 +391,11 @@
       "title": "Araştırma kurumu",
       "kind": "research",
       "tab": 2,
-      "year": 1980,
-      "prerequisites": ["research_depots"],
-      "cost_budget": 12000000,
+      "year": 1990,
+      "prerequisites": ["research_coordination", "research_depots"],
+      "cost_budget": 20000000,
       "cost_awareness": 0,
-      "months": 12,
+      "months": 15,
       "upkeep": 0,
       "effects": {
         "research_capacity": 1
@@ -393,18 +404,18 @@
     },
     {
       "id": "research_response",
-      "title": "Bütünleşik müdahale",
+      "title": "Bütünleşik müdahale yöntemleri",
       "kind": "research",
       "tab": 2,
-      "year": 2000,
-      "prerequisites": ["research_capacity"],
-      "cost_budget": 12000000,
+      "year": 2005,
+      "prerequisites": ["research_equipment", "research_field_planning"],
+      "cost_budget": 24000000,
       "cost_awareness": 0,
-      "months": 12,
+      "months": 18,
       "upkeep": 0,
       "effects": {
-        "rescue_efficiency": 0.1,
-        "repair_efficiency": 0.1
+        "rescue_efficiency": 0.02,
+        "repair_efficiency": 0.01
       },
       "repeatable": false
     },
@@ -420,8 +431,8 @@
       "months": 3,
       "upkeep": 0,
       "effects": {
-        "evacuation": 0.04,
-        "trust_decay_reduction": 0.1
+        "evacuation": 0.01,
+        "trust_decay_reduction": 0.04
       },
       "repeatable": false
     },
@@ -430,14 +441,14 @@
       "title": "Aile afet planları",
       "kind": "awareness",
       "tab": 3,
-      "year": 1950,
+      "year": 1970,
       "prerequisites": ["community_preparedness"],
       "cost_budget": 0,
-      "cost_awareness": 15,
+      "cost_awareness": 20,
       "months": 3,
       "upkeep": 0,
       "effects": {
-        "evacuation": 0.04
+        "evacuation": 0.01
       },
       "repeatable": false
     },
@@ -446,15 +457,15 @@
       "title": "Mahalle tatbikatları",
       "kind": "awareness",
       "tab": 3,
-      "year": 1950,
-      "prerequisites": ["household_planning"],
+      "year": 1990,
+      "prerequisites": ["school_safety", "household_planning"],
       "cost_budget": 0,
-      "cost_awareness": 15,
-      "months": 3,
+      "cost_awareness": 25,
+      "months": 4,
       "upkeep": 0,
       "effects": {
-        "evacuation": 0.05,
-        "rescue_efficiency": 0.03
+        "evacuation": 0.015,
+        "rescue_efficiency": 0.01
       },
       "repeatable": false
     },
@@ -463,14 +474,14 @@
       "title": "Gönüllü koordinasyonu",
       "kind": "awareness",
       "tab": 3,
-      "year": 1950,
+      "year": 1970,
       "prerequisites": ["community_preparedness"],
       "cost_budget": 0,
-      "cost_awareness": 15,
+      "cost_awareness": 20,
       "months": 3,
       "upkeep": 0,
       "effects": {
-        "rescue_efficiency": 0.08
+        "rescue_efficiency": 0.02
       },
       "repeatable": false
     },
@@ -479,14 +490,14 @@
       "title": "Güvenilir kamu iletişimi",
       "kind": "awareness",
       "tab": 3,
-      "year": 1960,
+      "year": 1990,
       "prerequisites": ["volunteer_network"],
       "cost_budget": 0,
-      "cost_awareness": 15,
-      "months": 3,
+      "cost_awareness": 25,
+      "months": 4,
       "upkeep": 0,
       "effects": {
-        "trust_decay_reduction": 0.25
+        "trust_decay_reduction": 0.1
       },
       "repeatable": false
     },
@@ -495,15 +506,1301 @@
       "title": "Dayanışma ağları",
       "kind": "awareness",
       "tab": 3,
-      "year": 1970,
+      "year": 2005,
       "prerequisites": ["evacuation_drills", "public_communication"],
+      "cost_budget": 0,
+      "cost_awareness": 30,
+      "months": 4,
+      "upkeep": 0,
+      "effects": {
+        "logistics_efficiency": 0.02,
+        "trust_decay_reduction": 0.04
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_gediz_relocation_full",
+      "title": "Planlı yeniden yerleşim",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 18,
+        "resilience": 4
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_gediz_relocation_focused",
+      "title": "Öncelikli kesimleri taşı",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 8,
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_samsun_flood_full",
+      "title": "Yerleşim ve dere ıslahı",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 80000,
+      "effects": {
+        "protection_flood": 22,
+        "resilience": 4
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_samsun_flood_focused",
+      "title": "Önce müdahale kapasitesi",
+      "kind": "team",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 4000000,
+      "cost_awareness": 0,
+      "months": 4,
+      "upkeep": 40000,
+      "effects": {
+        "teams": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_construction_inspection_full",
+      "title": "Yaygın yapı denetimi",
+      "kind": "national",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 36000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 10,
+        "resilience": 2
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_construction_inspection_focused",
+      "title": "Yüksek riskli yapıları denetle",
+      "kind": "national",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 4,
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_kursunlu_relocation_full",
+      "title": "İki köyü planlı taşı",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 18,
+        "resilience": 4
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_kursunlu_relocation_focused",
+      "title": "Önce riskli konutları taşı",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 8,
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_hazard_zoning_full",
+      "title": "Ulusal tehlikeli alan düzeni",
+      "kind": "national",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 36000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 7,
+        "protection_landslide": 5,
+        "protection_avalanche": 5,
+        "resilience": 2
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_hazard_zoning_focused",
+      "title": "Önce yüksek riskli alanlar",
+      "kind": "national",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 3,
+        "protection_landslide": 2,
+        "protection_avalanche": 2
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_catak_relocation_full",
+      "title": "Konutları güvenli alana taşı",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "protection_landslide": 22,
+        "resilience": 4
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_catak_relocation_focused",
+      "title": "Önce acil riskli konutlar",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "protection_landslide": 10,
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_senirkent_flood_full",
+      "title": "Havza ve bent programı",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 80000,
+      "effects": {
+        "protection_flood": 22,
+        "resilience": 4
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_senirkent_flood_focused",
+      "title": "Öncelikli bentleri kur",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 20000,
+      "effects": {
+        "protection_flood": 10,
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_medical_rescue_full",
+      "title": "Ulusal tıbbi kurtarma ağı",
+      "kind": "national",
+      "tab": 2,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 36000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 120000,
+      "effects": {
+        "rescue_efficiency": 0.15,
+        "logistics_efficiency": 0.05
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_medical_rescue_focused",
+      "title": "Önce ortak eğitim düzeni",
+      "kind": "national",
+      "tab": 2,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 40000,
+      "effects": {
+        "rescue_efficiency": 0.06
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_national_coordination_full",
+      "title": "Bütünleşik görev ve iletişim",
+      "kind": "national",
+      "tab": 2,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 36000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 120000,
+      "effects": {
+        "rescue_efficiency": 0.1,
+        "logistics_efficiency": 0.1,
+        "repair_efficiency": 0.05
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_national_coordination_focused",
+      "title": "Ortak müdahale protokolü",
+      "kind": "national",
+      "tab": 2,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 40000,
+      "effects": {
+        "rescue_efficiency": 0.04,
+        "logistics_efficiency": 0.04
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_istanbul_streambeds_full",
+      "title": "Tespit ve dere yatağı düzeni",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 40000,
+      "effects": {
+        "protection_flood": 18,
+        "resilience": 3
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_istanbul_streambeds_focused",
+      "title": "Önce risk envanteri",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "protection_flood": 6,
+        "evacuation": 0.02
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_silivri_school_safety_full",
+      "title": "Güvenli okul ve eğitim programı",
+      "kind": "local",
+      "tab": 2,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 40000,
+      "effects": {
+        "protection_earthquake": 14,
+        "resilience": 3,
+        "evacuation": 0.04
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_silivri_school_safety_focused",
+      "title": "Önce yüksek riskli okullar",
+      "kind": "local",
+      "tab": 2,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 6,
+        "evacuation": 0.02
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_dereli_flood_full",
+      "title": "Dere yatağı ve köprüleri düzenle",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 80000,
+      "effects": {
+        "protection_flood": 22,
+        "resilience": 4
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_dereli_flood_focused",
+      "title": "Önce kritik köprüler",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 20000,
+      "effects": {
+        "protection_flood": 10,
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_izmir_risk_planning_full",
+      "title": "Envanter ve ortak risk platformu",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 40000,
+      "effects": {
+        "protection_earthquake": 12,
+        "resilience": 2,
+        "rescue_efficiency": 0.05
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_izmir_risk_planning_focused",
+      "title": "Önce öncelikli yapı envanteri",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 5,
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_bozkurt_flood_full",
+      "title": "Dere, duvar ve köprü programı",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 80000,
+      "effects": {
+        "protection_flood": 22,
+        "resilience": 4
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_bozkurt_flood_focused",
+      "title": "Önce kritik taşkın kesimleri",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 20000,
+      "effects": {
+        "protection_flood": 10,
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_urban_transformation_full",
+      "title": "Ulusal güvenli dönüşüm programı",
+      "kind": "national",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 36000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 10,
+        "resilience": 4,
+        "repair_efficiency": 0.05
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_urban_transformation_focused",
+      "title": "Önce yüksek riskli yapı grupları",
+      "kind": "national",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 4,
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_yesilyurt_training_full",
+      "title": "Yerel uyarı ve tatbikat ağı",
+      "kind": "local",
+      "tab": 2,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 20000,
+      "effects": {
+        "evacuation": 0.08,
+        "rescue_efficiency": 0.04
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_yesilyurt_training_focused",
+      "title": "Önce hasarlı yapı uyarıları",
+      "kind": "local",
+      "tab": 2,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 2000000,
+      "cost_awareness": 0,
+      "months": 3,
+      "upkeep": 0,
+      "effects": {
+        "evacuation": 0.03
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_sanliurfa_flood_full",
+      "title": "Üç derede koruma programı",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 80000,
+      "effects": {
+        "protection_flood": 22,
+        "resilience": 4
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_sanliurfa_flood_focused",
+      "title": "Önce yüksek riskli kesimler",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 20000,
+      "effects": {
+        "protection_flood": 10,
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_silivri_awareness_full",
+      "title": "Okul ve mahalle tatbikatları",
+      "kind": "local",
+      "tab": 2,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 20000,
+      "effects": {
+        "evacuation": 0.08,
+        "rescue_efficiency": 0.04
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_silivri_awareness_focused",
+      "title": "Önce farkındalık dersleri",
+      "kind": "local",
+      "tab": 2,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 2000000,
+      "cost_awareness": 0,
+      "months": 3,
+      "upkeep": 0,
+      "effects": {
+        "evacuation": 0.03
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_uzengili_relocation_full",
+      "title": "Güvenli yeniden yerleşim",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "protection_avalanche": 22,
+        "resilience": 4
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_uzengili_relocation_focused",
+      "title": "Önce yüksek riskli haneler",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "protection_avalanche": 10,
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_tasagil_firebreaks_full",
+      "title": "Yangın kuşağı ve dirençli orman",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 18000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 80000,
+      "effects": {
+        "protection_fire": 22,
+        "resilience": 4
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_tasagil_firebreaks_focused",
+      "title": "Önce yerleşim çevresi kuşaklar",
+      "kind": "local",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 20000,
+      "effects": {
+        "protection_fire": 10,
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_hatay_fire_response_full",
+      "title": "Yerel ekip ve su ikmal ağı",
+      "kind": "local",
+      "tab": 2,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 6000000,
+      "cost_awareness": 0,
+      "months": 6,
+      "upkeep": 40000,
+      "effects": {
+        "protection_fire": 12,
+        "rescue_efficiency": 0.06
+      },
+      "repeatable": false
+    },
+    {
+      "id": "decision_hatay_fire_response_focused",
+      "title": "Önce tanker ve ekipman hazırlığı",
+      "kind": "local",
+      "tab": 2,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 2000000,
+      "cost_awareness": 0,
+      "months": 3,
+      "upkeep": 20000,
+      "effects": {
+        "protection_fire": 5,
+        "rescue_efficiency": 0.02
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_materials",
+      "title": "Malzeme dayanımı",
+      "kind": "research",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "protection_fire": 1,
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_slope_snow",
+      "title": "Şev ve kar örtüsü analizi",
+      "kind": "research",
+      "tab": 0,
+      "year": 1970,
+      "prerequisites": ["research_materials"],
+      "cost_budget": 16000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "protection_landslide": 1,
+        "protection_avalanche": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_fire_models",
+      "title": "Yangın yayılım modelleri",
+      "kind": "research",
+      "tab": 0,
+      "year": 1990,
+      "prerequisites": ["research_materials"],
+      "cost_budget": 20000000,
+      "cost_awareness": 0,
+      "months": 15,
+      "upkeep": 0,
+      "effects": {
+        "protection_fire": 2
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_redundancy",
+      "title": "Kritik altyapı yedekliliği",
+      "kind": "research",
+      "tab": 0,
+      "year": 2005,
+      "prerequisites": ["research_automation"],
+      "cost_budget": 24000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 0,
+      "effects": {
+        "resilience": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_multihazard",
+      "title": "Çoklu afet için tasarım",
+      "kind": "research",
+      "tab": 0,
+      "year": 2020,
+      "prerequisites": ["research_fire_models", "research_isolation"],
+      "cost_budget": 30000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 0,
+      "effects": {
+        "protection_earthquake": 1,
+        "protection_fire": 1,
+        "protection_flood": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_condition_monitoring",
+      "title": "Altyapıda durum izleme",
+      "kind": "research",
+      "tab": 0,
+      "year": 2020,
+      "prerequisites": ["research_automation", "research_sensor"],
+      "cost_budget": 30000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 0,
+      "effects": {
+        "resilience": 1,
+        "protection_earthquake": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_radio",
+      "title": "Acil telsiz haberleşmesi",
+      "kind": "research",
+      "tab": 1,
+      "year": 1950,
+      "prerequisites": [],
+      "cost_budget": 12000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "rescue_efficiency": 0.01
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_basin",
+      "title": "Havza ve taşkın modelleme",
+      "kind": "research",
+      "tab": 1,
+      "year": 1970,
+      "prerequisites": ["research_meteorology"],
+      "cost_budget": 16000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "protection_flood": 2
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_terrain",
+      "title": "Sayısal arazi haritalama",
+      "kind": "research",
+      "tab": 1,
+      "year": 1990,
+      "prerequisites": ["research_ground"],
+      "cost_budget": 20000000,
+      "cost_awareness": 0,
+      "months": 15,
+      "upkeep": 0,
+      "effects": {
+        "protection_landslide": 1,
+        "protection_flood": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_data_standards",
+      "title": "Ortak afet veri standartları",
+      "kind": "research",
+      "tab": 1,
+      "year": 2005,
+      "prerequisites": ["research_satellite", "research_terrain"],
+      "cost_budget": 24000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 0,
+      "effects": {
+        "rescue_efficiency": 0.01,
+        "logistics_efficiency": 0.01
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_hazard_analysis",
+      "title": "Çok kaynaklı tehlike analizi",
+      "kind": "research",
+      "tab": 1,
+      "year": 2020,
+      "prerequisites": ["research_sensor", "research_data_standards"],
+      "cost_budget": 30000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 0,
+      "effects": {
+        "protection_flood": 1,
+        "protection_landslide": 1,
+        "protection_fire": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_warning_design",
+      "title": "Etkili uyarı tasarımı",
+      "kind": "research",
+      "tab": 1,
+      "year": 2020,
+      "prerequisites": ["research_radar", "research_data_standards"],
+      "cost_budget": 30000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 0,
+      "effects": {
+        "evacuation": 0.005
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_equipment",
+      "title": "Yük ve ekipman standartları",
+      "kind": "research",
+      "tab": 2,
+      "year": 1970,
+      "prerequisites": ["research_depots"],
+      "cost_budget": 16000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "logistics_efficiency": 0.02
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_field_planning",
+      "title": "Saha kaynak planlaması",
+      "kind": "research",
+      "tab": 2,
+      "year": 1970,
+      "prerequisites": ["research_coordination"],
+      "cost_budget": 16000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 0,
+      "effects": {
+        "rescue_efficiency": 0.01
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_repair_planning",
+      "title": "Onarım iş planlaması",
+      "kind": "research",
+      "tab": 2,
+      "year": 1990,
+      "prerequisites": ["research_equipment"],
+      "cost_budget": 20000000,
+      "cost_awareness": 0,
+      "months": 15,
+      "upkeep": 0,
+      "effects": {
+        "repair_efficiency": 0.01
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_supply",
+      "title": "İkmal yükü optimizasyonu",
+      "kind": "research",
+      "tab": 2,
+      "year": 2005,
+      "prerequisites": ["research_equipment"],
+      "cost_budget": 24000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 0,
+      "effects": {
+        "logistics_efficiency": 0.02
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_damage",
+      "title": "Hızlı hasar değerlendirme",
+      "kind": "research",
+      "tab": 2,
+      "year": 2020,
+      "prerequisites": ["research_response"],
+      "cost_budget": 30000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 0,
+      "effects": {
+        "repair_efficiency": 0.01,
+        "rescue_efficiency": 0.01
+      },
+      "repeatable": false
+    },
+    {
+      "id": "research_scenarios",
+      "title": "Müdahale senaryoları",
+      "kind": "research",
+      "tab": 2,
+      "year": 2020,
+      "prerequisites": ["research_response", "research_supply"],
+      "cost_budget": 30000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 0,
+      "effects": {
+        "rescue_efficiency": 0.01,
+        "logistics_efficiency": 0.01
+      },
+      "repeatable": false
+    },
+    {
+      "id": "school_safety",
+      "title": "Okulda güvenli davranış",
+      "kind": "awareness",
+      "tab": 3,
+      "year": 1950,
+      "prerequisites": [],
       "cost_budget": 0,
       "cost_awareness": 15,
       "months": 3,
       "upkeep": 0,
       "effects": {
-        "logistics_efficiency": 0.08,
-        "trust_decay_reduction": 0.15
+        "evacuation": 0.005
+      },
+      "repeatable": false
+    },
+    {
+      "id": "accessible_preparedness",
+      "title": "Erişilebilir afet hazırlığı",
+      "kind": "awareness",
+      "tab": 3,
+      "year": 2005,
+      "prerequisites": ["public_communication"],
+      "cost_budget": 0,
+      "cost_awareness": 30,
+      "months": 4,
+      "upkeep": 0,
+      "effects": {
+        "evacuation": 0.01
+      },
+      "repeatable": false
+    },
+    {
+      "id": "information_verification",
+      "title": "Afet bilgisini doğrulama",
+      "kind": "awareness",
+      "tab": 3,
+      "year": 2020,
+      "prerequisites": ["accessible_preparedness"],
+      "cost_budget": 0,
+      "cost_awareness": 35,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "trust_decay_reduction": 0.08
+      },
+      "repeatable": false
+    },
+    {
+      "id": "inclusive_response",
+      "title": "Kapsayıcı mahalle müdahalesi",
+      "kind": "awareness",
+      "tab": 3,
+      "year": 2020,
+      "prerequisites": ["community_coordination", "accessible_preparedness"],
+      "cost_budget": 0,
+      "cost_awareness": 35,
+      "months": 6,
+      "upkeep": 0,
+      "effects": {
+        "rescue_efficiency": 0.02,
+        "evacuation": 0.005
+      },
+      "repeatable": false
+    },
+    {
+      "id": "national_equipment",
+      "title": "Kritik tesislerde ekipman sabitleme",
+      "kind": "national",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": ["research_structural", "research_materials"],
+      "cost_budget": 24000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 60000,
+      "effects": {
+        "protection_earthquake": 3,
+        "protection_fire": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "national_depots",
+      "title": "Ulusal lojistik aktarma noktaları",
+      "kind": "national",
+      "tab": 0,
+      "year": 1950,
+      "prerequisites": ["research_coordination", "research_depots"],
+      "cost_budget": 24000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 60000,
+      "effects": {
+        "logistics_efficiency": 0.04
+      },
+      "repeatable": false
+    },
+    {
+      "id": "national_mountain",
+      "title": "Dağlık alan gözlem ağı",
+      "kind": "national",
+      "tab": 0,
+      "year": 1970,
+      "prerequisites": ["research_ground", "research_slope_snow"],
+      "cost_budget": 36000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 80000,
+      "effects": {
+        "protection_landslide": 4,
+        "protection_avalanche": 4
+      },
+      "repeatable": false
+    },
+    {
+      "id": "national_equipment_standard",
+      "title": "Ortak saha ekipmanı standardı",
+      "kind": "national",
+      "tab": 0,
+      "year": 1970,
+      "prerequisites": ["research_equipment", "research_field_planning"],
+      "cost_budget": 36000000,
+      "cost_awareness": 0,
+      "months": 12,
+      "upkeep": 80000,
+      "effects": {
+        "rescue_efficiency": 0.03,
+        "logistics_efficiency": 0.02
+      },
+      "repeatable": false
+    },
+    {
+      "id": "national_fire_watch",
+      "title": "Orman yangını gözetleme ağı",
+      "kind": "national",
+      "tab": 0,
+      "year": 1990,
+      "prerequisites": ["research_fire_models", "research_terrain"],
+      "cost_budget": 48000000,
+      "cost_awareness": 0,
+      "months": 15,
+      "upkeep": 100000,
+      "effects": {
+        "protection_fire": 5
+      },
+      "repeatable": false
+    },
+    {
+      "id": "national_repair_supply",
+      "title": "Ortak onarım tedarik standardı",
+      "kind": "national",
+      "tab": 0,
+      "year": 1990,
+      "prerequisites": ["research_repair_planning"],
+      "cost_budget": 48000000,
+      "cost_awareness": 0,
+      "months": 15,
+      "upkeep": 100000,
+      "effects": {
+        "repair_efficiency": 0.01,
+        "logistics_efficiency": 0.02
+      },
+      "repeatable": false
+    },
+    {
+      "id": "national_backup_power",
+      "title": "Kritik tesislerde yedek enerji",
+      "kind": "national",
+      "tab": 0,
+      "year": 2005,
+      "prerequisites": ["research_redundancy"],
+      "cost_budget": 60000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 120000,
+      "effects": {
+        "resilience": 2
+      },
+      "repeatable": false
+    },
+    {
+      "id": "national_sensor_stations",
+      "title": "Sürekli tehlike ölçüm istasyonları",
+      "kind": "national",
+      "tab": 0,
+      "year": 2005,
+      "prerequisites": ["research_sensor", "research_data_standards"],
+      "cost_budget": 60000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 120000,
+      "effects": {
+        "protection_landslide": 2,
+        "protection_flood": 2,
+        "protection_fire": 2,
+        "protection_avalanche": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "national_dispatch",
+      "title": "Ortak sevkiyat planlama ağı",
+      "kind": "national",
+      "tab": 0,
+      "year": 2005,
+      "prerequisites": ["research_response", "research_supply"],
+      "cost_budget": 60000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 120000,
+      "effects": {
+        "logistics_efficiency": 0.05,
+        "rescue_efficiency": 0.02
+      },
+      "repeatable": false
+    },
+    {
+      "id": "national_preventive_maintenance",
+      "title": "Kritik hatlarda koruyucu bakım",
+      "kind": "national",
+      "tab": 0,
+      "year": 2020,
+      "prerequisites": ["research_multihazard", "research_condition_monitoring"],
+      "cost_budget": 72000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 150000,
+      "effects": {
+        "resilience": 2,
+        "protection_fire": 2,
+        "protection_flood": 2
+      },
+      "repeatable": false
+    },
+    {
+      "id": "national_multichannel_warning",
+      "title": "Çok kanallı afet uyarısı",
+      "kind": "national",
+      "tab": 0,
+      "year": 2020,
+      "prerequisites": ["research_hazard_analysis", "research_warning_design"],
+      "cost_budget": 72000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 150000,
+      "effects": {
+        "evacuation": 0.01,
+        "protection_flood": 1,
+        "protection_fire": 1
+      },
+      "repeatable": false
+    },
+    {
+      "id": "national_damage_assessment",
+      "title": "Afet sonrası saha değerlendirme ağı",
+      "kind": "national",
+      "tab": 0,
+      "year": 2020,
+      "prerequisites": ["research_damage", "research_scenarios"],
+      "cost_budget": 72000000,
+      "cost_awareness": 0,
+      "months": 18,
+      "upkeep": 150000,
+      "effects": {
+        "repair_efficiency": 0.01,
+        "rescue_efficiency": 0.03
       },
       "repeatable": false
     }

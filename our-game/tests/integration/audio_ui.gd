@@ -25,7 +25,7 @@ func _run() -> void:
 	_shell.audio = audio
 	root.add_child(_main)
 	await process_frame
-	_shell.saves.slot_directory = TEST_SAVE_DIR
+	_shell.saves.slot_directory = _test_save_dir
 	_shell.return_to_main_menu()
 	assert(audio.preferences_path.is_empty(), "Test must not use player preferences")
 	assert(audio._music.stream.loop_mode == AudioStreamWAV.LOOP_FORWARD)

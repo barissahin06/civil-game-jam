@@ -232,7 +232,7 @@ func test_save_round_trip_preserves_queue_payment_and_does_not_activate_on_load(
 	restored.advance_to(CalendarClock.date_to_day("1950-03-01"))
 	assert_str(restored.projects.get_project(second.uid).status).is_equal("active")
 	assert_int(restored.projects.get_project(second.uid).paid).is_equal(0)
-	assert_int(restored.treasury.money).is_equal(money + 5000000)
+	assert_int(restored.treasury.money).is_equal(money + 3000000)
 	var legacy := _fixture()
 	assert_bool(legacy.start_project("river_zoning", 34).ok).is_true()
 	assert_object(store.restore(JSON.parse_string(JSON.stringify(legacy.to_dict())))).is_not_null()

@@ -40,7 +40,7 @@ func _newspaper() -> void:
 	_line(Rect2(40, 136, 1360, 4), ink)
 	_line(Rect2(40, 144, 1360, 1), muted)
 	if entry.is_empty():
-		_paragraph("KAMPANYADA HENÜZ AFET HABERİ YOK.", Rect2(40, 220, 1360, 80), ink)
+		_paragraph("OYUNDA HENÜZ AFET HABERİ YOK.", Rect2(40, 220, 1360, 80), ink)
 		return
 	var date := UI.text(_content, entry.date, Rect2(950, 26, 320, 28), 18, muted)
 	date.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -107,7 +107,7 @@ func _newspaper() -> void:
 	_line(Rect2(40, 720, 1360, 2), muted)
 	UI.button(
 		_content,
-		"KRİZ MERKEZİNE GEÇ",
+		"HABERİ OKUDUM" if not sim.news_queue.is_empty() else "AFET MÜDAHALESİNE GEÇ",
 		Rect2(744, 750, 656, 50),
 		(
 			_shell.acknowledge_news
@@ -123,7 +123,7 @@ func _report() -> void:
 	if not sim.news_queue.is_empty() and sim.news_queue.front().kind == "report":
 		id = sim.news_queue.front().id
 	var report := sim.report_for(id)
-	_title("KRİZ SONRASI RAPOR", "SAYILAR SİMÜLASYON TAHMİNİDİR")
+	_title("AFET SONRASI RAPOR", "SAYILAR SİMÜLASYON TAHMİNİDİR")
 	if report.is_empty():
 		_paragraph("HENÜZ TAMAMLANMIŞ MÜDAHALE YOK.", Rect2(0, 144, 1300, 80), UI.MUTED)
 		return
@@ -157,8 +157,19 @@ func _report() -> void:
 	UI.text(
 		_content,
 		(
-			"ONARIM TAHMİNİ %s / GÜVEN %+.1f"
-			% [_shell.fmt_money(int(report.repair_estimate)), report.trust_delta]
+			"ONARIM TAHMİNİ %s / %s"
+			% [
+				_shell.fmt_money(int(report.repair_estimate)),
+				(
+					("ULUSAL GÜVEN %+.2f (AFETİN TAMAMI)" % float(report.national_trust_delta))
+					if report.has("national_trust_delta")
+					else (
+						"ORTAK AFET DEĞERLENDİRMESİ YAPILDI"
+						if report.get("trust_assessed", false)
+						else "DİĞER MERKEZLER BEKLENİYOR"
+					)
+				)
+			]
 		),
 		Rect2(0, 524, 1344, 32),
 		18,
@@ -189,7 +200,7 @@ func _report() -> void:
 	)
 	UI.button(
 		_content,
-		"RAPORU KAPAT",
+		"RAPORU OKUDUM" if not sim.news_queue.is_empty() else "RAPORU KAPAT",
 		Rect2(912, 610, 432, 52),
 		_shell.acknowledge_news if not sim.news_queue.is_empty() else _shell.close_screen
 	)
@@ -198,7 +209,7 @@ func _report() -> void:
 func _comparison(report: Dictionary) -> void:
 	_paragraph(
 		(
-			"TEDBİRSİZ EŞ HESABA GÖRE: %s KİŞİ ETKİLENMEKTEN KORUNDU, %s EK HASAR ÖNLENDİ. AYNI SEVK KARARLARIYLA HESAPLANAN SİMÜLASYON TAHMİNİ."
+			"AYNI MÜDAHALE YAPILIP ÖNLEM ALINMASAYDI: %s KİŞİ ETKİLENMEKTEN KORUNDU, %s EK HASAR ÖNLENDİ. AYNI GÖNDERİMLERLE HESAPLANAN SİMÜLASYON TAHMİNİ."
 			% [
 				_shell.fmt_count(int(report.protected)),
 				_shell.fmt_money(int(report.prevented_damage))
