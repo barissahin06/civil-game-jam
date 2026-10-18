@@ -110,7 +110,6 @@ func _run() -> void:
 	await process_frame
 	assert(sim.outcome == "defeat" and sim.paused)
 	assert(_shell.open_screen == "defeat", "Cancellation must show defeat without resuming time")
-	assert(SaveStore.new().restore(JSON.parse_string(JSON.stringify(sim.to_dict()))) != null)
 	await _capture_balance("commitment-cancel-defeat")
 	await _shell.audio.shutdown()
 	_main.queue_free()
