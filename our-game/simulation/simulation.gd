@@ -4,6 +4,7 @@ extends RefCounted
 
 signal changed
 signal notification_requested
+signal reward_earned
 
 const END_DATE := "2026-12-31"
 # Map color saturation only; aid storage has no capacity limit.
@@ -126,6 +127,7 @@ func _month_boundary() -> void:
 	var settlement := treasury.collect_and_maintain(areas, projects)
 	var awareness_was_complete := projects.awareness_complete()
 	for completion: Dictionary in projects.tick_month(clock.year, bool(settlement.can_pay_budget)):
+		reward_earned.emit()
 		if completion.get("definition_id") == "repair":
 			var area: ServiceArea = areas[int(completion.area_id)]
 			log_message(
@@ -406,6 +408,7 @@ func collect_bubble(id: int) -> void:
 	if id in bubbles:
 		bubbles.erase(id)
 		treasury.awareness_points += 5
+		reward_earned.emit()
 		log_message("%s: +5 bilinç puanı" % areas[id].name)
 		changed.emit()
 

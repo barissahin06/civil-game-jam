@@ -166,6 +166,7 @@ func _run() -> void:
 	await _click(other_marker.get_global_rect().get_center())
 	assert(_shell.crisis.selected().id == other.id and _shell.crisis.source_id == chosen_source)
 	await _capture("pilot-parallel")
+	await _shell.audio.shutdown()
 	_main.queue_free()
 	await process_frame
 	print(
@@ -337,6 +338,7 @@ func _motion() -> void:
 	await create_timer(2.8).timeout
 	_shell.sim.set_paused(true)
 	print("CRISIS_PILOT_MOTION_PASS: 1x travel, arrival, rescue and aid poses")
+	await _shell.audio.shutdown()
 	_main.queue_free()
 	await process_frame
 	quit()

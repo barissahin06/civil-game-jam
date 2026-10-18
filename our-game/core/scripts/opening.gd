@@ -47,3 +47,4 @@ func _ready() -> void:
 	title_tween.tween_property(title_splash, "modulate:a", 0.0, FADE_SECONDS)
 	await title_tween.finished
 	title_splash.queue_free()
+	$MainPreview.audio.start_music()

@@ -100,6 +100,7 @@ func _run() -> void:
 	_shell.close_screen()
 	await process_frame
 	await _check_map_legend()
+	await _shell.audio.shutdown()
 	_main.queue_free()
 	await process_frame
 	print(

@@ -94,6 +94,20 @@ kenarlıksız tam ekran ve kenarlı pencere. Proje varsayılanı tam ekrandır; 
 `user://preferences.cfg` içindeki `display/mode` alanından uygulanır. Pencere modu
 tam ekrandan kalan borderless bayrağını temizler. F11 seçili tam ekran türü ile pencereyi değiştirir;
 bu tür `display/fullscreen_mode` alanıyla pencere modunda kaydedilse de korunur.
+`core/audio/game_audio.gd` müzik/efekt oynatımının ve ses tercihlerinin tek sahibidir.
+`eren/sounds` kaynaklı altı WAV `assets/sounds/` altında import metadata'sıyla korunur.
+58 saniyelik ana müzik açılış tamamlanınca başlar, ileri yönde döngüye girer ve menü/kampanya
+geçişlerinde kesilmez. Simülasyonu duraklatmak müziği durdurmaz. Ayarlarda müzik aç/kapat,
+bulunduğu yerde duraklat/sürdür ve ayrı müzik/efekt yüzde slider'ları bulunur.
+Kapatılan müzik yeniden açılınca baştan başlar; duraklatma geçicidir.
+Müzik açık/kapalı tercihi ve iki ses düzeyi `preferences.cfg` içindeki `audio` bölümünde,
+mevcut görüntü/görsel tercihler korunarak saklanır; kampanya kaydına eklenmez.
+Pencereyi veya ÇIKIŞ düğmesini kullanarak kapatma, bekleyen ses tercihini kaydeder ve ses
+iş parçacığının oynatımı bırakması için `audio.shutdown()` tamamlandıktan sonra çıkar.
+Ortak UI düğmeleri tıklama, `command_result` başarılı/başarısız işlemler için onay/ret sesi çalar.
+Yeni afet sesi mevcut olay-ID defterini kullanır; yenileme/yükleme eski uyarıyı tekrarlamaz.
+`Simulation.reward_earned` proje/araştırma/onarım tamamlanmasında ve bilinç toplamada yayımlanır;
+sunum bu sinyali tamamlanma sesine bağlar. Oyun modeli ses dosyalarını bilmez.
 Esc oyun içi duraklatma menüsünü açar; menü kapanınca önceki ekran ve takvimin çalışma durumu
 geri gelir. Haber/rapor/sonuç menünün altında bekler, kabul edilmiş sayılmaz.
 Bu menü ve alt ekranları açıkken simülasyon yenilemesi zorunlu haber ekranını öne taşımaz.
