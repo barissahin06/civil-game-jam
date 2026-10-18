@@ -697,6 +697,7 @@ func report_feedback(report: Dictionary) -> Dictionary:
 
 
 func scores() -> Dictionary:
+	var center_count := maxi(1, areas.size())
 	var preparation := 0.0
 	var recovery := 0.0
 	var response := 0.0
@@ -707,10 +708,10 @@ func scores() -> Dictionary:
 	for report: Dictionary in crises.reports:
 		response += float(report.quality)
 	return {
-		"preparation": roundi(preparation / 21.0),
+		"preparation": roundi(preparation / center_count),
 		"response":
 		roundi(response / crises.reports.size()) if not crises.reports.is_empty() else 0,
-		"recovery": roundi(recovery / 21.0)
+		"recovery": roundi(recovery / center_count)
 	}
 
 

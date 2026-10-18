@@ -23,9 +23,9 @@ func test_initial_overview_is_ordered_and_detached_from_campaign_state() -> void
 	var before := JSON.stringify(sim.to_dict())
 	var overview := sim.unit_overview()
 	assert_dict(overview.summary).is_equal(
-		{"ready": 21, "total": 21, "stock": 840, "outbound": 0, "deployed": 0, "returning": 0}
+		{"ready": 30, "total": 30, "stock": 1200, "outbound": 0, "deployed": 0, "returning": 0}
 	)
-	assert_int(overview.centers.size()).is_equal(21)
+	assert_int(overview.centers.size()).is_equal(30)
 	var previous := 0
 	for center: Dictionary in overview.centers:
 		assert_int(center.area_id).is_greater(previous)
@@ -41,8 +41,8 @@ func test_initial_overview_is_ordered_and_detached_from_campaign_state() -> void
 	overview.centers.front().name = "Changed display copy"
 	overview.centers.clear()
 	assert_str(JSON.stringify(sim.to_dict())).is_equal(before)
-	assert_int(sim.unit_overview().summary.ready).is_equal(21)
-	assert_int(sim.unit_overview().summary.stock).is_equal(840)
+	assert_int(sim.unit_overview().summary.ready).is_equal(30)
+	assert_int(sim.unit_overview().summary.stock).is_equal(1200)
 
 
 func test_team_lifecycle_counts_source_centers_and_excludes_aid_and_done_shipments() -> void:
@@ -53,7 +53,7 @@ func test_team_lifecycle_counts_source_centers_and_excludes_aid_and_done_shipmen
 	assert_bool(sim.dispatch(6, crisis.id, "stock", 10).ok).is_true()
 	var overview := sim.unit_overview()
 	assert_dict(overview.summary).is_equal(
-		{"ready": 19, "total": 21, "stock": 830, "outbound": 1, "deployed": 1, "returning": 0}
+		{"ready": 28, "total": 30, "stock": 1190, "outbound": 1, "deployed": 1, "returning": 0}
 	)
 	assert_int(_center(overview, 31).deployed).is_equal(1)
 	assert_int(_center(overview, 1).outbound).is_equal(1)
@@ -63,12 +63,12 @@ func test_team_lifecycle_counts_source_centers_and_excludes_aid_and_done_shipmen
 	overview = sim.unit_overview()
 	assert_int(overview.summary.outbound).is_equal(0)
 	assert_int(overview.summary.deployed).is_equal(2)
-	assert_int(overview.summary.stock).is_equal(830)
+	assert_int(overview.summary.stock).is_equal(1190)
 	var deadline := int(crisis.start) + int(crisis.window)
 	sim.advance_to(deadline)
 	overview = sim.unit_overview()
 	assert_dict(overview.summary).is_equal(
-		{"ready": 20, "total": 21, "stock": 830, "outbound": 0, "deployed": 0, "returning": 1}
+		{"ready": 29, "total": 30, "stock": 1190, "outbound": 0, "deployed": 0, "returning": 1}
 	)
 	assert_int(_center(overview, 31).ready).is_equal(1)
 	assert_int(_center(overview, 31).returning).is_equal(0)
@@ -76,7 +76,7 @@ func test_team_lifecycle_counts_source_centers_and_excludes_aid_and_done_shipmen
 	sim.advance_to(deadline + 1)
 	overview = sim.unit_overview()
 	assert_dict(overview.summary).is_equal(
-		{"ready": 21, "total": 21, "stock": 830, "outbound": 0, "deployed": 0, "returning": 0}
+		{"ready": 30, "total": 30, "stock": 1190, "outbound": 0, "deployed": 0, "returning": 0}
 	)
 	assert_int(sim.logistics.shipments.size()).is_equal(3)
 	assert_str(sim.logistics.shipments.front().state).is_equal("done")

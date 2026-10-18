@@ -14,7 +14,7 @@ func _run() -> void:
 	_shell.auto_save_enabled = false
 	_shell.sim.tutorial_enabled = false
 	await _press_button("EKİPLER VE YARDIM")
-	assert(_shell.open_screen == "units" and _shell.units_panel._rows.size() == 21)
+	assert(_shell.open_screen == "units" and _shell.units_panel._rows.size() == 30)
 	var panel: Control = _shell.units_panel
 	for row: Dictionary in panel._rows.values():
 		assert(row.dispatch.disabled and row.dispatch.tooltip_text.contains("aktif afet"))
@@ -53,9 +53,9 @@ func _run() -> void:
 	_shell.close_screen()
 	await _press_button("EKİPLER VE YARDIM")
 	panel = _shell.units_panel
-	assert(panel._summary.text == "HAZIR / TOPLAM EKİP: 19 / 21")
-	assert(_shell.hud._total_teams.text == "19")
-	assert(_shell.hud._team_total.text == "TOPLAM: 21")
+	assert(panel._summary.text == "HAZIR / TOPLAM EKİP: 28 / 30")
+	assert(_shell.hud._total_teams.text == "28")
+	assert(_shell.hud._team_total.text == "TOPLAM: 30")
 	assert(panel._movements.text == "YOLDA 1 / GÖREVDE 1 / DÖNÜŞ 0")
 	assert(panel._rows[1].ready.text == "HAZIR 0 / TOPLAM 1")
 	assert(panel._rows[31].movement.text == "YOLDA 0 / GÖREVDE 1 / DÖNÜŞ 0")

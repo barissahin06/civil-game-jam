@@ -13,11 +13,11 @@ func test_initial_month_pays_maintenance_before_installments() -> void:
 	var started := system.start("river_zoning", 34, 1950)
 	assert_bool(started.ok).is_true()
 	var settlement := system.treasury.collect_and_maintain(system.areas, system)
-	assert_int(settlement.income).is_equal(4000000)
-	assert_int(settlement.upkeep).is_equal(1000000)
-	assert_int(settlement.net).is_equal(3000000)
+	assert_int(settlement.income).is_equal(4675000)
+	assert_int(settlement.upkeep).is_equal(1360000)
+	assert_int(settlement.net).is_equal(3315000)
 	system.tick_month(1950, settlement.can_pay_budget)
-	assert_int(system.treasury.money).is_equal(22000000)
+	assert_int(system.treasury.money).is_equal(22315000)
 	assert_int(system.get_project(started.uid).progress_months).is_equal(1)
 	assert_float(system.get_effect(34, "protection_flood")).is_equal(0.0)
 
@@ -102,7 +102,7 @@ func test_inadequate_maintenance_reduces_physical_effects_and_waits() -> void:
 	system.start("river_zoning", 34, 1950)
 	for area: ServiceArea in system.areas.values():
 		area.base_income = 0
-	system.treasury.money = 540000
+	system.treasury.money = int(system.calculate_upkeep() / 2)
 	var settlement := system.treasury.collect_and_maintain(system.areas, system)
 	assert_float(settlement.maintenance_ratio).is_equal(0.5)
 	assert_float(system.get_effect(34, "protection_earthquake")).is_equal(11.0)
@@ -128,7 +128,7 @@ func test_repair_restores_income_gradually_and_repeatable_teams_add_upkeep() -> 
 	system.start(team.id, 34, 1950)
 	system.tick_month(1950)
 	assert_int(system.areas[34].teams).is_equal(2)
-	assert_int(system.calculate_upkeep()).is_equal(1040000)
+	assert_int(system.calculate_upkeep()).is_equal(1400000)
 	assert_bool(system.start(team.id, 34, 1950).ok).is_true()
 
 

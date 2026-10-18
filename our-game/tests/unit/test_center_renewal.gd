@@ -12,7 +12,7 @@ func test_capacity_ages_and_warns_before_critical_without_changing_knowledge() -
 	for month: int in range(120):
 		notices += sim.projects.age_capacity().size()
 	assert_float(area.condition).is_equal(70.0)
-	assert_int(notices).is_equal(21)
+	assert_int(notices).is_equal(30)
 	assert_float(area.capacity_efficiency()).is_equal(0.85)
 	assert_float(sim.projects.get_effect(34, "protection_earthquake")).is_equal(
 		initial - 22.0 * 0.15

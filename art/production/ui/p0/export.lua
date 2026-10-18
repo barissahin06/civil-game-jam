@@ -3,6 +3,9 @@ local root=assert(P0_ROOT or app.params["repo"], "Pass the repository root as re
 local source=root .. "/art/production/ui/p0/"
 local output=root .. "/our-game/ui_preview/assets/"
 assert(app.fs.isDirectory(output), "P0 asset directory is required")
+local catalog_file=assert(io.open(root .. "/our-game/regions/data/service_areas.json","rb"))
+local areas=json.decode(catalog_file:read("*a")).areas;catalog_file:close()
+local center_count=#areas
 
 local function layer_image(sprite,layer)
  local cel=assert(layer:cel(1),"Expected a single-frame source")
@@ -28,7 +31,7 @@ for _,name in ipairs({"controls","afet_pixel","icons","paper","signals","map-gen
    and country_lines:cel(1) and country_names and country_names.isVisible and country_names:cel(1),
    "Native map must retain noninteractive country context")
   local metadata=json.decode(borders.data)
-  assert(metadata.visible_provinces==81 and metadata.passive_provinces==60 and metadata.selectable_provinces==21,
+  assert(metadata.visible_provinces==81 and metadata.passive_provinces==81-center_count and metadata.selectable_provinces==center_count,
    "Province border contract changed")
  end
  if name=="map-general" then
@@ -43,7 +46,7 @@ for _,name in ipairs({"controls","afet_pixel","icons","paper","signals","map-gen
    terrain:drawImage(cel.image,cel.position)
    found.isVisible=false
   end
-  assert(#sprite.layers==34,"General map must retain its 31 original layers and three terrain layers")
+  assert(#sprite.layers==center_count+13,"General map must retain its province, context and terrain layers")
   local count=0
   for pixel in terrain:pixels() do
    local alpha=app.pixelColor.rgbaA(pixel())
@@ -69,7 +72,8 @@ for _,name in ipairs({"controls","afet_pixel","icons","paper","signals","map-gen
   end
   local count=0
   for _ in pairs(ids) do count=count+1 end
-  assert(count==21,"Expected 21 selectable provinces")
+  assert(count==center_count,"Selectable province count differs from the gameplay catalog")
+  for _,area in ipairs(areas) do assert(ids[area.id],"Missing selectable center: " .. area.name) end
   mask:saveAs(output .. "map-hitmask.png")
   labels:saveAs(output .. "map-labels.png")
  end
@@ -77,11 +81,15 @@ for _,name in ipairs({"controls","afet_pixel","icons","paper","signals","map-gen
 end
 
 local selection=assert(app.open(source .. "map-selection.aseprite"))
-assert(#selection.layers==21 and selection.width==3072 and selection.height==1728)
+assert(#selection.layers==center_count and selection.width==3072 and selection.height==1728)
+local selection_ids={}
 for _,layer in ipairs(selection.layers) do
  local id=assert(tonumber(layer.name:match("^SELECT / TR%-(%d+)$")),"Selection layer ID missing")
+ assert(not selection_ids[id],"Duplicate selection layer")
+ selection_ids[id]=true
  layer_image(selection,layer):saveAs(output .. string.format("selection-%02d.png",id))
 end
+for _,area in ipairs(areas) do assert(selection_ids[area.id],"Missing selection border: " .. area.name) end
 selection:close()
 
 local descriptor=assert(io.open(source .. "afet_pixel.fnt","rb"))
@@ -89,4 +97,4 @@ local text=descriptor:read("*a");descriptor:close()
 assert(text:find("chars count=126",1,true),"Bitmap font grid changed; update its descriptor")
 local destination=assert(io.open(output .. "afet_pixel.fnt","wb"))
 destination:write(text);destination:close()
-print("P0_EXPORT_PASS native_sources=10 selectable_provinces=21 glyphs=126")
+print("P0_EXPORT_PASS native_sources=10 selectable_provinces=" .. center_count .. " glyphs=126")

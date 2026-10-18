@@ -10,7 +10,7 @@ Bugün yaptığın bir yatırım, yıllar sonra yaşanacak bir afetin sonucunu d
 ## Kampanya
 
 1950–1990 arasında bir başlangıç yılı seç ve 31 Aralık 2026'ya kadar ülkenin afet
-yönetimini üstlen. Türkiye'nin yedi bölgesindeki **21 yönetim merkezi**, çevrelerindeki
+yönetimini üstlen. Türkiye'nin yedi bölgesindeki **30 yönetim merkezi**, çevrelerindeki
 illerle birlikte 81 ili kapsar. Her merkezin hazırlığını, altyapısını, ekiplerini ve
 yardım stoklarını tek bir ulusal bütçeyle yönetirsin.
 

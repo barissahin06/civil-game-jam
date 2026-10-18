@@ -1,7 +1,7 @@
 # P0 ana ekran kaynakları
 
 Durum: P0 ekranları 17 Ekim 2026'da kullanıcı tarafından uygun bulundu.
-İl paneli isteğe bağlı açılır; 81 ilin sınırı görünür, yalnız 21 yönetim merkezi seçilebilir.
+İl paneli isteğe bağlı açılır; 81 ilin sınırı görünür, yalnız 30 yönetim merkezi seçilebilir.
 Harita, HUD ve panellerin altında ekranı kaplayan kesintisiz arka plandır.
 Türkiye odaktadır; Balkanlar, Ege, Kafkasya ve yakın Orta Doğu soluk ülke sınırları/adlarıyla görünür.
 Bu bir UI prototipidir. Gerçek ekonomi, takvim, afet sonucu ve kayıt entegrasyonu içermez.
@@ -19,7 +19,7 @@ dosya paylaşımı ve modül sözleşmeleri [çalışma rehberindedir](../../../
 | `map-preparedness.aseprite`              | Hazırlık örnek katmanı → aynı adlı PNG                                              |
 | `map-logistics.aseprite`                 | Lojistik örnek katmanı → aynı adlı PNG                                              |
 | `map-damage.aseprite`                    | Hasar/toparlanma örnek katmanı → aynı adlı PNG                                      |
-| `map-selection.aseprite`                 | 21 ayrı il seçim sınırı; her katman `SELECT / TR-XX`                                |
+| `map-selection.aseprite`                 | 30 ayrı il seçim sınırı; her katman `SELECT / TR-XX`                                |
 
 `controls.aseprite` → `controls.png` atlasındaki mevcut 48×24 durum hücreleri düğme
 eylemlerinde de kullanılır: `(168,96)` yeşil onay/başlatma, `(112,96)` kırmızı iptal/riskli
@@ -35,12 +35,12 @@ alınır; komşu ülkelerin idari alt bölgeleri birleştirilerek yalnız ülke 
 Kaynak hash'i ve [public domain kullanım koşulları](https://www.naturalearthdata.com/about/terms-of-use/)
 [çözünürlük pilotunda](../../maps/resolution-pilot/README.md) kayıtlıdır.
 Yedi bölge seçili illerin renkleriyle temsil edilir; coğrafi bölge sınırları henüz çizilmedi.
-Dört harita kaynağında `03 / Pasif il sınırları` adlı native katman, diğer 60 ilin
+Dört harita kaynağında `03 / Pasif il sınırları` adlı native katman, diğer 51 ilin
 sınırlarını soluk çizgilerle gösterir. Bu katman seçili il renkleri, etiketler ve kıyı
 çizgisinden ayrıdır. `01a / Çevre ülkeler`, `01b / Ülke sınırları` ve `98 / Ülke adları`
 katmanları çevre coğrafyayı oluşturur; yabancı şehir, yönetim düğümü veya etkileşim içermez.
-HIT ve 21 seçim maskesi aynı yeni tuval/projeksiyonda birlikte üretilir; seçilebilir il kimlikleri korunur.
-Genel harita 34, diğer üç harita 31'er katman ve tek frame içerir. `sprite.data` projeksiyonu, tuvali
+HIT ve 30 seçim maskesi aynı yeni tuval/projeksiyonda birlikte üretilir; seçilebilir il kimlikleri korunur.
+Genel harita 43, diğer üç harita 40'ar katman ve tek frame içerir. `sprite.data` projeksiyonu, tuvali
 ve başlangıç kamera konumunu kaydeder; oyun kodu `map/map_view.gd` içinde bu kamera konumunu kullanır.
 Ekranlardaki miktarlar, maliyetler, dönem kilitleri ve sonuçlar authored UI örnekleridir.
 Bu değerler onaylanmış oyun dengesi veya hesaplanmış simülasyon sonucu değildir.
@@ -79,7 +79,7 @@ aseprite --batch --script-param "repo=$repoPath" --script art/production/ui/p0/e
 
 Aseprite MCP ile aynı işlem `P0_ROOT` repo kökü verilerek `export.lua` dosyasını çalıştırır.
 Script tek frame, 3072×1728 harita/seçim tuvali, üç arazi katmanı ve keskin alfa kenarları, ülke/pasif sınır katmanları,
-21 il ID'si ve 126 glif düzenini doğrular. Grid, katman adı veya il sınırı
+30 il ID'si ve 126 glif düzenini doğrular. Grid, katman adı veya il sınırı
 değişirse ona bağlı descriptor, seçim sınırı ve hitmask birlikte güncellenmelidir.
 Bitmap font sayfası değişince Godot'ta PNG ile birlikte `.fnt` kaynağını da yeniden içe aktar;
 yalnız PNG importu eski font önbelleğini koruyabilir.
@@ -88,9 +88,9 @@ Godot'ta F5 ana önizlemeyi açar. İl sınırına tıklama, sol panel sekmeleri
 tekerlek/+/- ile 1×–3× yakınlaştırma, sürükleme ve Sıfırla çalışır. F11 tam ekranı değiştirir.
 Sürükleme 1× ölçekte de çalışır; kamera tuvalin dışına çıkmaz. Sıfırla Türkiye kadrajını geri getirir.
 HUD, şehir paneli, modal ve katman düğmeleri haritanın üstündedir; bunlara tıklama haritayı seçmez.
-Şehir paneli başlangıçta kapalıdır; 21 merkezden biri seçilince açılır.
+Şehir paneli başlangıçta kapalıdır; 30 merkezden biri seçilince açılır.
 Paneldeki × seçimi ve vurguyu temizler. Esc önce açık modalı, sonra şehir panelini kapatır.
-Diğer 60 ile, çevre ülkelere veya denize tıklamak şehir seçmez.
+Diğer 51 ile, çevre ülkelere veya denize tıklamak şehir seçmez.
 Ana menüden 1950–1990 yılı seçilebilir; Sandbox kilitlidir. Dört araştırma sekmesi bağlantılı
 ağaç ve detay kartlarına sahiptir. Yerel/ulusal tedbir ayrıntıları, proje takip durumları,
 gazete ilk haberi/kararı, iki kriz alanı, acil fon, rapor ayrıntıları, 2026 bitişi, erken yenilgi
@@ -110,7 +110,7 @@ Input kontrolü `art/preview/p0/check_preview.gd` ile yapılır:
 godot --headless --path our-game --script ../art/preview/p0/check_preview.gd
 ```
 
-Bu kontrol 21 ilde viewport tıklamalarını, şehir sekmelerini, katmanları, zoom/pan,
+Bu kontrol 30 ilde viewport tıklamalarını, şehir sekmelerini, katmanları, zoom/pan,
 yıl sınırlarını, rehberi, gazete kararını, rapor ayrıntılarını, proje durumlarını ve native GUI
 sürükle-bırak ile sevk formunu dener. Kaynak sınırı ve hatalı drag payload'ı da kontrol edilir.
 Görsel kabul yerine geçmez.

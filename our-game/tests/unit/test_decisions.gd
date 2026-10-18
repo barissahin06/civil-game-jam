@@ -145,7 +145,7 @@ func test_invalid_pending_and_project_links_are_rejected() -> void:
 		sim.projects.tick_month(sim.clock.year)
 	bad = sim.to_dict()
 	for area: Dictionary in bad.areas:
-		if int(area.id) == 45:
+		if int(area.id) == 3:
 			area.completed_measures.erase(project.definition_id)
 	assert_object(store.restore(bad)).is_null()
 	bad = sim.to_dict()
@@ -242,7 +242,7 @@ func _review_day(chosen: int, months: int) -> int:
 
 func _queued_promise() -> Simulation:
 	var sim := _at_decision("gediz_relocation")
-	assert_bool(sim.start_project("strengthening", 45).ok).is_true()
+	assert_bool(sim.start_project("strengthening", 3).ok).is_true()
 	assert_bool(sim.choose_decision("gediz_relocation", "full").ok).is_true()
 	return sim
 
@@ -269,7 +269,7 @@ func test_queued_promise_warns_once_then_loses_trust_monthly_until_real_progress
 	sim.decisions.review_month(sim.clock.day, previous)
 	assert_float(sim.trust.value).is_equal_approx(before - 0.2, 0.000001)
 	for blocker: ActiveProject in sim.projects.projects:
-		if blocker.area_id == 45 and blocker.uid != project.uid and blocker.occupies_slot():
+		if blocker.area_id == 3 and blocker.uid != project.uid and blocker.occupies_slot():
 			sim.projects.cancel(blocker.uid)
 	assert_bool(sim.projects.pause(project.uid).ok).is_true()
 	assert_bool(sim.projects.resume(project.uid).ok).is_true()

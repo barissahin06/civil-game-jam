@@ -49,22 +49,33 @@ para harcamayı, taahhüt vermeyi veya proje iptalini zorunlu kılmaz.
 ## Harita ve yönetim alanları
 
 Türkiye'nin tamamı başlangıçta görünür; yakınlaştırma ve sürükleme desteklenir.
-Seçilen 21 ilin gerçek sınırları seçilebilirdir; kalan ülke daha soluk görünür.
+Seçilen 30 ilin gerçek sınırları seçilebilirdir; kalan ülke daha soluk görünür.
 Bir il aynı zamanda kendisine atanmış çevre illerin yönetim merkezidir.
 Yerel yatırımlar bu sorumluluk alanına uygulanır. Tarihsel afetin gerçek yer adı korunur.
 
-| Bölge             | Merkez iller                     |
-| ----------------- | -------------------------------- |
-| Marmara           | İstanbul, Kocaeli, Bursa         |
-| Ege               | İzmir, Muğla, Manisa             |
-| İç Anadolu        | Ankara, Konya, Eskişehir         |
-| Akdeniz           | Antalya, Adana, Hatay            |
-| Karadeniz         | Samsun, Trabzon, Rize            |
-| Doğu Anadolu      | Erzurum, Van, Malatya            |
-| Güneydoğu Anadolu | Gaziantep, Diyarbakır, Şanlıurfa |
+| Bölge             | Merkez iller                                   |
+| ----------------- | ---------------------------------------------- |
+| Marmara           | İstanbul, Kocaeli, Bursa, Çanakkale, Balıkesir |
+| Ege               | İzmir, Muğla, Manisa, Afyonkarahisar           |
+| İç Anadolu        | Ankara, Konya, Eskişehir, Sivas                |
+| Akdeniz           | Antalya, Adana, Hatay, Mersin, Kahramanmaraş   |
+| Karadeniz         | Samsun, Trabzon, Rize, Kastamonu               |
+| Doğu Anadolu      | Erzurum, Van, Malatya, Erzincan, Kars          |
+| Güneydoğu Anadolu | Gaziantep, Diyarbakır, Şanlıurfa               |
 
-Çevre iller, bölge içinde en yakın merkez esas alınarak 21 merkeze atanmıştır.
+Çevre iller, bölge içinde en yakın merkez esas alınarak 30 merkeze atanmıştır.
 Bir il yalnız bir merkezin sorumluluğunda olur. Bölge/il/merkez kimlik ilişkileri doğrulanır.
+18 Ekim 2026 genişlemesi dokuz yeni merkez ekler; Muğla mevcut merkez olarak korunur.
+Her merkez kendi ilini yönetir; bölgelerde eşit sayıda merkez bulunması gerekmez.
+Önceki alanların nüfus, gelir ve temel bakım tutarları il başına paylaştırılıp yeni sahiplerde
+toplanır; nüfus ve temel bakım toplamları korunur. Bu paylar tarihsel istatistik değildir.
+1950 başlangıcında 30 hazır ekip ve 1.200 yardım malzemesi vardır. Ek ekip bakımının önceki
+yatırım alanını daraltmaması için temel gelir aynı bölgesel oranlarla ₺4,675 milyona yükseltilir.
+Ekipler dahil olağan bakım ₺1,36 milyon, projelerden önce net gelir ₺3,315 milyondur.
+1990 başlangıcında dönem ölçeklemesiyle gelir ₺7,48 milyon, bakım ₺3,76 milyon olur;
+₺3,72 milyon net gelir, önceki 21 merkezli başlangıcın yatırım payını korur.
+İl sahipliği ve katalog parmak izi değiştiği için önceki 21 merkezli kayıtlar yüklenmez;
+dosyalar korunur, 30 merkez için yeni kampanya gerekir.
 
 Şehir panelinin ana değerleri merkez ilin tek başına verisi değildir: yönetilen nüfus,
 alan geliri, altyapı direnci, afet türüne göre hazırlık ve lojistik durumu alanın bütününü anlatır.
@@ -368,11 +379,11 @@ dosyalarıyla açılır; bu sınıfların tamamı P0 için peşinen iskelet olar
 
 17 Ekim 2026: ana harita/panel dengesi ve yazı ölçeği kullanıcı tarafından onaylandı.
 P0 incelemesinde ekranlar uygun bulundu. Şehir paneli başlangıçta kapalı olur;
-21 yönetim merkezinden biri seçilince açılır, × ile kapatılır. Esc duraklatma menüsünü açar.
-Haritadaki diğer 60 ilin sınırları soluk çizilir; bu iller seçilemez.
+30 yönetim merkezinden biri seçilince açılır, × ile kapatılır. Esc duraklatma menüsünü açar.
+Haritadaki diğer 51 ilin sınırları soluk çizilir; bu iller seçilemez.
 Son görsel kararla harita çerçevesi kaldırılır. HUD, haber bandı, şehir paneli ve harita kontrolleri
 3072×1728 native bölgesel tuvalin üzerinde yer alır; viewport 1920×1080 kalır.
-Çevre ülkeler yalnız görsel bağlamdır; yönetim ve seçim 21 merkezle sınırlıdır.
+Çevre ülkeler yalnız görsel bağlamdır; yönetim ve seçim 30 merkezle sınırlıdır.
 Örnek verili ekranlar `our-game/ui_preview/` altında, native kaynak/export eşlemesi
 `art/production/ui/p0/README.md` içinde bulunur. Kalan ekranlar aynı dille görsel incelemeye hazırdır.
 Üç kişinin paralel çalışması için harita/kampanya, yönetim/araştırma ve kriz/lojistik modülleri

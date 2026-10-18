@@ -77,7 +77,7 @@ $smokeScript = (Resolve-Path 'our-game/tests/integration/package_smoke.gd').Path
 
 Başarı işareti `PACKAGED_GAMEPLAY_PASS` olmalıdır; hata logu, eksik işaret veya zaman aşımı başarısızlıktır.
 Bu harici sürücü paketlenmiş bytecode/veriler üzerinde açık kontroller çalıştırır. Oyuncunun kayıt ve tercih dosyalarına
-dokunmadan açılış, 21 alan/99 afet kataloğu, yatırım, araştırma, ilk kriz, sevk, rapor ve bellekte kayıt
+dokunmadan açılış, 30 alan/99 afet kataloğu, yatırım, araştırma, ilk kriz, sevk, rapor ve bellekte kayıt
 doğrulamasını kapsar. Gerçek renderer görüntüsü için sona `-- --capture <mutlak PNG yolu>` eklenir;
 bu çalıştırmada `--headless` kaldırılır.
 

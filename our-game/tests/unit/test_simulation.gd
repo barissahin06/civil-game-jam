@@ -13,6 +13,41 @@ func _first_crisis(sim: Simulation) -> Dictionary:
 	return sim.crises.active.front()
 
 
+func test_new_centers_receive_their_own_province_disasters_and_round_trip() -> void:
+	var sim := _fixture()
+	for area_id: int in [3, 10, 17, 24, 33, 36, 37, 46, 58]:
+		var source: Dictionary = sim.historical.events[0].duplicate(true)
+		source.province_ids = [area_id]
+		sim.crises.active.clear()
+		sim.crises.begin(source)
+		var targets: Array[int] = []
+		for crisis: Dictionary in sim.crises.active:
+			targets.append(int(crisis.area_id))
+		assert_array(targets).is_equal([area_id])
+	# A clean campaign still uses the current complete catalog during save restore.
+	sim = _fixture()
+	var saved := sim.to_dict()
+	var restored := SaveStore.new().restore(saved)
+	assert_object(restored).is_not_null()
+	if restored != null:
+		assert_int(restored.areas.size()).is_equal(30)
+	saved.catalog = SaveStore.EXTENDED_CATALOG
+	assert_object(SaveStore.new().restore(saved)).is_null()
+
+
+func test_scores_average_all_current_centers() -> void:
+	assert_dict(Simulation.new().scores()).is_equal(
+		{"preparation": 0, "response": 0, "recovery": 0}
+	)
+	var sim := _fixture()
+	for area: ServiceArea in sim.areas.values():
+		area.damage = 40.0
+	assert_int(sim.scores().recovery).is_equal(60)
+	assert_int(sim.scores().preparation).is_equal(
+		roundi(sim.projects.preparedness(34, "earthquake"))
+	)
+
+
 func test_paused_speed_first_event_and_monthly_settlement() -> void:
 	var sim := _fixture()
 	var initial := sim.clock.day
@@ -29,7 +64,7 @@ func test_paused_speed_first_event_and_monthly_settlement() -> void:
 	assert_int(sim.news_queue.size()).is_equal(1)
 	assert_str(sim.projects.get_project(project.uid).status).is_equal("completed")
 	assert_bool(sim.projects.is_completed("research_structural")).is_true()
-	assert_int(sim.treasury.money).is_equal(47000000)
+	assert_int(sim.treasury.money).is_equal(51725000)
 	sim.update(100.0)
 	assert_str(CalendarClock.day_to_iso(sim.clock.day)).is_equal("1951-04-08")
 

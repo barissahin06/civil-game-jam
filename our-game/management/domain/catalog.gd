@@ -1,7 +1,38 @@
 class_name Catalog
 extends RefCounted
 
-const AREA_IDS := [1, 6, 7, 16, 21, 25, 26, 27, 31, 34, 35, 41, 42, 44, 45, 48, 53, 55, 61, 63, 65]
+const AREA_IDS := [
+	1,
+	3,
+	6,
+	7,
+	10,
+	16,
+	17,
+	21,
+	24,
+	25,
+	26,
+	27,
+	31,
+	33,
+	34,
+	35,
+	36,
+	37,
+	41,
+	42,
+	44,
+	45,
+	46,
+	48,
+	53,
+	55,
+	58,
+	61,
+	63,
+	65
+]
 const RESEARCH_ERAS := [1950, 1970, 1990, 2005, 2020]
 
 var validation_errors: Array[String] = []
@@ -83,11 +114,12 @@ func load_areas(
 		area.total_teams = area.teams
 		area.stock += elapsed
 		parsed[area.id] = area
-	if parsed.size() != 21 or owned_provinces.size() != 81 or region_counts.size() != 7:
-		return _invalid("21 merkez, 7 bölge ve 81 il gerekli.")
-	for count: int in region_counts.values():
-		if count != 3:
-			return _invalid("Her bölgede üç yönetim merkezi gerekli.")
+	if (
+		parsed.size() != AREA_IDS.size()
+		or owned_provinces.size() != 81
+		or region_counts.size() != 7
+	):
+		return _invalid("30 merkez, 7 bölge ve 81 il gerekli.")
 	return parsed
 
 

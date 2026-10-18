@@ -68,6 +68,7 @@ func select_area(id: int) -> bool:
 		_rendered_area_id = 0
 	selected_area_id = id
 	var area: ServiceArea = sim.areas[id]
+	_city_title.add_theme_font_size_override("font_size", 32 if area.name.length() > 12 else 36)
 	_city_title.text = area.name.to_upper() + " VE ÇEVRESİ"
 	_city_region.text = area.region.to_upper()
 	_render_city(area)

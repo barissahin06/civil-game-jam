@@ -60,8 +60,8 @@ Karar, duraklatma veya iptalden sonra da kalıcıdır. İptalde ödenen taksit g
 tamamlanma etkisi ve ödülü verilmez, karşı seçenek açılmaz. `decision_` projeleri normal yatırım,
 araştırma ve komut ekranından başlatılamaz. Diğer tedbirler kullanılabilir.
 
-Yerel coğrafya, 81 ilin 21 merkeze bağlandığı mevcut alan modeliyle uygulanır. Örneğin Gediz
-(Kütahya) Manisa merkezine; Çatak ve Üzengili Trabzon merkezine bağlıdır. Kart metni gerçek
+Yerel coğrafya, 81 ilin 30 merkeze bağlandığı mevcut alan modeliyle uygulanır. Örneğin Gediz
+(Kütahya) Afyonkarahisar, Bozkurt Kastamonu merkezine; Çatak ve Üzengili Trabzon merkezine bağlıdır. Kart metni gerçek
 yerleşimi anlatır, sayısal koruma ilgili yönetim alanını etkiler.
 
 ## İlk sayısal katalog
@@ -72,50 +72,50 @@ düşük olabilir. Her kartın üçüncü seçeneği yukarıdaki kalıcı ret ku
 Tablodaki seçenek başlıkları kaynak katalogdaki adlardır; oyuncuya görünen başlıklar yukarıdaki
 sunum kuralıyla sadeleştirilir.
 
-| Kart / yönetim alanı               | Seçenek                          | Toplam TL | Ay  | Tamamlanma etkisi                                                                                | Bakım TL/ay |
-| ---------------------------------- | -------------------------------- | --------- | --- | ------------------------------------------------------------------------------------------------ | ----------- |
-| `gediz_relocation` / Manisa        | Planlı yeniden yerleşim          | 18 milyon | 12  | deprem koruması +18 puan; altyapı direnci +4 puan                                                | 0           |
-| `gediz_relocation` / Manisa        | Öncelikli kesimleri taşı         | 6 milyon  | 6   | deprem koruması +8 puan; altyapı direnci +1 puan                                                 | 0           |
-| `samsun_flood` / Samsun            | Yerleşim ve dere ıslahı          | 18 milyon | 12  | sel koruması +22 puan; altyapı direnci +4 puan                                                   | 80 bin      |
-| `samsun_flood` / Samsun            | Önce müdahale kapasitesi         | 4 milyon  | 4   | ekip +1                                                                                          | 40 bin      |
-| `construction_inspection` / Ulusal | Yaygın yapı denetimi             | 36 milyon | 18  | deprem koruması +10 puan; altyapı direnci +2 puan                                                | 0           |
-| `construction_inspection` / Ulusal | Yüksek riskli yapıları denetle   | 12 milyon | 6   | deprem koruması +4 puan; altyapı direnci +1 puan                                                 | 0           |
-| `kursunlu_relocation` / Ankara     | İki köyü planlı taşı             | 18 milyon | 12  | deprem koruması +18 puan; altyapı direnci +4 puan                                                | 0           |
-| `kursunlu_relocation` / Ankara     | Önce riskli konutları taşı       | 6 milyon  | 6   | deprem koruması +8 puan; altyapı direnci +1 puan                                                 | 0           |
-| `hazard_zoning` / Ulusal           | Ulusal tehlikeli alan düzeni     | 36 milyon | 18  | deprem koruması +7 puan; heyelan koruması +5 puan; çığ koruması +5 puan; altyapı direnci +2 puan | 0           |
-| `hazard_zoning` / Ulusal           | Önce yüksek riskli alanlar       | 12 milyon | 6   | deprem koruması +3 puan; heyelan koruması +2 puan; çığ koruması +2 puan                          | 0           |
-| `catak_relocation` / Trabzon       | Konutları güvenli alana taşı     | 18 milyon | 12  | heyelan koruması +22 puan; altyapı direnci +4 puan                                               | 0           |
-| `catak_relocation` / Trabzon       | Önce acil riskli konutlar        | 6 milyon  | 6   | heyelan koruması +10 puan; altyapı direnci +1 puan                                               | 0           |
-| `senirkent_flood` / Antalya        | Havza ve bent programı           | 18 milyon | 12  | sel koruması +22 puan; altyapı direnci +4 puan                                                   | 80 bin      |
-| `senirkent_flood` / Antalya        | Öncelikli bentleri kur           | 6 milyon  | 6   | sel koruması +10 puan; altyapı direnci +1 puan                                                   | 20 bin      |
-| `medical_rescue` / Ulusal          | Ulusal tıbbi kurtarma ağı        | 36 milyon | 18  | kurtarma verimi +15 puan; lojistik verimi +5 puan                                                | 120 bin     |
-| `medical_rescue` / Ulusal          | Önce ortak eğitim düzeni         | 12 milyon | 6   | kurtarma verimi +6 puan                                                                          | 40 bin      |
-| `national_coordination` / Ulusal   | Bütünleşik görev ve iletişim     | 36 milyon | 18  | kurtarma verimi +10 puan; lojistik verimi +10 puan; onarım verimi +5 puan                        | 120 bin     |
-| `national_coordination` / Ulusal   | Ortak müdahale protokolü         | 12 milyon | 6   | kurtarma verimi +4 puan; lojistik verimi +4 puan                                                 | 40 bin      |
-| `istanbul_streambeds` / İstanbul   | Tespit ve dere yatağı düzeni     | 18 milyon | 12  | sel koruması +18 puan; altyapı direnci +3 puan                                                   | 40 bin      |
-| `istanbul_streambeds` / İstanbul   | Önce risk envanteri              | 6 milyon  | 6   | sel koruması +6 puan; tahliye +2 puan                                                            | 0           |
-| `silivri_school_safety` / İstanbul | Güvenli okul ve eğitim programı  | 18 milyon | 12  | deprem koruması +14 puan; altyapı direnci +3 puan; tahliye +4 puan                               | 40 bin      |
-| `silivri_school_safety` / İstanbul | Önce yüksek riskli okullar       | 6 milyon  | 6   | deprem koruması +6 puan; tahliye +2 puan                                                         | 0           |
-| `dereli_flood` / Trabzon           | Dere yatağı ve köprüleri düzenle | 18 milyon | 12  | sel koruması +22 puan; altyapı direnci +4 puan                                                   | 80 bin      |
-| `dereli_flood` / Trabzon           | Önce kritik köprüler             | 6 milyon  | 6   | sel koruması +10 puan; altyapı direnci +1 puan                                                   | 20 bin      |
-| `izmir_risk_planning` / İzmir      | Envanter ve ortak risk platformu | 18 milyon | 12  | deprem koruması +12 puan; altyapı direnci +2 puan; kurtarma verimi +5 puan                       | 40 bin      |
-| `izmir_risk_planning` / İzmir      | Önce öncelikli yapı envanteri    | 6 milyon  | 6   | deprem koruması +5 puan; altyapı direnci +1 puan                                                 | 0           |
-| `bozkurt_flood` / Samsun           | Dere, duvar ve köprü programı    | 18 milyon | 12  | sel koruması +22 puan; altyapı direnci +4 puan                                                   | 80 bin      |
-| `bozkurt_flood` / Samsun           | Önce kritik taşkın kesimleri     | 6 milyon  | 6   | sel koruması +10 puan; altyapı direnci +1 puan                                                   | 20 bin      |
-| `urban_transformation` / Ulusal    | Ulusal güvenli dönüşüm programı  | 36 milyon | 18  | deprem koruması +10 puan; altyapı direnci +4 puan; onarım verimi +5 puan                         | 0           |
-| `urban_transformation` / Ulusal    | Önce yüksek riskli yapı grupları | 12 milyon | 6   | deprem koruması +4 puan; altyapı direnci +1 puan                                                 | 0           |
-| `yesilyurt_training` / Malatya     | Yerel uyarı ve tatbikat ağı      | 6 milyon  | 6   | tahliye +8 puan; kurtarma verimi +4 puan                                                         | 20 bin      |
-| `yesilyurt_training` / Malatya     | Önce hasarlı yapı uyarıları      | 2 milyon  | 3   | tahliye +3 puan                                                                                  | 0           |
-| `sanliurfa_flood` / Şanlıurfa      | Üç derede koruma programı        | 18 milyon | 12  | sel koruması +22 puan; altyapı direnci +4 puan                                                   | 80 bin      |
-| `sanliurfa_flood` / Şanlıurfa      | Önce yüksek riskli kesimler      | 6 milyon  | 6   | sel koruması +10 puan; altyapı direnci +1 puan                                                   | 20 bin      |
-| `silivri_awareness` / İstanbul     | Okul ve mahalle tatbikatları     | 6 milyon  | 6   | tahliye +8 puan; kurtarma verimi +4 puan                                                         | 20 bin      |
-| `silivri_awareness` / İstanbul     | Önce farkındalık dersleri        | 2 milyon  | 3   | tahliye +3 puan                                                                                  | 0           |
-| `uzengili_relocation` / Trabzon    | Güvenli yeniden yerleşim         | 18 milyon | 12  | çığ koruması +22 puan; altyapı direnci +4 puan                                                   | 0           |
-| `uzengili_relocation` / Trabzon    | Önce yüksek riskli haneler       | 6 milyon  | 6   | çığ koruması +10 puan; altyapı direnci +1 puan                                                   | 0           |
-| `tasagil_firebreaks` / Antalya     | Yangın kuşağı ve dirençli orman  | 18 milyon | 12  | yangın koruması +22 puan; altyapı direnci +4 puan                                                | 80 bin      |
-| `tasagil_firebreaks` / Antalya     | Önce yerleşim çevresi kuşaklar   | 6 milyon  | 6   | yangın koruması +10 puan; altyapı direnci +1 puan                                                | 20 bin      |
-| `hatay_fire_response` / Hatay      | Yerel ekip ve su ikmal ağı       | 6 milyon  | 6   | yangın koruması +12 puan; kurtarma verimi +6 puan                                                | 40 bin      |
-| `hatay_fire_response` / Hatay      | Önce tanker ve ekipman hazırlığı | 2 milyon  | 3   | yangın koruması +5 puan; kurtarma verimi +2 puan                                                 | 20 bin      |
+| Kart / yönetim alanı                | Seçenek                          | Toplam TL | Ay  | Tamamlanma etkisi                                                                                | Bakım TL/ay |
+| ----------------------------------- | -------------------------------- | --------- | --- | ------------------------------------------------------------------------------------------------ | ----------- |
+| `gediz_relocation` / Afyonkarahisar | Planlı yeniden yerleşim          | 18 milyon | 12  | deprem koruması +18 puan; altyapı direnci +4 puan                                                | 0           |
+| `gediz_relocation` / Afyonkarahisar | Öncelikli kesimleri taşı         | 6 milyon  | 6   | deprem koruması +8 puan; altyapı direnci +1 puan                                                 | 0           |
+| `samsun_flood` / Samsun             | Yerleşim ve dere ıslahı          | 18 milyon | 12  | sel koruması +22 puan; altyapı direnci +4 puan                                                   | 80 bin      |
+| `samsun_flood` / Samsun             | Önce müdahale kapasitesi         | 4 milyon  | 4   | ekip +1                                                                                          | 40 bin      |
+| `construction_inspection` / Ulusal  | Yaygın yapı denetimi             | 36 milyon | 18  | deprem koruması +10 puan; altyapı direnci +2 puan                                                | 0           |
+| `construction_inspection` / Ulusal  | Yüksek riskli yapıları denetle   | 12 milyon | 6   | deprem koruması +4 puan; altyapı direnci +1 puan                                                 | 0           |
+| `kursunlu_relocation` / Ankara      | İki köyü planlı taşı             | 18 milyon | 12  | deprem koruması +18 puan; altyapı direnci +4 puan                                                | 0           |
+| `kursunlu_relocation` / Ankara      | Önce riskli konutları taşı       | 6 milyon  | 6   | deprem koruması +8 puan; altyapı direnci +1 puan                                                 | 0           |
+| `hazard_zoning` / Ulusal            | Ulusal tehlikeli alan düzeni     | 36 milyon | 18  | deprem koruması +7 puan; heyelan koruması +5 puan; çığ koruması +5 puan; altyapı direnci +2 puan | 0           |
+| `hazard_zoning` / Ulusal            | Önce yüksek riskli alanlar       | 12 milyon | 6   | deprem koruması +3 puan; heyelan koruması +2 puan; çığ koruması +2 puan                          | 0           |
+| `catak_relocation` / Trabzon        | Konutları güvenli alana taşı     | 18 milyon | 12  | heyelan koruması +22 puan; altyapı direnci +4 puan                                               | 0           |
+| `catak_relocation` / Trabzon        | Önce acil riskli konutlar        | 6 milyon  | 6   | heyelan koruması +10 puan; altyapı direnci +1 puan                                               | 0           |
+| `senirkent_flood` / Antalya         | Havza ve bent programı           | 18 milyon | 12  | sel koruması +22 puan; altyapı direnci +4 puan                                                   | 80 bin      |
+| `senirkent_flood` / Antalya         | Öncelikli bentleri kur           | 6 milyon  | 6   | sel koruması +10 puan; altyapı direnci +1 puan                                                   | 20 bin      |
+| `medical_rescue` / Ulusal           | Ulusal tıbbi kurtarma ağı        | 36 milyon | 18  | kurtarma verimi +15 puan; lojistik verimi +5 puan                                                | 120 bin     |
+| `medical_rescue` / Ulusal           | Önce ortak eğitim düzeni         | 12 milyon | 6   | kurtarma verimi +6 puan                                                                          | 40 bin      |
+| `national_coordination` / Ulusal    | Bütünleşik görev ve iletişim     | 36 milyon | 18  | kurtarma verimi +10 puan; lojistik verimi +10 puan; onarım verimi +5 puan                        | 120 bin     |
+| `national_coordination` / Ulusal    | Ortak müdahale protokolü         | 12 milyon | 6   | kurtarma verimi +4 puan; lojistik verimi +4 puan                                                 | 40 bin      |
+| `istanbul_streambeds` / İstanbul    | Tespit ve dere yatağı düzeni     | 18 milyon | 12  | sel koruması +18 puan; altyapı direnci +3 puan                                                   | 40 bin      |
+| `istanbul_streambeds` / İstanbul    | Önce risk envanteri              | 6 milyon  | 6   | sel koruması +6 puan; tahliye +2 puan                                                            | 0           |
+| `silivri_school_safety` / İstanbul  | Güvenli okul ve eğitim programı  | 18 milyon | 12  | deprem koruması +14 puan; altyapı direnci +3 puan; tahliye +4 puan                               | 40 bin      |
+| `silivri_school_safety` / İstanbul  | Önce yüksek riskli okullar       | 6 milyon  | 6   | deprem koruması +6 puan; tahliye +2 puan                                                         | 0           |
+| `dereli_flood` / Trabzon            | Dere yatağı ve köprüleri düzenle | 18 milyon | 12  | sel koruması +22 puan; altyapı direnci +4 puan                                                   | 80 bin      |
+| `dereli_flood` / Trabzon            | Önce kritik köprüler             | 6 milyon  | 6   | sel koruması +10 puan; altyapı direnci +1 puan                                                   | 20 bin      |
+| `izmir_risk_planning` / İzmir       | Envanter ve ortak risk platformu | 18 milyon | 12  | deprem koruması +12 puan; altyapı direnci +2 puan; kurtarma verimi +5 puan                       | 40 bin      |
+| `izmir_risk_planning` / İzmir       | Önce öncelikli yapı envanteri    | 6 milyon  | 6   | deprem koruması +5 puan; altyapı direnci +1 puan                                                 | 0           |
+| `bozkurt_flood` / Kastamonu         | Dere, duvar ve köprü programı    | 18 milyon | 12  | sel koruması +22 puan; altyapı direnci +4 puan                                                   | 80 bin      |
+| `bozkurt_flood` / Kastamonu         | Önce kritik taşkın kesimleri     | 6 milyon  | 6   | sel koruması +10 puan; altyapı direnci +1 puan                                                   | 20 bin      |
+| `urban_transformation` / Ulusal     | Ulusal güvenli dönüşüm programı  | 36 milyon | 18  | deprem koruması +10 puan; altyapı direnci +4 puan; onarım verimi +5 puan                         | 0           |
+| `urban_transformation` / Ulusal     | Önce yüksek riskli yapı grupları | 12 milyon | 6   | deprem koruması +4 puan; altyapı direnci +1 puan                                                 | 0           |
+| `yesilyurt_training` / Malatya      | Yerel uyarı ve tatbikat ağı      | 6 milyon  | 6   | tahliye +8 puan; kurtarma verimi +4 puan                                                         | 20 bin      |
+| `yesilyurt_training` / Malatya      | Önce hasarlı yapı uyarıları      | 2 milyon  | 3   | tahliye +3 puan                                                                                  | 0           |
+| `sanliurfa_flood` / Şanlıurfa       | Üç derede koruma programı        | 18 milyon | 12  | sel koruması +22 puan; altyapı direnci +4 puan                                                   | 80 bin      |
+| `sanliurfa_flood` / Şanlıurfa       | Önce yüksek riskli kesimler      | 6 milyon  | 6   | sel koruması +10 puan; altyapı direnci +1 puan                                                   | 20 bin      |
+| `silivri_awareness` / İstanbul      | Okul ve mahalle tatbikatları     | 6 milyon  | 6   | tahliye +8 puan; kurtarma verimi +4 puan                                                         | 20 bin      |
+| `silivri_awareness` / İstanbul      | Önce farkındalık dersleri        | 2 milyon  | 3   | tahliye +3 puan                                                                                  | 0           |
+| `uzengili_relocation` / Trabzon     | Güvenli yeniden yerleşim         | 18 milyon | 12  | çığ koruması +22 puan; altyapı direnci +4 puan                                                   | 0           |
+| `uzengili_relocation` / Trabzon     | Önce yüksek riskli haneler       | 6 milyon  | 6   | çığ koruması +10 puan; altyapı direnci +1 puan                                                   | 0           |
+| `tasagil_firebreaks` / Antalya      | Yangın kuşağı ve dirençli orman  | 18 milyon | 12  | yangın koruması +22 puan; altyapı direnci +4 puan                                                | 80 bin      |
+| `tasagil_firebreaks` / Antalya      | Önce yerleşim çevresi kuşaklar   | 6 milyon  | 6   | yangın koruması +10 puan; altyapı direnci +1 puan                                                | 20 bin      |
+| `hatay_fire_response` / Hatay       | Yerel ekip ve su ikmal ağı       | 6 milyon  | 6   | yangın koruması +12 puan; kurtarma verimi +6 puan                                                | 40 bin      |
+| `hatay_fire_response` / Hatay       | Önce tanker ve ekipman hazırlığı | 2 milyon  | 3   | yangın koruması +5 puan; kurtarma verimi +2 puan                                                 | 20 bin      |
 
 ## Doğrulama ve kayıt
 

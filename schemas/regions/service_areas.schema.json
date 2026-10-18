@@ -13,7 +13,7 @@
     },
     "areas": {
       "type": "array",
-      "minItems": 21,
+      "minItems": 30,
       "items": {
         "type": "object",
         "required": [
@@ -127,7 +127,7 @@
         },
         "additionalProperties": false
       },
-      "maxItems": 21
+      "maxItems": 30
     }
   }
 }

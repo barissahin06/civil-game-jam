@@ -30,7 +30,7 @@ const PAGES: Array[Dictionary] = [
 			{
 				"heading": "BİR MERKEZ, ÇEVRESİNDEKİ İLLERİ DE YÖNETİR",
 				"text":
-				"Sınırları parlak çizilmiş 21 merkezden birine tıkla. Soldaki bilgiler bu merkezle ona bağlı illeri kapsar. Yatırım sekmesinde proje başlatırsın. Lojistik sekmesinde ekip ve malzemeleri görürsün. Soluk çizilmiş illere ayrı tıklanmaz; onları bağlı oldukları merkezden yönetirsin."
+				"Sınırları parlak çizilmiş merkezlerden birine tıkla. Soldaki bilgiler bu merkezle ona bağlı illeri kapsar. Yatırım sekmesinde proje başlatırsın. Lojistik sekmesinde ekip ve malzemeleri görürsün. Soluk çizilmiş illere ayrı tıklanmaz; onları bağlı oldukları merkezden yönetirsin."
 			},
 			{
 				"heading": "SOL ALTTAKİ HARİTA ARAÇLARINI AÇ",

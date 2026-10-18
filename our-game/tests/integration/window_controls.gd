@@ -120,7 +120,7 @@ func _check_hud_feedback() -> void:
 	assert(hud._trust.text == "70,00" and hud._trust_delta.text == "DEĞİŞİM YOK")
 	assert("oyun" in hud._trust.tooltip_text.to_lower() and "0" in hud._trust.tooltip_text)
 	assert(hud._awareness.text == "9999")
-	assert(hud._total_teams.text == "21" and hud._total_stock.text == "840")
+	assert(hud._total_teams.text == "30" and hud._total_stock.text == "1.200")
 	var team_label_id := hud._total_teams.get_instance_id()
 	var stock_label_id := hud._total_stock.get_instance_id()
 	var area: ServiceArea = sim.areas[6]
@@ -130,8 +130,8 @@ func _check_hud_feedback() -> void:
 	sim.changed.emit()
 	await process_frame
 	await process_frame
-	assert(hud._total_teams.text == "23" and hud._total_stock.text == "2.074")
-	assert("23" in hud._total_teams.tooltip_text and "2.074" in hud._total_stock.tooltip_text)
+	assert(hud._total_teams.text == "32" and hud._total_stock.text == "2.434")
+	assert("32" in hud._total_teams.tooltip_text and "2.434" in hud._total_stock.tooltip_text)
 	assert(hud._awareness.get_rect().end.x < hud._total_teams.position.x)
 	assert(hud._total_teams.get_rect().end.x < hud._total_stock.position.x)
 	assert(hud._total_stock.get_rect().end.x < 1280)
@@ -142,7 +142,7 @@ func _check_hud_feedback() -> void:
 	sim.changed.emit()
 	await process_frame
 	await process_frame
-	assert(hud._total_teams.text == "21" and hud._total_stock.text == "840")
+	assert(hud._total_teams.text == "30" and hud._total_stock.text == "1.200")
 	assert(hud._total_teams.get_instance_id() == team_label_id)
 	assert(hud._total_stock.get_instance_id() == stock_label_id)
 	assert(hud._date_label.text == "30 HAZ 1950")

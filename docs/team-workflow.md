@@ -79,6 +79,6 @@ Gameplay JSON'u değişirse şeması ve `npm run check:data` da değişikliğin 
 `npm run test:ui` yalnız input kontrolüdür. GPU yakalama ayrı çalışır; test ağacı
 `simulation_test` işaretiyle gerçek kampanya otomatik kaydını kapatır.
 
-Harita tuvali değişince aynı kaynak sahibi dört harita, etiketler, HIT ve 21 seçim sınırını
+Harita tuvali değişince aynı kaynak sahibi dört harita, etiketler, HIT ve 30 seçim sınırını
 birlikte export eder. Kamera/viewport dönüşümü `map/map_view.gd` sahibindedir; HUD ve şehir
 paneli haritanın üstünde kalır. İl tıklama sürücüsündeki noktalar kamera dönüşümünden hesaplanır.

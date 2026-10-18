@@ -159,7 +159,7 @@ func _show_fixture(sim: Simulation, id: String) -> void:
 func _check_waiting_and_zero_previews() -> void:
 	var queued := Simulation.new()
 	assert(queued.setup())
-	assert(queued.start_project("strengthening", 45).ok)
+	assert(queued.start_project("strengthening", 3).ok)
 	await _show_fixture(queued, "gediz_relocation")
 	_assert_summary_layout(queued.decisions.card_for("gediz_relocation"))
 	for id: String in ["full", "focused"]:
@@ -187,7 +187,7 @@ func _check_waiting_and_zero_previews() -> void:
 		assert(not queued.choose_decision("gediz_relocation", id).ok)
 	var limited := Simulation.new()
 	assert(limited.setup())
-	limited.areas[45].completed_measures.append("decision_gediz_relocation_full")
+	limited.areas[3].completed_measures.append("decision_gediz_relocation_full")
 	limited.trust.value = 0.0
 	await _show_fixture(limited, "gediz_relocation")
 	_assert_summary_layout(limited.decisions.card_for("gediz_relocation"))

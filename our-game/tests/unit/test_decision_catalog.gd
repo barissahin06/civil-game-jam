@@ -21,6 +21,10 @@ func test_authored_catalog_loads_with_unique_projects_and_shared_reform() -> voi
 	assert_str(catalog.fingerprint).is_not_empty()
 	var reforms := 0
 	for card: Dictionary in catalog.cards:
+		if card.id == "gediz_relocation":
+			assert_int(int(card.area_id)).is_equal(3)
+		if card.id == "bozkurt_flood":
+			assert_int(int(card.area_id)).is_equal(37)
 		if card.id == "construction_inspection":
 			reforms += 1
 			assert_array(card.event_ids).contains_exactly(["historical-040", "historical-041"])

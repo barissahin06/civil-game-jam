@@ -20,7 +20,7 @@ Oyun kuralları, P0/P1/P2 sınırları ve sınıf sahipleri [oyun tasarımında]
 | `our-game/simulation/`        | Tek takvim üzerinde modüllerin komut ve işlem sırası                   |
 | `our-game/campaign/domain/`   | UTC gün takvimi, güven ve sürümlü güvenli kayıt                        |
 | `our-game/economy/domain/`    | Hazine, gelir, bakım ödemesi ve verim oranı                            |
-| `our-game/regions/`           | 21 merkez ve 81 ilin tek sorumluluk alanı sahipliği                    |
+| `our-game/regions/`           | 30 merkez ve 81 ilin tek sorumluluk alanı sahipliği                    |
 | `our-game/management/`        | Tedbir tanımları, araştırma/projeler, taksit, slot ve etkiler          |
 | `our-game/events/`            | Tarihsel afet kataloğu ve 21 kalıcı afet sonrası karar                 |
 | `our-game/crisis/domain/`     | Afet türü modelleri, paralel müdahale ve karşılaştırmalı rapor         |
@@ -147,7 +147,7 @@ lejantta birimler ve örnek değerler, merkezin üzerine gelince gerçek değer 
 `Simulation.map_overlay()` beş afet hazırlığının ortalamasını, merkez stoğunu veya altyapı hasarını
 salt okunur sunar. Stok için 160 yalnız renk doygunluğu eşiğidir, envanter kapasitesi değildir.
 Veri rengi opaktır; alttaki bölge rengiyle karışmaz. Shader seçilebilir il kenarını korur,
-diğer 60 pasif ilin native çizimi değişmez. Aktif kriz bölgesi bütün modlarda kırmızı
+diğer 51 pasif ilin native çizimi değişmez. Aktif kriz bölgesi bütün modlarda kırmızı
 gösterilir; `!` işareti ve kırmızı lejant anahtarı bu vurguyu açıklar. Sayısal modun
 gerçek değeri hover bilgisinde korunur. Son aktif kriz bitince ilin bölge/veri rengi geri gelir.
 Yeni afetin kısa kırmızı uyarısı ve 0,30 saniyelik sarsıntısı olay başına bir kez oynar.
@@ -177,7 +177,7 @@ Gönderim Hazırla eylemini ve haritaya sürükleyerek sevki sunar.
 sayılarını aynı merkeze ait ekip sevkiyatlarından, toplam yardım stoğunu merkez envanterlerinden
 salt okunur toplar. Tamamlanmış ve yardım türü
 sevkiyatlar ekip durumuna eklenmez. `Simulation.unit_overview()` sevk formuna geçiş uygunluğunu ekler;
-yeni kayıt alanı veya sevk komutu yoktur. `logistics/units_panel.gd` bu sorguyla 21 merkezi gösterir,
+yeni kayıt alanı veya sevk komutu yoktur. `logistics/units_panel.gd` bu sorguyla 30 merkezi gösterir,
 yenilemede satırları, odak ve kaydırmayı korur. Merkez erişimi şehir lojistiğini açar;
 Gönderim Hazırla mevcut kaynak seçimli kriz formuna gider, birden fazla krizde hedefi oyuncu seçer.
 

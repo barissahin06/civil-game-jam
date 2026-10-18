@@ -50,15 +50,6 @@ func _crisis_fixture() -> Simulation:
 	return sim
 
 
-func _previous_windows_fixture(year: int = 1950) -> Simulation:
-	var sim := Simulation.new()
-	assert_bool(sim.setup(year)).is_true()
-	sim.content_fingerprint = SaveStore.PRE_EXTENSION_CATALOG
-	for event: Dictionary in sim.historical.events:
-		event.response_window_days -= SaveStore.RESPONSE_WINDOW_EXTENSION_DAYS
-	return sim
-
-
 func _canonical(data: Dictionary) -> String:
 	return JSON.stringify(JSON.parse_string(JSON.stringify(data)))
 
@@ -81,46 +72,33 @@ func test_negative_epoch_new_campaign_and_active_projects_round_trip() -> void:
 	_round_trip(sim)
 
 
-func test_previous_windows_extend_new_and_active_campaigns_without_changing_input() -> void:
-	var store := SaveStore.new()
-	var sim := _previous_windows_fixture()
-	var data := sim.to_dict().duplicate(true)
-	var restored := store.restore(data)
-	assert_object(restored).is_not_null()
-	if restored == null:
-		return
-	assert_str(restored.content_fingerprint).is_equal(_fixture().content_fingerprint)
-	assert_str(restored.content_fingerprint).is_equal(SaveStore.EXTENDED_CATALOG)
-	assert_int(int(restored.historical.events.front().response_window_days)).is_equal(9)
-	_round_trip(restored)
+func test_previous_center_catalogs_are_rejected_without_changing_input_or_file() -> void:
+	var sim := _fixture()
+	var states: Array[Dictionary] = [sim.to_dict()]
 	sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
 	sim.acknowledge()
+	states.append(sim.to_dict())
 	var crisis: Dictionary = sim.crises.active.front()
-	assert_bool(sim.dispatch(31, crisis.id, "team", 1).ok).is_true()
-	assert_bool(sim.dispatch(31, crisis.id, "stock", 30).ok).is_true()
-	sim.advance_to(sim.clock.day + 2)
-	data = sim.to_dict().duplicate(true)
-	var previous := _canonical(data)
-	restored = store.restore(data)
-	assert_object(restored).is_not_null()
-	if restored == null:
-		return
-	assert_str(_canonical(data)).is_equal(previous)
-	var migrated: Dictionary = restored.crises.active.front()
-	assert_int(int(migrated.window)).is_equal(int(crisis.window) + 2)
-	assert_int(int(migrated.elapsed)).is_equal(int(crisis.elapsed))
-	assert_int(int(migrated.consumed_stock)).is_equal(int(crisis.consumed_stock))
-	_round_trip(restored)
-	restored.advance_to(int(crisis.start) + int(crisis.window))
-	assert_int(restored.crises.active.size()).is_equal(1)
-	restored.advance_to(int(crisis.start) + int(crisis.window) + 2)
-	assert_int(restored.crises.active.size()).is_equal(0)
-	assert_int(int(restored.crises.reports.front().day)).is_equal(int(crisis.start) + 9)
-	_round_trip(restored)
+	sim.advance_to(int(crisis.start) + int(crisis.window))
+	states.append(sim.to_dict())
+	var store := SaveStore.new()
+	for state: Dictionary in states:
+		for catalog: String in [SaveStore.PRE_EXTENSION_CATALOG, SaveStore.EXTENDED_CATALOG]:
+			var data := state.duplicate(true)
+			data.catalog = catalog
+			var before := _canonical(data)
+			assert_object(store.restore(data)).is_null()
+			assert_str(_canonical(data)).is_equal(before)
+			var file := FileAccess.open(TEST_PATH, FileAccess.WRITE)
+			file.store_string(JSON.stringify(data))
+			file.close()
+			var bytes := FileAccess.get_file_as_bytes(TEST_PATH)
+			assert_object(store.load_campaign(TEST_PATH)).is_null()
+			assert_bool(FileAccess.get_file_as_bytes(TEST_PATH) == bytes).is_true()
 
 
-func test_previous_completed_reports_keep_dates_outcomes_and_resave_with_current_catalog() -> void:
-	var sim := _previous_windows_fixture()
+func test_completed_reports_keep_dates_outcomes_and_resave_with_current_catalog() -> void:
+	var sim := _crisis_fixture()
 	sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
 	sim.acknowledge()
 	var crisis: Dictionary = sim.crises.active.front()
@@ -134,7 +112,7 @@ func test_previous_completed_reports_keep_dates_outcomes_and_resave_with_current
 	if restored == null:
 		return
 	assert_str(_canonical(restored.crises.reports.front())).is_equal(_canonical(report))
-	assert_int(int(restored.event_for(report.event_id).response_window_days)).is_equal(7)
+	assert_int(int(restored.event_for(report.event_id).response_window_days)).is_equal(9)
 	assert_int(int(restored.historical.events[1].response_window_days)).is_equal(9)
 	assert_bool(store.save(restored, TEST_PATH)).is_true()
 	var resaved := store.load_campaign(TEST_PATH)
@@ -145,8 +123,8 @@ func test_previous_completed_reports_keep_dates_outcomes_and_resave_with_current
 		_round_trip(resaved)
 
 
-func test_previous_windows_reject_wrong_lengths_and_expired_active_records() -> void:
-	var sim := _previous_windows_fixture()
+func test_response_windows_reject_wrong_lengths_and_expired_active_records() -> void:
+	var sim := _crisis_fixture()
 	sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
 	sim.acknowledge()
 	var store := SaveStore.new()
@@ -157,8 +135,8 @@ func test_previous_windows_reject_wrong_lengths_and_expired_active_records() -> 
 	bad.active[0].window = "7"
 	assert_object(store.restore(bad)).is_null()
 	bad = sim.to_dict().duplicate(true)
-	bad.active[0].elapsed = 7
-	bad.day += 7
+	bad.active[0].elapsed = 9
+	bad.day += 9
 	assert_object(store.restore(bad)).is_null()
 	bad = sim.to_dict().duplicate(true)
 	bad.catalog = "unrelated-catalog"
@@ -170,8 +148,9 @@ func test_previous_windows_reject_wrong_lengths_and_expired_active_records() -> 
 	assert_object(store.restore(bad)).is_null()
 
 
-func test_migrated_parallel_reports_require_one_shared_response_window() -> void:
-	var sim := _previous_windows_fixture(1963)
+func test_parallel_reports_require_one_shared_response_window() -> void:
+	var sim := Simulation.new()
+	assert_bool(sim.setup(1963)).is_true()
 	sim.advance_to(CalendarClock.date_to_day("1963-09-18"))
 	assert_int(sim.crises.active.size()).is_greater(1)
 	var crisis: Dictionary = sim.crises.active.front()

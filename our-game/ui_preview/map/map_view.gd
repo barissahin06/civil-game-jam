@@ -181,7 +181,9 @@ void fragment() {
 	_legend_panel = UI.panel(_toolbar, Rect2(416, -122, 838, 112))
 	_map_legend = UI.text(_legend_panel, "", Rect2(12, 8, 454, 22), 18, UI.GOLD)
 	_legend_description = UI.text(_legend_panel, "", Rect2(12, 34, 454, 22), 18, UI.MUTED)
-	_region_note = UI.text(_legend_panel, "21 MERKEZ", Rect2(264, 34, 190, 22), 18, UI.MUTED)
+	_region_note = UI.text(
+		_legend_panel, "%d MERKEZ" % Catalog.AREA_IDS.size(), Rect2(264, 34, 190, 22), 18, UI.MUTED
+	)
 	_crisis_swatch = _swatch(_legend_panel, Rect2(462, 10, 18, 18), CRISIS_COLOR)
 	_crisis_key = UI.text(
 		_legend_panel, "! KIRMIZI / AKTİF AFET", Rect2(482, 8, 344, 22), 18, UI.INK

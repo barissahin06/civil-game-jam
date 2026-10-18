@@ -146,10 +146,16 @@ func _run() -> void:
 				var point := Vector2(x, y) + _shell.map_view._map_image.position
 				if Rect2(440, 230, 1450, 680).has_point(point):
 					points[id] = point
-	assert(points.size() == 21)
+	assert(points.size() == 30)
 	for id: int in points:
+		assert(_shell.sim.areas.has(id))
 		await _click(points[id])
 		assert(_shell.selected_area_id == id)
+		var title: Label = _shell.city_panel._city_title
+		assert(title.get_line_count() <= 2, "City heading must fit: " + title.text)
+		assert(title.get_rect().end.y <= _shell.city_panel._city_region.position.y)
+		if id in [3, 17, 33, 46]:
+			await _capture("center-%02d" % id)
 		await _press_button("×")
 		assert(not _shell.city_panel.visible)
 	await _click(points[31])
@@ -230,7 +236,11 @@ func _run() -> void:
 	await process_frame
 	await _capture("city-logistics")
 	var drag: Button = _find_button(_main, "1 EKİP SÜRÜKLE")
-	await _drag(drag.get_global_rect().get_center(), points[31])
+	var drop_point: Vector2 = (
+		_shell.map_view._native_point(_shell.sim.areas[31]) + _shell.map_view._map_image.position
+	)
+	assert(_shell.map_view._map_target(drop_point) == String(target.id))
+	await _drag(drag.get_global_rect().get_center(), drop_point)
 	assert(_shell.sim.areas[1].teams == 0, "Map drop must reserve the team")
 	await _capture("shipments")
 	_shell.sim.advance_to(int(target.start) + int(target.window))
@@ -271,7 +281,7 @@ func _run() -> void:
 	await process_frame
 	_clear_test_slots()
 	print(
-		"GAMEPLAY_UI_PASS: 21 cities, real projects, research, first disaster, dispatch form + native map drop, report, repair; captures=",
+		"GAMEPLAY_UI_PASS: 30 cities, real projects, research, first disaster, dispatch form + native map drop, report, repair; captures=",
 		_capture_count
 	)
 	quit()

@@ -83,7 +83,7 @@ func test_source_options_are_stable_and_quote_the_full_shortcut_amount() -> void
 		area.longitude = 0.0
 		area.latitude = 0.0
 	var options := sim.dispatch_options(crisis.id, "stock")
-	assert_int(options.size()).is_equal(21)
+	assert_int(options.size()).is_equal(30)
 	assert_int(options.front().source).is_equal(31)
 	for index: int in range(1, options.size()):
 		var option: Dictionary = options[index]

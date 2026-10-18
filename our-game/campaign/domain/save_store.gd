@@ -179,7 +179,7 @@ func restore(data: Variant) -> Simulation:
 	if (
 		day < sim.clock.day
 		or day > CalendarClock.date_to_day(Simulation.END_DATE)
-		or data.areas.size() != 21
+		or data.areas.size() != sim.areas.size()
 	):
 		return null
 	if (

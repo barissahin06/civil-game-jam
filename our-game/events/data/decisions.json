@@ -8,7 +8,7 @@
       "description": "Gediz depreminden sonra yeniden yerleşimin kapsamını belirleyin. Seçenekler oyun tasarımıdır; tamamlanmış afet raporunu değiştirmez.",
       "historical_note": "5 Ağustos 1970 tarihli 7/1164 sayılı Bakanlar Kurulu kararıyla Gediz'in yeni yerleşim alanına taşınması kararlaştırıldı.",
       "event_ids": ["historical-020"],
-      "area_id": 45,
+      "area_id": 3,
       "options": [
         {
           "id": "full",
@@ -411,7 +411,7 @@
       "description": "Bozkurt çevresindeki dere ıslahı, taşkın duvarları ve köprüler için yatırım kapsamını belirleyin. Alternatifler ve etkiler oyun tasarımıdır.",
       "historical_note": "Ezine Çayı'nda kalıcı dere ıslahı, taşkın duvarı ve köprü projeleri ihale edilerek inşaata başlandı.",
       "event_ids": ["historical-069"],
-      "area_id": 55,
+      "area_id": 37,
       "options": [
         {
           "id": "full",

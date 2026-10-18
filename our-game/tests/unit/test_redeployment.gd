@@ -14,8 +14,8 @@ func test_guest_team_keeps_home_and_returns_home_after_local_crisis() -> void:
 	sim.advance_to(sim.clock.day + 3)
 	assert_int(sim.logistics.available_teams(31, 34)).is_equal(1)
 	assert_int(sim.areas[31].teams).is_equal(1)
-	assert_int(sim.unit_overview().summary.ready).is_equal(21)
-	assert_int(sim.unit_overview().summary.total).is_equal(21)
+	assert_int(sim.unit_overview().summary.ready).is_equal(30)
+	assert_int(sim.unit_overview().summary.total).is_equal(30)
 	assert_int(sim.treasury.money).is_equal(cash - 150000)
 	sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
 	sim.acknowledge()
@@ -34,7 +34,7 @@ func test_guest_team_keeps_home_and_returns_home_after_local_crisis() -> void:
 	sim.advance_to(end_day + 3)
 	assert_int(sim.areas[34].teams).is_equal(1)
 	assert_int(sim.areas[31].teams).is_equal(1)
-	assert_int(sim.unit_overview().summary.ready).is_equal(21)
+	assert_int(sim.unit_overview().summary.ready).is_equal(30)
 
 
 func test_recall_and_aid_transfer_preserve_inventory_without_a_crisis() -> void:
@@ -44,13 +44,13 @@ func test_recall_and_aid_transfer_preserve_inventory_without_a_crisis() -> void:
 	assert_bool(sim.transfer_resources(1, 31, "stock", 20).ok).is_true()
 	sim.advance_to(sim.clock.day + 3)
 	assert_int(sim.areas[31].stock).is_equal(60)
-	assert_int(sim.unit_overview().summary.stock).is_equal(840)
+	assert_int(sim.unit_overview().summary.stock).is_equal(1200)
 	assert_bool(sim.recall_teams(31, 34, 1).ok).is_true()
 	assert_bool(sim.recall_teams(31, 34, 1).ok).is_false()
 	sim.advance_to(sim.clock.day + 3)
 	assert_int(sim.areas[34].teams).is_equal(1)
 	assert_int(sim.logistics.stationed.size()).is_equal(0)
-	assert_int(sim.unit_overview().summary.total).is_equal(21)
+	assert_int(sim.unit_overview().summary.total).is_equal(30)
 
 
 func test_transfer_preview_is_read_only_and_invalid_orders_do_not_spend() -> void:

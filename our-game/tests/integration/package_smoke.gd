@@ -42,8 +42,8 @@ func _run() -> void:
 	isolated_store.set("slot_directory", "user://test-revert-package-empty-slots")
 	var sim: Variant = shell.get("sim")
 	if not _require(
-		sim != null and sim.areas.size() == 21 and sim.historical.events.size() == 99,
-		"21 areas and 99 historical events"
+		sim != null and sim.areas.size() == 30 and sim.historical.events.size() == 99,
+		"30 areas and 99 historical events"
 	):
 		return
 	if not _require(not bool(shell.get("auto_save_enabled")), "player saves disabled"):
@@ -160,7 +160,7 @@ func _run() -> void:
 	main.queue_free()
 	await process_frame
 	print(
-		"PACKAGED_GAMEPLAY_PASS: native UI, 21 areas, 99 events, projects, crisis, logistics, report and save validation"
+		"PACKAGED_GAMEPLAY_PASS: native UI, 30 areas, 99 events, projects, crisis, logistics, report and save validation"
 	)
 	quit()
 
