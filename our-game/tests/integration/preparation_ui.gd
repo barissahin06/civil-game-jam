@@ -127,7 +127,7 @@ func _check_map_toolbar() -> void:
 	assert(not toolbar.get_global_rect().intersects(_shell.preparation_panel.get_global_rect()))
 	await _capture("map-controls-collapsed")
 	var notice: String = _shell._status.text
-	var notice_tooltip: String = _shell._status.tooltip_text
+	var notice_tooltip: String = _shell._status.get_meta("hint", "")
 	await _click(map._tools_toggle.get_global_rect().get_center())
 	assert(map.tools_expanded and toolbar.size == Vector2(1478, 42))
 	assert(first.is_visible_in_tree() and map._legend_panel.is_visible_in_tree())
@@ -137,7 +137,7 @@ func _check_map_toolbar() -> void:
 			_shell.preparation_panel.get_global_rect()
 		)
 	)
-	assert(_shell._status.text == notice and _shell._status.tooltip_text == notice_tooltip)
+	assert(_shell._status.text == notice and _shell._status.get_meta("hint", "") == notice_tooltip)
 	await _capture("map-controls-expanded")
 	var terrain: TextureRect = map._map_image.get_node("TerrainDetails")
 	assert(terrain == map._terrain and terrain.texture.resource_path.ends_with("/map-terrain.png"))

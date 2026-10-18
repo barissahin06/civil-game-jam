@@ -460,6 +460,7 @@ func show_screen(screen: String) -> void:
 		return
 	preparation_panel.close()
 	_remove_modal()
+	UI.hide_hints(self)
 	sim.set_paused(true)
 	open_screen = screen
 	_modal = Control.new()
@@ -468,6 +469,16 @@ func show_screen(screen: String) -> void:
 		Control.MOUSE_FILTER_IGNORE if screen in ["crisis", "units"] else Control.MOUSE_FILTER_STOP
 	)
 	add_child(_modal)
+	if _screen_switchable(screen):
+		# Optional screens keep the top screen-button row clickable, so one screen can replace
+		# another without closing it first. The rest of the screen stays blocked.
+		_modal.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_modal.set_meta("switchable", true)
+		for blocked: Rect2 in [Rect2(0, 0, 1920, 128), Rect2(0, 176, 1920, 904)]:
+			var blocker := Control.new()
+			blocker.position = blocked.position
+			blocker.size = blocked.size
+			_modal.add_child(blocker)
 	if in_frontend:
 		var background := TextureRect.new()
 		background.texture = MENU_SPLASH
@@ -486,8 +497,12 @@ func show_screen(screen: String) -> void:
 		shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_modal.add_child(shade)
 	else:
-		UI.panel(_modal, Rect2(432, 174, 1472, 846), true)
-		var close: Button = UI.button(_modal, "KAPAT", Rect2(1738, 216, 116, 38), close_screen)
+		# The pause menu is a narrow centered column; other screens use the wide panel.
+		var box := Rect2(620, 174, 680, 800) if screen == "pause" else Rect2(432, 174, 1472, 846)
+		UI.panel(_modal, box, true)
+		var close: Button = UI.button(
+			_modal, "KAPAT", Rect2(box.end.x - 166, 216, 116, 38), close_screen
+		)
 		close.disabled = (
 			not _pause_active and (not sim.news_queue.is_empty() or not sim.outcome.is_empty())
 		)
@@ -498,7 +513,11 @@ func show_screen(screen: String) -> void:
 		else (
 			Vector2(116, 164)
 			if in_frontend and screen == "menu"
-			else Vector2(288, 220) if in_frontend else Vector2(474, 270)
+			else (
+				Vector2(288, 220)
+				if in_frontend
+				else Vector2(680 if screen == "pause" else 474, 270)
+			)
 		)
 	)
 	_screen_content.size = (
@@ -534,6 +553,20 @@ func show_screen(screen: String) -> void:
 			not _pause_active and (not sim.news_queue.is_empty() or not sim.outcome.is_empty())
 		)
 	refresh_screen()
+
+
+func _screen_switchable(screen: String) -> bool:
+	return (
+		not in_frontend
+		and not _pause_active
+		and sim.news_queue.is_empty()
+		and sim.outcome.is_empty()
+		and screen not in ["crisis", "units", "pause", "settings", "save", "load", "tutorial"]
+	)
+
+
+func screen_blocks_map() -> bool:
+	return is_instance_valid(_modal) and _modal.has_meta("switchable")
 
 
 func _remove_modal() -> void:
@@ -595,7 +628,7 @@ func _on_map_tools_toggled(expanded: bool) -> void:
 func preview_notice(message: String) -> void:
 	if is_instance_valid(_status):
 		_status.text = message
-		_status.tooltip_text = message
+		UI.hint_above(_status, message)
 		sim.log_message(message)
 
 
@@ -603,7 +636,7 @@ func _on_management_warning(message: String) -> void:
 	if is_instance_valid(_status):
 		var notices := message.split("\n", false)
 		_status.text = "YÖNETİM UYARISI (%d): %s" % [notices.size(), notices[0]]
-		_status.tooltip_text = message
+		UI.hint_above(_status, message)
 
 
 func _display_ticker() -> void:
@@ -612,7 +645,7 @@ func _display_ticker() -> void:
 	_ticker_cursor = clampi(_ticker_cursor, 0, sim.ticker.size() - 1)
 	var message := sim.ticker[_ticker_cursor]
 	_status.text = message
-	_status.tooltip_text = message
+	UI.hint_above(_status, message)
 
 
 static func fmt_money(value: int) -> String:

@@ -82,7 +82,8 @@ func _settings() -> void:
 
 
 func _pause() -> void:
-	_title("OYUN DURAKLATILDI")
+	var title: Label = UI.text(_content, "OYUN DURAKLATILDI", Rect2(0, 0, 560, 48), 36)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	UI.button(
 		_content,
 		"DEVAM ET",

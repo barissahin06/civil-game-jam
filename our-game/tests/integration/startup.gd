@@ -118,5 +118,46 @@ func _initialize() -> void:
 	main.queue_free()
 	await process_frame
 	await process_frame
+	await _check_skip(scene)
 	print("STARTUP PASS")
 	quit()
+
+
+func _check_skip(scene: PackedScene) -> void:
+	var skipper := scene.instantiate()
+	root.add_child(skipper)
+	await skipper.get_node("Splash").tree_exited
+	await process_frame
+	var fill: ColorRect = skipper._skip_fill
+	assert(skipper.get_node("Intro/SkipBar").is_visible_in_tree())
+	_escape(true)
+	await create_timer(1.0).timeout
+	assert(fill.size.x > 100.0 and skipper.has_node("Intro"))
+	if "--capture" in OS.get_cmdline_user_args():
+		RenderingServer.force_draw(false)
+		root.get_texture().get_image().save_png("res://../generated/startup-skip.png")
+	_escape(false)
+	await process_frame
+	await process_frame
+	assert(is_zero_approx(fill.size.x), "Releasing ESC early resets the skip bar")
+	_escape(true)
+	await create_timer(2.3).timeout
+	_escape(false)
+	assert(not skipper.has_node("Intro") and not skipper.has_node("TitleSplash"))
+	assert(skipper.get_node("MainPreview").is_visible_in_tree())
+	var audio: Node = skipper.get_node("MainPreview").audio
+	await create_timer(0.1).timeout
+	assert(audio._music.has_stream_playback(), "Music must begin after skipping the intro")
+	await audio.shutdown()
+	skipper.queue_free()
+	await process_frame
+	await process_frame
+
+
+func _escape(pressed: bool) -> void:
+	var key := InputEventKey.new()
+	key.keycode = KEY_ESCAPE
+	key.physical_keycode = KEY_ESCAPE
+	key.pressed = pressed
+	Input.parse_input_event(key)
+	Input.flush_buffered_events()

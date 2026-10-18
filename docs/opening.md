@@ -6,6 +6,9 @@ kullanılır; Godot logosunu da sahne gösterdiği için sönme efekti uygulanab
 Ardından siyah fonda beyaz yazılı afet hafızası ekranı 15 saniye, sonrasında **Rewrite it**
 başlık logosu 3,5 saniye gösterilir ve ana menü açılır.
 Her dört ekran yalnız uygulama başlangıcında gösterilir.
+Metin ekranında sağ altta bir atlama çubuğu görünür; ESC 2 saniye basılı tutulunca
+çubuk dolar, metin ve başlık ekranı atlanıp doğrudan ana menüye geçilir ve müzik başlar.
+ESC erken bırakılırsa çubuk sıfırlanır.
 `core/scripts/opening.gd` geçişleri yönetir. Logo ve yazılar ilk yarım saniyede belirir;
 her ekranın son yarım saniyesinde sönme olur. Bu efektler toplam sürelere dahildir.
 Metin ekranı siyah zemine söner; ardından başlık logosu belirir. Başlık ekranı sönerken
