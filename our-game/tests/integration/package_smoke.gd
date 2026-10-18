@@ -123,7 +123,23 @@ func _run() -> void:
 	var target: Dictionary = sim.crises.active.front()
 	if not _require(sim.dispatch(31, target.id, "team", 1).ok, "local team"):
 		return
-	if not _require(sim.dispatch(31, target.id, "stock", 40).ok, "local aid"):
+	var before_aid := JSON.stringify(sim.to_dict())
+	if not _require(
+		(
+			not sim.dispatch(31, target.id, "stock", 40).ok
+			and JSON.stringify(sim.to_dict()) == before_aid
+		),
+		"over-capacity aid rejected without mutation"
+	):
+		return
+	var aid_preview: Dictionary = sim.dispatch_preview(31, target.id, "stock", 1)
+	if not _require(
+		(
+			int(aid_preview.missing) > 0
+			and sim.dispatch(31, target.id, "stock", int(aid_preview.missing)).ok
+		),
+		"local aid within field capacity"
+	):
 		return
 	if not _require(sim.dispatch(1, target.id, "team", 1).ok, "distant team"):
 		return
@@ -139,6 +155,8 @@ func _run() -> void:
 		store.call("restore", JSON.parse_string(JSON.stringify(saved))) != null, "save roundtrip"
 	):
 		return
+	var audio: Node = shell.get("audio")
+	await audio.call("shutdown")
 	main.queue_free()
 	await process_frame
 	print(
