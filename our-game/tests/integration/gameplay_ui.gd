@@ -227,6 +227,7 @@ func _run() -> void:
 	assert(_shell.open_screen == "pause", "Help returns to its parent pause menu")
 	await _press_button("ANA MENÜYE DÖN")
 	await _capture("menu")
+	await _shell.audio.shutdown()
 	_main.queue_free()
 	await process_frame
 	_clear_test_slots()

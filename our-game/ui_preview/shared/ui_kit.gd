@@ -131,10 +131,18 @@ static func button(
 			surface.modulate_color = Color(brightness, brightness, brightness)
 			result.add_theme_stylebox_override(state, surface)
 	result.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	result.pressed.connect(_play_click.bind(result))
 	if action.is_valid():
 		result.pressed.connect(action)
 	parent.add_child(result)
 	return result
+
+
+static func _play_click(button: Button) -> void:
+	if button.is_inside_tree():
+		var audio := button.get_tree().get_first_node_in_group("game_audio")
+		if audio != null:
+			audio.play_effect("ui_click")
 
 
 static func icon(

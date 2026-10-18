@@ -1,6 +1,7 @@
 extends "res://ui_preview/shared/screen_view.gd"
 
 const RED := Color("cf9584")
+const AUDIO_CONTROLS := preload("res://ui_preview/campaign/audio_controls.gd")
 
 var start_year: int = 1950
 var tutorial_step: int = 0
@@ -46,12 +47,7 @@ func _menu() -> void:
 	UI.button(_content, "AYARLAR", Rect2(0, 398, 500, 52), _shell.show_screen.bind("settings"))
 	UI.button(_content, "KISA REHBER", Rect2(0, 468, 500, 52), _open_tutorial)
 	UI.button(
-		_content,
-		"ÇIKIŞ",
-		Rect2(0, 538, 500, 52),
-		_shell.get_tree().quit,
-		false,
-		UI.ButtonTone.DANGER
+		_content, "ÇIKIŞ", Rect2(0, 538, 500, 52), _shell.quit_game, false, UI.ButtonTone.DANGER
 	)
 
 
@@ -71,10 +67,15 @@ func _settings() -> void:
 	UI.text(
 		_content, "F11: PENCERE / SEÇTİĞİN TAM EKRAN MODU", Rect2(0, 232, 1100, 28), 18, UI.MUTED
 	)
-	_shake_setting(Rect2(0, 300, 650, 60))
+	var audio_controls := AUDIO_CONTROLS.new()
+	audio_controls.position = Vector2(0, 300)
+	audio_controls.size = Vector2(650, 264)
+	_content.add_child(audio_controls)
+	audio_controls.setup(_shell.audio)
+	_shake_setting(Rect2(720, 300, 624, 52))
 	_paragraph(
 		"Sarsıntı kapalıyken kırmızı afet vurgusu görünmeye devam eder.",
-		Rect2(0, 382, 1100, 70),
+		Rect2(720, 382, 624, 100),
 		UI.MUTED
 	)
 	UI.button(_content, "GERİ", Rect2(0, 600, 432, 52), _shell.close_screen)

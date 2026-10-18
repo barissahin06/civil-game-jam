@@ -78,6 +78,7 @@ func _run() -> void:
 	_check_photo(_shell.sim.event_for("historical-001"))
 	await _press_button("KRİZ MERKEZİNE GEÇ")
 	assert(_shell.open_screen == "crisis", "Latest newspaper CTA must still accept real input")
+	await _shell.audio.shutdown()
 	_main.queue_free()
 	await process_frame
 	print(

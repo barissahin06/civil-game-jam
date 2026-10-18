@@ -7,6 +7,7 @@ const PREPARATION_PANEL := preload("res://ui_preview/management/preparation_pane
 const HUD := preload("res://ui_preview/campaign/hud.gd")
 const UNITS_PANEL := preload("res://ui_preview/logistics/units_panel.gd")
 const MENU_SPLASH := preload("res://ui_preview/assets/main_menu_splash.png")
+const AUDIO := preload("res://core/audio/game_audio.gd")
 var sim: Simulation
 var saves := SaveStore.new()
 var map_view: MAP_VIEW
@@ -16,6 +17,7 @@ var hud: HUD
 var units_panel: UNITS_PANEL
 var campaign := preload("res://ui_preview/campaign/campaign_screens.gd").new()
 var display := preload("res://ui_preview/campaign/display_settings.gd").new()
+var audio: AUDIO
 var save_slots := preload("res://ui_preview/campaign/save_screens.gd").new()
 var research := preload("res://ui_preview/management/research_screen.gd").new()
 var projects := preload("res://ui_preview/management/project_screens.gd").new()
@@ -44,9 +46,11 @@ var _feedback_event_ids: Array[String] = []
 var _pause_return_screen: String = ""
 var _pause_active: bool = false
 var _pause_was_running: bool = false
+var _quitting: bool = false
 
 
 func _ready() -> void:
+	get_tree().auto_accept_quit = false
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	UI.install_cursors()
 	theme = Theme.new()
@@ -61,6 +65,16 @@ func _ready() -> void:
 		get_tree().quit(1)
 		return
 	_load_visual_preferences()
+	if audio == null:
+		audio = AUDIO.new()
+	if _testing():
+		audio.preferences_path = ""
+	add_child(audio)
+	audio.preference_save_failed.connect(
+		preview_notice.bind("Ses tercihi kaydedilemedi; bu oturumda uygulanıyor.")
+	)
+	if not get_parent().has_node("TitleSplash"):
+		audio.start_music()
 	_bind_simulation()
 	for view in [campaign, save_slots, research, projects, crisis, news_reports]:
 		view.setup(self)
@@ -122,6 +136,7 @@ func _bind_simulation(resuming: bool = false) -> void:
 	sim.changed.connect(_mark_dirty)
 	sim.notification_requested.connect(_mark_dirty)
 	sim.notification_requested.connect(_play_new_crisis_feedback)
+	sim.reward_earned.connect(audio.play_effect.bind("reward_complete"))
 	_feedback_event_ids.clear()
 	for event: Dictionary in sim.historical.events:
 		if int(event.day) < sim.clock.day or (resuming and int(event.day) == sim.clock.day):
@@ -135,6 +150,7 @@ func _play_new_crisis_feedback() -> void:
 		if item.kind == "newspaper" and not item.id in _feedback_event_ids:
 			_feedback_event_ids.append(item.id)
 			map_view.play_crisis_feedback()
+			audio.play_effect("crisis_alert")
 
 
 func _load_visual_preferences() -> void:
@@ -336,6 +352,7 @@ func _save() -> bool:
 
 
 func command_result(result: Dictionary) -> void:
+	audio.play_effect("action_confirm" if bool(result.get("ok", false)) else "error_denied")
 	preview_notice(str(result.get("message", "")))
 	sim.changed.emit()
 	if auto_save_enabled:
@@ -553,8 +570,20 @@ static func fmt_count(value: int) -> String:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST and auto_save_enabled and sim != null:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		quit_game()
+
+
+func quit_game() -> void:
+	if _quitting:
+		return
+	_quitting = true
+	set_process(false)
+	if auto_save_enabled and sim != null:
 		_save()
+	if is_instance_valid(audio):
+		await audio.shutdown()
+	get_tree().quit()
 
 
 func _unhandled_key_input(event: InputEvent) -> void:

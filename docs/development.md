@@ -268,3 +268,22 @@ Kriz pilotu ayrıca Acil Bütçe/Kapat başlık hizasını ve fon ekranı gidiş
 
 MCP kurulumu ve sürüm güncellemesi için [toolkit rehberini](../tools/mcp/README.md) kullanın.
 Kimlik bilgilerini ve makine yollarını yerel dosyalarda tutun; genel Codex yapılandırmasını kopyalamayın.
+
+## Ses ve müzik kontrolleri
+
+`verify` ve `test:ui`, `audio_ui.gd` ile gerçek fare/klavye girdisi üzerinden müzik aç/kapat,
+duraklat/sürdür, iki ses slider'ı, menü/kampanya geçişinde süreklilik, işlem onay/ret sesleri,
+tamamlanma ve tek seferlik afet uyarısını kontrol eder. Testler oyuncu tercihlerini kullanmaz.
+`test_audio_preferences.gd`, yalnız izole CFG ile ses tercihlerini, geçersiz tipleri, sınırları
+ve mevcut görüntü/görsel tercihlerin korunmasını, gecikmeli kaydı ve çıkışta son değişikliğin
+saklanmasını denetler. Sesli sürücüler kapanırken `audio.shutdown()` beklenir: Godot'un ses
+iş parçacığı durdurulan oynatım referanslarını bir sonraki karışımda bırakır.
+
+Gerçek 1920×1080 görüntülü kabul için:
+
+```powershell
+& $env:GODOT_PATH --path our-game --script res://tests/integration/audio_ui.gd -- --capture
+```
+
+Çıktılar `generated/gameplay-ui/audio-settings-*.png` altındadır. Headless kontrol sesin
+duyusal dengesini kanıtlamaz; normal ses çıkışında dinleyerek ayrıca değerlendirin.

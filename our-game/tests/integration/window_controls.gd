@@ -90,6 +90,7 @@ func _run() -> void:
 	assert(_shell.open_screen == "pause")
 	await _key(KEY_ESCAPE)
 	assert(_shell.open_screen == "report" and _shell.sim.news_queue == pending)
+	await _shell.audio.shutdown()
 	_main.queue_free()
 	await process_frame
 	print(

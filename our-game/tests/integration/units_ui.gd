@@ -90,6 +90,7 @@ func _run() -> void:
 	await process_frame
 	assert(_shell.crisis.source_id == 6 and _shell.crisis.selected().id == selected)
 	await _capture("units-parallel-dispatch")
+	await _shell.audio.shutdown()
 	_main.queue_free()
 	await process_frame
 	print(
