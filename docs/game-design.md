@@ -18,10 +18,12 @@ afet sırasında kaynak paylaşımı ve sonuçlardan öğrenmedir.
 - Her yeni kampanyada uygulamalı rehber başlar. Orta kapsamlı başlangıç eğitimi şehir, harita,
   yatırım, araştırma, ekip/yardım hazırlığı ve zaman yönetimini öğretir; bilinç, ilk afet,
   sevkiyat, rapor ve onarım dersleri uygun koşul oluştuğunda devam eder.
+- Oyun Rehberi 12 bölümde hazırlık, müdahale ve toparlanmayı açıklar; konu listesi ve
+  geri/ileri gezinmeyle menüden tekrar okunabilir. Okumak uygulamalı derslerin ilerlemesini değiştirmez.
 - Oyun ayrı ana menüden açılır. Yeni oyun, Tarihsel/Sandbox ve yıl seçimi yalnız bu akışta bulunur;
   harita, HUD ve şehir panelleri burada görünmez. Kampanya seçilmeden otomatik kayıt başlamaz.
 - Oyun içi menü duraklatma ve ayarlar içindir; yeni kampanya seçimi içermez. Ana menüye dönmek
-  mevcut kampanyayı kaydeder ve oyun ekranını kapatır. Kısa Rehber genel bakış sunar;
+  mevcut kampanyayı kaydeder ve oyun ekranını kapatır. Oyun Rehberi genel bakış sunar;
   oyun içinde buradaki Rehbere Devam Et, kampanyanın kalan uygulamalı derslerini açar.
 
 ## Uygulamalı rehber
@@ -90,7 +92,7 @@ Aktif afetler seçili katmandan bağımsız simgelerle de görünür.
 Oyun adı **Rewrite it**. Ana menü, gece afet koordinasyon odasını gösteren 1920×1080 native
 pixel art splash kullanır. Türkiye panosu, telsiz, şehir ışıkları ve masa konsolları ayrı
 Aseprite katmanlarıdır. Başlık ve düğmeler canlı UI'dır. Devam Et otomatik kaydı açar;
-Yeni Oyun, Yükle, Ayarlar, Kısa Rehber ve Çıkış ayrı aksiyonlardır.
+Yeni Oyun, Yükle, Ayarlar, Oyun Rehberi ve Çıkış ayrı aksiyonlardır.
 
 Menü ve oyun ekranında demo etiketi, sabit bölge/merkez sayacı ve kayıt yuvası sayısı
 gibi açıklama bantları gösterilmez. Metinler güncel durumu ve oyuncunun kararını destekler;

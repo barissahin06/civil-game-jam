@@ -88,6 +88,18 @@ Ana menü ve kampanya seçiminde harita/HUD gizlidir; oyun içi menüde kampanya
 Oyun ekranından doğrudan `menu`/`newgame` yönlendirmesi de engellenir. Ana menüye dönüş, ayrı bir aksiyondur.
 Sonra şehir → yatırım → araştırma → ilk afet sevkiyatı adımları ve genel rehberin menüden açılması
 gerçek input ile doğrulanır.
+Oyun Rehberi metinleri `ui_preview/campaign/tutorial_copy.gd` içinde tutulur; bölüm seçimi,
+geri/ileri gezinme ve ana menü/duraklatma menüsüne dönüş `campaign_screens.gd` sahibindedir.
+Rehber; amaç ve zaman, harita, ekonomi, yerel projeler, araştırma/ulusal önlemler,
+ekip/yardım hazırlığı, merkezler arası taşıma, afet sevki, günlük ikmal, onarım/yenileme,
+kalıcı kararlar/güven ve kayıt/kontrolleri kapsar. Uygulamalı kampanya rehberi
+ayrı kalır. `gameplay_ui.gd`, tüm bölümlerde metin taşmasını, ilk bölümde geri sınırını,
+geri/ileri ve gerçek açılır liste girdisini, okuma sırasında modelin değişmemesini,
+ana menü ve duraklatma menüsü girişlerini denetler. `tour_guide_ui.gd`, genel rehberi
+açıp konu seçmenin etkin ders ve atlanan adımları değiştirmediğini, kapatınca aynı
+derse dönüldüğünü ve Rehbere Devam Et bağlantısını denetler.
+Aynı sürücüleri `--capture` ile gerçek renderer'da çalıştırıp
+`generated/gameplay-ui/guide-*.png` görüntülerini 1920×1080'de inceleyin.
 Bu otomatik kabul, oyuncunun okuma/karar süresini içeren beş dakikalık insan testi yerine geçmez.
 
 `tour_guide_ui.gd`, `verify` ve `test:ui` içinde uygulamalı rehberin gerçek fare/klavye akışını

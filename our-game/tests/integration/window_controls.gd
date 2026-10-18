@@ -38,7 +38,7 @@ func _run() -> void:
 		await _key(KEY_ESCAPE)
 		assert(_shell.open_screen == screen)
 	await _key(KEY_ESCAPE)
-	await _press_button("KISA REHBER")
+	await _press_button("OYUN REHBERİ")
 	assert(_shell.open_screen == "tutorial")
 	await _key(KEY_ESCAPE)
 	assert(_shell.open_screen == "pause")
@@ -55,7 +55,7 @@ func _run() -> void:
 	await process_frame
 	await process_frame
 	assert(_shell.open_screen == "pause" and _shell.sim.news_queue == pending)
-	await _press_button("KISA REHBER")
+	await _press_button("OYUN REHBERİ")
 	assert(not _find_button(_shell._modal, "KAPAT").disabled)
 	await _key(KEY_ESCAPE)
 	assert(_shell.open_screen == "pause")

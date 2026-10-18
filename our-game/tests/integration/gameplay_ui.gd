@@ -47,6 +47,13 @@ func _run() -> void:
 	await _capture("main-menu")
 	_check_button_tone("ÇIKIŞ", UI.ButtonTone.DANGER)
 	_check_button_tone("YENİ OYUN", UI.ButtonTone.NEUTRAL)
+	await _press_button("OYUN REHBERİ")
+	assert(_shell.in_frontend and _shell.campaign.tutorial_step == 0)
+	await _capture("guide-main-menu")
+	await _select_guide_topic(_shell.campaign.GUIDE.PAGES.size() - 1)
+	await _capture("guide-main-menu-last")
+	await _press_button("ANA MENÜYE DÖN")
+	assert(_shell.open_screen == "menu" and not _shell.auto_save_enabled)
 	await _press_button("AYARLAR")
 	await _capture("settings")
 	await _press_button("AFET SARSINTISI: AÇIK")
@@ -109,6 +116,23 @@ func _run() -> void:
 	assert(_shell.saves.slot_summaries()[2].start_year == 1990)
 	# The dedicated tour driver exercises lessons; this driver covers ordinary gameplay.
 	await _press_button("REHBERİ KAPAT")
+	await _press_button("MENÜ")
+	await _press_button("OYUN REHBERİ")
+	assert(_shell.campaign.GUIDE.PAGES.size() == 12)
+	assert(_find_button(_shell._modal, "GERİ").disabled)
+	var before_reading := JSON.stringify(_shell.sim.to_dict())
+	await _capture("guide-01")
+	for step: int in range(1, _shell.campaign.GUIDE.PAGES.size()):
+		await _press_button("İLERİ")
+		assert(_shell.campaign.tutorial_step == step)
+		await _capture("guide-%02d" % [step + 1])
+	await _press_button("GERİ")
+	assert(_shell.campaign.tutorial_step == _shell.campaign.GUIDE.PAGES.size() - 2)
+	await _press_button("İLERİ")
+	await _press_button("MENÜYE DÖN")
+	assert(_shell.open_screen == "pause")
+	assert(JSON.stringify(_shell.sim.to_dict()) == before_reading)
+	await _press_button("DEVAM ET")
 	assert(_shell.open_screen.is_empty() and _shell.sim.paused)
 	await _capture("startup")
 	assert(not _shell.city_panel.visible)
@@ -225,7 +249,17 @@ func _run() -> void:
 		_shell.map_view.select_overlay(layer)
 		await _capture("map-layer-%d" % layer)
 	await _press_button("MENÜ")
-	await _press_button("KISA REHBER")
+	await _press_button("OYUN REHBERİ")
+	assert(_shell.campaign.tutorial_step == 0)
+	var guide_state := JSON.stringify(_shell.sim.to_dict())
+	await _select_guide_topic(8)
+	assert(_shell.campaign.tutorial_step == 8)
+	await _capture("guide-topic-selection")
+	assert(JSON.stringify(_shell.sim.to_dict()) == guide_state)
+	await _select_guide_topic(_shell.campaign.GUIDE.PAGES.size() - 1)
+	await _press_button("MENÜYE DÖN")
+	assert(_shell.open_screen == "pause")
+	await _press_button("OYUN REHBERİ")
 	assert(_shell.campaign.tutorial_step == 0)
 	await _capture("tutorial")
 	_shell.close_screen()
@@ -316,6 +350,31 @@ func _open_campaign_from_form(year: int) -> void:
 	assert(_shell.sim.start_year == year and _shell.sim.paused)
 	assert(CalendarClock.day_to_iso(_shell.sim.clock.day) == "%d-01-01" % year)
 	assert(_shell.sim.tutorial_enabled and not _shell.auto_save_enabled)
+
+
+func _select_guide_topic(index: int) -> void:
+	var topics: OptionButton = _shell._screen_content.get_node("GuideTopics")
+	await _click(topics.get_global_rect().get_center())
+	assert(topics.get_popup().visible)
+	for step: int in range(topics.item_count + 1):
+		var key: Key = KEY_ENTER if topics.get_popup().get_focused_item() == index else KEY_DOWN
+		for pressed: bool in [true, false]:
+			var event := InputEventKey.new()
+			event.keycode = key
+			event.physical_keycode = key
+			event.pressed = pressed
+			event.window_id = topics.get_popup().get_window_id()
+			Input.parse_input_event(event)
+			Input.flush_buffered_events()
+		await process_frame
+		await process_frame
+		if key == KEY_ENTER:
+			break
+	await process_frame
+	assert(
+		_shell.campaign.tutorial_step == index,
+		"Guide topic: expected %d, got %d" % [index, _shell.campaign.tutorial_step]
+	)
 
 
 func _check_button_tone(title: String, tone: UI.ButtonTone) -> void:
