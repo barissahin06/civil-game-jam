@@ -20,6 +20,11 @@ var _crisis_button: Button
 var _speed_buttons: Array[Button] = []
 var _events_button: Button
 var _events_menu: Control
+var _trust_hint: Control
+var _awareness_hint: Control
+var _teams_hint: Control
+var _stock_hint: Control
+var _date_hint: Control
 
 
 func setup(shell: Control) -> void:
@@ -40,7 +45,7 @@ func _ready() -> void:
 	UI.text(self, "BÜTÇE", Rect2(112, 18, 248, 22), 18, UI.MUTED)
 	_budget = UI.text(self, "", Rect2(112, 38, 248, 42), 36, UI.GOLD)
 	_income = UI.text(self, "", Rect2(32, 80, 328, 44), 18, UI.TEAL)
-	_income.tooltip_text = "Son ay: gelir eksi bakım; proje taksitleri hariç"
+	_income.tooltip_text = "Son ayın net sonucu: merkez gelirleri eksi bakım giderleri. Proje taksitleri bu rakama dahil değil."
 	_income.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_income.mouse_filter = Control.MOUSE_FILTER_PASS
 	_trust_limits = UI.text(self, "", Rect2(456, 18, 192, 22), 18, UI.MUTED)
@@ -68,8 +73,20 @@ func _ready() -> void:
 	_date_label = UI.text(self, "", Rect2(1316, 40, 280, 44), 36)
 	_date_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	_date_state = UI.text(self, "", Rect2(1316, 84, 280, 22), 18, UI.GOLD)
+	_hint(
+		Rect2(28, 14, 336, 66),
+		"Hazinedeki para. Proje taksitleri, ekip ve gönderim bedelleri buradan ödenir. Para yetmezse projeler bekler."
+	)
+	_trust_hint = _hint(Rect2(372, 14, 280, 110), "")
+	_awareness_hint = _hint(Rect2(662, 14, 230, 110), "")
+	_teams_hint = _hint(Rect2(896, 14, 188, 110), "")
+	_stock_hint = _hint(Rect2(1088, 14, 220, 110), "")
+	_date_hint = _hint(Rect2(1312, 14, 292, 110), "")
 	_speed_state = UI.text(self, "", Rect2(1612, 18, 272, 22), 18, UI.GOLD)
 	_pause_button = UI.button(self, "ZAMANI BAŞLAT", Rect2(1612, 40, 272, 38), _toggle_time)
+	_pause_button.tooltip_text = "Zamanı başlatır veya durdurur. Zaman durmuşken de proje başlatabilir, gönderim yapabilirsin."
+	_speed_state.mouse_filter = Control.MOUSE_FILTER_PASS
+	_speed_state.tooltip_text = "Zamanın durumu ve seçili oyun hızı."
 	for index in range(3):
 		_speed_buttons.append(
 			UI.button(
@@ -80,31 +97,24 @@ func _ready() -> void:
 			)
 		)
 		_speed_buttons[index].toggle_mode = true
+		_speed_buttons[index].tooltip_text = (
+			"Oyun hızı: zaman %d kat hızlı akar." % [1, 2, 4][index]
+		)
 		_speed_buttons[index].add_theme_stylebox_override(
 			"hover_pressed", UI.style(Rect2(112, 56, 48, 32))
 		)
-	UI.button(self, "MENÜ", Rect2(1752, 130, 144, 42), screen_requested.emit.bind("pause"))
-	UI.button(
-		self, "EKİPLER VE YARDIM", Rect2(32, 130, 230, 42), screen_requested.emit.bind("units")
-	)
+	UI.button(self, "MENÜ", Rect2(1752, 130, 144, 42), screen_requested.emit.bind("pause")).tooltip_text = ("Oyunu duraklatır. Kaydet, yükle, ayarlar ve ana menü buradadır.")
+	UI.button(self, "EKİPLER VE YARDIM", Rect2(32, 130, 230, 42), screen_requested.emit.bind("units")).tooltip_text = "Bütün merkezlerdeki ekiplerin ve yardım malzemesinin durumu: hazır, yolda, görevde, dönüşte."
 	_crisis_button = UI.button(
 		self, "", Rect2(274, 130, 250, 42), screen_requested.emit.bind("crisis")
 	)
-	UI.button(
-		self,
-		"EKİP VE YARDIM HAZIRLA",
-		Rect2(536, 130, 340, 42),
-		screen_requested.emit.bind("preparation")
-	)
-	UI.button(
-		self,
-		"YATIRIM VE ARAŞTIRMA",
-		Rect2(888, 130, 300, 42),
-		screen_requested.emit.bind("development")
-	)
+	_crisis_button.tooltip_text = "Devam eden afetler ve sayısı. Buradan afet bölgelerine ekip ve yardım malzemesi gönderilir."
+	UI.button(self, "EKİP VE YARDIM HAZIRLA", Rect2(536, 130, 340, 42), screen_requested.emit.bind("preparation")).tooltip_text = "Merkezlerde yeni arama kurtarma ekibi kur ve yardım malzemesi hazırla. Afetten önce hazırlanan kaynak, krizde hemen gönderilir."
+	UI.button(self, "YATIRIM VE ARAŞTIRMA", Rect2(888, 130, 300, 42), screen_requested.emit.bind("development")).tooltip_text = "Projeler, ulusal önlemler ve araştırmalar. Tamamlanan yatırımlar merkezleri afetlere hazırlar."
 	_events_button = UI.button(
 		self, "HABERLER VE RAPORLAR", Rect2(1200, 130, 290, 42), _toggle_events_menu
 	)
+	_events_button.tooltip_text = "Son afet haberi ve son afetin sonuç raporu."
 	_events_menu = Control.new()
 	_events_menu.name = "EventsMenu"
 	_events_menu.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -128,6 +138,7 @@ func _ready() -> void:
 		button.focus_neighbor_left = button.get_path_to(other)
 		button.focus_neighbor_right = button.get_path_to(other)
 	_events_menu.hide()
+	UI.wrap_tooltips(self)
 	refresh()
 
 
@@ -150,15 +161,25 @@ func refresh() -> void:
 		"font_color", UI.TEAL if trust.latest_amount > 0.0 else UI.GOLD
 	)
 	_trust.tooltip_text = (
-		"Halkın güveni: %d-%d. %d'a düştüğünde oyun sona erer.\nSon değişim: %s\n%s"
+		"Halkın güveni: %d-%d. %d puana düştüğünde oyun sona erer.\nSon değişim: %s\n%s"
 		% [trust.minimum, trust.maximum, trust.minimum, _trust_delta.text, trust.latest_reason]
 	)
 	_trust_delta.tooltip_text = _trust.tooltip_text
+	_trust_hint.tooltip_text = (
+		"Halkın devlete güveni. Her ay biraz azalır, onarılmayan altyapı hasarı daha da düşürür. Tamamlanan projeler ve başarılı müdahaleler artırır."
+		+ "\n\n"
+		+ _trust.tooltip_text
+	)
 	_awareness.text = str(sim.treasury.awareness_points)
 	_awareness.tooltip_text = (
 		"Bilinç geliştirmeleri tamamlandı. Yeni baloncuk üretimi durdu."
 		if sim.projects.awareness_complete()
 		else "Toplumsal hazırlık geliştirmelerinde harcanır."
+	)
+	_awareness_hint.tooltip_text = (
+		"Bilinç puanı. Haritadaki +5 BİLİNÇ PUANI balonlarını toplayarak kazanılır, araştırmalardaki toplumsal hazırlık geliştirmelerinde harcanır."
+		if not sim.projects.awareness_complete()
+		else _awareness.tooltip_text
 	)
 	var resources: Dictionary = sim.unit_overview().summary
 	_total_teams.text = _shell.fmt_count(resources.ready)
@@ -173,9 +194,17 @@ func refresh() -> void:
 			resources.returning
 		]
 	)
+	_teams_hint.tooltip_text = (
+		"Arama kurtarma ekipleri. Büyük sayı hemen gönderilebilecek ekipler, altındaki toplam ekip. Afet bölgesine sürüklenerek gönderilir.\n\n"
+		+ _total_teams.tooltip_text
+	)
 	_total_stock.text = _shell.fmt_count(resources.stock)
 	_total_stock.tooltip_text = (
 		"Tüm merkezlerde gönderime hazır toplam yardım malzemesi: %s." % _total_stock.text
+	)
+	_stock_hint.tooltip_text = (
+		"Afetzedelere gönderilen yardım malzemesi. Ekip ve Yardım Hazırla ile artırılır.\n\n"
+		+ _total_stock.tooltip_text
 	)
 	var months := [
 		"",
@@ -199,6 +228,11 @@ func refresh() -> void:
 		"%02d %s %d" % [sim.clock.day_of_month, months[sim.clock.month], sim.clock.year]
 	)
 	_date_state.text = "MÜDAHALE / GÜNLÜK" if not sim.crises.active.is_empty() else "NORMAL / AYLIK"
+	_date_hint.tooltip_text = (
+		"Oyun tarihi: "
+		+ _date_label.tooltip_text
+		+ ". Normal dönemde zaman ay ay, afet müdahalesi sırasında gün gün ilerler."
+	)
 	_pause_button.text = "ZAMANI BAŞLAT" if sim.paused else "ZAMANI DURDUR"
 	_speed_state.text = (("DURDU / %d× SEÇİLİ" if sim.paused else "AKTİF HIZ: %d×") % sim.speed)
 	_crisis_button.text = "AFET MÜDAHALESİ %d" % sim.crises.active.size()
@@ -211,6 +245,18 @@ func refresh() -> void:
 		_speed_buttons[index].add_theme_stylebox_override(
 			"normal", UI.style(Rect2(112 if selected else 0, 56, 48, 32))
 		)
+	for area: Control in [_trust_hint, _awareness_hint, _teams_hint, _stock_hint, _date_hint]:
+		area.tooltip_text = UI.wrap_hint(area.tooltip_text)
+
+
+func _hint(box: Rect2, tip: String) -> Control:
+	# Labels ignore the mouse, so a transparent area gives the whole box one tooltip.
+	var area := Control.new()
+	area.position = box.position
+	area.size = box.size
+	area.tooltip_text = tip
+	add_child(area)
+	return area
 
 
 func _toggle_time() -> void:

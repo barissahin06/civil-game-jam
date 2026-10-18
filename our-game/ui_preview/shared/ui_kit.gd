@@ -176,6 +176,113 @@ static func bar(
 	parent.add_child(fill)
 
 
+static func wrap_hint(content: String, width: int = 44) -> String:
+	# The pixel tooltip never wraps, so long hints are broken into short lines.
+	var lines: Array[String] = []
+	for paragraph: String in content.split("\n"):
+		var line := ""
+		for word: String in paragraph.split(" ", false):
+			if not line.is_empty() and line.length() + 1 + word.length() > width:
+				lines.append(line)
+				line = word
+			else:
+				line = word if line.is_empty() else line + " " + word
+		lines.append(line)
+	return "\n".join(lines)
+
+
+static func wrap_tooltips(root: Node) -> void:
+	for node: Node in [root] + root.find_children("*", "Control", true, false):
+		var control := node as Control
+		if control != null and control.tooltip_text.length() > 44:
+			control.tooltip_text = wrap_hint(control.tooltip_text)
+
+
+static func hint_above(control: Control, hint: String, anchor: Control = null) -> void:
+	# Controls on the bottom edge show their hint above themselves; the native tooltip
+	# would open over the control. Text lives in the "hint" meta, not tooltip_text.
+	control.tooltip_text = ""
+	control.set_meta("hint", hint)
+	if anchor != null:
+		control.set_meta("hint_anchor", anchor)
+	if control.has_meta("hint_bound"):
+		if control.get_global_rect().has_point(control.get_global_mouse_position()):
+			_show_hint_above(control)
+		return
+	control.set_meta("hint_bound", true)
+	control.mouse_entered.connect(_show_hint_above.bind(control))
+	control.mouse_exited.connect(_hide_hint_above.bind(control))
+	control.tree_exiting.connect(_hide_hint_above.bind(control))
+
+
+static func hint_panel(viewport: Viewport) -> PanelContainer:
+	var root := viewport.get_tree().root
+	var panel: PanelContainer = (
+		root.get_meta("hint_above_panel") if root.has_meta("hint_above_panel") else null
+	)
+	if panel == null or not is_instance_valid(panel):
+		panel = PanelContainer.new()
+		panel.name = "HintAbove"
+		panel.add_theme_stylebox_override("panel", style(Rect2(0, 0, 48, 48)))
+		panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var label := Label.new()
+		label.add_theme_font_override("font", FONT)
+		label.add_theme_font_size_override("font_size", 18)
+		label.add_theme_color_override("font_color", INK)
+		label.add_theme_constant_override("line_spacing", 0)
+		panel.add_child(label)
+		panel.hide()
+		root.add_child(panel)
+		root.set_meta("hint_above_panel", panel)
+	return panel
+
+
+static func _show_hint_above(control: Control) -> void:
+	var hint: String = control.get_meta("hint", "")
+	if hint.is_empty() or not control.is_visible_in_tree():
+		return
+	var panel := hint_panel(control.get_viewport())
+	if not panel.is_inside_tree():
+		return
+	(panel.get_child(0) as Label).text = wrap_hint(hint)
+	panel.get_parent().move_child(panel, -1)
+	panel.show()
+	panel.reset_size()
+	var top := control.get_global_rect().position.y
+	var anchor: Control = (
+		control.get_meta("hint_anchor") if control.has_meta("hint_anchor") else null
+	)
+	if anchor != null and is_instance_valid(anchor) and anchor.is_visible_in_tree():
+		top = minf(top, anchor.get_global_rect().position.y)
+	var screen := control.get_viewport().get_visible_rect().size
+	panel.position = Vector2(
+		clampf(control.get_global_rect().position.x, 8.0, screen.x - panel.size.x - 8.0),
+		maxf(8.0, top - panel.size.y - 8.0)
+	)
+	panel.set_meta("hint_owner", control)
+
+
+static func hide_hints(node: Node) -> void:
+	var root := node.get_tree().root
+	if root.has_meta("hint_above_panel") and is_instance_valid(root.get_meta("hint_above_panel")):
+		(root.get_meta("hint_above_panel") as Control).hide()
+
+
+static func _hide_hint_above(control: Control) -> void:
+	if not control.is_inside_tree():
+		return
+	var root := control.get_tree().root
+	if not root.has_meta("hint_above_panel"):
+		return
+	var panel: PanelContainer = root.get_meta("hint_above_panel")
+	if (
+		is_instance_valid(panel)
+		and panel.has_meta("hint_owner")
+		and panel.get_meta("hint_owner") == control
+	):
+		panel.hide()
+
+
 static func clear(parent: Node) -> void:
 	for child in parent.get_children():
 		parent.remove_child(child)

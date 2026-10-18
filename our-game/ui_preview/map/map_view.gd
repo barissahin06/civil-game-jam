@@ -165,15 +165,20 @@ void fragment() {
 	_tools_toggle = UI.button(_toolbar, "", Rect2(8, 4, 214, 34), _toggle_tools)
 	_tools_toggle.name = "MapToolsToggle"
 	_tools_toggle.toggle_mode = true
-	UI.button(_toolbar, "GÖRÜNÜMÜ SIFIRLA", Rect2(228, 4, 214, 34), reset_map)
+	UI.hint_above(
+		UI.button(_toolbar, "GÖRÜNÜMÜ SIFIRLA", Rect2(228, 4, 214, 34), reset_map),
+		"Haritayı ilk yakınlığına ve konumuna döndürür."
+	)
 	_zoom_out = UI.button(
 		_toolbar, "-", Rect2(448, 4, 34, 34), _zoom_map.bind(-1, Vector2(960, 540))
 	)
 	_zoom_label = UI.text(_toolbar, "", Rect2(488, 4, 72, 34))
 	_zoom_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_zoom_label.tooltip_text = "Harita yakınlığı: 1× - 3×"
+	UI.hint_above(_zoom_label, "Harita yakınlığı: 1× - 3×. Fare tekerleğiyle de değiştirilebilir.")
 	_zoom_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	_zoom_in = UI.button(_toolbar, "+", Rect2(568, 4, 34, 34), _zoom_map.bind(1, Vector2(960, 540)))
+	UI.hint_above(_zoom_out, "Uzaklaştır")
+	UI.hint_above(_zoom_in, "Yakınlaştır")
 	_tools_drawer = Control.new()
 	_tools_drawer.position = Vector2(640, 0)
 	_tools_drawer.size = Vector2(838, 42)
@@ -215,6 +220,19 @@ void fragment() {
 		)
 		button.toggle_mode = true
 		button.add_theme_color_override("font_pressed_color", UI.GOLD)
+		(
+			UI
+			. hint_above(
+				button,
+				[
+					"Merkezleri coğrafi bölgelerine göre renklendirir.",
+					"Merkezleri afete hazırlık düzeyine göre renklendirir. Tamamlanan önlemler hazırlığı artırır.",
+					"Merkezleri gönderime hazır yardım malzemesine göre renklendirir.",
+					"Merkezleri altyapı hasarına göre renklendirir. Hasar geliri düşürür, onarım gerekir.",
+				][index],
+				_legend_panel
+			)
+		)
 		_layer_buttons.append(button)
 	reset_map()
 	select_overlay(selected_overlay)
@@ -232,10 +250,14 @@ func _sync_tools() -> void:
 	_legend_panel.visible = tools_expanded
 	_tools_toggle.set_pressed_no_signal(tools_expanded)
 	_tools_toggle.text = "HARİTA GÖRÜNÜMÜ"
-	_tools_toggle.tooltip_text = (
-		("Harita görünümlerini kapat. " if tools_expanded else "Harita görünümlerini sağa aç. ")
-		+ "Seçili: "
-		+ ["Bölgeler", "Afet Hazırlığı", "Yardım Malzemesi", "Altyapı Hasarı"][selected_overlay]
+	UI.hint_above(
+		_tools_toggle,
+		(
+			("Harita görünümlerini kapat. " if tools_expanded else "Harita görünümlerini sağa aç. ")
+			+ "Seçili: "
+			+ ["Bölgeler", "Afet Hazırlığı", "Yardım Malzemesi", "Altyapı Hasarı"][selected_overlay]
+		),
+		_legend_panel
 	)
 
 
@@ -668,6 +690,8 @@ func _constrain_map() -> void:
 
 
 func _on_map_input(event: InputEvent) -> void:
+	if _shell.screen_blocks_map():
+		return  # Gaps between the top buttons must not reach the map under an open screen.
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
 			_zoom_map(1, event.position)
