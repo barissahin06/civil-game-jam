@@ -15,11 +15,19 @@ afet sırasında kaynak paylaşımı ve sonuçlardan öğrenmedir.
 - Başlangıç yılı 1950–1990 arasında seçilir; başlangıç günü 1 Ocak'tır.
 - Her kampanya 31 Aralık 2026 sonunda biter. Tarihsel mod oynanabilir, Sandbox kilitlidir.
 - Başlangıç ekonomisi, temel araştırmalar ve altyapı seçilen döneme uygun hazırlanır.
-- Kısa, atlanabilir ilk oyun rehberi şehir seçimi, yatırım, araştırma ve ilk afet sevkiyatını gösterir.
+- Atlanabilir Oyun Rehberi 12 bölümde hazırlık → müdahale → toparlanma akışını anlatır.
+  Konu listesi ve geri/ileri gezinmeyle bütçe/bakım, proje kapasitesi, araştırma/önlem,
+  üretim kuyruğu, taşıma/sevk ayrımı, günlük ikmal, onarım/yenileme ve kalıcı taahhütler
+  tekrar okunabilir. Haritadaki dört eylemli bağlamsal rehber şehir seçimi, yatırım,
+  araştırma ve ilk afet sevkiyatını izler.
+  Rehber kısa cümlelerle, günlük Türkçeyle yazılır. Zor terimler yerine yapılacak iş
+  anlatılır: lejant yerine renk ve işaret açıklamaları, ikmal yerine yeniden yardım
+  gönderme, taahhüt yerine halka verilen söz. Ekrandaki adlar korunur; Kondisyon ve
+  Lojistik gibi adlar ilk kullanıldığında açıklanır.
 - Oyun ayrı ana menüden açılır. Yeni oyun, Tarihsel/Sandbox ve yıl seçimi yalnız bu akışta bulunur;
   harita, HUD ve şehir panelleri burada görünmez. Kampanya seçilmeden otomatik kayıt başlamaz.
 - Oyun içi menü duraklatma ve ayarlar içindir; yeni kampanya seçimi içermez. Ana menüye dönmek
-  mevcut kampanyayı kaydeder ve oyun ekranını kapatır. Menüden yeniden açılan kısa rehber ilk sayfaya döner.
+  mevcut kampanyayı kaydeder ve oyun ekranını kapatır. Menüden yeniden açılan rehber ilk bölüme döner.
 
 ## Harita ve yönetim alanları
 
@@ -67,7 +75,7 @@ Aktif afetler seçili katmandan bağımsız simgelerle de görünür.
 Oyun adı **Rewrite it**. Ana menü, gece afet koordinasyon odasını gösteren 1920×1080 native
 pixel art splash kullanır. Türkiye panosu, telsiz, şehir ışıkları ve masa konsolları ayrı
 Aseprite katmanlarıdır. Başlık ve düğmeler canlı UI'dır. Devam Et otomatik kaydı açar;
-Yeni Oyun, Yükle, Ayarlar, Kısa Rehber ve Çıkış ayrı aksiyonlardır.
+Yeni Oyun, Yükle, Ayarlar, Oyun Rehberi ve Çıkış ayrı aksiyonlardır.
 
 Menü ve oyun ekranında demo etiketi, sabit bölge/merkez sayacı ve kayıt yuvası sayısı
 gibi açıklama bantları gösterilmez. Metinler güncel durumu ve oyuncunun kararını destekler;

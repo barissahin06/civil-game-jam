@@ -83,11 +83,20 @@ Gerçek release renderer çıktısı için `--windowed --resolution 1920x1080 --
 --quit-after 5` kullanılır; bu kısa açılış testi yeni kampanya veya kayıt aksiyonu vermez.
 
 İlk beş dakika kontrolü `test:ui` içinde ana menüden iki başlangıcı da açar: 1990 seçimi ve rehberi
-atlama; 1950 seçimi ve dört rehber sayfasını bitirme. Yıl seçimi yapılana kadar otomatik kayıt kapalıdır.
+atlama; 1950 seçimi ve 12 rehber bölümünü bitirme. Yıl seçimi yapılana kadar otomatik kayıt kapalıdır.
 Ana menü ve kampanya seçiminde harita/HUD gizlidir; oyun içi menüde kampanya seçimi yoktur.
 Oyun ekranından doğrudan `menu`/`newgame` yönlendirmesi de engellenir. Ana menüye dönüş, ayrı bir aksiyondur.
 Sonra şehir → yatırım → araştırma → ilk afet sevkiyatı adımları, bağlamsal rehberin ilerleyip kapanması
 ve menüden rehberi yeniden açma gerçek input ile doğrulanır.
+Oyun Rehberi metinleri `ui_preview/campaign/tutorial_copy.gd` içinde tutulur; bölüm seçimi,
+geri/ileri gezinme ve ana menü/duraklatma menüsüne dönüş `campaign_screens.gd` sahibindedir.
+Rehber; amaç ve zaman, harita, ekonomi, yerel projeler, araştırma/ulusal önlemler,
+ekip/yardım hazırlığı, merkezler arası taşıma, afet sevki, günlük ikmal, onarım/yenileme,
+kalıcı kararlar/güven ve kayıt/kontrolleri kapsar. Haritadaki dört eylemli bağlamsal rehber
+ayrı kalır. `gameplay_ui.gd`, tüm bölümlerde metin taşmasını, ilk bölümde geri sınırını,
+geri/ileri ve gerçek açılır liste girdisini, okuma sırasında modelin değişmemesini ve üç
+giriş akışını denetler. Aynı sürücüyü `--capture` ile gerçek renderer'da çalıştırıp
+`generated/gameplay-ui/guide-*.png` görüntülerini 1920×1080'de inceleyin.
 Bu otomatik kabul, oyuncunun okuma/karar süresini içeren beş dakikalık insan testi yerine geçmez.
 
 Kayıt/yükleme kabulünde sürücü yalnız `user://test-revert-ui-slots` altındaki bilinen dört dosyayı

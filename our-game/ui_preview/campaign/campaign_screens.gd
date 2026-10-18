@@ -2,10 +2,12 @@ extends "res://ui_preview/shared/screen_view.gd"
 
 const RED := Color("cf9584")
 const AUDIO_CONTROLS := preload("res://ui_preview/campaign/audio_controls.gd")
+const GUIDE := preload("res://ui_preview/campaign/tutorial_copy.gd")
 
 var start_year: int = 1950
 var tutorial_step: int = 0
 var replace_confirmed: bool = false
+var _tutorial_finish_label: String = "HARİTAYA GEÇ"
 
 
 func render(content: Control, screen: String) -> void:
@@ -45,7 +47,7 @@ func _menu() -> void:
 	UI.button(_content, "YENİ OYUN", Rect2(0, 258, 500, 52), _shell.show_screen.bind("newgame"))
 	UI.button(_content, "YÜKLE", Rect2(0, 328, 500, 52), _shell.save_slots.open.bind("load"))
 	UI.button(_content, "AYARLAR", Rect2(0, 398, 500, 52), _shell.show_screen.bind("settings"))
-	UI.button(_content, "KISA REHBER", Rect2(0, 468, 500, 52), _open_tutorial)
+	UI.button(_content, "OYUN REHBERİ", Rect2(0, 468, 500, 52), _open_tutorial)
 	UI.button(
 		_content, "ÇIKIŞ", Rect2(0, 538, 500, 52), _shell.quit_game, false, UI.ButtonTone.DANGER
 	)
@@ -95,7 +97,7 @@ func _pause() -> void:
 	UI.button(_content, "KAYDET", Rect2(0, 230, 560, 60), _shell.save_slots.open.bind("save"))
 	UI.button(_content, "YÜKLE", Rect2(0, 320, 560, 60), _shell.save_slots.open.bind("load"))
 	UI.button(_content, "AYARLAR", Rect2(0, 410, 560, 60), _shell.show_screen.bind("settings"))
-	UI.button(_content, "KISA REHBER", Rect2(0, 500, 560, 60), _open_tutorial)
+	UI.button(_content, "OYUN REHBERİ", Rect2(0, 500, 560, 60), _open_tutorial)
 	UI.button(
 		_content,
 		"ANA MENÜYE DÖN",
@@ -119,6 +121,7 @@ func _shake_setting(rect: Rect2) -> void:
 
 func _open_tutorial() -> void:
 	tutorial_step = 0
+	_tutorial_finish_label = "ANA MENÜYE DÖN" if _shell.in_frontend else "MENÜYE DÖN"
 	_shell.show_screen("tutorial")
 
 
@@ -176,6 +179,7 @@ func _start_campaign() -> void:
 	replace_confirmed = false
 	_shell.start_campaign(start_year)
 	tutorial_step = 0
+	_tutorial_finish_label = "HARİTAYA GEÇ"
 	_shell.show_screen("tutorial")
 
 
@@ -211,44 +215,63 @@ func _ending(defeat: bool) -> void:
 
 
 func _tutorial() -> void:
-	_title("İLK ADIMLAR", "KISA REHBER / İSTEDİĞİN ZAMAN ATLAYABİLİRSİN")
-	var titles := [
-		"1 / BİR ŞEHİR SEÇ",
-		"2 / YEREL YATIRIM PLANLA",
-		"3 / ARAŞTIRMAYI İNCELE",
-		"4 / İLK GÖNDERİMİ HAZIRLA"
-	]
-	var descriptions := [
-		"HARİTADAKİ İL SINIRINA TIKLA. SOLDA NÜFUS, GELİR, ALTYAPI VE HAZIRLIĞI İNCELE.",
-		"ŞEHİR PANELİNDE YATIRIM SEKMESİNE GEÇ. BEDELİ, AYLIK TAKSİTİ VE TAMAMLANMA SÜRESİNİ KARŞILAŞTIR.",
-		"YATIRIM VE ARAŞTIRMA > ARAŞTIRMALAR SEKMESİNİ AÇ. TEKNİK ARAŞTIRMALAR VE BİLİNÇ GELİŞTİRMELERİ ORTAK KAPASİTEYİ KULLANIR. EKİP VE YARDIM MALZEMESİ İÇİN EKİP VE YARDIM HAZIRLA'YI KULLAN.",
-		"KRİZDE KAYNAK MERKEZİ SEÇ. EKİBİ HEDEF KARTA SÜRÜKLE VEYA GÖNDERİMİ ONAYLA DÜĞMESİNİ KULLAN. VARIŞ GÜNÜNE DİKKAT ET."
-	]
-	UI.text(_content, titles[tutorial_step], Rect2(0, 144, 1300, 54), 36, UI.GOLD)
-	_paragraph(descriptions[tutorial_step], Rect2(0, 256, 1120, 170), UI.INK)
-	UI.text(_content, "%d / 4" % (tutorial_step + 1), Rect2(0, 484, 500, 36), 18, UI.MUTED)
-	UI.button(_content, "REHBERİ ATLA", Rect2(0, 600, 432, 54), _skip_tutorial)
-	var finish_label: String = "ANA MENÜYE DÖN" if _shell.in_frontend else "HARİTAYA GEÇ"
+	_title("OYUN REHBERİ", "HAZIRLIK > MÜDAHALE > TOPARLANMA / İSTEDİĞİN BÖLÜMÜ SEÇEBİLİRSİN")
+	var topics := OptionButton.new()
+	topics.name = "GuideTopics"
+	topics.position = Vector2(0, 112)
+	topics.size = Vector2(1100, 44)
+	topics.add_theme_font_override("font", UI.FONT)
+	topics.add_theme_font_size_override("font_size", 18)
+	topics.add_theme_stylebox_override("normal", UI.style(Rect2(0, 56, 48, 32)))
+	topics.add_theme_stylebox_override("hover", UI.style(Rect2(56, 56, 48, 32)))
+	topics.add_theme_stylebox_override("focus", UI.style(Rect2(112, 56, 48, 32)))
+	for index: int in range(GUIDE.PAGES.size()):
+		topics.add_item("%d / %s" % [index + 1, GUIDE.PAGES[index].title])
+	topics.select(tutorial_step)
+	topics.item_selected.connect(_select_tutorial)
+	_content.add_child(topics)
+	var page: Dictionary = GUIDE.PAGES[tutorial_step]
+	for index: int in range(page.sections.size()):
+		var section: Dictionary = page.sections[index]
+		UI.text(_content, section.heading, Rect2(0, 184 + index * 124, 1344, 28), 18, UI.GOLD)
+		_paragraph(section.text, Rect2(0, 216 + index * 124, 1320, 80), UI.INK)
+	UI.text(
+		_content,
+		"%d / %d" % [tutorial_step + 1, GUIDE.PAGES.size()],
+		Rect2(1140, 120, 204, 28),
+		18,
+		UI.MUTED
+	)
+	UI.button(_content, "REHBERİ ATLA", Rect2(0, 600, 360, 54), _skip_tutorial)
+	var previous := UI.button(
+		_content, "GERİ", Rect2(456, 600, 240, 54), _select_tutorial.bind(tutorial_step - 1)
+	)
+	previous.disabled = tutorial_step == 0
+	var last_page: bool = tutorial_step == GUIDE.PAGES.size() - 1
 	UI.button(
 		_content,
-		finish_label if tutorial_step == 3 else "İLERİ",
+		_tutorial_finish_label if last_page else "İLERİ",
 		Rect2(912, 600, 432, 54),
 		_next_tutorial,
 		false,
 		(
 			UI.ButtonTone.CONFIRM
-			if tutorial_step == 3 and not _shell.in_frontend
+			if last_page and _tutorial_finish_label == "HARİTAYA GEÇ"
 			else UI.ButtonTone.NEUTRAL
 		)
 	)
 
 
 func _next_tutorial() -> void:
-	if tutorial_step == 3:
+	if tutorial_step == GUIDE.PAGES.size() - 1:
 		_shell.close_screen()
 	else:
-		tutorial_step += 1
-		_shell.refresh_screen()
+		_select_tutorial(tutorial_step + 1)
+
+
+func _select_tutorial(index: int) -> void:
+	tutorial_step = clampi(index, 0, GUIDE.PAGES.size() - 1)
+	_shell.refresh_screen()
 
 
 func _skip_tutorial() -> void:

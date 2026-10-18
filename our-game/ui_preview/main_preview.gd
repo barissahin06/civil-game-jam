@@ -232,10 +232,10 @@ func _refresh_views() -> void:
 		_display_ticker()
 	var actions: Array[String] = ["city", "investment", "research", "dispatch"]
 	var hints: Array[String] = [
-		"REHBER 1/4: Bir yönetim merkezi seç.",
-		"REHBER 2/4: Şehirde yerel yatırım başlat.",
-		"REHBER 3/4: Yatırım ve Araştırma > Araştırmalar üzerinden araştırma başlat.",
-		"REHBER 4/4: İlk afette ekip veya yardım malzemesi gönder."
+		"REHBER 1/4: Sınırları parlak bir merkeze tıkla; soldaki bilgilere bak.",
+		"REHBER 2/4: Şehir > Yatırım > İncele: bütçene uygun bir proje başlat.",
+		"REHBER 3/4: Yatırım ve Araştırma > Araştırmalar: açık bir araştırma başlat.",
+		"REHBER 4/4: Zamanı başlat; ilk afette yardım gönder, her gün ihtiyaca bak."
 	]
 	_guide.text = ""
 	if sim.tutorial_enabled:
