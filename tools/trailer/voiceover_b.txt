@@ -1,0 +1,8 @@
+s1 : Yetmiş beş yılda yaklaşık yüz yetmiş büyük afet. Her birinde aynı soru: yeterince hazır mıydık?
+s2 : Şimdi cevabı sen veriyorsun. Kasada sınırlı para, arkanda bir milletin güveni.
+s3 : Hazırlanırsan şehir ayakta kalır. Hazırlanmazsan, bedelini insanlar öder.
+s4 : Sonra takvim o güne gelir. Ve deprem olur.
+s5 : Yardım anında ulaşmaz. Kime, nereye göndereceğine sen karar verirsin.
+s6 : Bazen iki felaket birden gelir. Hepsine yetişemezsin. Peki kaç can kurtardın?
+s7 : Yetmiş altı yıl. Doksan dokuz gerçek felaket. Verdiğin her karar, tarihi değiştirir.
+s8 : Rewrite it. Geçmişi yeniden yaz.
