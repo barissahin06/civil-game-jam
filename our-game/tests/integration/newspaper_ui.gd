@@ -107,10 +107,9 @@ func _check_photo(entry: Dictionary) -> void:
 	assert(not text_column.get_global_rect().intersects(image_column.get_global_rect()))
 	var frame: ColorRect = image_column.get_node("NewspaperPhotoFrame")
 	var photo: TextureRect = frame.get_node("NewspaperPhoto")
-	var caption: Label = image_column.get_node("NewspaperPhotoCaption")
-	assert(
-		photo.is_visible_in_tree() and frame.is_visible_in_tree() and caption.is_visible_in_tree()
-	)
+	assert(photo.is_visible_in_tree() and frame.is_visible_in_tree())
+	assert(image_column.find_child("NewspaperPhotoCaption", true, false) == null)
+	assert(photo.tooltip_text == entry.name)
 	assert(photo.texture != null and photo.texture.resource_path == PHOTOS.path_for(entry))
 	assert(photo.texture.get_width() > 0 and photo.texture.get_height() > 0)
 	assert(photo.expand_mode == TextureRect.EXPAND_IGNORE_SIZE)
@@ -124,15 +123,6 @@ func _check_photo(entry: Dictionary) -> void:
 	assert(frame.mouse_filter == Control.MOUSE_FILTER_IGNORE)
 	assert(frame.get_global_rect().encloses(photo.get_global_rect()))
 	assert(image_column.get_global_rect().encloses(frame.get_global_rect()))
-	assert(image_column.get_global_rect().encloses(caption.get_global_rect()))
-	assert(not frame.get_global_rect().intersects(caption.get_global_rect()))
-	assert(not caption.text.is_empty())
-	assert(
-		(
-			("TEMSİLİ" in caption.text.to_upper())
-			== photo.texture.resource_path.get_file().begins_with("_fallback_")
-		)
-	)
 	for text: String in [entry.date, entry.name.to_upper(), entry.description]:
 		var label := _label(text)
 		assert(label != null, "Newspaper text missing: " + text)
@@ -140,7 +130,6 @@ func _check_photo(entry: Dictionary) -> void:
 		if text != entry.date:
 			assert(text_column.get_global_rect().encloses(label.get_global_rect()))
 		assert(not label.get_global_rect().intersects(frame.get_global_rect()))
-		assert(not label.get_global_rect().intersects(caption.get_global_rect()))
 	if entry.id == "historical-081":
 		assert(entry.description == HATIP_DESCRIPTION)
 		assert(_label(HATIP_DESCRIPTION).text.contains("Çayı'nın"))

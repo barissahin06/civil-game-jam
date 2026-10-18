@@ -50,6 +50,7 @@ func _ready() -> void:
 				index == 0
 			)
 		)
+		_city_tabs.back().set_meta("guide_target", "city_tab_%d" % index)
 	_city_body = Control.new()
 	_city_body.position = Vector2(36, 408)
 	_city_body.size = Vector2(360, 588)
@@ -215,6 +216,7 @@ func _investments(area: ServiceArea) -> void:
 			),
 		}
 		_investment_rows[definition.id].inspect.name = "Inspect"
+		_investment_rows[definition.id].inspect.set_meta("guide_target", "inspect_" + definition.id)
 	_refresh_investments(area)
 	_investment_scroll.set_deferred("scroll_vertical", _investment_position)
 

@@ -50,6 +50,15 @@ func _crisis_fixture() -> Simulation:
 	return sim
 
 
+func _previous_windows_fixture(year: int = 1950) -> Simulation:
+	var sim := Simulation.new()
+	assert_bool(sim.setup(year)).is_true()
+	sim.content_fingerprint = SaveStore.PRE_EXTENSION_CATALOG
+	for event: Dictionary in sim.historical.events:
+		event.response_window_days -= SaveStore.RESPONSE_WINDOW_EXTENSION_DAYS
+	return sim
+
+
 func _canonical(data: Dictionary) -> String:
 	return JSON.stringify(JSON.parse_string(JSON.stringify(data)))
 
@@ -70,6 +79,114 @@ func test_negative_epoch_new_campaign_and_active_projects_round_trip() -> void:
 	sim.advance_to(CalendarClock.date_to_day("1950-04-01"))
 	sim.projects.pause(sim.projects.projects.front().uid)
 	_round_trip(sim)
+
+
+func test_previous_windows_extend_new_and_active_campaigns_without_changing_input() -> void:
+	var store := SaveStore.new()
+	var sim := _previous_windows_fixture()
+	var data := sim.to_dict().duplicate(true)
+	var restored := store.restore(data)
+	assert_object(restored).is_not_null()
+	if restored == null:
+		return
+	assert_str(restored.content_fingerprint).is_equal(_fixture().content_fingerprint)
+	assert_str(restored.content_fingerprint).is_equal(SaveStore.EXTENDED_CATALOG)
+	assert_int(int(restored.historical.events.front().response_window_days)).is_equal(9)
+	_round_trip(restored)
+	sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
+	sim.acknowledge()
+	var crisis: Dictionary = sim.crises.active.front()
+	assert_bool(sim.dispatch(31, crisis.id, "team", 1).ok).is_true()
+	assert_bool(sim.dispatch(31, crisis.id, "stock", 30).ok).is_true()
+	sim.advance_to(sim.clock.day + 2)
+	data = sim.to_dict().duplicate(true)
+	var previous := _canonical(data)
+	restored = store.restore(data)
+	assert_object(restored).is_not_null()
+	if restored == null:
+		return
+	assert_str(_canonical(data)).is_equal(previous)
+	var migrated: Dictionary = restored.crises.active.front()
+	assert_int(int(migrated.window)).is_equal(int(crisis.window) + 2)
+	assert_int(int(migrated.elapsed)).is_equal(int(crisis.elapsed))
+	assert_int(int(migrated.consumed_stock)).is_equal(int(crisis.consumed_stock))
+	_round_trip(restored)
+	restored.advance_to(int(crisis.start) + int(crisis.window))
+	assert_int(restored.crises.active.size()).is_equal(1)
+	restored.advance_to(int(crisis.start) + int(crisis.window) + 2)
+	assert_int(restored.crises.active.size()).is_equal(0)
+	assert_int(int(restored.crises.reports.front().day)).is_equal(int(crisis.start) + 9)
+	_round_trip(restored)
+
+
+func test_previous_completed_reports_keep_dates_outcomes_and_resave_with_current_catalog() -> void:
+	var sim := _previous_windows_fixture()
+	sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
+	sim.acknowledge()
+	var crisis: Dictionary = sim.crises.active.front()
+	assert_bool(sim.dispatch(6, crisis.id, "team", 1).ok).is_true()
+	assert_bool(sim.dispatch(31, crisis.id, "stock", 30).ok).is_true()
+	sim.advance_to(int(crisis.start) + int(crisis.window))
+	var report: Dictionary = sim.crises.reports.front().duplicate(true)
+	var store := SaveStore.new()
+	var restored := store.restore(sim.to_dict())
+	assert_object(restored).is_not_null()
+	if restored == null:
+		return
+	assert_str(_canonical(restored.crises.reports.front())).is_equal(_canonical(report))
+	assert_int(int(restored.event_for(report.event_id).response_window_days)).is_equal(7)
+	assert_int(int(restored.historical.events[1].response_window_days)).is_equal(9)
+	assert_bool(store.save(restored, TEST_PATH)).is_true()
+	var resaved := store.load_campaign(TEST_PATH)
+	assert_object(resaved).is_not_null()
+	if resaved != null:
+		assert_str(resaved.content_fingerprint).is_equal(_fixture().content_fingerprint)
+		assert_str(_canonical(resaved.crises.reports.front())).is_equal(_canonical(report))
+		_round_trip(resaved)
+
+
+func test_previous_windows_reject_wrong_lengths_and_expired_active_records() -> void:
+	var sim := _previous_windows_fixture()
+	sim.advance_to(CalendarClock.date_to_day("1951-04-08"))
+	sim.acknowledge()
+	var store := SaveStore.new()
+	var bad := sim.to_dict().duplicate(true)
+	bad.active[0].window += 1
+	assert_object(store.restore(bad)).is_null()
+	bad = sim.to_dict().duplicate(true)
+	bad.active[0].window = "7"
+	assert_object(store.restore(bad)).is_null()
+	bad = sim.to_dict().duplicate(true)
+	bad.active[0].elapsed = 7
+	bad.day += 7
+	assert_object(store.restore(bad)).is_null()
+	bad = sim.to_dict().duplicate(true)
+	bad.catalog = "unrelated-catalog"
+	assert_object(store.restore(bad)).is_null()
+	var crisis: Dictionary = sim.crises.active.front()
+	sim.advance_to(int(crisis.start) + int(crisis.window))
+	bad = sim.to_dict().duplicate(true)
+	bad.reports[0].day += 1
+	assert_object(store.restore(bad)).is_null()
+
+
+func test_migrated_parallel_reports_require_one_shared_response_window() -> void:
+	var sim := _previous_windows_fixture(1963)
+	sim.advance_to(CalendarClock.date_to_day("1963-09-18"))
+	assert_int(sim.crises.active.size()).is_greater(1)
+	var crisis: Dictionary = sim.crises.active.front()
+	sim.acknowledge()
+	sim.advance_to(int(crisis.start) + int(crisis.window))
+	var store := SaveStore.new()
+	var restored := store.restore(sim.to_dict())
+	assert_object(restored).is_not_null()
+	if restored == null:
+		return
+	_round_trip(restored)
+	var bad := restored.to_dict().duplicate(true)
+	bad.reports[0].day += 2
+	bad.day += 2
+	assert_object(store.restore(bad)).is_null()
 
 
 func test_outbound_deployed_local_and_returning_resources_round_trip() -> void:
@@ -422,3 +539,52 @@ func test_reports_keep_consumed_and_returned_aid_ledger() -> void:
 	bad = sim.to_dict()
 	bad.reports[0].returned_stock += 1
 	assert_object(SaveStore.new().restore(bad)).is_null()
+
+
+func test_clear_campaign_slots_removes_all_v4_slots_and_staging_files_only() -> void:
+	var store := _slot_store()
+	var sim := _fixture()
+	for slot in range(4):
+		assert_bool(store.save(sim, store.slot_path(slot))).is_true()
+		var staging := FileAccess.open(store.slot_path(slot) + ".tmp", FileAccess.WRITE)
+		staging.store_string("unfinished write")
+		staging.close()
+	var preserved := ["preferences.cfg", "campaign_v3.json", "manual_4_v4.json", "other.json"]
+	for filename: String in preserved:
+		var file := FileAccess.open(TEST_SLOT_DIRECTORY.path_join(filename), FileAccess.WRITE)
+		file.store_string("keep these bytes")
+		file.close()
+	assert_bool(store.clear_campaign_slots()).is_true()
+	assert_str(store.error).is_empty()
+	for slot in range(4):
+		assert_bool(FileAccess.file_exists(store.slot_path(slot))).is_false()
+		assert_bool(FileAccess.file_exists(store.slot_path(slot) + ".tmp")).is_false()
+	for summary: Dictionary in store.slot_summaries():
+		assert_bool(summary.exists).is_false()
+	for filename: String in preserved:
+		var path := TEST_SLOT_DIRECTORY.path_join(filename)
+		assert_str(FileAccess.get_file_as_string(path)).is_equal("keep these bytes")
+		_remove_test_path(path)
+	assert_bool(store.clear_campaign_slots()).is_true()
+
+
+func test_clear_campaign_slots_reports_incomplete_deletion_and_allows_retry() -> void:
+	var store := _slot_store()
+	(
+		assert_int(DirAccess.make_dir_absolute(ProjectSettings.globalize_path(store.slot_path(0))))
+		. is_equal(OK)
+	)
+	assert_bool(store.save(_fixture(), store.slot_path(1))).is_true()
+	assert_bool(store.clear_campaign_slots()).is_false()
+	assert_bool(store.error.contains("campaign_v4.json")).is_true()
+	assert_bool(store.error.contains("Bazı yuvalar silinmiş olabilir")).is_true()
+	(
+		assert_bool(
+			DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(store.slot_path(0)))
+		)
+		. is_true()
+	)
+	assert_bool(FileAccess.file_exists(store.slot_path(1))).is_false()
+	_remove_test_path(store.slot_path(0))
+	assert_bool(store.clear_campaign_slots()).is_true()
+	assert_str(store.error).is_empty()

@@ -62,6 +62,10 @@ func show_project(definition_id: String, area_id: int = 0) -> void:
 	_shell.show_screen("project")
 
 
+func guide_context() -> Dictionary:
+	return {"definition_id": _definition_id, "area_id": _area_id}
+
+
 func _project() -> void:
 	var sim: Simulation = _shell.sim
 	var definition := sim.projects.definition_for(_definition_id)
@@ -234,6 +238,7 @@ func _project() -> void:
 			_content, "BAŞLAT", Rect2(932, 636, 412, 48), _start, false, UI.ButtonTone.CONFIRM
 		)
 		begin.disabled = not available.ok
+		begin.set_meta("guide_target", "project_start")
 		begin.tooltip_text = available.message
 
 

@@ -34,6 +34,40 @@ func test_paused_speed_first_event_and_monthly_settlement() -> void:
 	assert_str(CalendarClock.day_to_iso(sim.clock.day)).is_equal("1951-04-08")
 
 
+func test_first_crisis_has_two_extra_response_days_before_its_report() -> void:
+	var sim := _fixture()
+	var crisis := _first_crisis(sim)
+	assert_int(int(crisis.window)).is_equal(9)
+	sim.advance_to(int(crisis.start) + 7)
+	assert_int(sim.crises.active.size()).is_equal(1)
+	assert_int(sim.crises.reports.size()).is_equal(0)
+	sim.advance_to(int(crisis.start) + 8)
+	assert_int(sim.crises.active.size()).is_equal(1)
+	sim.advance_to(int(crisis.start) + 9)
+	assert_bool(sim.crises.active.is_empty()).is_true()
+	assert_int(sim.crises.reports.size()).is_equal(1)
+	assert_int(int(sim.crises.reports.front().day)).is_equal(int(crisis.start) + 9)
+
+
+func test_every_crisis_resume_advances_only_one_day_at_every_speed() -> void:
+	for speed: int in [1, 2, 4]:
+		var sim := _fixture()
+		var crisis := _first_crisis(sim)
+		sim.set_speed(speed)
+		for elapsed: int in range(1, 4):
+			var previous_day := sim.clock.day
+			sim.set_paused(false)
+			sim.update(Simulation.CRISIS_DAY_SECONDS / (speed * 2.0))
+			assert_int(sim.clock.day).is_equal(previous_day)
+			assert_bool(sim.paused).is_false()
+			sim.update(100.0)
+			assert_int(sim.clock.day).is_equal(int(crisis.start) + elapsed)
+			assert_bool(sim.paused).is_true()
+			assert_float(sim._accumulator).is_equal(0.0)
+			sim.update(100.0)
+			assert_int(sim.clock.day).is_equal(int(crisis.start) + elapsed)
+
+
 func test_critical_supply_stops_fast_clock_once_and_rearms_after_replenishment() -> void:
 	var sim := _fixture()
 	var crisis := _first_crisis(sim)
@@ -47,10 +81,11 @@ func test_critical_supply_stops_fast_clock_once_and_rearms_after_replenishment()
 	assert_int(warnings.size()).is_equal(1)
 	sim.set_paused(false)
 	sim.update(Simulation.CRISIS_DAY_SECONDS / 4.0)
-	assert_bool(sim.paused).is_false()
+	assert_bool(sim.paused).is_true()
 	assert_int(warnings.size()).is_equal(1)
 	assert_bool(sim.dispatch(31, crisis.id, "stock", 30).ok).is_true()
 	assert_bool(crisis.supply_alerted).is_false()
+	sim.set_paused(false)
 	sim.update(Simulation.CRISIS_DAY_SECONDS / 4.0)
 	assert_bool(sim.paused).is_true()
 	assert_int(warnings.size()).is_equal(2)
@@ -229,16 +264,21 @@ func test_all_start_years_show_a_historical_disaster_within_five_active_minutes(
 
 func test_normal_and_crisis_clock_fit_the_campaign_tempo_budget() -> void:
 	var sim := _fixture()
-	var active_seconds := 0
+	var active_seconds := 0.0
 	while sim.outcome.is_empty() and active_seconds <= 3000:
 		# Isolate calendar tempo from player reading time and defeat balance.
 		sim.news_queue.clear()
 		sim.trust.value = 100.0
 		sim.set_paused(false)
-		sim.update(1.0)
-		active_seconds += 1
+		var step := (
+			Simulation.CALM_MONTH_SECONDS
+			if sim.crises.active.is_empty()
+			else Simulation.CRISIS_DAY_SECONDS
+		)
+		sim.update(step)
+		active_seconds += step
 	assert_str(sim.outcome).is_equal("ending")
-	assert_bool(active_seconds >= 1800 and active_seconds <= 2700).is_true()
+	assert_bool(active_seconds >= 1800 and active_seconds <= 3000).is_true()
 	print("CAMPAIGN_TEMPO_SECONDS: ", active_seconds)
 
 

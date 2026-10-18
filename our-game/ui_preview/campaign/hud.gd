@@ -33,57 +33,58 @@ func setup(shell: Control) -> void:
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	UI.panel(self, Rect2(12, 12, 1896, 112))
+	UI.panel(self, Rect2(12, 12, 1896, 112)).set_meta("guide_target", "metrics")
 	var icons: Array[TextureRect] = [
-		UI.icon(self, 0, Vector2(32, 16), UI.GOLD),
-		UI.icon(self, 1, Vector2(376, 32), UI.TEAL),
-		UI.icon(self, 2, Vector2(666, 32), VIOLET),
+		UI.icon(self, 0, Vector2(32, 40), UI.GOLD),
+		UI.icon(self, 1, Vector2(368, 40), UI.TEAL),
+		UI.icon(self, 2, Vector2(664, 40), VIOLET),
 	]
 	for index in range(icons.size()):
 		icons[index].name = ["BudgetIcon", "TrustIcon", "AwarenessIcon"][index]
-		icons[index].scale = Vector2(2, 2)
-	UI.text(self, "BÜTÇE", Rect2(112, 18, 248, 22), 18, UI.MUTED)
-	_budget = UI.text(self, "", Rect2(112, 38, 248, 42), 36, UI.GOLD)
-	_income = UI.text(self, "", Rect2(32, 80, 328, 44), 18, UI.TEAL)
+		icons[index].scale = Vector2(1.5, 1.5)
+	UI.text(self, "BÜTÇE", Rect2(96, 18, 240, 22), 18, UI.MUTED)
+	_budget = UI.text(self, "", Rect2(96, 46, 240, 38), 30, UI.GOLD)
+	_income = UI.text(self, "", Rect2(32, 94, 304, 22), 18, UI.TEAL)
 	_income.tooltip_text = "Son ayın net sonucu: merkez gelirleri eksi bakım giderleri. Proje taksitleri bu rakama dahil değil."
 	_income.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_income.mouse_filter = Control.MOUSE_FILTER_PASS
-	_trust_limits = UI.text(self, "", Rect2(456, 18, 192, 22), 18, UI.MUTED)
-	_trust = UI.text(self, "", Rect2(456, 38, 192, 42), 36)
+	_trust_limits = UI.text(self, "", Rect2(432, 18, 208, 22), 18, UI.MUTED)
+	_trust = UI.text(self, "", Rect2(432, 46, 208, 38), 30)
 	_trust.mouse_filter = Control.MOUSE_FILTER_PASS
-	_trust_delta = UI.text(self, "", Rect2(456, 80, 192, 22), 18, UI.MUTED)
+	_trust_delta = UI.text(self, "", Rect2(364, 94, 156, 22), 18, UI.MUTED)
 	_trust_delta.mouse_filter = Control.MOUSE_FILTER_PASS
-	UI.text(self, "0: OYUN BİTER", Rect2(456, 102, 192, 22), 18, UI.MUTED)
-	UI.text(self, "BİLİNÇ PUANI", Rect2(744, 18, 144, 22), 18, VIOLET)
-	_awareness = UI.text(self, "", Rect2(744, 40, 120, 44), 36, VIOLET)
+	UI.text(self, "0: BİTER", Rect2(536, 94, 112, 22), 18, UI.MUTED)
+	UI.text(self, "BİLİNÇ PUANI", Rect2(728, 18, 144, 22), 18, VIOLET)
+	_awareness = UI.text(self, "", Rect2(728, 46, 144, 38), 30, VIOLET)
 	_awareness.mouse_filter = Control.MOUSE_FILTER_PASS
-	UI.text(self, "HARCANABİLİR", Rect2(744, 84, 144, 22), 18, VIOLET)
-	UI.text(self, "HAZIR EKİP", Rect2(900, 18, 156, 22), 18, UI.TEAL)
-	_total_teams = UI.text(self, "", Rect2(900, 38, 156, 42), 36, UI.TEAL)
+	UI.text(self, "HARCANABİLİR", Rect2(728, 94, 144, 22), 18, VIOLET)
+	UI.text(self, "HAZIR EKİP", Rect2(904, 18, 156, 22), 18, UI.TEAL)
+	_total_teams = UI.text(self, "", Rect2(904, 46, 156, 38), 30, UI.TEAL)
 	_total_teams.mouse_filter = Control.MOUSE_FILTER_PASS
 	_total_teams.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	_team_total = UI.text(self, "", Rect2(900, 80, 180, 44), 18, UI.MUTED)
+	_team_total = UI.text(self, "", Rect2(904, 94, 180, 22), 18, UI.MUTED)
 	_team_total.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	UI.text(self, "YARDIM MALZEMESİ", Rect2(1092, 18, 192, 22), 18, UI.GOLD)
-	_total_stock = UI.text(self, "", Rect2(1092, 40, 164, 44), 36, UI.GOLD)
+	UI.text(self, "YARDIM MALZEMESİ", Rect2(1100, 18, 192, 22), 18, UI.GOLD)
+	_total_stock = UI.text(self, "", Rect2(1100, 46, 164, 38), 30, UI.GOLD)
 	_total_stock.mouse_filter = Control.MOUSE_FILTER_PASS
 	_total_stock.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	UI.text(self, "GÖNDERİME HAZIR", Rect2(1092, 84, 192, 22), 18, UI.MUTED)
-	UI.text(self, "TAKVİM", Rect2(1316, 18, 280, 22), 18, UI.GOLD)
-	_date_label = UI.text(self, "", Rect2(1316, 40, 280, 44), 36)
+	UI.text(self, "GÖNDERİME HAZIR", Rect2(1100, 94, 192, 22), 18, UI.MUTED)
+	UI.text(self, "TAKVİM", Rect2(1320, 18, 276, 22), 18, UI.GOLD)
+	_date_label = UI.text(self, "", Rect2(1320, 46, 276, 38), 30)
 	_date_label.mouse_filter = Control.MOUSE_FILTER_PASS
-	_date_state = UI.text(self, "", Rect2(1316, 84, 280, 22), 18, UI.GOLD)
+	_date_state = UI.text(self, "", Rect2(1320, 94, 276, 22), 18, UI.GOLD)
 	_hint(
-		Rect2(28, 14, 336, 66),
+		Rect2(28, 14, 312, 76),
 		"Hazinedeki para. Proje taksitleri, ekip ve gönderim bedelleri buradan ödenir. Para yetmezse projeler bekler."
 	)
-	_trust_hint = _hint(Rect2(372, 14, 280, 110), "")
-	_awareness_hint = _hint(Rect2(662, 14, 230, 110), "")
-	_teams_hint = _hint(Rect2(896, 14, 188, 110), "")
-	_stock_hint = _hint(Rect2(1088, 14, 220, 110), "")
-	_date_hint = _hint(Rect2(1312, 14, 292, 110), "")
+	_trust_hint = _hint(Rect2(364, 14, 284, 110), "")
+	_awareness_hint = _hint(Rect2(660, 14, 216, 110), "")
+	_teams_hint = _hint(Rect2(900, 14, 188, 110), "")
+	_stock_hint = _hint(Rect2(1096, 14, 200, 110), "")
+	_date_hint = _hint(Rect2(1316, 14, 284, 110), "")
 	_speed_state = UI.text(self, "", Rect2(1612, 18, 272, 22), 18, UI.GOLD)
-	_pause_button = UI.button(self, "ZAMANI BAŞLAT", Rect2(1612, 40, 272, 38), _toggle_time)
+	_pause_button = UI.button(self, "ZAMANI BAŞLAT", Rect2(1612, 46, 272, 38), _toggle_time)
+	_pause_button.set_meta("guide_target", "time")
 	_pause_button.tooltip_text = "Zamanı başlatır veya durdurur. Zaman durmuşken de proje başlatabilir, gönderim yapabilirsin."
 	_speed_state.mouse_filter = Control.MOUSE_FILTER_PASS
 	_speed_state.tooltip_text = "Zamanın durumu ve seçili oyun hızı."
@@ -92,11 +93,12 @@ func _ready() -> void:
 			UI.button(
 				self,
 				["1×", "2×", "4×"][index],
-				Rect2(1612 + index * 92, 82, 88, 26),
+				Rect2(1612 + index * 92, 90, 88, 26),
 				_set_speed.bind([1, 2, 4][index])
 			)
 		)
 		_speed_buttons[index].toggle_mode = true
+		_speed_buttons[index].set_meta("guide_target", "speed")
 		_speed_buttons[index].tooltip_text = (
 			"Oyun hızı: zaman %d kat hızlı akar." % [1, 2, 4][index]
 		)
@@ -109,8 +111,23 @@ func _ready() -> void:
 		self, "", Rect2(274, 130, 250, 42), screen_requested.emit.bind("crisis")
 	)
 	_crisis_button.tooltip_text = "Devam eden afetler ve sayısı. Buradan afet bölgelerine ekip ve yardım malzemesi gönderilir."
-	UI.button(self, "EKİP VE YARDIM HAZIRLA", Rect2(536, 130, 340, 42), screen_requested.emit.bind("preparation")).tooltip_text = "Merkezlerde yeni arama kurtarma ekibi kur ve yardım malzemesi hazırla. Afetten önce hazırlanan kaynak, krizde hemen gönderilir."
-	UI.button(self, "YATIRIM VE ARAŞTIRMA", Rect2(888, 130, 300, 42), screen_requested.emit.bind("development")).tooltip_text = "Projeler, ulusal önlemler ve araştırmalar. Tamamlanan yatırımlar merkezleri afetlere hazırlar."
+	_crisis_button.set_meta("guide_target", "crisis")
+	var prepare := UI.button(
+		self,
+		"EKİP VE YARDIM HAZIRLA",
+		Rect2(536, 130, 340, 42),
+		screen_requested.emit.bind("preparation")
+	)
+	prepare.set_meta("guide_target", "preparation")
+	prepare.tooltip_text = "Merkezlerde yeni arama kurtarma ekibi kur ve yardım malzemesi hazırla. Afetten önce hazırlanan kaynak, krizde hemen gönderilir."
+	var development := UI.button(
+		self,
+		"YATIRIM VE ARAŞTIRMA",
+		Rect2(888, 130, 300, 42),
+		screen_requested.emit.bind("development")
+	)
+	development.set_meta("guide_target", "development")
+	development.tooltip_text = "Projeler, ulusal önlemler ve araştırmalar. Tamamlanan yatırımlar merkezleri afetlere hazırlar."
 	_events_button = UI.button(
 		self, "HABERLER VE RAPORLAR", Rect2(1200, 130, 290, 42), _toggle_events_menu
 	)
@@ -149,7 +166,6 @@ func refresh() -> void:
 		"SON AY: "
 		+ ("+" if sim.treasury.last_net >= 0 else "")
 		+ _shell.fmt_money(sim.treasury.last_net)
-		+ "\nGELİR-BAKIM; TAKSİT HARİÇ"
 	)
 	var trust := sim.trust.feedback()
 	_trust_limits.text = "HALKIN GÜVENİ"
@@ -183,7 +199,7 @@ func refresh() -> void:
 	)
 	var resources: Dictionary = sim.unit_overview().summary
 	_total_teams.text = _shell.fmt_count(resources.ready)
-	_team_total.text = "TOPLAM EKİP\n" + _shell.fmt_count(resources.total)
+	_team_total.text = "TOPLAM: " + _shell.fmt_count(resources.total)
 	_total_teams.tooltip_text = (
 		"Toplam %d ekip: %d hazır, %d yolda, %d görevde, %d dönüşte."
 		% [
@@ -264,6 +280,7 @@ func _toggle_time() -> void:
 
 
 func _set_speed(speed: int) -> void:
+	_shell.sim.guide.record("speed")
 	_shell.sim.set_speed(speed)
 
 

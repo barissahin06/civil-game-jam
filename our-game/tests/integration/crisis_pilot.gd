@@ -25,6 +25,7 @@ func _run() -> void:
 		_review_controls()
 		return
 	await _check_crisis_map_feedback()
+	await _check_daily_time_steps()
 	await _capture("pilot-a-waiting")
 	_check_dispatch_header()
 	var panel: Control = _shell.crisis._panel
@@ -183,6 +184,24 @@ func _run() -> void:
 	quit()
 
 
+func _check_daily_time_steps() -> void:
+	for speed: int in [1, 2, 4]:
+		_seed()
+		_shell.sim.set_speed(speed)
+		await process_frame
+		await process_frame
+		for elapsed: int in range(1, 3):
+			var day: int = _shell.sim.clock.day
+			await _press_button("ZAMANI BAŞLAT")
+			assert(not _shell.sim.paused)
+			await create_timer(Simulation.CRISIS_DAY_SECONDS / speed + 0.1).timeout
+			assert(_shell.sim.clock.day == day + 1 and _shell.sim.paused)
+			assert(_shell.open_screen == "crisis")
+			assert(_shell.crisis._panel._play.text == "ZAMANI BAŞLAT")
+		await _capture("pilot-daily-step-%dx" % speed)
+	_seed()
+
+
 func _preset_without_spending(kind: String) -> void:
 	var source: int = _shell.crisis.source_id
 	var area: ServiceArea = _shell.sim.areas[source]
@@ -309,6 +328,7 @@ func _check_dispatch_header() -> void:
 func _seed() -> void:
 	_shell.start_campaign(1950)
 	_shell.sim.tutorial_enabled = false
+	_shell.sim.guide.enabled = false
 	_shell.crisis.source_id = 0
 	_shell.crisis.crisis_index = 0
 	_shell.crisis.dispatch_kind = "team"

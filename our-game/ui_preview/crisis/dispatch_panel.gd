@@ -47,22 +47,28 @@ func _ready() -> void:
 	_label("stock", "", Rect2(0, 168, 580, 66), UI.TEAL)
 	_team = UI.button(self, "EKİP SEÇ", Rect2(0, 236, 284, 34), _set_kind.bind("team"))
 	_stock = UI.button(self, "MALZEME SEÇ", Rect2(296, 236, 284, 34), _set_kind.bind("stock"))
+	_team.set_meta("guide_target", "dispatch_teams")
+	_stock.set_meta("guide_target", "dispatch_stock")
 	_team.tooltip_text = "Türü ve miktarı seç; Gönderimi Onayla ile gönder. Sürüklemek daima 1 ekip veya 10 birim yardım malzemesi gönderir."
 	_stock.tooltip_text = _team.tooltip_text
 	_team.set_drag_forwarding(_drag.bind("team", _team), Callable(), Callable())
 	_stock.set_drag_forwarding(_drag.bind("stock", _stock), Callable(), Callable())
 	_source = _picker(Rect2(0, 274, 580, 34))
+	_source.set_meta("guide_target", "dispatch_source")
 	_source.item_selected.connect(_choose_source)
 	UI.button(self, "-", Rect2(0, 318, 34, 32), _change_amount.bind(-1))
 	_label("amount", "", Rect2(40, 318, 216, 32))
 	UI.button(self, "+", Rect2(260, 318, 34, 32), _change_amount.bind(1))
 	_fill = UI.button(self, "İHTİYACA GÖRE AYARLA", Rect2(304, 318, 276, 32), _fill_missing)
+	_fill.set_meta("guide_target", "dispatch_fill")
 	_label("quote", "", Rect2(0, 358, 580, 44), UI.GOLD)
 	_send = UI.button(
 		self, "GÖNDERİMİ ONAYLA", Rect2(0, 408, 580, 36), _dispatch, false, UI.ButtonTone.CONFIRM
 	)
+	_send.set_meta("guide_target", "dispatch_send")
 	_label("feedback", "", Rect2(0, 452, 580, 44), UI.TEAL)
 	_labels.stock.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_labels.stock.set_meta("guide_target", "supply")
 	_labels.stock.mouse_filter = Control.MOUSE_FILTER_PASS
 	_labels.quote.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_labels.feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
